@@ -1187,6 +1187,7 @@ def get_seo_injection_status():
         }), 500
 
 @main_blueprint.route("/api/root-seo-settings", methods=["GET"])
+@main_blueprint.route("/admin/api/root-seo-settings", methods=["GET"])
 @login_required
 def get_root_seo_settings():
     """GET: Get root SEO settings configuration."""
@@ -1264,6 +1265,7 @@ def get_root_seo_settings():
         }), 500
 
 @main_blueprint.route("/api/root-seo-settings", methods=["POST"])
+@main_blueprint.route("/admin/api/root-seo-settings", methods=["POST"])
 @login_required
 def save_root_seo_settings():
     """POST: Save root SEO settings configuration."""

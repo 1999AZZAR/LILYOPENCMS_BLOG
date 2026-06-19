@@ -221,6 +221,24 @@ def inject_global_search_filters():
         UserRole=UserRole,
     )
 
+@app.template_filter('asset_version')
+def asset_version_filter(url):
+    """Add version parameter to static asset URLs for cache busting.
+    Uses g.ssr_start_time to ensure consistent versioning within a single request.
+    """
+    if not url:
+        return url
+    from flask import g
+    version = os.getenv('TEMPLATE_VERSION_SUFFIX')
+    if not version:
+        version = app.config.get('ASSET_VERSION')
+    if not version:
+        timestamp = getattr(g, 'ssr_start_time', time.time())
+        version = str(int(timestamp))
+    version = f"{version}_v2"
+    separator = '&' if '?' in url else '?'
+    return f"{url}{separator}v={version}"
+
 @app.context_processor
 def inject_current_year():
     return {"current_year": datetime.now(JAKARTA).year}
