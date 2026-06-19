@@ -5,7 +5,6 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy import func
 import csv
 import io
-import json
 from optimizations import get_performance_monitor
 from optimizations import clear_all_cache, invalidate_cache_pattern
 from optimizations import get_asset_optimizer, get_ssr_optimizer

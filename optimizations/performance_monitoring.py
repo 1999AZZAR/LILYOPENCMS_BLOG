@@ -6,8 +6,8 @@ Tracks application performance metrics and provides monitoring utilities
 import time
 import logging
 from functools import wraps
-from flask import request, current_app, g
-from datetime import datetime, timedelta
+from flask import request, g
+from datetime import datetime
 import psutil
 import os
 
@@ -54,7 +54,7 @@ class PerformanceMonitor:
     def _record_request_metrics(self, duration, status_code):
         """Record request performance metrics"""
         path = request.path
-        method = request.method
+        request.method
         
         if path not in self.metrics:
             self.metrics[path] = {
@@ -360,7 +360,6 @@ def track_database_queries(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         start_time = time.time()
-        query_count = 0
         
         # Count queries (this is a simplified version)
         try:

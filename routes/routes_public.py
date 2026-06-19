@@ -1,6 +1,6 @@
 from routes import main_blueprint
 from .common_imports import *
-from optimizations import cache_with_args, cache_query_result, CACHE_TIMEOUTS
+from optimizations import cache_with_args, CACHE_TIMEOUTS
 from optimizations import optimize_news_query, optimize_image_query, monitor_ssr_render
 from optimizations.cache_config import safe_cache_get, safe_cache_set
 import time

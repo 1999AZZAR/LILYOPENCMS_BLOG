@@ -17,7 +17,7 @@ Triggers SEO injection when news/articles are published (is_visible = True)
 import sys
 import os
 from datetime import datetime, timezone
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Tuple
 
 # Add the parent directory to the Python path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,9 +39,7 @@ from seo_injector.inject_news_seo import (
     generate_schema_markup,
     calculate_seo_score,
     generate_open_graph_data,
-    get_best_image_for_seo,
-    get_seo_injection_settings,
-    get_website_url
+    get_seo_injection_settings
 )
 from .unified_settings import get_unified_settings
 

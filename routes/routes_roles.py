@@ -324,7 +324,7 @@ def get_user_activities(user_id):
     if not current_user.has_permission("users", "read"):
         abort(403)
     
-    user = User.query.get_or_404(user_id)
+    User.query.get_or_404(user_id)
     activities = UserActivity.query.filter_by(user_id=user_id).order_by(UserActivity.created_at.desc()).limit(50).all()
     
     return jsonify([activity.to_dict() for activity in activities])

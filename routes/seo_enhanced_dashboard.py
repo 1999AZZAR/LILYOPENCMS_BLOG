@@ -17,21 +17,17 @@ Provides web interface for the enhanced SEO injector system.
 
 import sys
 import os
-import json
 import threading
 import time
 from datetime import datetime, timezone
-from typing import Dict, List, Any, Optional
-from pathlib import Path
+from typing import Dict, Any
 
 # Add the parent directory to the Python path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 
-from flask import Blueprint, render_template, request, jsonify, current_app, session
+from flask import Blueprint, request, jsonify, current_app
 from flask_login import login_required, current_user
-from flask_wtf.csrf import CSRFProtect
-from sqlalchemy import text
 
 # Import enhanced SEO injector components (lazy imports to avoid circular dependency)
 # These will be imported inside the functions when needed

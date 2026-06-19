@@ -19,7 +19,7 @@ def save_file(file, name=None):
         filename = secure_filename(file.filename)
 
     # Sanitize the filename
-    sanitized_filename = sanitize_filename(filename)
+    sanitize_filename(filename)
 
     # Use shorter unique id: 6-digit microsecond timestamp
     timestamp = datetime.now().strftime('%H%M%S%f')[:9] # Use microseconds for better uniqueness

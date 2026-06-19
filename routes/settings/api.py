@@ -246,7 +246,6 @@ def api_get_cache_status():
         # Try to get cache status from optimizations module
         try:
             from optimizations.cache_config import cache
-            import redis
             
             # Get Redis connection info
             redis_client = cache.cache._client
@@ -453,7 +452,7 @@ def api_get_database_status():
         abort(403)
     
     try:
-        from sqlalchemy import text, inspect
+        from sqlalchemy import text
         from models import db, User, News, Image, YouTubeVideo, UserActivity, CustomRole, Permission
         import os
         
@@ -520,7 +519,7 @@ def api_get_database_status():
                 db_size = f"{os.path.getsize(db_path)} bytes"
             else:
                 # Try to get size from SQLite
-                result = db.session.execute(text("PRAGMA page_count * PRAGMA page_size"))
+                db.session.execute(text("PRAGMA page_count * PRAGMA page_size"))
                 page_count = db.session.execute(text("PRAGMA page_count")).fetchone()[0]
                 page_size = db.session.execute(text("PRAGMA page_size")).fetchone()[0]
                 db_size = f"{page_count * page_size} bytes"

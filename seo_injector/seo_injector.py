@@ -19,7 +19,7 @@ import sys
 import os
 import json
 from datetime import datetime, timezone
-from typing import Dict, List, Any
+from typing import Dict, Any
 
 # Add the parent directory to the Python path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

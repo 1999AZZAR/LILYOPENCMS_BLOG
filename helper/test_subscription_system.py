@@ -20,7 +20,6 @@ db = main.db
 
 from models import User, UserSubscription, UserRole
 from datetime import datetime, timezone, timedelta
-import json
 
 def create_test_data():
     """Create test users and subscriptions"""

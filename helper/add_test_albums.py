@@ -17,7 +17,6 @@ sys.path.insert(0, parent_dir)
 # Now import the app
 from main import app
 from models import db, Album, AlbumChapter, News, Category, User, UserRole, Image
-from datetime import datetime, timezone
 from faker import Faker
 
 # Initialize Faker for generating fake data

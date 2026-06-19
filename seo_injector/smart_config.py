@@ -15,8 +15,6 @@ Smart Configuration System for SEO Injector
 Provides flexible, template-based configuration management.
 """
 
-import os
-import json
 import yaml
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, asdict
@@ -379,7 +377,6 @@ class SmartConfigManager:
         """Load settings from database."""
         # This would connect to the database and load SEO injection settings
         # For now, we'll use default values
-        pass
     
     def _load_custom_templates(self):
         """Load custom templates from files."""
@@ -591,32 +588,32 @@ class SmartConfigManager:
         # Try to format each template, use fallback if it fails
         try:
             seo_data['meta_description'] = template.meta_description_template.format(**template_vars)
-        except Exception as e:
+        except Exception:
             seo_data['meta_description'] = f"{content_data.get('title', '')} - {content_data.get('website_name', '')}"
 
         try:
             seo_data['og_title'] = template.og_title_template.format(**template_vars)
-        except Exception as e:
+        except Exception:
             seo_data['og_title'] = content_data.get('title', '')
 
         try:
             seo_data['og_description'] = template.og_description_template.format(**template_vars)
-        except Exception as e:
+        except Exception:
             seo_data['og_description'] = content_data.get('excerpt', '')
 
         try:
             seo_data['schema_markup'] = template.schema_markup_template.format(**template_vars)
-        except Exception as e:
+        except Exception:
             seo_data['schema_markup'] = '{}'
 
         try:
             seo_data['twitter_title'] = template.twitter_title_template.format(**template_vars)
-        except Exception as e:
+        except Exception:
             seo_data['twitter_title'] = content_data.get('title', '')
 
         try:
             seo_data['twitter_description'] = template.twitter_description_template.format(**template_vars)
-        except Exception as e:
+        except Exception:
             seo_data['twitter_description'] = content_data.get('excerpt', '')
 
         return seo_data

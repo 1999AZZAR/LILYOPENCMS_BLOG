@@ -6,11 +6,9 @@ Provides intelligent caching for database queries with automatic invalidation
 import hashlib
 import json
 import time
-from typing import Any, Dict, List, Optional, Union, Callable
+from typing import Any, Dict, List, Callable
 from functools import wraps
-from flask import current_app, request
-from sqlalchemy import text
-from sqlalchemy.orm import Query
+from flask import request
 import logging
 from .cache_config import safe_cache_get, safe_cache_set
 
@@ -255,7 +253,7 @@ def cache_query_result(timeout: int = 300, key_prefix: str = 'query'):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            from optimizations import cache
+            pass
             
             # Generate cache key
             func_name = f"{func.__module__}.{func.__name__}"
@@ -283,7 +281,6 @@ def cache_aggregation_result(timeout: int = 600):
 
 def invalidate_cache_pattern(pattern: str):
     """Invalidate cache entries matching a pattern"""
-    from optimizations import cache
     # This would need to be implemented with Redis SCAN in production
     logger.info(f"Cache invalidation requested for pattern: {pattern}")
 

@@ -432,7 +432,7 @@ def get_seo_metrics():
         category_stats = {}
         
         # Recent activity (last 30 days)
-        from datetime import datetime, timedelta, timezone
+        from datetime import datetime, timedelta
         thirty_days_ago = datetime.now() - timedelta(days=30)  # Use naive datetime
         recent_articles = []
         for a in articles:
@@ -619,7 +619,7 @@ def update_global_seo_settings():
         abort(403)
     
     try:
-        data = request.get_json()
+        request.get_json()
         
         # For now, just return success - this could be extended to store in database
         # In a real implementation, you might want to store these in a settings table
@@ -638,7 +638,7 @@ def update_global_og_settings():
         abort(403)
     
     try:
-        data = request.get_json()
+        request.get_json()
         
         # For now, just return success - this could be extended to store in database
         
@@ -1530,7 +1530,7 @@ def get_seo_root():
         per_page = request.args.get('per_page', 20, type=int)  # 20 items per page
         search = request.args.get('search', '')
         status = request.args.get('status', '')
-        seo_status = request.args.get('seo_status', '')
+        request.args.get('seo_status', '')
         
         # Get root SEO entries from database
         query = RootSEO.query

@@ -2,7 +2,6 @@ from routes import main_blueprint
 from .common_imports import *
 from datetime import datetime, timezone, timedelta
 from decimal import Decimal
-import os
 
 # Subscription plans configuration
 SUBSCRIPTION_PLANS = {

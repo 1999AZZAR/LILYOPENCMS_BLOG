@@ -8,11 +8,9 @@ from .cache_config import (
     init_cache,
     cache_with_args,
     cache_query_result,
-    generate_cache_key,
     invalidate_cache_pattern,
     clear_all_cache,
-    CACHE_TIMEOUTS,
-    CACHE_PATTERNS
+    CACHE_TIMEOUTS
 )
 
 from .database_optimization import (
@@ -26,8 +24,6 @@ from .database_optimization import (
 from .frontend_optimization import (
     FrontendOptimizer,
     create_frontend_optimizer,
-    get_optimized_image_url,
-    generate_image_srcset,
     get_lazy_loading_script,
     get_performance_monitoring_script
 )

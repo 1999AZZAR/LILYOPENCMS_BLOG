@@ -18,7 +18,7 @@ Runs periodically to ensure all articles eventually have proper SEO
 import sys
 import os
 from datetime import datetime, timezone, timedelta
-from typing import List, Dict, Any, Optional, TYPE_CHECKING, Union
+from typing import List, Dict, Any, Optional, TYPE_CHECKING
 import logging
 from sqlalchemy import or_, nullsfirst
 
@@ -47,7 +47,6 @@ if TYPE_CHECKING:
     from models import News
 # Lazy import AutoSEOInjector to avoid circular import (import inside function where needed)
 # from .auto_seo_injector import AutoSEOInjector
-from .unified_settings import get_unified_settings
 
 logger = logging.getLogger(__name__)
 

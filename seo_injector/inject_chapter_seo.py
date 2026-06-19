@@ -12,12 +12,10 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 import sys
 import os
 from datetime import datetime, timezone
-import random
 import json
 import re
 import unicodedata
-import html
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urljoin
 
 # Add the parent directory to the Python path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,8 +29,7 @@ spec.loader.exec_module(main)
 app = main.app
 db = main.db
 
-from models import AlbumChapter, Album, News, Category, User, Image, BrandIdentity
-from sqlalchemy import text
+from models import AlbumChapter, BrandIdentity
 # Import unified settings with fallback for different import contexts
 try:
     from .unified_settings import get_unified_settings
@@ -501,7 +498,6 @@ def inject_chapter_seo():
         
         # Track statistics
         updated_count = 0
-        skipped_count = 0
         error_count = 0
         locked_count = 0
         

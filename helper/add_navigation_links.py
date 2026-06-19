@@ -18,7 +18,6 @@ app = main.app
 db = main.db
 
 from models import NavigationLink, User, UserRole
-from datetime import datetime
 
 def add_sample_navigation_links():
     """Add sample navigation links for testing."""

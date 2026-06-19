@@ -1,6 +1,6 @@
 from routes import main_blueprint
 from .common_imports import *
-from models import Album, AlbumChapter, News, Category, Image, User, UserRole
+from models import Album, AlbumChapter, News, Category, User, UserRole
 
 @main_blueprint.route("/api/albums", methods=["GET"])
 @login_required

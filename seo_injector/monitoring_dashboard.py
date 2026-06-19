@@ -24,7 +24,6 @@ from datetime import datetime, timezone
 from typing import Dict, List, Any, Optional, Callable
 from dataclasses import dataclass, asdict
 from collections import defaultdict, deque
-import asyncio
 from pathlib import Path
 
 # Add the parent directory to the Python path
@@ -267,7 +266,6 @@ class ConsoleDashboard:
     def start_dashboard(self):
         """Start console dashboard."""
         import os
-        import sys
         
         def clear_screen():
             os.system('cls' if os.name == 'nt' else 'clear')

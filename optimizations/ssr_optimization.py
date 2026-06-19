@@ -1,7 +1,6 @@
 import time
 import threading
-from typing import Dict, Any, List
-from collections import defaultdict
+from typing import Dict, Any
 import logging
 from functools import wraps
 

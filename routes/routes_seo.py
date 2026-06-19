@@ -11,7 +11,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 from routes import main_blueprint
 from .common_imports import *
-from sqlalchemy import func, and_, or_, desc, asc
+from sqlalchemy import and_, or_, desc, asc
 from datetime import datetime, timezone
 import time
 
@@ -1352,8 +1352,7 @@ def inject_root_seo(root_id):
 
         from seo_injector.inject_root_seo import (
             clear_existing_seo, generate_meta_description,
-            generate_meta_keywords, generate_open_graph_data, generate_schema_markup,
-            calculate_seo_score
+            generate_meta_keywords, generate_open_graph_data, generate_schema_markup
         )
 
         # Check if SEO is locked (assuming root pages might have this field)
@@ -1388,7 +1387,7 @@ def inject_root_seo(root_id):
 
         # Calculate SEO score (RootSEO uses calculate_seo_score() method, not a field)
         seo_score = root_page.calculate_seo_score()
-        last_seo_audit = datetime.now(timezone.utc)
+        datetime.now(timezone.utc)
 
         # Save to database with retry logic for SQLite locking
         max_retries = 3

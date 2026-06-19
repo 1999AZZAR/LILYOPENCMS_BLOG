@@ -5,7 +5,6 @@ Tests Redis availability and provides fallback options
 """
 
 import os
-import sys
 
 def test_redis_connection():
     """Test if Redis is available"""

@@ -1,15 +1,12 @@
 import sys
 import os
-from datetime import datetime, timedelta, timezone
 import random
 import requests
 import time
 import subprocess
-import signal
 import atexit
 import mimetypes
 import re
-from io import BytesIO
 
 # Add the parent directory to the Python path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +20,6 @@ spec.loader.exec_module(main)
 app = main.app
 db = main.db
 
-from models import User
 
 # Try to import PIL for image generation
 try:

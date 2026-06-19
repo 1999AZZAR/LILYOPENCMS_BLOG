@@ -8,9 +8,6 @@ from functools import wraps
 from flask import request, current_app
 from flask_caching import Cache
 import hashlib
-import json
-from datetime import timedelta
-import logging
 
 # Initialize cache
 cache = Cache()

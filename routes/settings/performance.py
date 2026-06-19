@@ -19,7 +19,7 @@ def settings_performance():
     try:
         from optimizations.performance_monitoring import get_performance_summary
         performance_summary = get_performance_summary()
-    except Exception as e:
+    except Exception:
         # Provide comprehensive fallback data if optimization module fails
         import psutil
         try:
@@ -77,7 +77,7 @@ def settings_performance():
                 'total_requests': 0,
                 'routes': {}
             }
-        except Exception as fallback_error:
+        except Exception:
             # Ultimate fallback if even psutil fails
             performance_summary = {
                 'system': {
@@ -127,7 +127,7 @@ def settings_asset_optimization():
     try:
         from optimizations.asset_optimization import get_asset_stats
         asset_stats = get_asset_stats()
-    except Exception as e:
+    except Exception:
         # Provide default data if optimization module fails
         asset_stats = {
             'compressed_assets_count': 0,
@@ -150,7 +150,7 @@ def settings_ssr_optimization():
     try:
         from optimizations.ssr_optimization import get_ssr_stats
         ssr_stats = get_ssr_stats()
-    except Exception as e:
+    except Exception:
         # Provide default data if optimization module fails
         ssr_stats = {
             'total_renders': 0,

@@ -197,7 +197,6 @@ def add_fake_news_with_images(num_news, image_prob, link_prob):
         bool_fields = ['is_visible', 'is_main_news', 'is_news', 'is_premium', 'has_image', 'has_external_link']
         combos = list(itertools.product([True, False], repeat=len(bool_fields)))
         combo_articles = min(len(combos), num_news)
-        used_combos = 0
 
         for i in range(num_news):
             try:

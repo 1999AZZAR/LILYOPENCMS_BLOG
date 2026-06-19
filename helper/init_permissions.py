@@ -17,8 +17,7 @@ spec.loader.exec_module(main)
 app = main.app
 db = main.db
 
-from models import Permission, CustomRole, UserRole
-from datetime import datetime, timezone
+from models import Permission, CustomRole
 
 def create_default_permissions():
     """Create default permissions for the system."""
@@ -171,10 +170,10 @@ def main():
         print("Initializing permissions and roles...")
         
         # Create permissions
-        permissions = create_default_permissions()
+        create_default_permissions()
         
         # Create roles
-        roles = create_default_roles()
+        create_default_roles()
         
         print("\nInitialization complete!")
         print(f"Total permissions: {Permission.query.count()}")

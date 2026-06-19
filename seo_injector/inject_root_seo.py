@@ -13,8 +13,6 @@ import sys
 import os
 from datetime import datetime, timezone
 import json
-import re
-import unicodedata
 
 # Add the parent directory to the Python path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,7 +27,6 @@ app = main.app
 db = main.db
 
 from models import RootSEO, BrandIdentity
-from sqlalchemy import text
 # Import unified settings with fallback for different import contexts
 try:
     from .unified_settings import get_unified_settings

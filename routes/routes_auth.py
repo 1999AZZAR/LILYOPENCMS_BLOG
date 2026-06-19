@@ -46,7 +46,7 @@ def register():
             
             flash("Registration successful! Your account is pending approval.", "success")
             return redirect(url_for("main.login"))
-        except Exception as e:
+        except Exception:
             db.session.rollback()
             flash("Registration failed. Please try again.", "error")
             return render_template("public/login.html")

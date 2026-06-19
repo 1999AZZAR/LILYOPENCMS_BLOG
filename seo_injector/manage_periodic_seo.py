@@ -18,7 +18,6 @@ Allows manual control and monitoring of the periodic SEO injection tasks
 import sys
 import os
 import argparse
-from datetime import datetime
 
 # Add the parent directory to the Python path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -124,8 +123,8 @@ def run_health_check(args):
         print("   ------------------------|--------------|----------------")
         metrics = ['meta_description', 'meta_keywords', 'seo_slug', 'og_title', 'schema_markup']
         for metric in metrics:
-            all_pct = stats['seo_coverage'].get(metric, 0)
-            pub_pct = stats['published_seo_coverage'].get(metric, 0) if stats['published_seo_coverage'] else 0
+            stats['seo_coverage'].get(metric, 0)
+            stats['published_seo_coverage'].get(metric, 0) if stats['published_seo_coverage'] else 0
             print("20")
     else:
         print(f"❌ Health check failed: {result.get('message', 'Unknown error')}")

@@ -5,9 +5,7 @@ Handles asset minification, bundling, lazy loading, and progressive image loadin
 
 import os
 import re
-from flask import current_app, url_for, request
-from datetime import datetime
-import hashlib
+from flask import url_for
 
 class FrontendOptimizer:
     """Frontend optimization utilities"""
@@ -61,8 +59,8 @@ class FrontendOptimizer:
     def progressive_image(self, src, alt="", classes="", sizes="100vw"):
         """Generate progressive loading image HTML with multiple sizes"""
         # Generate different sizes for responsive images
-        base_name = os.path.splitext(src)[0]
-        ext = os.path.splitext(src)[1]
+        os.path.splitext(src)[0]
+        os.path.splitext(src)[1]
         
         # Create srcset for different sizes
         srcset_parts = []

@@ -5,12 +5,11 @@ Handles database connection pooling, query optimization, and performance monitor
 
 import time
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Dict, Optional, Any
 from flask import Flask, current_app
 from sqlalchemy import create_engine, text, event
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool
-from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 logger = logging.getLogger(__name__)
 
@@ -239,7 +238,7 @@ def optimize_news_query(query):
     if hasattr(query, 'options'):
         from sqlalchemy.orm import joinedload
         # Import models to use class-bound attributes
-        from models import News, Category, User
+        from models import News
         query = query.options(
             joinedload(News.category),
             joinedload(News.author)
@@ -252,7 +251,7 @@ def optimize_user_query(query):
     if hasattr(query, 'options'):
         from sqlalchemy.orm import joinedload
         # Import models to use class-bound attributes
-        from models import User, CustomRole
+        from models import User
         query = query.options(
             joinedload(User.custom_role)
         )
@@ -264,7 +263,7 @@ def optimize_image_query(query):
     if hasattr(query, 'options'):
         from sqlalchemy.orm import joinedload
         # Import models to use class-bound attributes
-        from models import Image, User
+        from models import Image
         query = query.options(
             joinedload(Image.user)
         )

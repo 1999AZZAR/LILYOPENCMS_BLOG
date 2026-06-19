@@ -775,7 +775,6 @@ def get_performance_leaderboard():
         abort(403)
     
     # Get date range (last 30 days by default)
-    from sqlalchemy import func
     
     end_date = datetime.now(timezone.utc)
     start_date = end_date - timedelta(days=30)
@@ -1070,7 +1069,6 @@ def export_user_performance(user_id):
     user = User.query.get_or_404(user_id)
     
     # Get date range
-    from sqlalchemy import func
     import csv
     import io
     

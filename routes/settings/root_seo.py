@@ -11,12 +11,10 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
 from flask_login import login_required, current_user
-from werkzeug.exceptions import BadRequest, NotFound
-from sqlalchemy import and_, or_
 from datetime import datetime
 import json
 
-from models import db, RootSEO, User, UserRole
+from models import db, RootSEO, UserRole
 from routes.common_imports import *
 
 # Create blueprint
