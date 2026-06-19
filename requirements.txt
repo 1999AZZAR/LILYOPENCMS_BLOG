@@ -35,7 +35,7 @@ pytest-flask==1.3.0
 
 # Data Generation (for helper scripts)
 Faker==20.1.0
-requests==2.31.0
+requests==2.33.0
 
 # Security
 Werkzeug==2.3.7
