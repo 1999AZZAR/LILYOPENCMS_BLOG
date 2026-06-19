@@ -256,7 +256,7 @@
  </a>
 
  <!-- SEO Management Card (Only for Admin and Superuser) -->
- <a href="{{ url_for('main.settings_seo') }}" class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-100 p-4 text-center hover:shadow-polaris-200 transition-all duration-300 {% if current_user.role.value not in ['admin','su'] %}hidden{% endif %}" role="article" aria-label="Manajemen SEO">
+ <a href="{{ url_for('main.seo_management') }}" class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-100 p-4 text-center hover:shadow-polaris-200 transition-all duration-300 {% if current_user.role.value not in ['admin','su'] %}hidden{% endif %}" role="article" aria-label="Manajemen SEO">
  <div class="w-16 h-16 mx-auto mb-6 bg-admin-primary rounded-polaris-full flex items-center justify-center" aria-hidden="true">
  <i class="fas fa-search text-2xl text-white"></i>
  </div>

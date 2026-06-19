@@ -55,7 +55,7 @@
  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.png') }}">
  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
- <!-- CSRF protection disabled for this application -->
+ <meta name="csrf-token" content="{{ csrf_token() }}">
  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_base_css.css') }}">
  <title>{% block title %}Dasbor Admin - Exposeur Admin{% endblock %}</title>
@@ -132,7 +132,9 @@
  'icon': 'fas fa-sitemap',
  'links': [
  {'url': url_for('main.navigation_management'), 'icon': 'fas fa-link', 'label': 'Manajemen Navigasi', 'roles': ['admin','su']},
- {'url': url_for('main.settings_seo'), 'icon': 'fas fa-search', 'label': 'Manajemen SEO', 'roles': ['admin','su']}
+ {'url': url_for('main.seo_management'), 'icon': 'fas fa-globe', 'label': 'Manajemen SEO', 'roles': ['admin','su']},
+ {'url': url_for('main.seo_settings'), 'icon': 'fas fa-cog', 'label': 'Pengaturan SEO', 'roles': ['admin','su']},
+ {'url': url_for('main.seo_analytics'), 'icon': 'fas fa-chart-line', 'label': 'Analitik SEO', 'roles': ['admin','su']}
  ]
  },
  {
@@ -222,6 +224,7 @@
  });
  </script>
  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ <script src="{{ url_for('static', filename='js/csrf-utils.js') }}"></script>
  <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
  <script>
  {% with messages = get_flashed_messages(with_categories=true) %}

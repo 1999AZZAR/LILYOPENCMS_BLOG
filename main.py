@@ -10,6 +10,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_cors import CORS
 from dotenv import load_dotenv
+from flask_wtf.csrf import CSRFProtect
 import logging
 import os
 from logging.handlers import RotatingFileHandler
@@ -127,8 +128,31 @@ def end_ssr_monitoring(response):
             app.logger.debug(f"SSR monitoring failed for {route_name}: {e}")
     return response
 
-# Disable CSRF protection for this application since we use proper authentication
-# csrf = CSRFProtect(app)
+# ----------------------
+# 🛡️ CSRF Protection
+# ----------------------
+csrf = CSRFProtect(app)
+
+# Configure CSRF to exempt API endpoints - override the protect method
+original_protect = csrf.protect
+
+def custom_csrf_protect(**kwargs):
+    # Skip CSRF protection when Authorization: Bearer header is present (JWT authentication)
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        return
+
+    # Skip CSRF protection for API endpoints
+    if (request.path.startswith('/api/') or
+        request.path.startswith('/admin/api/') or
+        request.path.startswith('/admin/database/api/') or
+        request.path.startswith('/ads/') or
+        request.path.startswith('/comments/') or
+        request.path.startswith('/ratings/')):
+        return
+    return original_protect(**kwargs)
+
+csrf.protect = custom_csrf_protect
 
 # ----------------------
 # 🔑 Login Management

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Core Meta -->
   <meta name="description" content="{% if root_seo and root_seo.meta_description %}{{ root_seo.meta_description }}{% else %}{{ brand_info.tagline|default('Modern content management for the digital age') }}{% endif %}">
@@ -382,6 +383,7 @@
 
   <!-- Core Scripts -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/csrf-utils.js') }}"></script>
   <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   <script src="{{ url_for('static', filename='js/mobile-toggler.js') }}"></script>
   <script src="{{ url_for('static', filename='js/search-toggle.js') }}"></script>
