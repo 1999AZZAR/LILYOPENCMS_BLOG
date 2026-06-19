@@ -1,0 +1,80 @@
+{% if pagination_obj and pagination_obj.pages > 1 %}
+{% set base_args = request.args.to_dict() %}
+{% set _ = base_args.pop('page', None) %}
+
+<div class="mt-16 mb-4">
+  <!-- Swiss top rule + label -->
+  <div class="border-t pt-8 mb-6" style="border-color: hsl(var(--border));">
+    <p class="text-[10px] font-black uppercase tracking-[0.18em]"
+       style="color: hsl(var(--muted-foreground));">
+      Halaman {{ pagination_obj.page }} dari {{ pagination_obj.pages }}
+      &nbsp;·&nbsp; {{ pagination_obj.total }} item
+    </p>
+  </div>
+
+  <!-- Pagination controls -->
+  <nav aria-label="Navigasi halaman"
+       class="flex items-center gap-1"
+       role="navigation">
+
+    {# Prev #}
+    {% if pagination_obj.has_prev %}
+    <a href="{{ url_for(pagination_route, page=pagination_obj.prev_num, **base_args) }}"
+       aria-label="Halaman sebelumnya"
+       class="pagination-btn flex items-center gap-2 !px-4 font-black text-[11px] uppercase tracking-[0.12em]">
+      <i class="fa-solid fa-arrow-left text-xs" aria-hidden="true"></i>
+      <span class="hidden sm:inline">Sebelumnya</span>
+    </a>
+    {% else %}
+    <span class="pagination-btn flex items-center gap-2 !px-4 opacity-30 cursor-not-allowed
+                 font-black text-[11px] uppercase tracking-[0.12em]"
+          aria-disabled="true">
+      <i class="fa-solid fa-arrow-left text-xs" aria-hidden="true"></i>
+      <span class="hidden sm:inline">Sebelumnya</span>
+    </span>
+    {% endif %}
+
+    {# Spacer #}
+    <div class="flex-1 flex items-center justify-center gap-1 flex-wrap">
+      {% for page_num in pagination_obj.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+        {% if page_num %}
+          {% if page_num == pagination_obj.page %}
+          <span class="pagination-btn active font-black"
+                aria-current="page"
+                aria-label="Halaman {{ page_num }}">
+            {{ page_num }}
+          </span>
+          {% else %}
+          <a href="{{ url_for(pagination_route, page=page_num, **base_args) }}"
+             class="pagination-btn font-semibold"
+             aria-label="Halaman {{ page_num }}">
+            {{ page_num }}
+          </a>
+          {% endif %}
+        {% else %}
+        <span class="w-9 h-9 flex items-center justify-center text-sm select-none"
+              style="color: hsl(var(--muted-foreground));">…</span>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {# Next #}
+    {% if pagination_obj.has_next %}
+    <a href="{{ url_for(pagination_route, page=pagination_obj.next_num, **base_args) }}"
+       aria-label="Halaman berikutnya"
+       class="pagination-btn flex items-center gap-2 !px-4 font-black text-[11px] uppercase tracking-[0.12em]">
+      <span class="hidden sm:inline">Berikutnya</span>
+      <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+    </a>
+    {% else %}
+    <span class="pagination-btn flex items-center gap-2 !px-4 opacity-30 cursor-not-allowed
+                 font-black text-[11px] uppercase tracking-[0.12em]"
+          aria-disabled="true">
+      <span class="hidden sm:inline">Berikutnya</span>
+      <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+    </span>
+    {% endif %}
+
+  </nav>
+</div>
+{% endif %}

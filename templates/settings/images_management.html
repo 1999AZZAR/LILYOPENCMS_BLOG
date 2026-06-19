@@ -1,0 +1,260 @@
+{% extends 'admin_base.html' %}
+{% block title %}Manajemen Gambar - Admin{% endblock %}
+{% block hero_title %}Manajemen Gambar{% endblock %}
+{% block hero_desc %}Kelola gambar yang Anda unggah{% endblock %}
+{% block content %}
+ <!-- Add Image Form -->
+ <main class="container mx-auto px-6 py-12" role="main">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="add-image-title">
+ <h2 id="add-image-title" class="text-xl font-semibold mb-4 text-admin-text">Unggah Gambar Baru</h2>
+ <form id="add-image-form" class="space-y-4" role="form" aria-label="Form unggah gambar baru">
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="image-name">Nama Gambar</label>
+ <input type="text" id="image-name"
+ class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent"
+ placeholder="Nama gambar (opsional)" aria-label="Nama gambar">
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="image-description">Deskripsi</label>
+ <textarea id="image-description"
+ class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent"
+ placeholder="Deskripsi gambar (opsional)" aria-label="Deskripsi gambar"></textarea>
+ </div>
+ <div role="radiogroup" aria-label="Pilih sumber gambar">
+ <label class="block text-admin-textMuted font-medium mb-2">Sumber Gambar</label>
+ <div class="flex items-center space-x-4">
+ <label class="inline-flex items-center">
+ <input type="radio" name="image-source" id="source-file" value="file" checked class="rounded-polaris-sm border-admin-border text-admin-accent focus:ring-admin-accent" aria-label="Unggah dari berkas">
+ <span class="ml-2 text-admin-textMuted">Berkas</span>
+ </label>
+ <label class="inline-flex items-center">
+ <input type="radio" name="image-source" id="source-url" value="url" class="rounded-polaris-sm border-admin-border text-admin-accent focus:ring-admin-accent" aria-label="Unggah dari URL">
+ <span class="ml-2 text-admin-textMuted">URL</span>
+ </label>
+ </div>
+ </div>
+ <div id="file-input-group">
+ <label class="block text-admin-textMuted font-medium mb-2" for="image-file">Unggah Gambar</label>
+ <input type="file" id="image-file"
+ class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent"
+ accept="image/*" aria-label="Pilih file gambar">
+ </div>
+ <div id="url-input-group" class="hidden">
+ <label class="block text-admin-textMuted font-medium mb-2" for="image-url">Atau masukkan tautan langsung</label>
+ <input type="url" id="image-url"
+ class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent"
+ placeholder="URL gambar (opsional)" aria-label="URL gambar">
+ </div>
+ <button type="submit"
+ class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100"
+ aria-label="Unggah gambar">
+ Unggah Gambar
+ </button>
+ </form>
+ </div>
+
+ <!-- Image Grid -->
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="uploaded-images-title">
+ <!-- Filter Controls -->
+ <div class="mb-6 flex flex-wrap gap-4 items-center" role="group" aria-label="Filter gambar">
+ <h3 class="text-lg font-medium text-admin-text mr-2">Filter:</h3>
+ <div>
+ <label for="filter-visibility" class="block text-sm font-medium text-admin-textMuted mb-1">Keterlihatan</label>
+ <select id="filter-visibility" name="visibility" class="form-select rounded-polaris-base border-admin-border shadow-polaris-100 focus:border-admin-accent focus:ring focus:ring-admin-accent focus:ring-opacity-50 text-admin-textMuted" aria-label="Filter berdasarkan keterlihatan">
+ <option value="all">Semua</option>
+ <option value="visible">Terlihat</option>
+ <option value="hidden">Tersembunyi</option>
+ </select>
+ </div>
+ <div>
+ <label for="filter-description" class="block text-sm font-medium text-admin-textMuted mb-1">Deskripsi</label>
+ <select id="filter-description" name="description" class="form-select rounded-polaris-base border-admin-border shadow-polaris-100 focus:border-admin-accent focus:ring focus:ring-admin-accent focus:ring-opacity-50 text-admin-textMuted" aria-label="Filter berdasarkan deskripsi">
+ <option value="all">Semua</option>
+ <option value="has">Punya Deskripsi</option>
+ <option value="no">Tanpa Deskripsi</option>
+ </select>
+ </div>
+ <div>
+ <label for="filter-usage" class="block text-sm font-medium text-admin-textMuted mb-1">Penggunaan</label>
+ <select id="filter-usage" name="usage" class="form-select rounded-polaris-base border-admin-border shadow-polaris-100 focus:border-admin-accent focus:ring focus:ring-admin-accent focus:ring-opacity-50 text-admin-textMuted" aria-label="Filter berdasarkan penggunaan">
+ <option value="all">Semua</option>
+ <option value="used">Digunakan</option>
+ <option value="unused">Tidak Digunakan</option>
+ </select>
+ </div>
+ </div>
+
+ <h2 id="uploaded-images-title" class="text-xl font-semibold mb-4 text-admin-text">Gambar Terunggah</h2>
+ <div class="flex items-center justify-between mb-4">
+ <div></div>
+ <div class="flex items-center space-x-2">
+ <input type="checkbox" id="select-all-images" class="rounded-polaris-sm border-admin-border text-admin-accent focus:ring-admin-accent" aria-label="Pilih semua gambar">
+ <label for="select-all-images" class="text-sm text-admin-textMuted">Pilih Semua</label>
+ </div>
+ </div>
+ <!-- Bulk Actions Bar -->
+ <div id="bulk-actions-bar-img" class="hidden bg-admin-surfaceHover border border-admin-border rounded-polaris-base px-4 py-2 mb-4 flex items-center space-x-4">
+ <span class="text-admin-textMuted font-semibold"><span id="bulk-img-count">0</span> gambar dipilih</span>
+ <button id="bulk-delete-btn-img" class="px-3 py-1 bg-admin-surface text-white rounded-polaris-sm focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100">Hapus</button>
+ <button id="bulk-visibility-btn-img" class="px-3 py-1 bg-admin-primary hover:bg-admin-primaryHover text-white rounded-polaris-sm focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">Ubah Visibilitas</button>
+ </div>
+ <!-- Image Grid -->
+ <div id="image-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+ <!-- Usage Modal -->
+ <div id="usage-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50" role="dialog" aria-labelledby="usage-modal-title" aria-modal="true">
+ <div class="bg-admin-surface p-0 rounded-polaris-lg shadow-polaris-300 w-full max-w-lg overflow-hidden border border-admin-border">
+ <div class="flex items-center gap-3 px-6 py-4 bg-admin-surfaceHover border-b border-admin-border">
+ <div class="flex items-center justify-center w-10 h-10 rounded-polaris-full bg-admin-surface text-admin-textMuted">
+ <i class="fas fa-link fa-lg"></i>
+ </div>
+ <h3 id="usage-modal-title" class="text-xl font-bold text-admin-textMuted">Penggunaan Gambar</h3>
+ <button type="button" id="close-usage-modal-btn" class="ml-auto bg-admin-surface text-admin-textMuted px-3 py-1 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border font-semibold transition-all duration-300 shadow-polaris-100" aria-label="Tutup">Tutup</button>
+ </div>
+ <div class="px-6 py-5">
+ <div class="mb-2 text-admin-text font-medium" id="usage-modal-filename"></div>
+ <div id="usage-modal-list" class="mb-2 max-h-60 overflow-y-auto"></div>
+ </div>
+ </div>
+ </div>
+ <!-- Pagination Controls - Will be dynamically generated by image-crud.js -->
+ <div id="pagination-controls" class="mt-6" role="navigation" aria-label="Navigasi halaman gambar">
+ </div>
+ </div>
+
+ <!-- Edit Image Modal -->
+ <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="edit-modal-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md">
+ <h2 id="edit-modal-title" class="text-xl font-semibold mb-4 text-admin-text">Edit Gambar</h2>
+ <form id="edit-image-form" class="space-y-4" role="form" aria-label="Form edit gambar">
+ <input type="hidden" id="edit-id">
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="edit-image-name">Nama Gambar</label>
+ <input type="text" id="edit-image-name"
+ class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent"
+ placeholder="Nama gambar (opsional)" aria-label="Nama gambar">
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="edit-image-description">Deskripsi</label>
+ <textarea id="edit-image-description"
+ class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent"
+ placeholder="Deskripsi gambar (opsional)" aria-label="Deskripsi gambar"></textarea>
+ </div>
+ <div role="radiogroup" aria-label="Pilih sumber gambar">
+ <label class="block text-admin-textMuted font-medium mb-2">Sumber Gambar</label>
+ <div class="flex items-center space-x-4">
+ <label class="inline-flex items-center">
+ <input type="radio" name="edit-image-source" id="edit-source-file" value="file" checked class="rounded-polaris-sm border-admin-border text-admin-accent focus:ring-admin-accent" aria-label="Unggah dari berkas">
+ <span class="ml-2 text-admin-textMuted">Berkas</span>
+ </label>
+ <label class="inline-flex items-center">
+ <input type="radio" name="edit-image-source" id="edit-source-url" value="url" class="rounded-polaris-sm border-admin-border text-admin-accent focus:ring-admin-accent" aria-label="Unggah dari URL">
+ <span class="ml-2 text-admin-textMuted">URL</span>
+ </label>
+ </div>
+ </div>
+ <div id="edit-file-input-group">
+ <label class="block text-admin-textMuted font-medium mb-2" for="edit-image-file">Unggah Gambar Baru</label>
+ <input type="file" id="edit-image-file"
+ class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent"
+ accept="image/*" aria-label="Pilih file gambar baru">
+ </div>
+ <div id="edit-url-input-group" class="hidden">
+ <label class="block text-admin-textMuted font-medium mb-2" for="edit-image-url">Atau masukkan tautan langsung</label>
+ <input type="url" id="edit-image-url"
+ class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent"
+ placeholder="URL gambar (opsional)" aria-label="URL gambar">
+ </div>
+ <div class="flex space-x-4" role="group" aria-label="Tombol aksi edit">
+ <button type="submit"
+ class="flex-1 bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100"
+ aria-label="Simpan perubahan">
+ Simpan Perubahan
+ </button>
+ <button type="button" onclick="closeEditModal()"
+ class="flex-1 bg-admin-surface text-admin-text py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300 shadow-polaris-100"
+ aria-label="Batal edit">
+ Batal
+ </button>
+ </div>
+ </form>
+ <div id="edit-status" class="mt-4" role="status" aria-live="polite"></div>
+ </div>
+ </div>
+
+ <!-- Delete Confirmation Modal -->
+ <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="delete-modal-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md">
+ <h2 id="delete-modal-title" class="text-xl font-semibold mb-4 text-admin-critical">Hapus Gambar</h2>
+ <p class="text-admin-textMuted mb-6">Apakah Anda yakin ingin menghapus gambar ini?</p>
+ <div class="flex space-x-4" role="group" aria-label="Tombol konfirmasi hapus">
+ <button id="confirm-delete-btn" onclick="confirmDelete()"
+ class="flex-1 bg-admin-surface text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100"
+ aria-label="Konfirmasi hapus gambar">
+ Hapus
+ </button>
+ <button onclick="closeDeleteModal()"
+ class="flex-1 bg-admin-surface text-admin-text py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300 shadow-polaris-100"
+ aria-label="Batal hapus gambar">
+ Batal
+ </button>
+ </div>
+ </div>
+ </div>
+
+ <!-- Image Management Fullscreen Modal -->
+ <div id="image-management-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden p-4 z-[60] opacity-0 transition-opacity duration-300" onclick="closeImageModalMgmtOnClickOutside(event)" role="dialog" aria-labelledby="image-modal-title" aria-modal="true">
+ <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl max-h-[95vh] flex flex-col items-center">
+ <div class="relative shadow-polaris-200 rounded-polaris-base overflow-hidden border border-admin-border mb-4">
+ <img id="modal-image-mgmt" src="" alt="" class="block w-full h-auto max-h-[80vh] object-contain">
+ <a id="modal-download-mgmt" href="#" download="image.jpg" class="absolute top-3 left-3 z-10 w-10 h-10 flex items-center justify-center bg-admin-primary text-white rounded-polaris-full shadow-polaris-100 hover:bg-admin-primaryHover focus:outline-none focus:ring-2 focus:ring-white transition-all duration-300" aria-label="Unduh gambar" title="Unduh Gambar">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+ </a>
+ <button onclick="closeImageModalMgmt()" class="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center bg-admin-surface text-admin-text rounded-polaris-full shadow-polaris-100 focus:outline-none focus:ring-2 focus:ring-white transition-all duration-300" aria-label="Tutup gambar">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+ </button>
+ </div>
+ <div class="flex items-center justify-center gap-4 mt-2" role="group" aria-label="Navigasi gambar">
+ <button id="modal-prev-mgmt" onclick="showPrevImageMgmt()" class="p-2 bg-admin-surface text-admin-text rounded-polaris-full shadow-polaris-100 focus:outline-none focus:ring-2 focus:ring-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300" aria-label="Gambar Sebelumnya" title="Sebelumnya">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+ </button>
+ <button id="modal-next-mgmt" onclick="showNextImageMgmt()" class="p-2 bg-admin-surface text-admin-text rounded-polaris-full shadow-polaris-100 focus:outline-none focus:ring-2 focus:ring-white disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300" aria-label="Gambar Berikutnya" title="Berikutnya">
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+ </button>
+ </div>
+ </div>
+ </div>
+ <!-- Bulk Delete Confirmation Modal for Images -->
+ <div id="bulk-delete-modal-img" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50" role="dialog" aria-labelledby="bulk-delete-modal-img-title" aria-modal="true">
+ <div class="bg-admin-surface p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md border border-admin-border">
+ <h3 id="bulk-delete-modal-img-title" class="text-xl font-semibold text-admin-critical mb-4">Hapus Multiple Gambar</h3>
+ <p class="mb-4 text-admin-textMuted">Apakah Anda yakin ingin menghapus <span id="bulk-delete-count-img" class="font-semibold">0</span> gambar yang dipilih?</p>
+ <div class="bg-admin-surface border border-admin-criticalSurface rounded-polaris-base p-3 mb-4">
+ <p class="text-sm text-admin-critical"><i class="fas fa-exclamation-triangle mr-1"></i> Tindakan ini tidak dapat dibatalkan!</p>
+ </div>
+ <div class="flex justify-end space-x-4" role="group" aria-label="Tombol konfirmasi hapus massal">
+ <button type="button" id="cancel-bulk-delete-btn-img" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal hapus massal">Batal</button>
+ <button id="confirm-bulk-delete-btn-img" class="bg-admin-surface text-white px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100" aria-label="Konfirmasi hapus massal">Hapus Semua</button>
+ </div>
+ </div>
+ </div>
+ <!-- Bulk Visibility Confirmation Modal for Images -->
+ <div id="bulk-visibility-modal-img" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50" role="dialog" aria-labelledby="bulk-visibility-modal-img-title" aria-modal="true">
+ <div class="bg-admin-surface p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md border border-admin-border">
+ <h3 id="bulk-visibility-modal-img-title" class="text-xl font-semibold text-admin-textMuted mb-4">Ubah Visibilitas Massal</h3>
+ <p class="mb-4 text-admin-textMuted">Apa yang ingin Anda lakukan pada <span id="bulk-visibility-count-img" class="font-semibold">0</span> gambar yang dipilih?</p>
+ <div class="flex flex-col gap-3 mb-4">
+ <button id="bulk-visibility-show-btn-img" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Tampilkan semua">Tampilkan Semua</button>
+ <button id="bulk-visibility-hide-btn-img" class="w-full bg-admin-surface text-admin-text py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Sembunyikan semua">Sembunyikan Semua</button>
+ </div>
+ <div class="flex justify-end">
+ <button type="button" id="cancel-bulk-visibility-btn-img" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal">Batal</button>
+ </div>
+ </div>
+ </div>
+ </main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/image-crud.js') }}"></script>
+<script src="{{ url_for('static', filename='js/images-management.js') }}"></script>
+{% endblock %}

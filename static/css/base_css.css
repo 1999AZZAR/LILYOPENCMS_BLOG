@@ -1,0 +1,16 @@
+/* base_css.css — semantic class aliases for older templates */
+.bg-background             { background-color: hsl(var(--background)); }
+.text-foreground           { color: hsl(var(--foreground)); }
+.bg-card                   { background-color: rgba(255,255,255,0.80); }
+.text-card-foreground      { color: hsl(var(--foreground)); }
+.bg-card-foreground        { color: hsl(var(--foreground)); }
+.text-muted-foreground     { color: hsl(var(--muted-foreground)); }
+.border-border             { border-color: hsl(var(--border)); }
+.text-primary              { color: hsl(var(--primary)); }
+.bg-primary                { background-color: hsl(var(--primary)); }
+.text-primary-foreground   { color: hsl(var(--primary-foreground)); }
+.bg-secondary              { background-color: hsl(var(--secondary)); }
+.text-secondary-foreground { color: hsl(var(--secondary-foreground)); }
+.bg-accent                 { background-color: hsl(var(--accent)); }
+.text-accent-foreground    { color: hsl(var(--accent-foreground)); }
+.text-destructive          { color: hsl(0 72% 51%); }

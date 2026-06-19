@@ -1,0 +1,62 @@
+# Core Flask Framework
+Flask==2.3.3
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.3
+Flask-WTF==1.2.1
+Flask-Migrate==4.0.5
+Flask-CORS==4.0.0
+WTForms==3.1.1
+email-validator==2.1.0
+python-dotenv==1.0.0
+
+# Database
+SQLAlchemy>=2.0.36
+alembic>=1.14.0
+
+# Image Processing
+Pillow>=11.0.0
+
+# Task Scheduling
+APScheduler==3.10.4
+
+# Performance and Caching
+Flask-Caching==2.1.0
+redis==5.0.1
+gunicorn==21.2.0
+python-memcached==1.62
+
+# Monitoring and Profiling
+flask-profiler==1.8
+psutil==5.9.6
+
+# Development and Testing
+pytest==7.4.3
+pytest-flask==1.3.0
+
+# Data Generation (for helper scripts)
+Faker==20.1.0
+requests==2.31.0
+
+# Security
+Werkzeug==2.3.7
+Jinja2==3.1.2
+MarkupSafe==2.1.3
+itsdangerous==2.1.2
+click==8.1.7
+blinker==1.7.0
+
+# Additional Utilities
+python-dateutil==2.8.2
+six==1.16.0
+urllib3==2.1.0
+charset-normalizer==3.3.2
+idna==3.6
+certifi==2023.11.17
+markdown==3.8.2
+
+# Optional: PostgreSQL support (uncomment if using PostgreSQL)
+# psycopg2-binary==2.9.9
+
+# Optional: MySQL support (uncomment if using MySQL)
+# PyMySQL==1.1.0
+# cryptography==41.0.8

@@ -1,0 +1,685 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════
+   SWISS × M3 HYBRID
+   ─────────────────────────────────────────────────────────────
+   SWISS owns: grid, typography, horizontal-rule structure,
+               uppercase labels, near-zero radius on layout.
+   M3 owns:    interactive surfaces, pill shapes, tonal color,
+               backdrop-filter, motion easing.
+   ═══════════════════════════════════════════════════════════ */
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui;
+
+  /* Swiss radius scale — structural elements are near-square */
+  --radius-swiss-0:  0px;
+  --radius-swiss-sm: 2px;
+  --radius-swiss-md: 4px;
+
+  /* M3 radius scale — interactive / pill elements */
+  --radius-m3-xl:  36px;
+  --radius-m3-lg:  28px;
+  --radius-m3-md:  16px;
+  --radius-m3-sm:  12px;
+  --radius-m3-xs:   8px;
+
+  /* M3 "Emphasized" easing */
+  --ease-m3:        cubic-bezier(0.2, 0, 0, 1);
+  --ease-m3-decel:  cubic-bezier(0, 0, 0, 1);
+  --ease-m3-accel:  cubic-bezier(0.3, 0, 1, 1);
+
+  --duration-fast:  150ms;
+  --duration-std:   280ms;
+  --duration-slow:  480ms;
+}
+
+/* ── CSS Custom Properties ──────────────────────────────────────────
+   Brand color vars (--primary, --accent, --background, --foreground,
+   etc.) are injected as a <style> block in base.html AFTER this
+   stylesheet, so they always win. The values below are emergency
+   fallbacks only — they fire if the page is rendered without the
+   template injection (e.g. a static error page).
+   ────────────────────────────────────────────────────────────────── */
+:root {
+  --primary:             220 65% 55%;
+  --primary-foreground:  0 0% 100%;
+  --secondary:           220 12% 95%;
+  --secondary-foreground:220 8% 30%;
+  --accent:              260 55% 60%;
+  --accent-foreground:   0 0% 100%;
+  --background:          0 0% 99%;
+  --foreground:          220 15% 10%;
+  --surface:             0 0% 100%;
+  --surface-tonal:       220 20% 97%;
+  --border:              220 8% 88%;
+  --border-strong:       220 8% 60%;
+  --input:               0 0% 100%;
+  --ring:                var(--primary);
+  --muted:               220 12% 95%;
+  --muted-foreground:    220 8% 50%;
+  --radius: 2px;
+  --m3-primary:    hsl(var(--primary));
+  --m3-on-primary: hsl(var(--primary-foreground));
+  --m3-tertiary:   hsl(var(--accent));
+  --m3-on-tertiary:hsl(var(--accent-foreground));
+  --m3-container:  color-mix(in srgb, hsl(var(--primary)) 8%, hsl(var(--background)));
+}
+
+/* ── Tailwind colour aliases ────────────────────────────────────── */
+@layer utilities {
+  .bg-m3-primary        { background-color: hsl(var(--primary)); }
+  .text-m3-primary      { color: hsl(var(--primary)); }
+  .text-m3-on-primary   { color: hsl(var(--primary)); }
+  .bg-m3-on-primary     { background-color: hsl(var(--primary-foreground)); }
+  .bg-m3-tertiary       { background-color: hsl(var(--accent)); }
+  .text-m3-tertiary     { color: hsl(var(--accent)); }
+  .text-m3-on-tertiary  { color: hsl(var(--accent-foreground)); }
+  .bg-m3-container      { background-color: var(--m3-container); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════ */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Swiss: no decorative gradient mesh on body */
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 3px;
+    border-radius: 2px;          /* Swiss: square focus ring */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENTS
+   ═══════════════════════════════════════════════════════════ */
+@layer components {
+
+  /* ── Swiss structural card ──────────────────────────────────
+     Sharp corners, 1px border, no shadow. Depth via contrast.   */
+  .sw-card {
+    @apply p-6;
+    background-color: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-swiss-sm);
+    transition: border-color var(--duration-fast) var(--ease-m3);
+  }
+
+  /* ── M3 interactive surface card ───────────────────────────
+     Tonal bg, gentle blur, M3-md radius, hover elevation.       */
+  .m3-card {
+    @apply p-6;
+    background-color: rgba(255, 255, 255, 0.80);
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-m3-sm);
+    transition: all var(--duration-std) var(--ease-m3);
+  }
+
+  .m3-card-interactive {
+    @apply p-6;
+    background-color: rgba(255, 255, 255, 0.80);
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-m3-sm);
+    transition: all var(--duration-std) var(--ease-m3);
+  }
+  .m3-card-interactive:hover {
+    transform: translateY(-3px);
+    background-color: rgba(255, 255, 255, 0.96);
+    border-color: color-mix(in srgb, hsl(var(--primary)) 30%, hsl(var(--border)));
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,0.8) inset,
+      0 8px 24px -8px rgba(0,0,0,0.10);
+  }
+
+  /* ── Glass panel (M3 — nav, search overlay, mobile menu) ── */
+  .glass-panel {
+    background-color: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,0.7) inset,
+      0 8px 32px -8px rgba(0,0,0,0.08);
+  }
+
+  /* ── Nav — fixed, full-width, always visible ────────────── */
+  .nav-glass {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background-color: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(24px) saturate(1.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    border-bottom: 1px solid hsl(var(--border));
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.5) inset;
+    transition:
+      background-color var(--duration-std) var(--ease-m3),
+      border-color var(--duration-std) var(--ease-m3);
+  }
+  @media (min-width: 640px) {
+    .nav-glass { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+
+  .nav-glass.scrolled {
+    background-color: rgba(255, 255, 255, 0.98);
+    border-bottom: 2px solid hsl(var(--foreground));
+    box-shadow: none;
+  }
+
+  /* ── Back-to-top button ─────────────────────────────────── */
+  #btt-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 1.5rem;
+    z-index: 40;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-m3-xl);
+    background-color: hsl(var(--foreground));
+    color: hsl(var(--background));
+    box-shadow: 0 4px 16px -4px rgba(0,0,0,0.25);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+    transition:
+      opacity var(--duration-std) var(--ease-m3),
+      transform var(--duration-std) var(--ease-m3);
+  }
+  #btt-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  #btt-btn:hover {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  /* Nav link — Swiss typography, M3 pill hover */
+  .nav-link-item {
+    @apply px-4 py-2 text-sm font-semibold transition-all duration-200;
+    border-radius: var(--radius-m3-xl);
+    color: hsl(var(--foreground));
+    letter-spacing: -0.01em;
+  }
+  .nav-link-item:hover {
+    background-color: color-mix(in srgb, hsl(var(--primary)) 8%, rgba(255,255,255,0.5));
+    color: hsl(var(--primary));
+  }
+  .nav-link-item.active {
+    background-color: color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
+    color: hsl(var(--primary));
+  }
+
+  /* Icon action buttons in nav */
+  .nav-icon-btn {
+    @apply w-9 h-9 flex items-center justify-center transition-all duration-200 text-sm;
+    border-radius: var(--radius-m3-xl);
+    color: hsl(var(--muted-foreground));
+    background-color: transparent;
+  }
+  .nav-icon-btn:hover {
+    background-color: color-mix(in srgb, hsl(var(--foreground)) 6%, transparent);
+    color: hsl(var(--foreground));
+  }
+  .nav-icon-btn-danger:hover {
+    background-color: rgba(239,68,68,0.08);
+    color: #ef4444;
+  }
+
+  /* ── M3 Buttons (pill shape — M3 owns this) ─────────────── */
+  .m3-button-filled {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-3 font-black text-[11px] uppercase tracking-[0.10em]
+           transition-all active:scale-95;
+    border-radius: var(--radius-m3-xl);
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 2px 8px -2px color-mix(in srgb, hsl(var(--primary)) 35%, transparent);
+    transition-duration: var(--duration-std);
+    transition-timing-function: var(--ease-m3);
+  }
+  .m3-button-filled:hover {
+    filter: brightness(1.07);
+    box-shadow: 0 4px 16px -4px color-mix(in srgb, hsl(var(--primary)) 45%, transparent);
+  }
+
+  .m3-button-tonal {
+    @apply inline-flex items-center justify-center gap-2
+           px-6 py-3 font-black text-[11px] uppercase tracking-[0.10em]
+           transition-all active:scale-95;
+    border-radius: var(--radius-m3-xl);
+    background-color: color-mix(in srgb, hsl(var(--primary)) 10%, transparent);
+    color: hsl(var(--primary));
+    transition-duration: var(--duration-std);
+    transition-timing-function: var(--ease-m3);
+  }
+  .m3-button-tonal:hover {
+    background-color: color-mix(in srgb, hsl(var(--primary)) 18%, transparent);
+  }
+
+  .m3-button-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2 font-semibold text-sm
+           transition-all active:scale-95;
+    border-radius: var(--radius-m3-xl);
+    color: hsl(var(--muted-foreground));
+    transition-duration: var(--duration-fast);
+  }
+  .m3-button-ghost:hover {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+  }
+
+  /* ── M3 Chip (pill — M3 owns this) ─────────────────────── */
+  .m3-chip {
+    @apply inline-flex items-center
+           px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em];
+    border-radius: var(--radius-m3-xl);
+    border: 1px solid color-mix(in srgb, hsl(var(--primary)) 18%, transparent);
+  }
+
+  /* ── Swiss section header ───────────────────────────────────
+     Thin top-rule + uppercase label + large headline.
+     No decorative bar — Swiss uses rules, not coloured accents. */
+  .section-heading {
+    @apply border-t pt-6 mb-10;
+    border-color: hsl(var(--foreground));   /* Swiss: bold top rule */
+  }
+  .section-heading-label {
+    @apply text-[10px] font-black uppercase tracking-[0.18em] mb-3;
+    color: hsl(var(--muted-foreground));
+  }
+  .section-heading h2 {
+    @apply text-3xl font-black tracking-tight leading-none;
+    letter-spacing: -0.03em;
+    color: hsl(var(--foreground));
+  }
+
+  /* Legacy bar-style heading (kept for components that use it directly) */
+  .section-heading-bar {
+    display: none;   /* Swiss removes the coloured bar — use rules instead */
+  }
+
+  /* ── Swiss article card (listing pages) ────────────────────
+     Swiss structure: 0–2px radius, 1px bottom border, no shadow.
+     M3 tonal bg on hover.                                       */
+  .sw-article-card {
+    @apply flex flex-col;
+    border-bottom: 1px solid hsl(var(--border));
+    transition: background-color var(--duration-fast) var(--ease-m3);
+  }
+  .sw-article-card:hover {
+    background-color: hsl(var(--surface-tonal));
+  }
+
+  /* ── Card meta strip ─────────────────────────────────────── */
+  .card-meta {
+    @apply flex items-center justify-between gap-4
+           pt-4 text-[10px] font-black uppercase tracking-[0.14em];
+    border-top: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+  }
+
+  .card-author-avatar {
+    @apply w-5 h-5 rounded-full flex items-center justify-center
+           text-[9px] font-black flex-shrink-0;
+    background-color: color-mix(in srgb, hsl(var(--primary)) 10%, white);
+    color: hsl(var(--primary));
+    border: 1px solid color-mix(in srgb, hsl(var(--primary)) 18%, transparent);
+  }
+
+  /* ── Swiss horizontal rule divider ─────────────────────── */
+  .sw-rule {
+    @apply w-full my-8;
+    height: 1px;
+    background-color: hsl(var(--border));
+  }
+  .sw-rule-strong {
+    @apply w-full my-8;
+    height: 1px;
+    background-color: hsl(var(--foreground));
+  }
+
+  /* ── Swiss index number (01, 02 …) ───────────────────────── */
+  .sw-index {
+    @apply text-[10px] font-black uppercase tracking-[0.18em] tabular-nums;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ── Flash alerts ──────────────────────────────────────── */
+  .flash-alert {
+    @apply flex items-start gap-4 p-4 text-sm leading-relaxed;
+    border-left: 3px solid;
+    border-radius: var(--radius-swiss-sm);
+  }
+  .flash-alert-error   { background-color: #fef2f2; border-color: #f87171; color: #7f1d1d; }
+  .flash-alert-success { background-color: #f0fdf4; border-color: #4ade80; color: #14532d; }
+  .flash-alert-info    { background-color: #f0f9ff; border-color: hsl(var(--primary)); color: hsl(var(--foreground)); }
+
+  /* ── Toast ─────────────────────────────────────────────── */
+  .toast {
+    @apply flex items-start gap-3 w-80 p-4;
+    background-color: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-swiss-md);
+    box-shadow: 0 4px 16px -4px rgba(0,0,0,0.10);
+  }
+  .toast-success { border-left: 3px solid #22c55e; }
+  .toast-error   { border-left: 3px solid #ef4444; }
+  .toast-warning { border-left: 3px solid #f59e0b; }
+  .toast-info    { border-left: 3px solid hsl(var(--primary)); }
+
+  /* ── Loading spinner ───────────────────────────────────── */
+  #loading-spinner {
+    @apply fixed inset-0 flex items-center justify-center z-[100];
+    background-color: color-mix(in srgb, hsl(var(--background)) 90%, transparent);
+    backdrop-filter: blur(4px);
+  }
+  .spinner {
+    @apply w-12 h-12 animate-spin;
+    border: 2px solid hsl(var(--border));
+    border-top-color: hsl(var(--primary));
+    border-radius: 50%;
+  }
+
+  /* ── Swiper (M3 — hero only) ────────────────────────────── */
+  .featured-swiper .swiper-button-next,
+  .featured-swiper .swiper-button-prev {
+    @apply w-10 h-10 transition-all;
+    border-radius: var(--radius-m3-xl);
+    background-color: rgba(255,255,255,0.18);
+    backdrop-filter: blur(8px);
+    color: rgba(255,255,255,0.9);
+  }
+  .featured-swiper .swiper-button-next:hover,
+  .featured-swiper .swiper-button-prev:hover {
+    background-color: rgba(255,255,255,0.32);
+  }
+  .featured-swiper .swiper-button-next::after,
+  .featured-swiper .swiper-button-prev::after { font-size: 0.75rem; font-weight: 800; }
+  .featured-swiper .swiper-pagination-bullet {
+    background-color: rgba(255,255,255,0.4);
+    opacity: 1; width: 6px; height: 6px;
+  }
+  .featured-swiper .swiper-pagination-bullet-active {
+    background-color: #fff; width: 18px; border-radius: 3px;
+  }
+
+  /* ── Slick (related carousel) ─────────────────────────── */
+  .slick-arrow {
+    @apply absolute top-1/2 -translate-y-1/2 z-10
+           w-10 h-10 flex items-center justify-center
+           cursor-pointer transition-all;
+    border-radius: var(--radius-m3-xl);
+    background-color: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+    box-shadow: 0 2px 8px -2px rgba(0,0,0,0.08);
+  }
+  .slick-arrow:hover {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: transparent;
+  }
+  .slick-prev { left: -24px; }
+  .slick-next { right: -24px; }
+  .slick-disabled { opacity: 0; pointer-events: none; }
+
+  /* ── Sticky sidebar ─────────────────────────────────────── */
+  .sticky-sidebar {
+    position: sticky; top: 5.5rem; align-self: flex-start;
+    max-height: calc(100vh - 7rem); overflow-y: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .sticky-sidebar::-webkit-scrollbar { width: 0; }
+
+  /* ── Pagination (M3 pill) ───────────────────────────────── */
+  .pagination-btn {
+    @apply inline-flex items-center justify-center
+           w-9 h-9 text-sm font-bold transition-all;
+    border-radius: var(--radius-m3-xl);
+    color: hsl(var(--muted-foreground));
+  }
+  .pagination-btn:hover {
+    background-color: color-mix(in srgb, hsl(var(--primary)) 10%, transparent);
+    color: hsl(var(--primary));
+  }
+  .pagination-btn.active {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 2px 8px -2px color-mix(in srgb, hsl(var(--primary)) 40%, transparent);
+  }
+
+  /* ── Rich content renderer ──────────────────────────────── */
+  .m3-content-render {
+    @apply max-w-3xl mx-auto;
+
+    & > * + * { @apply mt-7; }
+
+    p {
+      @apply text-[17px] leading-[1.85] font-[450];
+      color: hsl(var(--foreground));
+    }
+
+    /* Swiss drop-cap: bold, primary color, tight leading */
+    p:first-of-type::first-letter {
+      @apply float-left font-black mr-2 mt-1;
+      font-size: 4.5rem;
+      line-height: 0.78;
+      color: hsl(var(--primary));
+    }
+
+    h2 {
+      @apply text-3xl font-black tracking-tight mt-14 mb-4 pb-3;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: hsl(var(--foreground));
+      border-bottom: 1px solid hsl(var(--border));  /* Swiss rule */
+    }
+
+    h3 {
+      @apply text-xl font-black tracking-tight mt-10 mb-3;
+      letter-spacing: -0.02em;
+      color: hsl(var(--foreground));
+    }
+
+    img {
+      @apply w-full my-10;
+      border-radius: var(--radius-swiss-sm);
+      border: 1px solid hsl(var(--border));
+    }
+
+    blockquote {
+      @apply relative border-none my-12 py-10 px-10;
+      border-left: 3px solid hsl(var(--primary));
+      background-color: hsl(var(--surface-tonal));
+      border-radius: var(--radius-swiss-md);
+    }
+    blockquote::before {
+      content: '\201C';
+      @apply absolute -top-3 left-6 text-8xl font-black leading-none;
+      color: color-mix(in srgb, hsl(var(--primary)) 20%, transparent);
+    }
+    blockquote p {
+      @apply text-xl font-bold italic leading-snug;
+    }
+    blockquote cite {
+      @apply block mt-5 text-[10px] font-black uppercase tracking-[0.18em] not-italic;
+      color: hsl(var(--primary));
+    }
+
+    ul, ol { @apply space-y-3 my-8 pl-6; }
+    li { @apply text-[17px] font-[450]; color: hsl(var(--foreground)); }
+    ul li { @apply list-none relative pl-5; }
+    ul li::before {
+      content: '—';
+      @apply absolute left-0 font-bold;  /* Swiss: em-dash list marker */
+      color: hsl(var(--primary));
+    }
+    ol { @apply list-decimal; }
+    ol li::marker { @apply font-black; color: hsl(var(--primary)); }
+
+    hr {
+      @apply border-none h-px my-14;
+      background-color: hsl(var(--foreground));   /* Swiss: strong rule */
+    }
+
+    pre {
+      @apply p-8 my-10 overflow-x-auto text-sm font-mono;
+      background-color: hsl(var(--foreground));
+      color: hsl(var(--background));
+      border-radius: var(--radius-swiss-md);
+    }
+    code {
+      @apply px-1.5 py-0.5 text-[0.88em] font-bold;
+      background-color: color-mix(in srgb, hsl(var(--primary)) 10%, transparent);
+      color: hsl(var(--primary));
+      border-radius: var(--radius-swiss-sm);
+    }
+    pre code { background: transparent; color: inherit; }
+
+    a {
+      @apply font-bold underline underline-offset-4 decoration-2 transition-colors;
+      color: hsl(var(--primary));
+      text-decoration-color: color-mix(in srgb, hsl(var(--primary)) 40%, transparent);
+    }
+    a:hover { text-decoration-color: hsl(var(--primary)); }
+
+    table { @apply w-full border-collapse my-10 text-sm; }
+    th, td {
+      @apply px-4 py-3 text-left;
+      border: 1px solid hsl(var(--border));
+    }
+    th {
+      @apply text-[10px] font-black uppercase tracking-[0.14em];
+      border-bottom: 2px solid hsl(var(--foreground));  /* Swiss: bold rule */
+      color: hsl(var(--foreground));
+    }
+  }
+
+  /* ── Lazy image ─────────────────────────────────────────── */
+  img.lazy  { opacity: 0; }
+  img.loaded {
+    opacity: 1;
+    transition: opacity 0.6s var(--ease-m3-decel);
+  }
+
+  /* ── Utility ─────────────────────────────────────────────── */
+  .tab-content        { display: none; }
+  .tab-content.active { display: block; }
+  .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scroll { overflow: hidden; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+  }
+
+  /* ── Prose overrides ─────────────────────────────────────── */
+  .prose {
+    --tw-prose-headings: hsl(var(--foreground));
+    --tw-prose-body: hsl(var(--foreground));
+    --tw-prose-links: hsl(var(--primary));
+    --tw-prose-bold: hsl(var(--foreground));
+    --tw-prose-quotes: hsl(var(--foreground));
+  }
+  .prose h1, .prose h2, .prose h3, .prose h4,
+  #article-body h1, #article-body h2, #article-body h3, #article-body h4 {
+    color: hsl(var(--foreground)) !important;
+    letter-spacing: -0.03em;
+  }
+  .prose code {
+    background-color: color-mix(in srgb, hsl(var(--primary)) 10%, transparent);
+    color: hsl(var(--primary));
+    padding: 0.15em 0.35em;
+    border-radius: var(--radius-swiss-sm);
+  }
+  .prose blockquote {
+    border-left: 3px solid hsl(var(--primary));
+    color: hsl(var(--muted-foreground));
+    font-style: italic;
+    padding-left: 1rem;
+    margin: 0;
+  }
+  .prose img {
+    border-radius: var(--radius-swiss-sm);
+    border: 1px solid hsl(var(--border));
+  }
+  .prose hr {
+    border: none;
+    height: 1px;
+    background-color: hsl(var(--border));
+    margin: 2rem 0;
+  }
+
+  /* ── Header filter inputs (used by admin/older templates) ── */
+  .header-filter-input {
+    width: 100%; height: 2.5rem;
+    padding: 0 0.75rem;
+    background-color: hsl(var(--input));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-swiss-md);
+    font-size: 0.875rem;
+    color: hsl(var(--foreground));
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .header-filter-input::placeholder { color: hsl(var(--muted-foreground)); }
+  .header-filter-input:focus {
+    outline: none;
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px color-mix(in srgb, hsl(var(--primary)) 15%, transparent);
+  }
+  .header-filter-select {
+    width: 100%; height: 2.5rem;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    background-color: hsl(var(--input));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-swiss-md);
+    font-size: 0.875rem; color: hsl(var(--foreground));
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25em;
+    transition: border-color 0.15s ease;
+  }
+  .header-filter-select:focus {
+    outline: none;
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px color-mix(in srgb, hsl(var(--primary)) 15%, transparent);
+  }
+}

@@ -1,0 +1,179 @@
+{% extends 'admin_base.html' %}
+{% block title %}Buat Cerita - Admin{% endblock %}
+{% block hero_title %}Tambah Cerita{% endblock %}
+{% block hero_desc %}Buat konten cerita dan artikel baru{% endblock %}
+{% block extra_head %}
+{% endblock %}
+{% block content %}
+ <!-- Konten Admin -->
+ <main class="container mx-auto px-6 py-12" role="main">
+ <!-- Form Tambah Berita -->
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="add-news-title">
+ <h2 id="add-news-title" class="text-xl font-semibold mb-4 text-admin-text">Tambah Cerita</h2>
+ <form id="add-news-form" class="flex flex-col lg:flex-row gap-6" enctype="multipart/form-data" role="form" aria-label="Form tambah berita baru">
+ <!-- Bagian Konten (3/4) -->
+ <div class="flex-1 lg:w-3/4">
+ <div class="h-full flex flex-col">
+ <label class="block text-admin-textMuted font-medium mb-2" for="news-content">Konten (Markdown)</label>
+ <div id="simplemde-wrapper" class="flex flex-col flex-1 overflow-hidden" role="textbox" aria-label="Editor konten berita">
+ <div id="custom-toolbar" class="flex flex-wrap gap-3 bg-white border border-admin-border p-2 rounded-polaris-sm-t-lg mb-2" role="toolbar" aria-label="Toolbar editor">
+ <button type="button" data-cmd="bold" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Tebal"><i class="fa fa-bold" aria-hidden="true"></i></button>
+ <button type="button" data-cmd="italic" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Miring"><i class="fa fa-italic" aria-hidden="true"></i></button>
+ <button type="button" data-cmd="heading" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Heading"><i class="fa fa-header" aria-hidden="true"></i></button>
+ <button type="button" data-cmd="quote" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Kutipan"><i class="fa fa-quote-left" aria-hidden="true"></i></button>
+ <button type="button" data-cmd="unordered-list" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Daftar tidak berurutan"><i class="fa fa-list-ul" aria-hidden="true"></i></button>
+ <button type="button" data-cmd="ordered-list" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Daftar berurutan"><i class="fa fa-list-ol" aria-hidden="true"></i></button>
+ <button type="button" data-cmd="link" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Tautan"><i class="fa fa-link" aria-hidden="true"></i></button>
+ <button type="button" data-cmd="image" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Gambar"><i class="fa fa-image" aria-hidden="true"></i></button>
+ <button type="button" data-cmd="preview" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Pratinjau"><i class="fa fa-eye" aria-hidden="true"></i></button>
+ <button type="button" data-cmd="guide" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base hover:bg-admin-surfaceHover focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" aria-label="Panduan Markdown"><i class="fa fa-question-circle" aria-hidden="true"></i></button>
+ </div>
+ <textarea id="news-content" class="custom-mde flex-1" placeholder="Tulis artikel Anda di sini:\n- Mulai dengan pengantar yang menarik.\n- Gunakan heading, daftar, atau teks tebal untuk struktur.\n- Klik toolbar untuk opsi format atau 'Panduan' untuk bantuan Markdown" aria-label="Editor konten berita"></textarea>
+ </div>
+ </div>
+ </div>
+
+ <!-- Bagian Info (1/4) -->
+ <div class="lg:w-1/4 space-y-4" role="complementary" aria-label="Informasi berita">
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="news-title">Judul</label>
+ <input type="text" id="news-title" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="news-writer">Penulis</label>
+ <input type="text" id="news-writer" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="misalnya, John Doe" aria-label="Nama penulis">
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="news-tagar">Tag (pisahkan dengan koma)</label>
+ <input type="text" id="news-tagar" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="misalnya, teknologi, olahraga, bisnis" aria-label="Tag berita">
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="news-date">Tanggal</label>
+ <input type="date" id="news-date" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="news-category">Kategori</label>
+ <select id="news-category" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ <option value="" disabled selected>Pilih kategori...</option>
+ </select>
+ </div>
+ <div class="space-y-2" role="group" aria-label="Pengaturan tampilan berita">
+ <div class="flex items-center">
+ <input type="checkbox" id="news-premium" class="rounded-polaris-sm border-admin-border text-admin-accent focus:ring-admin-accent" aria-label="Tampilkan di halaman Artikel">
+ <label class="ml-2 text-admin-textMuted font-medium" for="news-premium">Tampilkan di halaman Artikel</label>
+ </div>
+ <p class="text-sm text-admin-accent ml-8">Centang agar cerita muncul di halaman Artikel</p>
+ <div class="flex items-center">
+ <input type="checkbox" id="news-main" class="rounded-polaris-sm border-admin-border text-admin-accent focus:ring-admin-accent" aria-label="Tampilkan di carousel utama">
+ <label class="ml-2 text-admin-textMuted font-medium" for="news-main">Tampilkan di carousel utama</label>
+ </div>
+ <p class="text-sm text-admin-accent ml-8">Centang untuk menampilkan di carousel utama (5 cerita terbaru)</p>
+ <div class="flex items-center">
+ <input type="checkbox" id="news-is-premium" class="rounded-polaris-sm border-admin-border text-admin-warning focus:ring-admin-warning" aria-label="Konten Premium">
+ <label class="ml-2 text-admin-textMuted font-medium" for="news-is-premium">Konten Premium</label>
+ </div>
+ <p class="text-sm text-admin-accent ml-8">Centang untuk menandai sebagai konten premium</p>
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="news-external-source">Sumber Eksternal</label>
+ <input type="url" id="news-external-source" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="https://contoh.com/sumber (opsional)" aria-label="URL sumber eksternal">
+ </div>
+ 
+ <!-- Header Image Selection -->
+ <div id="image-header-section-create" role="group" aria-label="Pilihan gambar unggulan">
+ <label class="block text-admin-textMuted font-medium mb-2">Gambar Unggulan</label>
+ <input type="hidden" id="news-image-id">
+ <div class="flex items-center gap-x-2">
+ <button type="button" onclick="openImageHeaderModalCreate()" class="flex-grow bg-admin-primary hover:bg-admin-primaryHover text-white py-2 px-4 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Pilih gambar unggulan">Pilih Gambar</button>
+ <button type="button" id="clear-featured-image-btn" title="Hapus Gambar Unggulan" class="p-2 bg-admin-surface text-admin-critical rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100" aria-label="Hapus gambar unggulan"><i class="fas fa-times" aria-hidden="true"></i></button>
+ </div>
+ <img id="featured-preview-create" src="" class="w-full h-32 object-cover rounded-polaris-base mt-2 hidden" alt="Pratinjau gambar unggulan">
+ </div>
+ <!-- Submit Buttons -->
+ <div class="flex space-x-4" role="group" aria-label="Tombol aksi berita">
+ <button type="submit" name="save-draft" class="flex-1 bg-admin-surface text-admin-text py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Simpan sebagai draf">
+ Simpan sebagai Draf
+ </button>
+ <button type="submit" name="publish" class="flex-1 bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Terbitkan berita">
+ Terbitkan
+ </button>
+ </div>
+ </div>
+ </form>
+ </div>
+ </main>
+
+ <!-- Modal Sisip Gambar untuk Tambah Berita -->
+ <div id="image-insert-modal-create" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-40" role="dialog" aria-labelledby="image-insert-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+ <h2 id="image-insert-title" class="text-xl font-semibold mb-4 text-admin-text">Sisipkan Gambar</h2>
+ <div class="mb-4" role="radiogroup" aria-label="Pilih sumber gambar">
+ <label class="inline-flex items-center"><input type="radio" name="image-source-create" value="library" checked class="form-radio text-admin-accent" aria-label="Pilih dari perpustakaan"><span class="ml-2 text-admin-textMuted">Perpustakaan</span></label>
+ <label class="inline-flex items-center ml-4"><input type="radio" name="image-source-create" value="url" class="form-radio text-admin-accent" aria-label="Gunakan URL eksternal"><span class="ml-2 text-admin-textMuted">URL Eksternal</span></label>
+ </div>
+ <div id="image-library-section-create" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4" role="list" aria-label="Daftar gambar perpustakaan"></div>
+ <!-- Pagination for Content Image Library (Create) -->
+ <div id="content-image-pagination-controls-create" class="mt-4 mb-4" role="navigation" aria-label="Navigasi halaman gambar">
+ <!-- Create content image pagination will be generated here -->
+ </div>
+ <div id="image-url-section-create" class="hidden space-y-4 mb-4">
+ <input id="image-url-input-create" type="text" inputmode="url" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base" placeholder="https://contoh.com/gambar.jpg" aria-label="URL gambar">
+ <input id="image-alt-input-create" type="text" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base" placeholder="Alt teks (opsional)" aria-label="Teks alternatif gambar">
+ </div>
+ <div class="flex space-x-4" role="group" aria-label="Tombol aksi gambar">
+ <button type="button" id="insert-image-btn-create" class="flex-1 bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Sisipkan gambar">Sisipkan</button>
+ <button type="button" id="close-image-insert-create" class="flex-1 bg-admin-surface text-admin-text py-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300 shadow-polaris-100" aria-label="Tutup dialog">Tutup</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- Modal Pilih Gambar Unggulan untuk Tambah Berita -->
+ <div id="image-header-modal-create" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-40" role="dialog" aria-labelledby="header-image-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+ <h2 id="header-image-title" class="text-xl font-semibold mb-4 text-admin-text">Pilih Gambar Unggulan</h2>
+ <div class="mb-4 p-4 bg-admin-surfaceHover border border-admin-border rounded-polaris-base" role="group" aria-label="Unggah gambar baru">
+ <h3 class="text-base font-bold text-admin-text mb-2">Unggah Gambar Baru</h3>
+ <input id="header-upload-name-create" type="text" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base mb-2" placeholder="Nama gambar (opsional)" aria-label="Nama gambar">
+ <input id="header-upload-file-create" type="file" accept="image/*" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base mb-2" aria-label="Pilih file gambar">
+ <input id="header-upload-url-create" type="url" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base mb-2" placeholder="https://contoh.com/gambar.jpg" aria-label="URL gambar">
+ <button type="button" id="header-upload-btn-create" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Unggah gambar">Unggah</button>
+ </div>
+ <div id="header-image-library-create" class="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Daftar gambar unggulan"></div>
+ <!-- Pagination for Header Image Library (Create) -->
+ <div id="header-image-pagination-controls-create" class="mt-4 mb-4" role="navigation" aria-label="Navigasi halaman gambar unggulan">
+ <!-- Create header image pagination will be generated here -->
+ </div>
+ <button type="button" id="header-image-close-create" class="w-full bg-admin-surface text-admin-text py-3 rounded-polaris-base mt-4 focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Tutup dialog">Tutup</button>
+ </div>
+ </div>
+
+ <!-- Modal Sisipkan Tautan -->
+ <div id="link-insert-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-30" role="dialog" aria-labelledby="link-insert-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md">
+ <h3 id="link-insert-title" class="text-xl font-semibold text-admin-text mb-4">Sisipkan Tautan</h3>
+ <div class="space-y-4">
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="link-text">Teks Tautan</label>
+ <input type="text" id="link-text" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="misalnya, Kunjungi situs kami" aria-label="Teks yang akan ditampilkan">
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="link-url">URL</label>
+ <input type="text" inputmode="url" id="link-url" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="e.g., https://contoh.com" required aria-required="true" aria-label="URL tujuan">
+ </div>
+ </div>
+ <div class="flex justify-end space-x-4 mt-6" role="group" aria-label="Tombol aksi tautan">
+ <button type="button" id="cancel-link-btn" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal sisipkan tautan">Batal</button>
+ <button type="button" id="insert-link-btn" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Sisipkan tautan">Sisipkan</button>
+ </div>
+ </div>
+ </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+{# Load dependent scripts first #}
+<script src="{{ url_for('static', filename='js/toast.js') }}"></script> {# Assuming toast.js is available #}
+<script src="https://cdn.jsdelivr.net/npm/simplemde@1.11.2/dist/simplemde.min.js"></script>
+{# Load the main script for this page #}
+<script src="{{ url_for('static', filename='js/news-create.js') }}"></script>
+{% endblock %}

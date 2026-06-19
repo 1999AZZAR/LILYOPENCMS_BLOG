@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /settings/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /logout
+
+# Allow important public content
+Allow: /news/
+Allow: /videos/
+Allow: /gallery/
+Allow: /about/
+Allow: /utama/
+Allow: /hypes/
+Allow: /premium/
+
+# Crawl delay (optional - be respectful to server)
+Crawl-delay: 1
+
+# Sitemap locations
+Sitemap: https://LilyOpenCMS.com/sitemap.xml
+Sitemap: https://LilyOpenCMS.com/sitemap-news.xml
+Sitemap: https://LilyOpenCMS.com/sitemap-index.xml

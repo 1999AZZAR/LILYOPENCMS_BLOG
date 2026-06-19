@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}</title>
+
+  <!-- Core Meta -->
+  <meta name="description" content="{% if root_seo and root_seo.meta_description %}{{ root_seo.meta_description }}{% else %}{{ brand_info.tagline|default('Modern content management for the digital age') }}{% endif %}">
+  <meta name="keywords"    content="{% if root_seo and root_seo.meta_keywords %}{{ root_seo.meta_keywords }}{% else %}{{ brand_info.brand_name|default('LilyOpenCMS') }}, berita, cerita, portal berita{% endif %}">
+  <meta name="author"      content="{% if root_seo and root_seo.meta_author %}{{ root_seo.meta_author }}{% else %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endif %}">
+  <meta name="language"    content="{% if root_seo and root_seo.meta_language %}{{ root_seo.meta_language }}{% else %}id{% endif %}">
+  <meta name="robots"      content="{% if root_seo and root_seo.meta_robots %}{{ root_seo.meta_robots }}{% else %}index, follow{% endif %}">
+  <link rel="canonical"    href="{% if root_seo and root_seo.canonical_url %}{{ root_seo.canonical_url }}{% else %}{{ request.url_root[:-1] }}{{ request.path }}{% endif %}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='pic/favicon.png') }}">
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="{% block og_title %}{% if root_seo and root_seo.og_title %}{{ root_seo.og_title }}{% else %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endif %}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{% if root_seo and root_seo.og_description %}{{ root_seo.og_description }}{% else %}{{ brand_info.tagline|default('') }}{% endif %}{% endblock %}">
+  <meta property="og:image"       content="{% block og_image %}{% if root_seo and root_seo.og_image %}{{ root_seo.og_image }}{% else %}{{ url_for('static', filename='pic/dark.png', _external=True) }}{% endif %}{% endblock %}">
+  <meta property="og:url"         content="{{ request.url }}">
+  <meta property="og:type"        content="{% if root_seo and root_seo.og_type %}{{ root_seo.og_type }}{% else %}website{% endif %}">
+  <meta property="og:site_name"   content="{{ brand_info.brand_name|default('LilyOpenCMS') }}">
+  <meta property="og:locale"      content="id_ID">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="{% if root_seo and root_seo.twitter_card %}{{ root_seo.twitter_card }}{% else %}summary_large_image{% endif %}">
+  <meta name="twitter:title"       content="{% block twitter_title %}{% if root_seo and root_seo.twitter_title %}{{ root_seo.twitter_title }}{% else %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endif %}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}{% if root_seo and root_seo.twitter_description %}{{ root_seo.twitter_description }}{% else %}{{ brand_info.tagline|default('') }}{% endif %}{% endblock %}">
+  <meta name="twitter:image"       content="{% block twitter_image %}{% if root_seo and root_seo.twitter_image %}{{ root_seo.twitter_image }}{% else %}{{ url_for('static', filename='pic/dark.png', _external=True) }}{% endif %}{% endblock %}">
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="{{ brand_info.brand_name|default('LilyOpenCMS') }}">
+
+  <!-- JSON-LD -->
+  {% if root_seo and root_seo.schema_markup %}
+  <script type="application/ld+json">{{ root_seo.schema_markup|safe }}</script>
+  {% else %}
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"{{ brand_info.brand_name|default('LilyOpenCMS') }}","description":"{{ brand_info.tagline|default('') }}","url":"{{ request.url_root[:-1] }}{{ request.path }}","inLanguage":"id"}
+  </script>
+  {% endif %}
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+  <!-- Google Font: Plus Jakarta Sans -->
+  <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets — loaded first, brand vars injected after to always win -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v={{ brand_info.updated_at.timestamp()|int if brand_info and brand_info.updated_at else '1' }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base_css.css') }}?v=2">
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  <!-- Brand color injection — MUST come after all <link> stylesheets -->
+  {%- set cp  = (brand_info.color_primary              if brand_info and brand_info.color_primary)              or '220 65% 55%' -%}
+  {%- set cpf = (brand_info.color_primary_foreground   if brand_info and brand_info.color_primary_foreground)   or '0 0% 100%' -%}
+  {%- set cs  = (brand_info.color_secondary            if brand_info and brand_info.color_secondary)            or '220 12% 95%' -%}
+  {%- set csf = (brand_info.color_secondary_foreground if brand_info and brand_info.color_secondary_foreground) or '220 8% 30%' -%}
+  {%- set ca  = (brand_info.color_accent               if brand_info and brand_info.color_accent)               or '260 55% 60%' -%}
+  {%- set caf = (brand_info.color_accent_foreground    if brand_info and brand_info.color_accent_foreground)    or '0 0% 100%' -%}
+  {%- set cbg = (brand_info.color_background           if brand_info and brand_info.color_background)           or '0 0% 99%' -%}
+  {%- set cfg = (brand_info.color_foreground           if brand_info and brand_info.color_foreground)           or '220 15% 10%' -%}
+  <style>
+    :root {
+      --primary:             {{ cp }};
+      --primary-foreground:  {{ cpf }};
+      --secondary:           {{ cs }};
+      --secondary-foreground:{{ csf }};
+      --accent:              {{ ca }};
+      --accent-foreground:   {{ caf }};
+      --background:          {{ cbg }};
+      --foreground:          {{ cfg }};
+      --surface:         0 0% 100%;
+      --surface-tonal:   220 20% 97%;
+      --border:          220 8% 88%;
+      --border-strong:   220 8% 60%;
+      --input:           0 0% 100%;
+      --ring:            var(--primary);
+      --muted:           220 12% 95%;
+      --muted-foreground:220 8% 50%;
+      --radius: 2px;
+      --m3-primary:    hsl(var(--primary));
+      --m3-on-primary: hsl(var(--primary-foreground));
+      --m3-secondary:  hsl(var(--secondary));
+      --m3-tertiary:   hsl(var(--accent));
+      --m3-on-tertiary:hsl(var(--accent-foreground));
+      --m3-container:  color-mix(in srgb, hsl(var(--primary)) 8%, hsl(var(--background)));
+    }
+  </style>
+
+  <!-- Lazy Loading -->
+  <script src="{{ url_for('static', filename='js/lazy-loading.js') }}" defer></script>
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-background text-foreground antialiased min-h-screen flex flex-col">
+
+  <!-- Loading Spinner -->
+  <div id="loading-spinner" class="hidden"><div class="spinner"></div></div>
+
+  <!-- ─── Navigation ────────────────────────────────────────────── -->
+  <header>
+    {# nav_items available to mobile menu below #}
+    {% set nav_items = navbar_links if navbar_links else [
+      {'name': 'Utama',   'url': url_for('main.utama'),    'is_external': false},
+      {'name': 'Berita',  'url': url_for('main.news'),     'is_external': false},
+      {'name': 'Artikel', 'url': url_for('main.articles'), 'is_external': false}
+    ] %}
+
+    <nav role="banner" aria-label="Main navigation" id="main-nav" class="nav-glass">
+
+      <!-- Left: logo + links -->
+      <div class="flex items-center gap-5 min-w-0">
+        <a href="{{ url_for('main.home') }}"
+           class="flex-shrink-0 transition-opacity duration-200 hover:opacity-75"
+           aria-label="{{ brand_info.brand_name|default('LilyOpenCMS') }} Homepage">
+          <img src="{{ url_for('static', filename='pic/logo.png') }}"
+               alt="{{ brand_info.brand_name|default('LilyOpenCMS') }}"
+               class="h-9 w-auto">
+        </a>
+
+        <!-- Swiss thin rule separator -->
+        <div class="hidden md:block w-px h-5 flex-shrink-0"
+             style="background-color: hsl(var(--border));"></div>
+
+        <!-- Desktop nav links -->
+        <div role="navigation" aria-label="Site navigation"
+             class="hidden md:flex items-center gap-0.5">
+          {% for link in nav_items %}
+          <a href="{{ link.url }}"
+             class="nav-link-item {% if request.path == link.url %}active{% endif %}"
+             {% if link.is_external %}target="_blank" rel="noopener noreferrer"{% endif %}>
+            {{ link.name }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Right: action buttons -->
+      <div role="toolbar" class="flex items-center gap-1 flex-shrink-0">
+        <button id="desktop-search-toggle"
+                aria-label="Buka pencarian"
+                aria-expanded="false"
+                aria-controls="desktop-search-container"
+                class="nav-icon-btn">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        </button>
+
+        {% if current_user.is_authenticated %}
+        <div class="hidden md:block w-px h-4 mx-1 flex-shrink-0"
+             style="background-color: hsl(var(--border));"></div>
+        <a href="{{ url_for('main.settings_dashboard') }}"
+           title="Pengaturan Akun"
+           class="nav-icon-btn hidden md:flex">
+          <i class="fa-solid fa-user-gear" aria-hidden="true"></i>
+        </a>
+        <a href="{{ url_for('main.logout') }}"
+           title="Keluar"
+           class="nav-icon-btn nav-icon-btn-danger hidden md:flex">
+          <i class="fa-solid fa-power-off" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+
+        <button id="mobile-menu-button"
+                aria-label="Buka menu"
+                aria-expanded="false"
+                aria-controls="mobile-menu"
+                class="md:hidden nav-icon-btn"
+                style="background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground));">
+          <i class="fa-solid fa-bars-staggered" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </nav>
+
+    <!-- Search dropdown — fixed, full-width, below nav -->
+    <div id="desktop-search-container"
+         class="hidden fixed top-[57px] left-0 right-0 z-40"
+         role="search">
+      <div style="background-color: rgba(255,255,255,0.98);
+                  backdrop-filter: blur(24px) saturate(1.4);
+                  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+                  border-bottom: 2px solid hsl(var(--foreground));
+                  box-shadow: 0 8px 24px -8px rgba(0,0,0,0.10);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5">
+          <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-4"
+             style="color: hsl(var(--muted-foreground));">Cari Konten</p>
+          <form action="{{ url_for('main.search') }}" method="GET"
+                class="flex flex-wrap md:flex-nowrap items-end gap-3">
+            <div class="flex-grow">
+              <div class="relative">
+                <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-sm"
+                   style="color: hsl(var(--muted-foreground));" aria-hidden="true"></i>
+                <input type="text" name="q"
+                       placeholder="Kata kunci…"
+                       value="{{ current_query or '' }}"
+                       class="header-filter-input pl-9"
+                       style="border-radius: 2px; height: 2.75rem;">
+              </div>
+            </div>
+            <div class="w-full md:w-48">
+              <select name="category" class="header-filter-select"
+                      style="border-radius: 2px; height: 2.75rem;">
+                <option value="">Semua Kategori</option>
+                {% for cat in all_categories %}
+                <option value="{{ cat.name }}" {{ 'selected' if current_category == cat.name }}>{{ cat.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="submit" class="m3-button-filled whitespace-nowrap">Cari</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+  </script>
+
+  <!-- ─── Main Content ──────────────────────────────────────────── -->
+  <main class="flex-1 container mx-auto px-4 sm:px-6 pt-20 pb-16 lg:pt-24 lg:pb-24">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="space-y-3 mb-8" role="alert" aria-live="polite">
+      {% for category, message in messages %}
+      <div class="flash-alert flash-alert-{{ 'error' if category == 'error' else ('success' if category == 'success' else 'info') }}">
+        <span class="flex-shrink-0 mt-0.5">
+          {% if category == 'error' %}
+            <i class="fa-solid fa-circle-exclamation fa-fw text-red-500" aria-hidden="true"></i>
+          {% elif category == 'success' %}
+            <i class="fa-solid fa-circle-check fa-fw text-green-500" aria-hidden="true"></i>
+          {% else %}
+            <i class="fa-solid fa-circle-info fa-fw text-sky-500" aria-hidden="true"></i>
+          {% endif %}
+        </span>
+        <span class="text-sm">{{ message }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ─── Footer ────────────────────────────────────────────────── -->
+  {% include 'footer.html' %}
+
+  <!-- ─── Mobile Menu ───────────────────────────────────────────── -->
+  <div id="mobile-menu"
+       class="fixed inset-0 z-[60] hidden overflow-hidden"
+       role="dialog" aria-modal="true" aria-label="Navigasi Mobile">
+
+    <!-- Backdrop -->
+    <div class="absolute inset-0 backdrop-blur-md"
+         style="background-color: rgba(0,0,0,0.45);"></div>
+
+    <!-- Panel — Swiss sharp left border, M3 glass surface -->
+    <div class="absolute right-0 top-0 h-full w-[82%] max-w-xs shadow-2xl
+                animate-in slide-in-from-right duration-300"
+         style="background-color: hsl(var(--background));
+                border-left: 2px solid hsl(var(--foreground));">
+      <div class="p-7 h-full flex flex-col">
+
+        <!-- Panel header -->
+        <div class="flex items-center justify-between mb-10 pb-6"
+             style="border-bottom: 1px solid hsl(var(--border));">
+          <img src="{{ url_for('static', filename='pic/logo.png') }}" alt="Logo" class="h-8 w-auto">
+          <button id="mobile-menu-close-button"
+                  aria-label="Tutup menu"
+                  class="nav-icon-btn nav-icon-btn-danger">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Nav links — Swiss: stacked with rule dividers -->
+        <nav class="flex-grow" aria-label="Mobile navigation">
+          <ul class="divide-y" style="border-color: hsl(var(--border));">
+            <li>
+              <a href="{{ url_for('main.home') }}"
+                 class="flex items-center justify-between py-4 font-black text-sm transition-colors duration-150"
+                 style="color: hsl(var(--primary));"
+                 onmouseover="this.style.color='hsl(var(--primary))';">
+                <span>Beranda</span>
+                <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+              </a>
+            </li>
+            {% for link in nav_items %}
+            <li>
+              <a href="{{ link.url }}"
+                 class="flex items-center justify-between py-4 font-semibold text-sm transition-colors duration-150"
+                 style="color: hsl(var(--foreground));"
+                 onmouseover="this.style.color='hsl(var(--primary))';"
+                 onmouseout="this.style.color='hsl(var(--foreground))';"
+                 {% if link.is_external %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                <span>{{ link.name }}</span>
+                {% if link.is_external %}
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"
+                   style="color: hsl(var(--muted-foreground));" aria-hidden="true"></i>
+                {% else %}
+                <i class="fa-solid fa-chevron-right text-xs"
+                   style="color: hsl(var(--muted-foreground));" aria-hidden="true"></i>
+                {% endif %}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </nav>
+
+        <!-- User section -->
+        <div class="pt-6" style="border-top: 1px solid hsl(var(--border));">
+          {% if current_user.is_authenticated %}
+          <!-- User row — Swiss numbered/labeled style -->
+          <div class="flex items-center gap-3 mb-6 p-4"
+               style="background-color: hsl(var(--surface-tonal)); border-radius: 2px;">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center
+                        font-black text-sm flex-shrink-0"
+                 style="background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground));">
+              {{ current_user.username[0].upper() }}
+            </div>
+            <div class="min-w-0">
+              <p class="font-black text-sm truncate" style="color: hsl(var(--foreground));">
+                {{ current_user.username }}
+              </p>
+              <p class="text-[10px] font-black uppercase tracking-widest mt-0.5"
+                 style="color: hsl(var(--muted-foreground));">Member Aktif</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <a href="{{ url_for('main.settings_dashboard') }}"
+               class="flex flex-col items-center gap-2 py-4 text-center
+                      transition-colors duration-150 text-sm"
+               style="border: 1px solid hsl(var(--border)); border-radius: 2px;
+                      color: hsl(var(--foreground));"
+               onmouseover="this.style.backgroundColor='hsl(var(--surface-tonal))';"
+               onmouseout="this.style.backgroundColor='';">
+              <i class="fa-solid fa-user-gear" aria-hidden="true"></i>
+              <span class="text-[10px] font-black uppercase tracking-widest">Akun</span>
+            </a>
+            <a href="{{ url_for('main.logout') }}"
+               class="flex flex-col items-center gap-2 py-4 text-center
+                      transition-colors duration-150 text-sm text-red-500"
+               style="border: 1px solid rgba(239,68,68,0.2); border-radius: 2px;
+                      background-color: rgba(239,68,68,0.04);"
+               onmouseover="this.style.backgroundColor='rgba(239,68,68,0.10)';"
+               onmouseout="this.style.backgroundColor='rgba(239,68,68,0.04)';">
+              <i class="fa-solid fa-power-off" aria-hidden="true"></i>
+              <span class="text-[10px] font-black uppercase tracking-widest">Keluar</span>
+            </a>
+          </div>
+          {% else %}
+          <a href="{{ url_for('main.login') }}" class="m3-button-filled w-full block text-center">
+            Masuk ke Akun
+          </a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Back-to-top button -->
+  <button id="btt-btn" aria-label="Kembali ke atas" title="Kembali ke atas" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <i class="fa-solid fa-arrow-up text-sm" aria-hidden="true"></i>
+  </button>
+
+  <!-- Core Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/mobile-toggler.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/search-toggle.js') }}"></script>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('btt-btn');
+      window.addEventListener('scroll', function () {
+        btn.classList.toggle('visible', window.scrollY > 400);
+      }, { passive: true });
+    })();
+  </script>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

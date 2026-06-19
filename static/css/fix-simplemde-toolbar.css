@@ -1,0 +1,78 @@
+/* Container for SimpleMDE: isolate scroll and toolbar */
+#simplemde-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 55vh;
+  overflow: hidden;
+}
+
+/* Prevent default toolbar hover opacity change */
+#simplemde-wrapper .editor-toolbar:hover {
+  opacity: 1 !important;
+}
+
+/* Style SimpleMDE toolbar container */
+#simplemde-wrapper .editor-toolbar {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  background: #fff !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+  margin-bottom: 1rem !important;
+  padding: 0.5rem 0.75rem !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
+}
+
+/* Ensure toolbar buttons and icons are clickable */
+#simplemde-wrapper .editor-toolbar a,
+#simplemde-wrapper .editor-toolbar a * {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Style individual toolbar buttons */
+#simplemde-wrapper .editor-toolbar a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  margin: 0 !important;
+  border: 1px solid transparent !important;
+  border-radius: 0.375rem !important;
+  color: #2c3e50 !important;
+}
+
+/* Individual button hover and active states */
+#simplemde-wrapper .editor-toolbar a:hover {
+  background-color: #f3f4f6 !important;
+  border-color: #95a5a6 !important;
+}
+
+#simplemde-wrapper .editor-toolbar a.active {
+  background-color: #e5e7eb !important;
+  border-color: #95a5a6 !important;
+}
+
+/* Separator spacing */
+#simplemde-wrapper .editor-toolbar .separator {
+  margin: 0 0.5rem !important;
+}
+
+/* Style CodeMirror inside wrapper: fill space and scroll internally */
+#simplemde-wrapper .CodeMirror {
+  flex: 1 1 auto;
+  overflow: hidden !important;
+  min-height: 0 !important;
+}
+
+#simplemde-wrapper .CodeMirror-scroll {
+  height: 100% !important;
+  overflow-y: auto !important;
+}

@@ -1,0 +1,170 @@
+{% extends 'admin_base.html' %}
+{% block title %}Manajemen Akun - Admin{% endblock %}
+{% block hero_title %}Manajemen Akun{% endblock %}
+{% block hero_desc %}Kelola berita Anda, kata sandi, dan pengaturan akun{% endblock %}
+{% block content %}
+ <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8" role="main">
+ <!-- Password Management Card -->
+ <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-100 p-6 mb-8" role="region" aria-labelledby="password-management-title">
+ <div class="w-12 h-12 mx-auto mb-4 bg-admin-primary rounded-polaris-full flex items-center justify-center" role="img" aria-label="Password management icon">
+ <i class="fas fa-lock text-xl text-white"></i>
+ </div>
+ <!-- Password Management Section -->
+ <h2 id="password-management-title" class="text-xl font-bold mb-4 text-admin-text text-center">Manajemen Kata Sandi</h2>
+ <form id="change-password-form" class="space-y-4" role="form" aria-label="Change password form">
+ <div>
+ <label for="current-password" class="block text-admin-textMuted font-medium mb-2">Kata Sandi Saat Ini</label>
+ <input type="password" id="current-password" class="w-full p-3 rounded-polaris-base bg-white border border-admin-border text-admin-textMuted focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ </div>
+ <div>
+ <label for="new-password" class="block text-admin-textMuted font-medium mb-2">Kata Sandi Baru</label>
+ <input type="password" id="new-password" class="w-full p-3 rounded-polaris-base bg-white border border-admin-border text-admin-textMuted focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ </div>
+ <div>
+ <label for="confirm-password" class="block text-admin-textMuted font-medium mb-2">Konfirmasi Kata Sandi Baru</label>
+ <input type="password" id="confirm-password" class="w-full p-3 rounded-polaris-base bg-white border border-admin-border text-admin-textMuted focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ </div>
+ <button type="submit" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold transition-all duration-300 shadow-polaris-100" aria-label="Ubah kata sandi">
+ Ubah Kata Sandi
+ </button>
+ </form>
+ <div id="password-status" class="mt-4" role="status" aria-live="polite"></div>
+ </div>
+
+ <!-- Delete Account Card -->
+ <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-100 p-6 mb-8" role="region" aria-labelledby="delete-account-title">
+ <div class="w-12 h-12 mx-auto mb-4 bg-admin-surface rounded-polaris-full flex items-center justify-center" role="img" aria-label="Delete account icon">
+ <i class="fas fa-user-slash text-xl text-white"></i>
+ </div>
+ <!-- Delete Account Section -->
+ <h2 id="delete-account-title" class="text-xl font-bold mb-4 text-admin-critical text-center">Hapus Akun</h2>
+ <p class="text-admin-textMuted mb-4 text-sm">Peringatan: Tindakan ini tidak dapat dibatalkan. Semua data Anda, termasuk artikel berita, akan dihapus secara permanen.</p>
+ <button onclick="openDeleteAccountModal()" class="w-full bg-admin-surface text-white py-3 rounded-polaris-base font-semibold transition-all duration-300 shadow-polaris-100" aria-label="Hapus akun" aria-haspopup="dialog">
+ Hapus Akun
+ </button>
+ </div>
+
+ <!-- Account Stats Card -->
+ <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-100 p-6 mb-8" role="region" aria-labelledby="account-stats-title">
+ <div class="w-12 h-12 mx-auto mb-4 bg-admin-primary rounded-polaris-full flex items-center justify-center" role="img" aria-label="Account stats icon">
+ <i class="fas fa-chart-bar text-xl text-white"></i>
+ </div>
+ <h2 id="account-stats-title" class="text-xl font-bold mb-4 text-admin-text text-center">Statistik Akun</h2>
+ <div class="space-y-3">
+ <div class="flex justify-between items-center p-3 bg-white rounded-polaris-base border border-admin-border">
+ <span class="text-admin-textMuted font-medium">Total Artikel</span>
+ <span id="total-articles" class="text-admin-text font-bold">-</span>
+ </div>
+ <div class="flex justify-between items-center p-3 bg-white rounded-polaris-base border border-admin-border">
+ <span class="text-admin-textMuted font-medium">Artikel Terlihat</span>
+ <span id="visible-articles" class="text-admin-success font-bold">-</span>
+ </div>
+ <div class="flex justify-between items-center p-3 bg-white rounded-polaris-base border border-admin-border">
+ <span class="text-admin-textMuted font-medium">Total Dibaca</span>
+ <span id="total-reads" class="text-admin-textMuted font-bold">-</span>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Filters for Owned News -->
+ <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-100 p-6 mb-8" role="region" aria-labelledby="news-filters-title">
+ <h2 id="news-filters-title" class="text-xl font-semibold mb-4 text-admin-text">Filter Artikel Anda</h2>
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4" role="search">
+ <div class="lg:col-span-2">
+ <label for="owned-search" class="block text-sm font-medium text-admin-textMuted mb-1">Cari Artikel</label>
+ <input type="text" id="owned-search" placeholder="Cari berdasarkan judul..." class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Cari artikel Anda berdasarkan judul">
+ </div>
+ 
+ <div>
+ <label for="owned-status-filter" class="block text-sm font-medium text-admin-textMuted mb-1">Keterlihatan</label>
+ <select id="owned-status-filter" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Filter Keterlihatan">
+ <option value="">Semua</option>
+ <option value="visible">Terlihat</option>
+ <option value="hidden">Tersembunyi</option>
+ </select>
+ </div>
+ 
+ <div>
+ <label for="owned-premium-filter" class="block text-sm font-medium text-admin-textMuted mb-1">Tipe Artikel</label>
+ <select id="owned-premium-filter" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Filter Artikel atau Berita">
+ <option value="">Semua</option>
+ <option value="true">Artikel</option>
+ <option value="false">Berita</option>
+ </select>
+ </div>
+ 
+ <div>
+ <label for="owned-filter-featured-image" class="block text-sm font-medium text-admin-textMuted mb-1">Gambar Unggulan</label>
+ <select id="owned-filter-featured-image" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Filter Gambar Unggulan">
+ <option value="">Semua</option>
+ <option value="has_image">Dengan Gambar</option>
+ <option value="no_image">Tanpa Gambar</option>
+ </select>
+ </div>
+ </div>
+ </div>
+
+ <!-- Your News and Articles List -->
+ <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-100 p-6 mb-8" role="region" aria-labelledby="news-list-title">
+ <div class="flex items-center justify-between mb-6">
+ <div class="flex items-center space-x-3">
+ <div class="w-10 h-10 bg-admin-primary rounded-polaris-full flex items-center justify-center" role="img" aria-label="News and articles icon">
+ <i class="fas fa-newspaper text-white"></i>
+ </div>
+ <h2 id="news-list-title" class="text-xl font-bold tracking-tight text-admin-text">Berita dan Artikel Anda</h2>
+ </div>
+ <div class="text-sm text-admin-textMuted">
+ <span id="articles-count">0</span> artikel ditemukan
+ </div>
+ </div>
+ 
+ <div id="owned-news-list" class="grid grid-cols-1 lg:grid-cols-2 gap-6" role="list" aria-label="List of your news and articles">
+ <p class="text-admin-textMuted col-span-full text-center" role="status">Memuat artikel Anda...</p>
+ </div>
+ 
+ <!-- Pagination Controls for Owned News -->
+ <div id="owned-pagination-controls" class="mt-6" role="navigation" aria-label="Pagination controls">
+ <!-- Pagination will be dynamically generated here -->
+ </div>
+ </div>
+
+ <!-- Delete Account Modal -->
+ <div id="delete-account-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="delete-account-modal-title" aria-modal="true">
+ <div class="bg-white p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md">
+ <div class="flex items-center space-x-3 mb-4">
+ <div class="w-10 h-10 bg-admin-critical rounded-polaris-full flex items-center justify-center">
+ <i class="fas fa-exclamation-triangle text-white"></i>
+ </div>
+ <h2 id="delete-account-modal-title" class="text-xl font-bold text-admin-critical">Hapus Akun</h2>
+ </div>
+ <p class="text-admin-textMuted mb-6">Apakah Anda yakin ingin menghapus akun Anda? Tindakan ini tidak dapat dibatalkan dan semua data Anda akan hilang selamanya.</p>
+ <div class="flex space-x-3">
+ <button onclick="closeDeleteAccountModal()" class="flex-1 bg-admin-border text-admin-text py-3 rounded-polaris-base font-semibold hover:bg-admin-border transition-colors duration-300" aria-label="Batal hapus akun">Batal</button>
+ <button id="confirm-delete-account-btn" class="flex-1 bg-admin-critical text-white py-3 rounded-polaris-base font-semibold hover:bg-admin-criticalHover transition-colors duration-300" aria-label="Konfirmasi hapus akun">Hapus Akun</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- Delete Article Modal -->
+ <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-75 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="delete-modal-title" aria-modal="true">
+ <div class="bg-white p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md">
+ <div class="flex items-center space-x-3 mb-4">
+ <div class="w-10 h-10 bg-admin-warning rounded-polaris-full flex items-center justify-center">
+ <i class="fas fa-trash text-white"></i>
+ </div>
+ <h2 id="delete-modal-title" class="text-xl font-bold text-admin-warning">Hapus Artikel</h2>
+ </div>
+ <p class="text-admin-textMuted mb-6">Apakah Anda yakin ingin menghapus artikel ini? Tindakan ini tidak dapat dibatalkan.</p>
+ <div class="flex space-x-3">
+ <button onclick="closeDeleteModal()" class="flex-1 bg-admin-border text-admin-text py-3 rounded-polaris-base font-semibold hover:bg-admin-border transition-colors duration-300" aria-label="Batal hapus artikel">Batal</button>
+ <button id="confirm-delete-btn" class="flex-1 bg-admin-critical text-white py-3 rounded-polaris-base font-semibold hover:bg-admin-criticalHover transition-colors duration-300" aria-label="Konfirmasi hapus artikel">Hapus</button>
+ </div>
+ </div>
+ </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+<script src="{{ url_for('static', filename='js/account-crud.js') }}"></script>
+{% endblock %}

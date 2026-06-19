@@ -1,0 +1,130 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Manajemen Video - Admin{% endblock %}
+{% block hero_title %}Manajemen Video{% endblock %}
+{% block hero_desc %}Kelola video YouTube{% endblock %}
+
+{% block content %}
+<div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
+<main class="container mx-auto px-6 py-12" role="main">
+ <!-- Add Video Form -->
+ <div id="add-video-form" class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="add-video-title">
+ <h2 id="add-video-title" class="text-xl font-semibold mb-4 text-admin-text">Tambah Video YouTube Baru</h2>
+ <form id="add-video" class="space-y-4" role="form" aria-label="Form tambah video YouTube">
+ <div>
+ <label for="video-link" class="block text-admin-textMuted font-medium mb-2">Tautan Video</label>
+ <input type="url" id="video-link" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true" aria-label="Masukkan tautan video YouTube">
+ </div>
+ <button type="submit" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Tambah video baru">Tambah Video</button>
+ </form>
+ <div id="add-video-status" class="mt-4" role="status" aria-live="polite"></div>
+ </div>
+
+ <!-- Manage Videos -->
+ <div id="manage-videos" class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="manage-videos-title">
+ <h2 id="manage-videos-title" class="text-xl font-semibold mb-4 text-admin-text">Kelola Video</h2>
+ <div class="flex items-center justify-between mb-4" role="toolbar" aria-label="Kontrol daftar video">
+ <div class="flex items-center space-x-2" role="group" aria-label="Pengaturan halaman">
+ <label for="page-selector" class="text-admin-textMuted">Halaman:</label>
+ <select id="page-selector" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Pilih halaman">
+ <!-- Pages will be populated by JavaScript -->
+ </select>
+ <select id="per-page-selector" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Jumlah video per halaman">
+ <option value="12">12 per halaman</option>
+ <option value="24">24 per halaman</option>
+ <option value="48">48 per halaman</option>
+ </select>
+ <label for="filter-visibility-video" class="ml-4 text-admin-textMuted">Keterlihatan:</label>
+ <select id="filter-visibility-video" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Filter keterlihatan video">
+ <option value="all">Semua</option>
+ <option value="visible">Tampil</option>
+ <option value="hidden">Tersembunyi</option>
+ </select>
+ <input type="checkbox" id="select-all-videos" class="ml-4 rounded-polaris-sm border-admin-border text-admin-accent focus:ring-admin-accent" aria-label="Pilih semua video">
+ <label for="select-all-videos" class="text-sm text-admin-textMuted">Pilih Semua</label>
+ </div>
+ <div class="flex items-center space-x-2" role="search" aria-label="Cari video">
+ <label for="search-input" class="sr-only">Cari video</label>
+ <input type="text" id="search-input" placeholder="Cari video..." class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Masukkan kata kunci pencarian">
+ <button id="search-btn" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Cari video">Cari</button>
+ </div>
+ </div>
+ <!-- Bulk Actions Bar -->
+ <div id="bulk-actions-bar-video" class="hidden bg-admin-surfaceHover border border-admin-border rounded-polaris-base px-4 py-2 mb-4 flex items-center space-x-4">
+ <span class="text-admin-textMuted font-semibold"><span id="bulk-video-count">0</span> video dipilih</span>
+ <button id="bulk-delete-btn-video" class="px-3 py-1 bg-admin-surface text-white rounded-polaris-sm focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100">Hapus</button>
+ <button id="bulk-visibility-btn-video" class="px-3 py-1 bg-admin-primary hover:bg-admin-primaryHover text-white rounded-polaris-sm focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">Ubah Visibilitas</button>
+ </div>
+ <div id="video-list" class="space-y-4" role="list" aria-label="Daftar video"></div>
+ <div id="pagination-controls" class="flex justify-between items-center mt-4" role="navigation" aria-label="Navigasi halaman">
+ <div class="text-admin-textMuted" id="page-info" role="status" aria-live="polite"></div>
+ <div class="flex space-x-2" role="group" aria-label="Tombol navigasi halaman">
+ <button id="first-page" class="px-4 py-2 bg-admin-surfaceHover rounded-polaris-base transition-all duration-300 shadow-polaris-100" aria-label="Ke halaman pertama">&lt;&lt;</button>
+ <button id="prev-page" class="px-4 py-2 bg-admin-surfaceHover rounded-polaris-base transition-all duration-300 shadow-polaris-100" aria-label="Ke halaman sebelumnya">&lt;</button>
+ <button id="next-page" class="px-4 py-2 bg-admin-surfaceHover rounded-polaris-base transition-all duration-300 shadow-polaris-100" aria-label="Ke halaman berikutnya">&gt;</button>
+ <button id="last-page" class="px-4 py-2 bg-admin-surfaceHover rounded-polaris-base transition-all duration-300 shadow-polaris-100" aria-label="Ke halaman terakhir">&gt;&gt;</button>
+ </div>
+ </div>
+ </div>
+</main>
+
+<!-- Edit & Delete Video Modals -->
+<div id="edit-video-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-30" role="dialog" aria-labelledby="edit-video-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 w-full max-w-md">
+ <h3 id="edit-video-title" class="text-xl font-semibold text-admin-text mb-4">Sunting Video</h3>
+ <div class="space-y-4">
+ <div>
+ <label for="edit-video-link" class="block text-admin-textMuted font-medium mb-2">Tautan Video</label>
+ <input id="edit-video-link" type="url" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Edit tautan video">
+ </div>
+ </div>
+ <div class="flex justify-end space-x-4 mt-4" role="group" aria-label="Tombol aksi">
+ <button id="cancel-edit-video-btn" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal edit video">Batal</button>
+ <button id="confirm-edit-video-btn" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Simpan perubahan video">Simpan</button>
+ </div>
+ </div>
+</div>
+<div id="delete-video-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-30" role="dialog" aria-labelledby="delete-video-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 w-full max-w-md">
+ <h3 id="delete-video-title" class="text-xl font-semibold text-admin-text mb-4">Konfirmasi Hapus</h3>
+ <p class="text-admin-textMuted mb-4">Apakah Anda yakin ingin menghapus video ini?</p>
+ <div class="flex justify-end space-x-4" role="group" aria-label="Tombol konfirmasi">
+ <button id="cancel-delete-video-btn" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal hapus video">Batal</button>
+ <button id="confirm-delete-video-btn" class="bg-admin-surface text-white px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100" aria-label="Konfirmasi hapus video">Hapus</button>
+ </div>
+ </div>
+</div>
+<!-- Bulk Delete Confirmation Modal for Videos -->
+<div id="bulk-delete-modal-video" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50" role="dialog" aria-labelledby="bulk-delete-modal-video-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 w-full max-w-md">
+ <h3 id="bulk-delete-modal-video-title" class="text-xl font-semibold text-admin-critical mb-4">Hapus Multiple Video</h3>
+ <p class="mb-4 text-admin-textMuted">Apakah Anda yakin ingin menghapus <span id="bulk-delete-count-video" class="font-semibold">0</span> video yang dipilih?</p>
+ <div class="bg-admin-criticalSurface border border-admin-criticalSurface rounded-polaris-base p-3 mb-4">
+ <p class="text-sm text-admin-critical"><i class="fas fa-exclamation-triangle mr-1"></i> Tindakan ini tidak dapat dibatalkan!</p>
+ </div>
+ <div class="flex justify-end space-x-4" role="group" aria-label="Tombol konfirmasi hapus massal">
+ <button type="button" id="cancel-bulk-delete-btn-video" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal hapus massal">Batal</button>
+ <button id="confirm-bulk-delete-btn-video" class="bg-admin-surface text-white px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100" aria-label="Konfirmasi hapus massal">Hapus Semua</button>
+ </div>
+ </div>
+</div>
+<!-- Bulk Visibility Confirmation Modal for Videos -->
+<div id="bulk-visibility-modal-video" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50" role="dialog" aria-labelledby="bulk-visibility-modal-video-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 w-full max-w-md">
+ <h3 id="bulk-visibility-modal-video-title" class="text-xl font-semibold text-admin-textMuted mb-4">Ubah Visibilitas Massal</h3>
+ <p class="mb-4 text-admin-textMuted">Apa yang ingin Anda lakukan pada <span id="bulk-visibility-count-video" class="font-semibold">0</span> video yang dipilih?</p>
+ <div class="flex flex-col gap-3 mb-4">
+ <button id="bulk-visibility-show-btn-video" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Tampilkan semua">Tampilkan Semua</button>
+ <button id="bulk-visibility-hide-btn-video" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Sembunyikan semua">Sembunyikan Semua</button>
+ </div>
+ <div class="flex justify-end">
+ <button type="button" id="cancel-bulk-visibility-btn-video" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal">Batal</button>
+ </div>
+ </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+<script src="{{ url_for('static', filename='js/youtube-management.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}
+
+{% block content %}
+
+  <!-- ─── Hero Swiper ────────────────────────────────────────── -->
+  {% if main_news %}
+  <section class="mb-20 -mx-4 sm:-mx-6 lg:-mx-0">
+    <div class="swiper featured-swiper overflow-hidden relative"
+         style="border-radius: 4px; aspect-ratio: 21/9; min-height: 300px;">
+      <div class="swiper-wrapper">
+        {% for news_item in main_news %}
+        <div class="swiper-slide group">
+          <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
+             class="block w-full h-full relative">
+            {% set image_obj = news_item.image %}
+            {% set img_url = url_for('static', filename='pic/placeholder.png') %}
+            {% if image_obj and image_obj.filepath %}
+              {% set img_url = url_for('static', filename=image_obj.filepath.replace('static/', '', 1)) %}
+            {% endif %}
+            <img src="{{ img_url }}" alt="{{ news_item.title | e }}"
+                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]">
+            <div class="absolute inset-0"
+                 style="background: linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.28) 55%, transparent 100%);"></div>
+            <div class="absolute bottom-0 p-8 md:p-12 w-full max-w-3xl">
+              <div class="flex gap-2 mb-4 flex-wrap">
+                <span class="text-[9px] font-black uppercase tracking-[0.18em] text-white/70">
+                  {% if news_item.category %}{{ news_item.category.name }}{% else %}Unggulan{% endif %}
+                </span>
+                {% if news_item.is_premium %}
+                <span class="m3-chip bg-amber-400 text-amber-950 border-transparent text-[9px]">Premium</span>
+                {% endif %}
+              </div>
+              <h3 class="text-2xl md:text-4xl lg:text-5xl font-black text-white leading-[1.05] mb-5"
+                  style="letter-spacing: -0.03em;">
+                {{ news_item.title }}
+              </h3>
+              <div class="flex items-center gap-6 text-[10px] font-black text-white/50 uppercase tracking-[0.14em]">
+                {% if news_item.writer %}
+                <span>{{ news_item.writer }}</span>
+                {% endif %}
+                {% if news_item.date %}
+                <span>{{ news_item.date.strftime('%d %b %Y') }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-button-next !right-6" aria-label="Selanjutnya"></div>
+      <div class="swiper-button-prev !left-6"  aria-label="Sebelumnya"></div>
+      <div class="swiper-pagination !bottom-5"></div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ─── Main Feed + Sidebar ───────────────────────────────── -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+
+    <!-- Latest (8 cols) -->
+    <div class="lg:col-span-8">
+
+      <!-- Swiss section header -->
+      <div class="section-heading">
+        <p class="section-heading-label">Terbaru</p>
+        <div class="flex items-end justify-between">
+          <h2>Berita Terbaru</h2>
+          <a href="{{ url_for('main.utama') }}"
+             class="m3-button-tonal !py-2 !px-4 text-[10px] mb-1">
+            Lihat Semua
+          </a>
+        </div>
+      </div>
+
+      <!-- Article list — Swiss style: stacked rows with rule dividers -->
+      {% if latest_news %}
+      <div class="divide-y" style="border-color: hsl(var(--border));">
+        {% for news_item in latest_news %}
+        <article class="flex gap-6 py-8 group">
+          <!-- Index number — Swiss convention -->
+          <span class="sw-index w-8 flex-shrink-0 pt-1">{{ '%02d' % loop.index }}</span>
+
+          <!-- Thumbnail -->
+          <div class="w-36 sm:w-44 aspect-[4/3] flex-shrink-0 overflow-hidden"
+               style="background-color: var(--m3-container); border-radius: 4px;">
+            {% set image_obj = news_item.image %}
+            {% set placeholder_img = url_for('static', filename='pic/placeholder.png') %}
+            {% set final_img_url = placeholder_img %}
+            {% if image_obj and image_obj.filepath %}
+              {% set p = image_obj.filepath.replace('static/', '', 1) %}
+              {% set di = p.rfind('.') %}
+              {% if di != -1 %}
+                {% set final_img_url = url_for('static', filename=p[:di] ~ '_thumb_landscape' ~ p[di:]) %}
+              {% endif %}
+            {% endif %}
+            <img src="{{ placeholder_img }}" data-src="{{ final_img_url }}"
+                 alt="{{ news_item.title | e }}"
+                 class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]">
+          </div>
+
+          <!-- Text -->
+          <div class="flex flex-col justify-between min-w-0 flex-1">
+            <div>
+              <p class="text-[10px] font-black uppercase tracking-[0.14em] mb-2"
+                 style="color: hsl(var(--primary));">
+                {{ news_item.category.name if news_item.category else 'Berita' }}
+              </p>
+              <h3 class="text-lg font-black leading-tight line-clamp-2 mb-2 transition-colors duration-200"
+                  style="letter-spacing: -0.02em; color: hsl(var(--foreground));">
+                <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
+                   class="group-hover:text-[color:hsl(var(--primary))]">
+                  {{ news_item.title }}
+                </a>
+              </h3>
+              <p class="text-sm leading-relaxed line-clamp-2 hidden sm:block"
+                 style="color: hsl(var(--muted-foreground));">
+                {{ news_item.content | striptags | truncate(120) }}
+              </p>
+            </div>
+            <div class="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.12em] mt-3"
+                 style="color: hsl(var(--muted-foreground));">
+              <span>{{ news_item.writer or 'Anonim' }}</span>
+              {% if news_item.date %}<span>{{ news_item.date.strftime('%d %b %Y') }}</span>{% endif %}
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Sidebar Populer (4 cols) -->
+    <aside class="lg:col-span-4 sticky-sidebar">
+      <div class="section-heading">
+        <p class="section-heading-label">Populer</p>
+        <h2>Paling Banyak Dibaca</h2>
+      </div>
+
+      {% if popular_news %}
+      <div class="divide-y" style="border-color: hsl(var(--border));">
+        {% for news_item in popular_news %}
+        <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
+           class="flex gap-4 py-5 group">
+          <span class="sw-index w-7 flex-shrink-0 pt-0.5">{{ '%02d' % loop.index }}</span>
+
+          <div class="w-16 h-16 flex-shrink-0 overflow-hidden"
+               style="background-color: var(--m3-container); border-radius: 4px;">
+            {% set image_obj = news_item.image %}
+            {% set placeholder_img = url_for('static', filename='pic/placeholder.png') %}
+            {% set thumb_url = placeholder_img %}
+            {% if image_obj and image_obj.filepath %}
+              {% set p = image_obj.filepath.replace('static/', '', 1) %}
+              {% set di = p.rfind('.') %}
+              {% if di != -1 %}
+                {% set thumb_url = url_for('static', filename=p[:di] ~ '_thumb_square' ~ p[di:]) %}
+              {% endif %}
+            {% endif %}
+            <img src="{{ placeholder_img }}" data-src="{{ thumb_url }}"
+                 alt="{{ news_item.title | e }}"
+                 class="lazy w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.07]">
+          </div>
+
+          <div class="min-w-0">
+            <h4 class="text-sm font-bold leading-snug line-clamp-2 transition-colors duration-200
+                       group-hover:text-[color:hsl(var(--primary))]"
+                style="color: hsl(var(--foreground)); letter-spacing: -0.01em;">
+              {{ news_item.title }}
+            </h4>
+            {% if news_item.date %}
+            <p class="text-[10px] font-black uppercase tracking-[0.12em] mt-1.5"
+               style="color: hsl(var(--muted-foreground));">
+              {{ news_item.date.strftime('%d %b %Y') }}
+            </p>
+            {% endif %}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
+  </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.querySelector('.featured-swiper')) {
+    new Swiper('.featured-swiper', {
+      loop: true,
+      autoplay: { delay: 5500, disableOnInteraction: false },
+      pagination: { el: '.swiper-pagination', clickable: true },
+      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      speed: 900,
+    });
+  }
+  const obs = new IntersectionObserver((entries, o) => {
+    entries.forEach(({ isIntersecting, target }) => {
+      if (!isIntersecting) return;
+      target.src = target.dataset.src;
+      target.onload = () => target.classList.add('loaded');
+      o.unobserve(target);
+    });
+  }, { rootMargin: '80px' });
+  document.querySelectorAll('img.lazy').forEach(img => obs.observe(img));
+});
+</script>
+{% endblock %}

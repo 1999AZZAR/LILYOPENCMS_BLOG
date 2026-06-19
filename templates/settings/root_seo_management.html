@@ -1,0 +1,450 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Manajemen SEO Root - {{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}
+
+{% block extra_head %}
+<style>
+ .seo-score-excellent { background-color: #10B981; }
+ .seo-score-good { background-color: #F59E0B; }
+ .seo-score-poor { background-color: #EF4444; }
+ .seo-status-complete { background-color: #10B981; }
+ .seo-status-incomplete { background-color: #F59E0B; }
+ .seo-status-missing { background-color: #EF4444; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+ <!-- Header -->
+ <div class="mb-8">
+ <h1 class="text-3xl font-bold text-admin-text mb-2">
+ <i class="fas fa-globe mr-3 text-admin-textMuted"></i>Manajemen SEO Root
+ </h1>
+ <p class="text-admin-textMuted">Kelola pengaturan SEO untuk halaman utama website</p>
+ </div>
+
+ <!-- Analytics Cards -->
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="flex items-center">
+ <i class="fas fa-globe text-admin-textMuted text-2xl mr-3"></i>
+ <div>
+ <p class="text-sm font-medium text-admin-textMuted">Total Halaman</p>
+ <p class="text-2xl font-bold text-admin-text" id="total-pages">{{ total_pages }}</p>
+ </div>
+ </div>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-success">
+ <div class="flex items-center">
+ <i class="fas fa-check-circle text-admin-success text-2xl mr-3"></i>
+ <div>
+ <p class="text-sm font-medium text-admin-textMuted">Halaman Aktif</p>
+ <p class="text-2xl font-bold text-admin-text" id="active-pages">{{ active_pages }}</p>
+ </div>
+ </div>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="flex items-center">
+ <i class="fas fa-chart-line text-admin-textMuted text-2xl mr-3"></i>
+ <div>
+ <p class="text-sm font-medium text-admin-textMuted">Rata-rata Skor SEO</p>
+ <p class="text-2xl font-bold text-admin-text" id="avg-seo-score">{{ completion_rate }}%</p>
+ </div>
+ </div>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="flex items-center">
+ <i class="fas fa-trophy text-admin-accent text-2xl mr-3"></i>
+ <div>
+ <p class="text-sm font-medium text-admin-textMuted">SEO Lengkap</p>
+ <p class="text-2xl font-bold text-admin-text" id="complete-seo">{{ complete_seo }}</p>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- SEO Status Cards -->
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-success cursor-pointer" data-seo-status="complete" id="card-complete-seo">
+ <div class="flex items-center justify-between">
+ <div>
+ <p class="text-sm font-medium text-admin-textMuted">SEO Lengkap</p>
+ <p class="text-2xl font-bold text-admin-text" id="complete-seo-count">{{ complete_seo }}</p>
+ </div>
+ <i class="fas fa-check-circle text-admin-success text-2xl"></i>
+ </div>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-warning cursor-pointer" data-seo-status="incomplete" id="card-incomplete-seo">
+ <div class="flex items-center justify-between">
+ <div>
+ <p class="text-sm font-medium text-admin-textMuted">SEO Tidak Lengkap</p>
+ <p class="text-2xl font-bold text-admin-text" id="incomplete-seo-count">{{ incomplete_seo }}</p>
+ </div>
+ <i class="fas fa-exclamation-triangle text-admin-warning text-2xl"></i>
+ </div>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-critical cursor-pointer" data-seo-status="missing" id="card-missing-seo">
+ <div class="flex items-center justify-between">
+ <div>
+ <p class="text-sm font-medium text-admin-textMuted">Tanpa SEO</p>
+ <p class="text-2xl font-bold text-admin-text" id="missing-seo-count">{{ missing_seo }}</p>
+ </div>
+ <i class="fas fa-times-circle text-admin-critical text-2xl"></i>
+ </div>
+ </div>
+ </div>
+
+ <!-- Action Buttons -->
+ <div class="flex flex-wrap gap-4 mb-6">
+ <button id="create-seo-btn" class="bg-admin-accentHover hover:bg-admin-accentHover text-white px-6 py-3 rounded-polaris-base font-medium transition-colors">
+ <i class="fas fa-plus mr-2"></i>Buat SEO Baru
+ </button>
+ <button id="bulk-edit-btn" class="bg-admin-accentHover hover:bg-admin-accentHover text-white px-6 py-3 rounded-polaris-base font-medium transition-colors">
+ <i class="fas fa-edit mr-2"></i>Edit Massal
+ </button>
+ <button id="export-btn" class="bg-admin-successHover hover:bg-admin-successHover text-white px-6 py-3 rounded-polaris-base font-medium transition-colors">
+ <i class="fas fa-download mr-2"></i>Ekspor Data
+ </button>
+ <button id="refresh-btn" class="bg-admin-primaryHover hover:bg-admin-primaryHover text-white px-6 py-3 rounded-polaris-base font-medium transition-colors">
+ <i class="fas fa-sync-alt mr-2"></i>Refresh
+ </button>
+ </div>
+
+ <!-- Filters -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 mb-6">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">Filter</h3>
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <div>
+ <label for="seo-status-filter" class="block text-sm font-medium text-admin-text mb-1">Status SEO</label>
+ <select id="seo-status-filter" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="">Semua Status</option>
+ <option value="complete">Lengkap</option>
+ <option value="incomplete">Tidak Lengkap</option>
+ <option value="missing">Tanpa SEO</option>
+ </select>
+ </div>
+ <div>
+ <label for="page-status-filter" class="block text-sm font-medium text-admin-text mb-1">Status Halaman</label>
+ <select id="page-status-filter" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="">Semua Status</option>
+ <option value="active">Aktif</option>
+ <option value="inactive">Tidak Aktif</option>
+ </select>
+ </div>
+ <div>
+ <label for="search-filter" class="block text-sm font-medium text-admin-text mb-1">Cari</label>
+ <input type="text" id="search-filter" placeholder="Cari halaman..." class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ </div>
+ </div>
+ </div>
+
+ <!-- Root SEO Table -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 overflow-hidden">
+ <div class="px-6 py-4 border-b border-admin-border">
+ <h3 class="text-lg font-semibold text-admin-text">Daftar SEO Root</h3>
+ </div>
+ <div class="overflow-x-auto">
+ <table class="min-w-full divide-y divide-admin-border">
+ <thead class="bg-admin-surfaceHover">
+ <tr>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">
+ <input type="checkbox" id="select-all" class="rounded-polaris-sm border-admin-border text-admin-textMuted focus:ring-admin-accent">
+ </th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Halaman</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Status</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Skor SEO</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Meta Title</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Meta Description</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Terakhir Diperbarui</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Aksi</th>
+ </tr>
+ </thead>
+ <tbody id="root-seo-table-body" class="bg-white divide-y divide-admin-border">
+ {% for entry in root_seo_entries %}
+ <tr data-seo-id="{{ entry.id }}" class="hover:bg-admin-surfaceHover">
+ <td class="px-6 py-4 whitespace-nowrap">
+ <input type="checkbox" class="seo-checkbox rounded-polaris-sm border-admin-border text-admin-textMuted focus:ring-admin-accent" value="{{ entry.id }}">
+ </td>
+ <td class="px-6 py-4 whitespace-nowrap">
+ <div>
+ <div class="text-sm font-medium text-admin-text">{{ entry.page_name }}</div>
+ <div class="text-sm text-admin-textMuted">{{ entry.page_identifier }}</div>
+ </div>
+ </td>
+ <td class="px-6 py-4 whitespace-nowrap">
+ <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-polaris-full {% if entry.is_active %}bg-admin-successSurface text-admin-successHover{% else %}bg-admin-criticalSurface text-admin-criticalHover{% endif %}">
+ {% if entry.is_active %}Aktif{% else %}Tidak Aktif{% endif %}
+ </span>
+ </td>
+ <td class="px-6 py-4 whitespace-nowrap">
+ {% set seo_score = entry.calculate_seo_score() %}
+ <div class="flex items-center">
+ <div class="w-16 bg-admin-surfaceHover rounded-polaris-full h-2 mr-2">
+ <div class="h-2 rounded-polaris-full {% if seo_score >= 80 %}bg-admin-success{% elif seo_score >= 40 %}bg-admin-warning{% else %}bg-admin-critical{% endif %}" style="width: {{ seo_score }}%"></div>
+ </div>
+ <span class="text-sm font-medium text-admin-text">{{ seo_score }}%</span>
+ </div>
+ </td>
+ <td class="px-6 py-4">
+ <div class="text-sm text-admin-text max-w-xs truncate">
+ {{ entry.meta_title or 'Belum diatur' }}
+ </div>
+ </td>
+ <td class="px-6 py-4">
+ <div class="text-sm text-admin-text max-w-xs truncate">
+ {{ entry.meta_description or 'Belum diatur' }}
+ </div>
+ </td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">
+ {{ entry.updated_at.strftime('%d/%m/%Y %H:%M') if entry.updated_at else 'Belum diperbarui' }}
+ </td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+ <button class="edit-seo-btn text-admin-textMuted hover:text-admin-text mr-3" data-seo-id="{{ entry.id }}">
+ <i class="fas fa-edit"></i>
+ </button>
+ <button class="delete-seo-btn text-admin-critical hover:text-admin-criticalHover" data-seo-id="{{ entry.id }}">
+ <i class="fas fa-trash"></i>
+ </button>
+ </td>
+ </tr>
+ {% endfor %}
+ </tbody>
+ </table>
+ </div>
+ </div>
+</div>
+
+<!-- Create/Edit SEO Modal -->
+<div id="seo-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+ <div class="bg-white rounded-polaris-base shadow-polaris-200 max-w-4xl w-full max-h-screen overflow-y-auto">
+ <div class="px-6 py-4 border-b border-admin-border">
+ <h2 id="modal-title" class="text-2xl font-semibold text-admin-text">Buat SEO Baru</h2>
+ </div>
+ 
+ <form id="seo-form" class="p-6">
+ <input type="hidden" id="seo-id" name="seo_id">
+ 
+ <!-- Basic Information -->
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+ <div>
+ <label for="page-identifier" class="block text-sm font-medium text-admin-text mb-2">Page Identifier *</label>
+ <input type="text" id="page-identifier" name="page_identifier" required class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="home, about, news">
+ <p class="text-xs text-admin-textMuted mt-1">Identifier unik untuk halaman (contoh: home, about, news)</p>
+ </div>
+ <div>
+ <label for="page-name" class="block text-sm font-medium text-admin-text mb-2">Nama Halaman *</label>
+ <input type="text" id="page-name" name="page_name" required class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Beranda">
+ <p class="text-xs text-admin-textMuted mt-1">Nama yang ditampilkan untuk halaman</p>
+ </div>
+ </div>
+
+ <!-- Status -->
+ <div class="mb-6">
+ <label class="flex items-center">
+ <input type="checkbox" id="is-active" name="is_active" class="rounded-polaris-sm border-admin-border text-admin-textMuted focus:ring-admin-accent">
+ <span class="ml-2 text-sm text-admin-text">Halaman Aktif</span>
+ </label>
+ </div>
+
+ <!-- Basic SEO Fields -->
+ <div class="mb-6">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">SEO Dasar</h3>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+ <div>
+ <label for="meta-title" class="block text-sm font-medium text-admin-text mb-2">Meta Title</label>
+ <input type="text" id="meta-title" name="meta_title" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Judul halaman untuk search engine">
+ <p class="text-xs text-admin-textMuted mt-1">Maksimal 200 karakter</p>
+ </div>
+ <div>
+ <label for="meta-keywords" class="block text-sm font-medium text-admin-text mb-2">Meta Keywords</label>
+ <input type="text" id="meta-keywords" name="meta_keywords" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="keyword1, keyword2, keyword3">
+ <p class="text-xs text-admin-textMuted mt-1">Kata kunci dipisahkan dengan koma</p>
+ </div>
+ </div>
+ <div class="mt-4">
+ <label for="meta-description" class="block text-sm font-medium text-admin-text mb-2">Meta Description</label>
+ <textarea id="meta-description" name="meta_description" rows="3" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Deskripsi halaman untuk search engine"></textarea>
+ <p class="text-xs text-admin-textMuted mt-1">Maksimal 500 karakter</p>
+ </div>
+ </div>
+
+ <!-- Open Graph Fields -->
+ <div class="mb-6">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">Open Graph (Social Media)</h3>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+ <div>
+ <label for="og-title" class="block text-sm font-medium text-admin-text mb-2">OG Title</label>
+ <input type="text" id="og-title" name="og_title" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Judul untuk social media">
+ </div>
+ <div>
+ <label for="og-type" class="block text-sm font-medium text-admin-text mb-2">OG Type</label>
+ <select id="og-type" name="og_type" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="website">Website</option>
+ <option value="article">Article</option>
+ <option value="blog">Blog</option>
+ <option value="profile">Profile</option>
+ </select>
+ </div>
+ </div>
+ <div class="mt-4">
+ <label for="og-description" class="block text-sm font-medium text-admin-text mb-2">OG Description</label>
+ <textarea id="og-description" name="og_description" rows="3" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Deskripsi untuk social media"></textarea>
+ </div>
+ <div class="mt-4">
+ <label for="og-image" class="block text-sm font-medium text-admin-text mb-2">OG Image URL</label>
+ <input type="url" id="og-image" name="og_image" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="https://example.com/image.jpg">
+ </div>
+ </div>
+
+ <!-- Twitter Card Fields -->
+ <div class="mb-6">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">Twitter Card</h3>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+ <div>
+ <label for="twitter-card" class="block text-sm font-medium text-admin-text mb-2">Twitter Card Type</label>
+ <select id="twitter-card" name="twitter_card" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="summary">Summary</option>
+ <option value="summary_large_image" selected>Summary Large Image</option>
+ <option value="player">Player</option>
+ <option value="app">App</option>
+ </select>
+ </div>
+ <div>
+ <label for="twitter-title" class="block text-sm font-medium text-admin-text mb-2">Twitter Title</label>
+ <input type="text" id="twitter-title" name="twitter_title" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Judul untuk Twitter">
+ </div>
+ </div>
+ <div class="mt-4">
+ <label for="twitter-description" class="block text-sm font-medium text-admin-text mb-2">Twitter Description</label>
+ <textarea id="twitter-description" name="twitter_description" rows="3" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Deskripsi untuk Twitter"></textarea>
+ </div>
+ <div class="mt-4">
+ <label for="twitter-image" class="block text-sm font-medium text-admin-text mb-2">Twitter Image URL</label>
+ <input type="url" id="twitter-image" name="twitter_image" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="https://example.com/twitter-image.jpg">
+ </div>
+ </div>
+
+ <!-- Advanced SEO Fields -->
+ <div class="mb-6">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">SEO Lanjutan</h3>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+ <div>
+ <label for="canonical-url" class="block text-sm font-medium text-admin-text mb-2">Canonical URL</label>
+ <input type="url" id="canonical-url" name="canonical_url" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="https://example.com/page">
+ </div>
+ <div>
+ <label for="meta-author" class="block text-sm font-medium text-admin-text mb-2">Meta Author</label>
+ <input type="text" id="meta-author" name="meta_author" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Nama penulis">
+ </div>
+ </div>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+ <div>
+ <label for="meta-language" class="block text-sm font-medium text-admin-text mb-2">Meta Language</label>
+ <select id="meta-language" name="meta_language" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="id" selected>Indonesia (id)</option>
+ <option value="en">English (en)</option>
+ <option value="ja">Japanese (ja)</option>
+ <option value="ko">Korean (ko)</option>
+ <option value="zh">Chinese (zh)</option>
+ </select>
+ </div>
+ <div>
+ <label for="meta-robots" class="block text-sm font-medium text-admin-text mb-2">Meta Robots</label>
+ <select id="meta-robots" name="meta_robots" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="index, follow" selected>Index, Follow</option>
+ <option value="noindex, follow">No Index, Follow</option>
+ <option value="index, nofollow">Index, No Follow</option>
+ <option value="noindex, nofollow">No Index, No Follow</option>
+ </select>
+ </div>
+ </div>
+ <div class="mt-4">
+ <label for="structured-data-type" class="block text-sm font-medium text-admin-text mb-2">Structured Data Type</label>
+ <select id="structured-data-type" name="structured_data_type" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="WebPage" selected>WebPage</option>
+ <option value="WebSite">WebSite</option>
+ <option value="Organization">Organization</option>
+ <option value="Article">Article</option>
+ <option value="NewsArticle">NewsArticle</option>
+ <option value="BlogPosting">BlogPosting</option>
+ </select>
+ </div>
+ <div class="mt-4">
+ <label for="schema-markup" class="block text-sm font-medium text-admin-text mb-2">Schema Markup (JSON-LD)</label>
+ <textarea id="schema-markup" name="schema_markup" rows="6" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent font-mono text-sm" placeholder='{"@context": "https://schema.org", "@type": "WebPage", "name": "Page Name", "description": "Page description"}'></textarea>
+ <p class="text-xs text-admin-textMuted mt-1">JSON-LD structured data untuk search engines</p>
+ </div>
+ </div>
+
+ <!-- Analytics Fields -->
+ <div class="mb-6">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">Analytics & Tracking</h3>
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+ <div>
+ <label for="google-analytics-id" class="block text-sm font-medium text-admin-text mb-2">Google Analytics ID</label>
+ <input type="text" id="google-analytics-id" name="google_analytics_id" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="G-XXXXXXXXXX">
+ </div>
+ <div>
+ <label for="facebook-pixel-id" class="block text-sm font-medium text-admin-text mb-2">Facebook Pixel ID</label>
+ <input type="text" id="facebook-pixel-id" name="facebook_pixel_id" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="123456789">
+ </div>
+ </div>
+ </div>
+
+ <!-- SEO Score Preview -->
+ <div class="mb-6">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">Skor SEO</h3>
+ <div class="bg-admin-surfaceHover rounded-polaris-base p-4">
+ <div class="flex items-center justify-between mb-2">
+ <span class="text-sm font-medium text-admin-text">Kelengkapan SEO</span>
+ <span id="seo-score-display" class="text-lg font-bold text-admin-text">0%</span>
+ </div>
+ <div class="w-full bg-admin-surfaceHover rounded-polaris-full h-3">
+ <div id="seo-score-bar" class="h-3 rounded-polaris-full bg-admin-critical" style="width: 0%"></div>
+ </div>
+ <p class="text-xs text-admin-textMuted mt-2">Skor berdasarkan kelengkapan field SEO</p>
+ </div>
+ </div>
+
+ <!-- Form Actions -->
+ <div class="flex justify-end gap-4 pt-6 border-t border-admin-border">
+ <button type="button" id="cancel-btn" class="px-6 py-2 border border-admin-border rounded-polaris-base text-admin-text hover:bg-admin-surfaceHover transition-colors">
+ Batal
+ </button>
+ <button type="submit" id="save-btn" class="px-6 py-2 bg-admin-accentHover text-white rounded-polaris-base hover:bg-admin-accentHover transition-colors">
+ <i class="fas fa-save mr-2"></i>Simpan SEO
+ </button>
+ </div>
+ </form>
+ </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+ <div class="bg-white rounded-polaris-base shadow-polaris-200 max-w-md w-full">
+ <div class="px-6 py-4 border-b border-admin-border">
+ <h3 class="text-lg font-semibold text-admin-text">Konfirmasi Hapus</h3>
+ </div>
+ <div class="px-6 py-4">
+ <p class="text-admin-text">Apakah Anda yakin ingin menghapus pengaturan SEO ini? Tindakan ini tidak dapat dibatalkan.</p>
+ </div>
+ <div class="px-6 py-4 border-t border-admin-border flex justify-end gap-4">
+ <button id="cancel-delete" class="px-4 py-2 border border-admin-border rounded-polaris-base text-admin-text hover:bg-admin-surfaceHover transition-colors">
+ Batal
+ </button>
+ <button id="confirm-delete" class="px-4 py-2 bg-admin-criticalHover text-white rounded-polaris-base hover:bg-admin-criticalHover transition-colors">
+ Hapus
+ </button>
+ </div>
+ </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/root-seo-management.js') }}"></script>
+{% endblock %}

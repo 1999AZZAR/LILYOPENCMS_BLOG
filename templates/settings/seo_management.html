@@ -1,0 +1,667 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Manajemen SEO - Admin{% endblock %}
+{% block hero_title %}Manajemen SEO{% endblock %}
+{% block hero_desc %}Kelola meta descriptions, keywords, dan Open Graph tags untuk artikel{% endblock %}
+
+{% block content %}
+<div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
+
+<!-- Navigation Tabs -->
+<div class="mb-6">
+ <nav class="flex space-x-1 bg-admin-surfaceHover p-1 rounded-polaris-base" role="tablist">
+ <button class="tab-button active bg-white text-admin-text px-4 py-2 rounded-polaris-base font-medium" data-tab="articles">
+ <i class="fas fa-newspaper mr-2"></i>Artikel
+ </button>
+ <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="settings">
+ <i class="fas fa-cog mr-2"></i>Pengaturan Global
+ </button>
+ <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="analytics">
+ <i class="fas fa-chart-line mr-2"></i>Analitik SEO
+ </button>
+ </nav>
+</div>
+
+<!-- Articles Tab -->
+<div id="articles-tab" class="tab-content active">
+ <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <div class="flex justify-between items-center mb-6">
+ <h2 class="text-xl font-semibold text-admin-text">Kelola SEO Artikel</h2>
+ <div class="flex space-x-2">
+ <button id="refresh-seo" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <i class="fas fa-sync-alt mr-2"></i>Segarkan
+ </button>
+ <div class="relative">
+ <select id="category-filter" class="bg-white border border-admin-border text-admin-textMuted px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="">Semua Kategori</option>
+ </select>
+ </div>
+ </div>
+ </div>
+
+ <!-- Search and Filter -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-4 mb-6">
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <div>
+ <label for="search-articles" class="block text-sm font-medium text-admin-text mb-1">Cari Artikel</label>
+ <input type="text" id="search-articles" placeholder="Judul artikel..." class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ </div>
+ <div>
+ <label for="status-filter" class="block text-sm font-medium text-admin-text mb-1">Status</label>
+ <select id="status-filter" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="">Semua Status</option>
+ <option value="published">Dipublikasi</option>
+ <option value="draft">Draft</option>
+ <option value="archived">Diarsipkan</option>
+ </select>
+ </div>
+ <div>
+ <label for="seo-status-filter" class="block text-sm font-medium text-admin-text mb-1">Status SEO</label>
+ <select id="seo-status-filter" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="">Semua</option>
+ <option value="complete">Lengkap</option>
+ <option value="incomplete">Tidak Lengkap</option>
+ <option value="missing">Hilang</option>
+ </select>
+ </div>
+ </div>
+ </div>
+
+ <!-- Articles Table -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 overflow-hidden">
+ <div class="overflow-x-auto">
+ <table class="min-w-full divide-y divide-admin-border">
+ <thead class="bg-admin-surfaceHover">
+ <tr>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Judul</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Kategori</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Status SEO</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Meta Desc</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Keywords</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">OG Tags</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Aksi</th>
+ </tr>
+ </thead>
+ <tbody id="articles-table-body" class="bg-white divide-y divide-admin-border">
+ <tr>
+ <td colspan="7" class="px-6 py-4 text-center text-admin-textMuted">
+ <i class="fas fa-spinner fa-spin text-xl"></i>
+ <p class="mt-2">Memuat artikel...</p>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- Pagination -->
+ <div class="mt-6 flex justify-between items-center">
+ <div class="text-sm text-admin-text">
+ Menampilkan <span id="showing-start">0</span> - <span id="showing-end">0</span> dari <span id="total-articles">0</span> artikel
+ </div>
+ <div class="flex space-x-2" id="pagination-controls">
+ <!-- Pagination buttons will be inserted here -->
+ </div>
+ </div>
+ </main>
+</div>
+
+<!-- Settings Tab -->
+<div id="settings-tab" class="tab-content">
+ <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <div class="flex justify-between items-center mb-6">
+ <h2 class="text-xl font-semibold text-admin-text">Pengaturan SEO Global</h2>
+ <div class="flex space-x-2">
+ <button type="button" onclick="applyGlobalSettings()" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-4 py-2 rounded-polaris-base font-medium transition-all duration-300 shadow-polaris-100">
+ <i class="fas fa-magic mr-2"></i>Terapkan ke Semua Artikel
+ </button>
+ <button type="button" onclick="resetGlobalSettings()" class="bg-admin-surface text-white px-4 py-2 rounded-polaris-base font-medium transition-all duration-300 shadow-polaris-100">
+ <i class="fas fa-undo mr-2"></i>Reset
+ </button>
+ </div>
+ </div>
+
+ <!-- Global SEO Settings -->
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+ <!-- Default Meta Settings -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-tags mr-2 text-admin-textMuted"></i>Pengaturan Meta Default
+ </h3>
+ <form id="global-meta-form" class="space-y-4">
+ <div>
+ <label for="default-meta-description" class="block text-sm font-medium text-admin-text mb-1">Meta Description Default</label>
+ <textarea id="default-meta-description" name="default_meta_description" rows="3" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Meta description default untuk artikel yang tidak memiliki meta description..."></textarea>
+ <div class="flex justify-between items-center mt-1">
+ <p class="text-xs text-admin-textMuted">Maksimal 500 karakter</p>
+ <span class="text-xs text-admin-textMuted" id="meta-desc-count">0/500</span>
+ </div>
+ </div>
+ <div>
+ <label for="default-meta-keywords" class="block text-sm font-medium text-admin-text mb-1">Meta Keywords Default</label>
+ <input type="text" id="default-meta-keywords" name="default_meta_keywords" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="keyword1, keyword2, keyword3">
+ <p class="text-xs text-admin-textMuted mt-1">Pisahkan dengan koma</p>
+ </div>
+ <div>
+ <label for="default-meta-author" class="block text-sm font-medium text-admin-text mb-1">Meta Author Default</label>
+ <input type="text" id="default-meta-author" name="default_meta_author" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Nama penulis default">
+ </div>
+ <div>
+ <label for="default-meta-robots" class="block text-sm font-medium text-admin-text mb-1">Meta Robots Default</label>
+ <select id="default-meta-robots" name="default_meta_robots" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="index, follow">Index, Follow</option>
+ <option value="noindex, follow">No Index, Follow</option>
+ <option value="index, nofollow">Index, No Follow</option>
+ <option value="noindex, nofollow">No Index, No Follow</option>
+ </select>
+ </div>
+ <button type="submit" class="bg-admin-accentHover hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium transition-all duration-300">
+ <i class="fas fa-save mr-2"></i>Simpan Pengaturan Meta
+ </button>
+ </form>
+ </div>
+
+ <!-- Open Graph Settings -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-share-alt mr-2 text-admin-success"></i>Pengaturan Open Graph
+ </h3>
+ <form id="global-og-form" class="space-y-4">
+ <div>
+ <label for="default-og-title" class="block text-sm font-medium text-admin-text mb-1">OG Title Default</label>
+ <input type="text" id="default-og-title" name="default_og_title" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Judul default untuk social media sharing">
+ </div>
+ <div>
+ <label for="default-og-description" class="block text-sm font-medium text-admin-text mb-1">OG Description Default</label>
+ <textarea id="default-og-description" name="default_og_description" rows="3" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Deskripsi default untuk social media sharing..."></textarea>
+ <div class="flex justify-between items-center mt-1">
+ <p class="text-xs text-admin-textMuted">Maksimal 300 karakter</p>
+ <span class="text-xs text-admin-textMuted" id="og-desc-count">0/300</span>
+ </div>
+ </div>
+ <div>
+ <label for="default-og-image" class="block text-sm font-medium text-admin-text mb-1">OG Image Default</label>
+ <div class="flex items-center gap-x-2">
+ <input type="text" id="default-og-image" name="default_og_image" class="flex-1 px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="https://example.com/image.jpg" readonly>
+ <button type="button" onclick="openImageSelector('default-og-image')" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-4 py-2 rounded-polaris-base font-medium transition-all duration-300 shadow-polaris-100">
+ <i class="fas fa-image mr-1"></i>Pilih
+ </button>
+ </div>
+ <img id="og-image-preview" src="" class="w-full h-24 object-cover rounded-polaris-base mt-2 hidden" alt="Preview OG Image">
+ </div>
+ <button type="submit" class="bg-admin-successHover hover:bg-admin-successHover text-white px-4 py-2 rounded-polaris-base font-medium transition-all duration-300">
+ <i class="fas fa-save mr-2"></i>Simpan Pengaturan OG
+ </button>
+ </form>
+ </div>
+ </div>
+
+ <!-- Additional Global Settings -->
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+ <!-- Twitter Card Settings -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fab fa-twitter mr-2 text-admin-accent"></i>Pengaturan Twitter Card
+ </h3>
+ <form id="global-twitter-form" class="space-y-4">
+ <div>
+ <label for="default-twitter-card" class="block text-sm font-medium text-admin-text mb-1">Twitter Card Type Default</label>
+ <select id="default-twitter-card" name="default_twitter_card" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="summary">Summary</option>
+ <option value="summary_large_image">Summary Large Image</option>
+ <option value="app">App</option>
+ <option value="player">Player</option>
+ </select>
+ </div>
+ <div>
+ <label for="default-twitter-title" class="block text-sm font-medium text-admin-text mb-1">Twitter Title Default</label>
+ <input type="text" id="default-twitter-title" name="default_twitter_title" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Judul default untuk Twitter">
+ </div>
+ <div>
+ <label for="default-twitter-description" class="block text-sm font-medium text-admin-text mb-1">Twitter Description Default</label>
+ <textarea id="default-twitter-description" name="default_twitter_description" rows="2" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Deskripsi default untuk Twitter..."></textarea>
+ </div>
+ <button type="submit" class="bg-admin-accent hover:bg-admin-surface0 text-white px-4 py-2 rounded-polaris-base font-medium transition-all duration-300">
+ <i class="fas fa-save mr-2"></i>Simpan Pengaturan Twitter
+ </button>
+ </form>
+ </div>
+
+ <!-- Structured Data Settings -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-code mr-2 text-admin-accent"></i>Pengaturan Structured Data
+ </h3>
+ <form id="global-structured-form" class="space-y-4">
+ <div>
+ <label for="default-structured-data-type" class="block text-sm font-medium text-admin-text mb-1">Structured Data Type Default</label>
+ <select id="default-structured-data-type" name="default_structured_data_type" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="Article">Article</option>
+ <option value="NewsArticle">News Article</option>
+ <option value="BlogPosting">Blog Post</option>
+ <option value="WebPage">Web Page</option>
+ </select>
+ </div>
+ <div>
+ <label for="default-canonical-url" class="block text-sm font-medium text-admin-text mb-1">Canonical URL Default</label>
+ <input type="text" id="default-canonical-url" name="default_canonical_url" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="https://example.com">
+ </div>
+ <div>
+ <label for="default-meta-language" class="block text-sm font-medium text-admin-text mb-1">Meta Language Default</label>
+ <select id="default-meta-language" name="default_meta_language" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="id">Indonesia (id)</option>
+ <option value="en">English (en)</option>
+ <option value="ja">Japanese (ja)</option>
+ <option value="ko">Korean (ko)</option>
+ <option value="zh">Chinese (zh)</option>
+ </select>
+ </div>
+ <button type="submit" class="bg-admin-accentHover hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium transition-all duration-300">
+ <i class="fas fa-save mr-2"></i>Simpan Pengaturan Structured Data
+ </button>
+ </form>
+ </div>
+ </div>
+ </main>
+</div>
+
+<!-- Analytics Tab -->
+<div id="analytics-tab" class="tab-content">
+ <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <div class="flex justify-between items-center mb-6">
+ <h2 class="text-xl font-semibold text-admin-text">Analitik SEO</h2>
+ </div>
+
+ <!-- SEO Metrics Cards -->
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-success cursor-pointer" data-seo-status="complete" id="card-complete-seo">
+ <div class="flex items-center">
+ <div class="flex-shrink-0">
+ <i class="fas fa-check-circle text-admin-success text-2xl"></i>
+ </div>
+ <div class="ml-4">
+ <p class="text-sm font-medium text-admin-textMuted">Artikel SEO Lengkap</p>
+ <p class="text-2xl font-bold text-admin-text" id="complete-seo-count">-</p>
+ </div>
+ </div>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-warning cursor-pointer" data-seo-status="incomplete" id="card-incomplete-seo">
+ <div class="flex items-center">
+ <div class="flex-shrink-0">
+ <i class="fas fa-exclamation-triangle text-admin-warning text-2xl"></i>
+ </div>
+ <div class="ml-4">
+ <p class="text-sm font-medium text-admin-textMuted">SEO Tidak Lengkap</p>
+ <p class="text-2xl font-bold text-admin-text" id="incomplete-seo-count">-</p>
+ </div>
+ </div>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-critical cursor-pointer" data-seo-status="missing" id="card-missing-seo">
+ <div class="flex items-center">
+ <div class="flex-shrink-0">
+ <i class="fas fa-times-circle text-admin-critical text-2xl"></i>
+ </div>
+ <div class="ml-4">
+ <p class="text-sm font-medium text-admin-textMuted">Tanpa SEO</p>
+ <p class="text-2xl font-bold text-admin-text" id="missing-seo-count">-</p>
+ </div>
+ </div>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="flex items-center">
+ <div class="flex-shrink-0">
+ <i class="fas fa-percentage text-admin-textMuted text-2xl"></i>
+ </div>
+ <div class="ml-4">
+ <p class="text-sm font-medium text-admin-textMuted">Rata-rata Lengkap</p>
+ <p class="text-2xl font-bold text-admin-text" id="seo-completion-rate">-</p>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Recent Activity Card -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 mb-8 border-l-4 border-admin-accent">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">
+ <i class="fas fa-clock mr-2 text-admin-accent"></i>Aktivitas 30 Hari Terakhir
+ </h3>
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <div class="text-center">
+ <p class="text-2xl font-bold text-admin-accent" id="recent-total">-</p>
+ <p class="text-sm text-admin-textMuted">Total Artikel</p>
+ </div>
+ <div class="text-center">
+ <p class="text-2xl font-bold text-admin-success" id="recent-complete">-</p>
+ <p class="text-sm text-admin-textMuted">Lengkap</p>
+ </div>
+ <div class="text-center">
+ <p class="text-xl font-bold tracking-tight text-admin-textMuted" id="recent-completion-rate">-</p>
+ <p class="text-sm text-admin-textMuted">Tingkat Kelengkapan</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Field Completion Analysis -->
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">
+ <i class="fas fa-chart-bar mr-2 text-admin-accent"></i>Kelengkapan Field SEO
+ </h3>
+ <div class="space-y-4" id="field-completion-chart">
+ <div class="text-center text-admin-textMuted py-4">
+ <i class="fas fa-spinner fa-spin text-xl"></i>
+ <p class="mt-2">Memuat data...</p>
+ </div>
+ </div>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-lg font-semibold text-admin-text mb-4">
+ <i class="fas fa-tags mr-2 text-admin-warning"></i>Analisis per Kategori
+ </h3>
+ <div class="space-y-4" id="category-analysis">
+ <div class="text-center text-admin-textMuted py-4">
+ <i class="fas fa-spinner fa-spin text-xl"></i>
+ <p class="mt-2">Memuat data...</p>
+ </div>
+ </div>
+ </div>
+ </div>
+ <!-- Filter badge/button placeholder -->
+ <div id="seo-analytics-filter-badge" class="mb-4"></div>
+
+ <!-- Quick Actions -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 mb-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-bolt mr-2 text-admin-warning"></i>Aksi Cepat
+ </h3>
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <button onclick="bulkFixMissingMetaDescriptions()" class="flex items-center justify-center p-4 bg-admin-surface border border-admin-border rounded-polaris-base hover:bg-admin-surfaceHover transition-colors">
+ <i class="fas fa-tag text-admin-textMuted mr-3"></i>
+ <div class="text-left">
+ <p class="font-medium text-admin-text">Perbaiki Meta Description</p>
+ <p class="text-sm text-admin-textMuted">Otomatis tambahkan meta description untuk artikel yang belum memilikinya</p>
+ </div>
+ </button>
+ 
+ <button onclick="bulkFixMissingOGTitles()" class="flex items-center justify-center p-4 bg-admin-successSurface border border-admin-successSurface rounded-polaris-base hover:bg-admin-successSurface transition-colors">
+ <i class="fas fa-heading text-admin-success mr-3"></i>
+ <div class="text-left">
+ <p class="font-medium text-admin-successHover">Perbaiki OG Titles</p>
+ <p class="text-sm text-admin-successHover">Otomatis tambahkan Open Graph titles untuk artikel yang belum memilikinya</p>
+ </div>
+ </button>
+ 
+ <button onclick="bulkFixMissingSlugs()" class="flex items-center justify-center p-4 bg-admin-surfaceHover border border-admin-accent rounded-polaris-base hover:bg-admin-surfaceHover transition-colors">
+ <i class="fas fa-link text-admin-accent mr-3"></i>
+ <div class="text-left">
+ <p class="font-medium text-admin-accentHover">Perbaiki SEO Slugs</p>
+ <p class="text-sm text-admin-accentHover">Otomatis generate SEO-friendly slugs untuk artikel yang belum memilikinya</p>
+ </div>
+ </button>
+ </div>
+ </div>
+
+ <!-- SEO Issues -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="flex items-center justify-between mb-4">
+ <h3 class="text-base font-bold text-admin-text">
+ <i class="fas fa-exclamation-triangle mr-2 text-admin-critical"></i>Masalah SEO yang Perlu Diperbaiki
+ </h3>
+ <div class="flex space-x-2">
+ <button onclick="filterIssuesByPriority('high')" class="px-3 py-1 text-xs font-medium bg-admin-criticalSurface text-admin-criticalHover rounded-polaris-full hover:bg-admin-criticalSurface">
+ <i class="fas fa-exclamation-triangle mr-1"></i>High Priority
+ </button>
+ <button onclick="filterIssuesByPriority('medium')" class="px-3 py-1 text-xs font-medium bg-admin-warningSurface text-admin-warningHover rounded-polaris-full hover:bg-admin-warningSurface">
+ <i class="fas fa-exclamation-circle mr-1"></i>Medium Priority
+ </button>
+ <button onclick="filterIssuesByPriority('all')" class="px-3 py-1 text-xs font-medium bg-admin-surfaceHover text-admin-text rounded-polaris-full hover:bg-admin-border">
+ <i class="fas fa-list mr-1"></i>All Issues
+ </button>
+ </div>
+ </div>
+ <div id="seo-issues-list" class="space-y-3">
+ <div class="text-center text-admin-textMuted py-4">
+ <i class="fas fa-spinner fa-spin text-xl"></i>
+ <p class="mt-2">Memuat masalah SEO...</p>
+ </div>
+ </div>
+ </div>
+ </main>
+</div>
+
+<!-- Edit SEO Modal -->
+<div id="edit-seo-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-40">
+ <div class="flex items-center justify-center min-h-screen p-4">
+ <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-200 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+ <div class="p-6">
+ <div class="flex justify-between items-center mb-6">
+ <h3 class="text-xl font-semibold text-admin-text">Edit SEO Artikel</h3>
+ <button id="close-seo-modal" class="text-admin-textMuted hover:text-admin-text transition-colors duration-200">
+ <i class="fas fa-times text-xl"></i>
+ </button>
+ </div>
+
+ <form id="edit-seo-form" class="space-y-6">
+ <input type="hidden" id="edit-article-id">
+ 
+ <!-- Article Info -->
+ <div class="bg-admin-surfaceHover p-4 rounded-polaris-base border border-admin-border">
+ <h4 class="font-medium text-admin-text mb-2">Informasi Artikel</h4>
+ <p class="text-sm text-admin-textMuted" id="edit-article-title"></p>
+ <p class="text-sm text-admin-textMuted" id="edit-article-category"></p>
+ </div>
+
+ <!-- Meta Tags -->
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+ <div>
+ <label for="edit-meta-description" class="block text-sm font-medium text-admin-text mb-1">Meta Description</label>
+ <textarea id="edit-meta-description" name="meta_description" rows="4" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="Deskripsi untuk search engines (maksimal 500 karakter)"></textarea>
+ <div class="flex justify-between text-xs text-admin-textMuted mt-1">
+ <span>Maksimal 500 karakter</span>
+ <span id="meta-desc-count">0/500</span>
+ </div>
+ </div>
+
+ <div>
+ <label for="edit-meta-keywords" class="block text-sm font-medium text-admin-text mb-1">Meta Keywords</label>
+ <input type="text" id="edit-meta-keywords" name="meta_keywords" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="keyword1, keyword2, keyword3">
+ <p class="text-xs text-admin-textMuted mt-1">Pisahkan dengan koma</p>
+ </div>
+ </div>
+
+ <!-- Open Graph Tags -->
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+ <div>
+ <label for="edit-og-title" class="block text-sm font-medium text-admin-text mb-1">Open Graph Title</label>
+ <input type="text" id="edit-og-title" name="og_title" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="Judul untuk social media sharing">
+ <div class="flex justify-between text-xs text-admin-textMuted mt-1">
+ <span>Maksimal 200 karakter</span>
+ <span id="og-title-count">0/200</span>
+ </div>
+ </div>
+
+ <div>
+ <label for="edit-og-description" class="block text-sm font-medium text-admin-text mb-1">Open Graph Description</label>
+ <textarea id="edit-og-description" name="og_description" rows="4" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="Deskripsi untuk social media sharing"></textarea>
+ <div class="flex justify-between text-xs text-admin-textMuted mt-1">
+ <span>Maksimal 500 karakter</span>
+ <span id="og-desc-count">0/500</span>
+ </div>
+ </div>
+ </div>
+
+ <!-- Additional SEO Fields -->
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+ <div>
+ <label for="edit-og-image" class="block text-sm font-medium text-admin-text mb-1">Open Graph Image URL</label>
+ <input type="text" id="edit-og-image" name="og_image" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="https://example.com/image.jpg">
+ <p class="text-xs text-admin-textMuted mt-1">URL gambar untuk social media sharing</p>
+ </div>
+
+ <div>
+ <label for="edit-canonical-url" class="block text-sm font-medium text-admin-text mb-1">Canonical URL</label>
+ <input type="text" id="edit-canonical-url" name="canonical_url" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="https://example.com/article">
+ <p class="text-xs text-admin-textMuted mt-1">URL kanonik untuk mencegah konten duplikat</p>
+ </div>
+ </div>
+
+ <!-- SEO Slug -->
+ <div>
+ <label for="edit-seo-slug" class="block text-sm font-medium text-admin-text mb-1">SEO Slug</label>
+ <input type="text" id="edit-seo-slug" name="seo_slug" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="judul-artikel-seo-friendly">
+ <p class="text-xs text-admin-textMuted mt-1">URL yang SEO-friendly (otomatis dibuat dari judul)</p>
+ </div>
+
+ <!-- Twitter Card Tags -->
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+ <div>
+ <label for="edit-twitter-card" class="block text-sm font-medium text-admin-text mb-1">Twitter Card Type</label>
+ <select id="edit-twitter-card" name="twitter_card" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent">
+ <option value="">Pilih tipe card</option>
+ <option value="summary">Summary</option>
+ <option value="summary_large_image">Summary Large Image</option>
+ <option value="app">App</option>
+ <option value="player">Player</option>
+ </select>
+ </div>
+ <div>
+ <label for="edit-twitter-title" class="block text-sm font-medium text-admin-text mb-1">Twitter Title</label>
+ <input type="text" id="edit-twitter-title" name="twitter_title" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="Judul untuk Twitter">
+ </div>
+ </div>
+
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+ <div>
+ <label for="edit-twitter-description" class="block text-sm font-medium text-admin-text mb-1">Twitter Description</label>
+ <textarea id="edit-twitter-description" name="twitter_description" rows="3" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="Deskripsi untuk Twitter"></textarea>
+ </div>
+ <div>
+ <label for="edit-twitter-image" class="block text-sm font-medium text-admin-text mb-1">Twitter Image URL</label>
+ <input type="text" id="edit-twitter-image" name="twitter_image" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="https://example.com/twitter-image.jpg">
+ </div>
+ </div>
+
+ <!-- Advanced Meta Tags -->
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+ <div>
+ <label for="edit-meta-author" class="block text-sm font-medium text-admin-text mb-1">Meta Author</label>
+ <input type="text" id="edit-meta-author" name="meta_author" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent" placeholder="Nama penulis">
+ </div>
+ <div>
+ <label for="edit-meta-language" class="block text-sm font-medium text-admin-text mb-1">Meta Language</label>
+ <select id="edit-meta-language" name="meta_language" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent">
+ <option value="id">Indonesia (id)</option>
+ <option value="en">English (en)</option>
+ <option value="ja">Japanese (ja)</option>
+ <option value="ko">Korean (ko)</option>
+ <option value="zh">Chinese (zh)</option>
+ </select>
+ </div>
+ </div>
+
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+ <div>
+ <label for="edit-meta-robots" class="block text-sm font-medium text-admin-text mb-1">Meta Robots</label>
+ <select id="edit-meta-robots" name="meta_robots" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent">
+ <option value="index, follow">Index, Follow</option>
+ <option value="noindex, follow">No Index, Follow</option>
+ <option value="index, nofollow">Index, No Follow</option>
+ <option value="noindex, nofollow">No Index, No Follow</option>
+ </select>
+ </div>
+ <div>
+ <label for="edit-structured-data-type" class="block text-sm font-medium text-admin-text mb-1">Structured Data Type</label>
+ <select id="edit-structured-data-type" name="structured_data_type" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent">
+ <option value="Article">Article</option>
+ <option value="NewsArticle">News Article</option>
+ <option value="BlogPosting">Blog Post</option>
+ <option value="WebPage">Web Page</option>
+ </select>
+ </div>
+ </div>
+
+ <!-- SEO Score Display -->
+ <div class="bg-admin-surfaceHover p-4 rounded-polaris-base border border-admin-border">
+ <h4 class="font-medium text-admin-text mb-2">SEO Score</h4>
+ <div class="flex items-center space-x-2">
+ <span class="text-xl font-bold tracking-tight text-admin-textMuted" id="seo-score">-</span>
+ <span class="text-sm text-admin-textMuted">/ 100</span>
+ </div>
+ <p class="text-xs text-admin-textMuted mt-1">Skor berdasarkan kelengkapan data SEO</p>
+ </div>
+
+ <!-- Preview -->
+ <div class="bg-admin-surfaceHover p-4 rounded-polaris-base border border-admin-border">
+ <h4 class="font-medium text-admin-text mb-2">Preview Google Search</h4>
+ <div class="bg-white border border-admin-border rounded-polaris-sm p-3">
+ <div class="text-admin-textMuted text-sm" id="preview-url">https://example.com/article</div>
+ <div class="text-lg font-medium text-admin-text" id="preview-title">Judul Artikel</div>
+ <div class="text-sm text-admin-textMuted" id="preview-description">Deskripsi artikel akan muncul di sini...</div>
+ </div>
+ </div>
+
+ <!-- Action Buttons -->
+ <div class="flex justify-end space-x-3">
+ <button type="button" id="cancel-seo-edit" class="px-4 py-2 border border-admin-border text-admin-textMuted rounded-polaris-base hover:bg-admin-surface transition-all duration-300">
+ Batal
+ </button>
+ <button type="submit" class="px-4 py-2 bg-admin-primary hover:bg-admin-primaryHover text-white rounded-polaris-base font-medium transition-all duration-300 shadow-polaris-100">
+ <i class="fas fa-save mr-2"></i>Simpan SEO
+ </button>
+ </div>
+ </form>
+ </div>
+ </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmation-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-[9999]">
+ <div class="flex items-center justify-center min-h-screen p-4">
+ <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-200 max-w-md w-full">
+ <div class="p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">Konfirmasi Aksi</h3>
+ <p class="text-admin-textMuted mb-6" id="confirmation-message">Apakah Anda yakin ingin melanjutkan aksi ini?</p>
+ 
+ <div class="flex justify-end space-x-3">
+ <button id="cancel-confirmation" class="px-4 py-2 border border-admin-border text-admin-textMuted rounded-polaris-base hover:bg-admin-surface transition-all duration-300">
+ Batal
+ </button>
+ <button id="confirm-action" class="px-4 py-2 bg-admin-primary hover:bg-admin-primaryHover text-white rounded-polaris-base font-medium transition-all duration-300 shadow-polaris-100">
+ Konfirmasi
+ </button>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+
+<!-- Image Selector Modal for Global Settings -->
+<div id="image-selector-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-60" role="dialog" aria-labelledby="image-selector-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+ <h2 id="image-selector-title" class="text-xl font-semibold mb-4 text-admin-text">Pilih Gambar</h2>
+ <div class="mb-4" role="radiogroup" aria-label="Pilih sumber gambar">
+ <label class="inline-flex items-center"><input type="radio" name="image-source-selector" value="library" checked class="form-radio text-admin-accent" aria-label="Pilih dari perpustakaan"><span class="ml-2 text-admin-textMuted">Perpustakaan</span></label>
+ <label class="inline-flex items-center ml-4"><input type="radio" name="image-source-selector" value="url" class="form-radio text-admin-accent" aria-label="Gunakan URL eksternal"><span class="ml-2 text-admin-textMuted">URL Eksternal</span></label>
+ </div>
+ <div id="image-library-section-selector" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4" role="list" aria-label="Daftar gambar perpustakaan"></div>
+ <!-- Pagination for Image Library -->
+ <div id="image-selector-pagination-controls" class="mt-4 mb-4" role="navigation" aria-label="Navigasi halaman gambar">
+ <!-- Image selector pagination will be generated here -->
+ </div>
+ <div id="image-url-section-selector" class="hidden space-y-4 mb-4">
+ <input id="image-url-input-selector" type="text" inputmode="url" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base" placeholder="https://contoh.com/gambar.jpg" aria-label="URL gambar">
+ <input id="image-alt-input-selector" type="text" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base" placeholder="Alt teks (opsional)" aria-label="Teks alternatif gambar">
+ </div>
+ <div class="flex space-x-4" role="group" aria-label="Tombol aksi gambar">
+ <button type="button" id="select-image-btn" class="flex-1 bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Pilih gambar">Pilih</button>
+ <button type="button" id="close-image-selector" class="flex-1 bg-admin-surface text-admin-text py-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300 shadow-polaris-100" aria-label="Tutup dialog">Tutup</button>
+ </div>
+ </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/seo-management.js') }}"></script>
+{% endblock %} 

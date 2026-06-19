@@ -1,0 +1,318 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Dashboard Analitik - Admin{% endblock %}
+{% block hero_title %}Dashboard Analitik{% endblock %}
+{% block hero_desc %}Wawasan real-time dan metrik performa{% endblock %}
+
+{% block content %}
+<div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
+
+<!-- Navigation Tabs -->
+<div class="mb-6">
+ <nav class="flex space-x-1 bg-admin-surfaceHover p-1 rounded-polaris-base" role="tablist">
+ <button class="tab-button active bg-white text-admin-text px-4 py-2 rounded-polaris-base font-medium" data-tab="overview">
+ <i class="fas fa-chart-line mr-2"></i>Ringkasan
+ </button>
+ <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="content">
+ <i class="fas fa-file-alt mr-2"></i>Analitik Konten
+ </button>
+ <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="activity">
+ <i class="fas fa-list-alt mr-2"></i>Log Aktivitas
+ </button>
+ <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="performance">
+ <i class="fas fa-server mr-2"></i>Performa Sistem
+ </button>
+ </nav>
+</div>
+
+<!-- Overview Tab -->
+<div id="overview-tab" class="tab-content active">
+ <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <div class="flex justify-between items-center mb-6">
+ <h2 class="text-xl font-semibold text-admin-text">Ringkasan Dashboard</h2>
+ <div class="flex space-x-2">
+ <button id="refresh-btn" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <i class="fas fa-sync-alt mr-2"></i>Segarkan
+ </button>
+ <div class="relative">
+ <select id="period-selector" class="bg-white border border-admin-border text-admin-textMuted px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <option value="7">7 Hari Terakhir</option>
+ <option value="30" selected>30 Hari Terakhir</option>
+ <option value="90">90 Hari Terakhir</option>
+ </select>
+ </div>
+ </div>
+ </div>
+
+ <!-- Real-time Stats Cards -->
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+ <!-- Active Visitors -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-success">
+ <div class="flex items-center">
+ <div class="flex-shrink-0">
+ <i class="fas fa-users text-admin-success text-2xl"></i>
+ </div>
+ <div class="ml-4">
+ <p class="text-sm font-medium text-admin-textMuted">Pengunjung Aktif</p>
+ <p class="text-2xl font-bold text-admin-text" id="active-visitors">-</p>
+ </div>
+ </div>
+ <div class="mt-4">
+ <span class="text-xs text-admin-success bg-admin-successSurface px-2 py-1 rounded-polaris-full">
+ <i class="fas fa-arrow-up mr-1"></i>Live
+ </span>
+ </div>
+ </div>
+
+ <!-- Total Users -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="flex items-center">
+ <div class="flex-shrink-0">
+ <i class="fas fa-user-friends text-admin-textMuted text-2xl"></i>
+ </div>
+ <div class="ml-4">
+ <p class="text-sm font-medium text-admin-textMuted">Total Pengguna</p>
+ <p class="text-2xl font-bold text-admin-text" id="total-users">-</p>
+ </div>
+ </div>
+ <div class="mt-4">
+ <span class="text-xs text-admin-textMuted bg-admin-surfaceHover px-2 py-1 rounded-polaris-full">
+ <i class="fas fa-users mr-1"></i>Terdaftar
+ </span>
+ </div>
+ </div>
+
+ <!-- Content Created -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="flex items-center">
+ <div class="flex-shrink-0">
+ <i class="fas fa-file-alt text-admin-accent text-2xl"></i>
+ </div>
+ <div class="ml-4">
+ <p class="text-sm font-medium text-admin-textMuted">Konten Dibuat</p>
+ <p class="text-2xl font-bold text-admin-text" id="content-created">-</p>
+ </div>
+ </div>
+ <div class="mt-4">
+ <span class="text-xs text-admin-accent bg-admin-surfaceHover px-2 py-1 rounded-polaris-full">
+ <i class="fas fa-plus mr-1"></i>Periode Ini
+ </span>
+ </div>
+ </div>
+
+ <!-- Engagement Score -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-warning">
+ <div class="flex items-center">
+ <div class="flex-shrink-0">
+ <i class="fas fa-chart-bar text-admin-warning text-2xl"></i>
+ </div>
+ <div class="ml-4">
+ <p class="text-sm font-medium text-admin-textMuted">Keterlibatan</p>
+ <p class="text-2xl font-bold text-admin-text" id="engagement-score">-</p>
+ </div>
+ </div>
+ <div class="mt-4">
+ <span class="text-xs text-admin-warning bg-admin-warningSurface px-2 py-1 rounded-polaris-full">
+ <i class="fas fa-trending-up mr-1"></i>Skor
+ </span>
+ </div>
+ </div>
+ </div>
+
+ <!-- Weekly Summary -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 mb-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-calendar-week mr-2"></i>Ringkasan Minggu Ini
+ </h3>
+ <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+ <div class="text-center p-4 bg-admin-surface rounded-polaris-base">
+ <div class="text-xl font-bold tracking-tight text-admin-textMuted" id="weekly-news">-</div>
+ <div class="text-sm text-admin-textMuted">Berita Dibuat</div>
+ </div>
+ <div class="text-center p-4 bg-admin-successSurface rounded-polaris-base">
+ <div class="text-2xl font-bold text-admin-success" id="weekly-images">-</div>
+ <div class="text-sm text-admin-successHover">Gambar Diunggah</div>
+ </div>
+ <div class="text-center p-4 bg-admin-surfaceHover rounded-polaris-base">
+ <div class="text-2xl font-bold text-admin-accent" id="weekly-videos">-</div>
+ <div class="text-sm text-admin-accentHover">Video Diunggah</div>
+ </div>
+ <div class="text-center p-4 bg-admin-warningSurface rounded-polaris-base">
+ <div class="text-2xl font-bold text-admin-warning" id="weekly-users">-</div>
+ <div class="text-sm text-admin-warningHover">Pengguna Aktif</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Export Reports -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-download mr-2"></i>Ekspor Laporan
+ </h3>
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <button id="export-content" class="bg-admin-accentHover hover:bg-admin-accentHover text-white px-4 py-3 rounded-polaris-base flex items-center justify-center">
+ <i class="fas fa-file-alt mr-2"></i>
+ Performa Konten
+ </button>
+ <button id="export-users" class="bg-admin-successHover hover:bg-admin-successHover text-white px-4 py-3 rounded-polaris-base flex items-center justify-center">
+ <i class="fas fa-users mr-2"></i>
+ Statistik Pengguna
+ </button>
+ <button id="export-activity" class="bg-admin-accentHover hover:bg-admin-accentHover text-white px-4 py-3 rounded-polaris-base flex items-center justify-center">
+ <i class="fas fa-list-alt mr-2"></i>
+ Log Aktivitas
+ </button>
+ </div>
+ </div>
+ </main>
+</div>
+
+<!-- Content Analytics Tab -->
+<div id="content-tab" class="tab-content">
+ <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <div class="flex justify-between items-center mb-6">
+ <h2 class="text-xl font-semibold text-admin-text">Performa Konten</h2>
+ </div>
+
+ <!-- Content Performance Charts -->
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+ <!-- News Analytics -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-newspaper mr-2 text-admin-textMuted"></i>Artikel Berita
+ </h3>
+ <div class="space-y-4">
+ <div class="flex justify-between items-center p-3 bg-admin-surface rounded-polaris-base">
+ <div>
+ <p class="font-medium text-admin-text">Total Artikel</p>
+ <p class="text-sm text-admin-textMuted" id="news-stats">-</p>
+ </div>
+ <div class="text-right">
+ <p class="text-lg font-bold text-admin-textMuted" id="news-count">-</p>
+ <p class="text-xs text-admin-textMuted">Total Dibaca: <span id="news-reads">-</span></p>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Image Analytics -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-image mr-2 text-admin-success"></i>Gambar
+ </h3>
+ <div class="space-y-4">
+ <div class="flex justify-between items-center p-3 bg-admin-successSurface rounded-polaris-base">
+ <div>
+ <p class="font-medium text-admin-text">Total Gambar</p>
+ <p class="text-sm text-admin-textMuted" id="image-stats">-</p>
+ </div>
+ <div class="text-right">
+ <p class="text-lg font-bold text-admin-success" id="image-count">-</p>
+ <p class="text-xs text-admin-textMuted">Rata-rata Unduhan: <span id="image-downloads">-</span></p>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Video Analytics -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-video mr-2 text-admin-accent"></i>Video
+ </h3>
+ <div class="space-y-4">
+ <div class="flex justify-between items-center p-3 bg-admin-surfaceHover rounded-polaris-base">
+ <div>
+ <p class="font-medium text-admin-text">Total Video</p>
+ <p class="text-sm text-admin-textMuted" id="video-stats">-</p>
+ </div>
+ <div class="text-right">
+ <p class="text-lg font-bold text-admin-accent" id="video-count">-</p>
+ <p class="text-xs text-admin-textMuted">Rata-rata Tontonan: <span id="video-views">-</span></p>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- Popular Content -->
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-star mr-2 text-admin-warning"></i>Konten Populer
+ </h3>
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="popular-content">
+ <div class="text-center text-admin-textMuted py-8">
+ <i class="fas fa-spinner fa-spin text-xl"></i>
+ <p class="mt-2">Memuat konten populer...</p>
+ </div>
+ </div>
+ </div>
+ </main>
+</div>
+
+<!-- Activity Logs Tab -->
+<div id="activity-tab" class="tab-content">
+ <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <div class="flex justify-between items-center mb-6">
+ <h2 class="text-xl font-semibold text-admin-text">Aktivitas Terbaru</h2>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="space-y-3 max-h-96 overflow-y-auto" id="activity-logs">
+ <div class="text-center text-admin-textMuted py-4">
+ <i class="fas fa-spinner fa-spin text-xl"></i>
+ <p class="mt-2">Memuat aktivitas...</p>
+ </div>
+ </div>
+ </div>
+ </main>
+</div>
+
+<!-- System Performance Tab -->
+<div id="performance-tab" class="tab-content">
+ <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <div class="flex justify-between items-center mb-6">
+ <h2 class="text-xl font-semibold text-admin-text">Performa Sistem</h2>
+ </div>
+
+ <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <h3 class="text-base font-bold text-admin-text mb-4">
+ <i class="fas fa-server mr-2 text-admin-critical"></i>Performa Server
+ </h3>
+ <div class="space-y-4">
+ <div class="flex justify-between items-center">
+ <span class="text-sm font-medium text-admin-text">Penggunaan CPU</span>
+ <div class="flex items-center">
+ <div class="w-32 bg-admin-surfaceHover rounded-polaris-full h-2 mr-3">
+ <div class="bg-admin-criticalHover h-2 rounded-polaris-full" id="cpu-bar" style="width: 0%"></div>
+ </div>
+ <span class="text-sm font-medium text-admin-text" id="cpu-percent">-</span>
+ </div>
+ </div>
+ <div class="flex justify-between items-center">
+ <span class="text-sm font-medium text-admin-text">Penggunaan Memori</span>
+ <div class="flex items-center">
+ <div class="w-32 bg-admin-surfaceHover rounded-polaris-full h-2 mr-3">
+ <div class="bg-admin-accentHover h-2 rounded-polaris-full" id="memory-bar" style="width: 0%"></div>
+ </div>
+ <span class="text-sm font-medium text-admin-text" id="memory-percent">-</span>
+ </div>
+ </div>
+ <div class="flex justify-between items-center">
+ <span class="text-sm font-medium text-admin-text">Respon Database</span>
+ <span class="text-sm font-medium text-admin-text" id="db-response">-</span>
+ </div>
+ </div>
+ </div>
+ </main>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+ <div class="bg-white rounded-polaris-base p-6 flex items-center">
+ <i class="fas fa-spinner fa-spin text-admin-textMuted text-xl mr-3"></i>
+ <span class="text-admin-text">Memuat data analitik...</span>
+ </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/analytics-dashboard.js') }}"></script>
+{% endblock %} 

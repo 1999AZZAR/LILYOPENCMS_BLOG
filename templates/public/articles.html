@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }} — Artikel{% endblock %}
+
+{% block content %}
+<section class="py-10 lg:py-14">
+
+  <!-- Swiss section header -->
+  <div class="section-heading">
+    <p class="section-heading-label">Artikel</p>
+    <h2>Eksplorasi Artikel</h2>
+  </div>
+  <p class="text-base font-medium mb-16 -mt-6" style="color: hsl(var(--muted-foreground));">
+    Membahas tuntas beragam topik melalui narasi yang mendalam dan informatif.
+  </p>
+
+  {% if articles.items %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-0">
+    {% for item in articles.items %}
+    <article class="py-8 group" style="border-bottom: 1px solid hsl(var(--border));">
+      <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+         class="block aspect-video overflow-hidden mb-5"
+         style="background-color: var(--m3-container); border-radius: 4px;">
+        {% set image_obj = item.image %}
+        {% set placeholder_img = url_for('static', filename='pic/placeholder.png') %}
+        {% set final_img_url = placeholder_img %}
+        {% if image_obj and image_obj.filepath %}
+          {% set p = image_obj.filepath.replace('static/', '', 1) %}
+          {% set di = p.rfind('.') %}
+          {% if di != -1 %}
+            {% set final_img_url = url_for('static', filename=p[:di] ~ '_thumb_landscape' ~ p[di:]) %}
+          {% endif %}
+        {% endif %}
+        <img src="{{ placeholder_img }}" data-src="{{ final_img_url }}"
+             alt="{{ item.title | e }}"
+             class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]">
+      </a>
+
+      <p class="text-[10px] font-black uppercase tracking-[0.16em] mb-2"
+         style="color: hsl(var(--accent));">
+        {{ item.category.name if item.category else 'Pilihan' }}
+        {% if item.is_premium %}
+        <span class="m3-chip ml-2 bg-amber-400 text-amber-950 border-transparent">Pro</span>
+        {% endif %}
+      </p>
+
+      <h3 class="text-xl font-black leading-tight line-clamp-2 mb-3"
+          style="letter-spacing: -0.025em; color: hsl(var(--foreground));">
+        <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+           class="transition-colors duration-200 group-hover:text-[color:hsl(var(--primary))]">
+          {{ item.title }}
+        </a>
+      </h3>
+
+      <p class="text-sm leading-relaxed line-clamp-2 mb-4"
+         style="color: hsl(var(--muted-foreground));">
+        {{ item.content | striptags | truncate(110) }}
+      </p>
+
+      <div class="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.12em]"
+           style="color: hsl(var(--muted-foreground));">
+        <span>{{ item.writer or 'Anonim' }}</span>
+        {% if item.date %}<span>{{ item.date.strftime('%d %b %Y') }}</span>{% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  {% with pagination_obj=articles, pagination_route='main.articles' %}
+    {% include 'pagination.html' %}
+  {% endwith %}
+
+  {% else %}
+  <div class="py-24 text-center" style="border: 1px solid hsl(var(--border));">
+    <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-3"
+       style="color: hsl(var(--muted-foreground));">Kosong</p>
+    <p class="text-xl font-black" style="color: hsl(var(--foreground));">Belum ada artikel tersedia.</p>
+  </div>
+  {% endif %}
+
+</section>
+{% endblock %}

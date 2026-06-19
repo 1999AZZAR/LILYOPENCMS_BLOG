@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }} - Video{% if query %} | Pencarian "{{ query }}"{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-12">
+    <!-- Header -->
+    <div class="text-center mb-16">
+        <h1 class="text-5xl md:text-7xl font-black text-slate-800 mb-6 tracking-tighter">
+          {% if query %}
+            Hasil: "{{ query }}"
+          {% else %}
+            Konten Video
+          {% endif %}
+        </h1>
+        <p class="text-xl text-slate-500 max-w-2xl mx-auto font-medium">
+            Video pilihan dan terpopuler dari {{ brand_info.brand_name|default('LilyOpenCMS') }}
+        </p>
+    </div>
+
+    <!-- Videos Grid -->
+    {% if videos.items %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="videos-grid">
+        {% for video in videos.items %}
+         <article class="m3-card-interactive !p-0 overflow-hidden flex flex-col group">
+            <a href="{{ video.link }}" target="_blank" rel="noopener noreferrer" class="relative aspect-video overflow-hidden bg-m3-container">
+                <img src="{{ url_for('static', filename='pic/placeholder.png') }}"
+                     data-src="https://img.youtube.com/vi/{{ video.youtube_id }}/hqdefault.jpg"
+                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 lazy">
+                
+                <div class="absolute inset-0 flex items-center justify-center bg-slate-900/20 group-hover:bg-slate-900/40 transition-all duration-500 backdrop-blur-[2px] group-hover:backdrop-blur-none">
+                    <div class="w-16 h-16 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/30 shadow-2xl transition-transform duration-500 group-hover:scale-125">
+                       <i class="fa-solid fa-play text-white text-xl ml-1"></i>
+                    </div>
+                </div>
+                
+                <div class="absolute bottom-4 right-4 px-3 py-1 bg-slate-900/80 backdrop-blur-md rounded-lg text-[10px] font-black text-white uppercase tracking-widest">
+                    YouTube
+                </div>
+            </a>
+            
+            <div class="p-8 flex flex-col flex-grow">
+                <h3 class="text-xl font-bold text-slate-800 leading-tight mb-6 group-hover:text-m3-on-primary transition-colors line-clamp-2">
+                    <a href="{{ video.link }}" target="_blank" rel="noopener noreferrer">
+                        {{ video.title | default('Video Tanpa Judul') }}
+                    </a>
+                </h3>
+                
+                <div class="mt-auto pt-6 border-t border-slate-100 flex items-center justify-between">
+                     <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        <i class="fa-solid fa-calendar-day mr-2"></i>
+                        {{ video.created_at.strftime('%d %b %Y') if video.created_at else 'Baru Saja' }}
+                     </span>
+                     <a href="{{ video.link }}" target="_blank" rel="noopener noreferrer" class="text-[10px] font-black text-m3-on-primary hover:underline uppercase tracking-tighter">
+                        Buka Video <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                     </a>
+                </div>
+            </div>
+         </article>
+        {% endfor %}
+      </div>
+    {% else %}
+        <div class="m3-card text-center py-24">
+           <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-8 text-slate-300">
+                <i class="fa-solid fa-video-slash text-3xl"></i>
+           </div>
+           <p class="text-xl font-bold text-slate-400 uppercase tracking-widest">Tidak ada video ditemukan.</p>
+        </div>
+    {% endif %}
+
+    {% if videos and videos.items %}
+        {% with pagination_obj=videos, pagination_route='main.videos' %}
+            {% include 'pagination.html' %}
+        {% endwith %}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/videos.js') }}"></script>
+{% endblock %}

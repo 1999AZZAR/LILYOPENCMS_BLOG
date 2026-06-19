@@ -1,0 +1,145 @@
+{% extends 'admin_base.html' %}
+{% block title %}Media Sosial - Admin{% endblock %}
+{% block hero_title %}Media Sosial{% endblock %}
+{% block hero_desc %}Kelola tautan media sosial Anda{% endblock %}
+{% block content %}
+ <!-- Toast Container -->
+ <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
+
+ <!-- Main Content -->
+ <main class="container mx-auto px-6 py-12" role="main">
+
+ <!-- Predefined platform suggestions -->
+ <datalist id="platform-list" aria-label="Daftar platform media sosial yang tersedia">
+ <option value="Facebook">
+ <option value="Twitter">
+ <option value="Instagram">
+ <option value="LinkedIn">
+ <option value="YouTube">
+ <option value="GitHub">
+ <option value="Telegram">
+ <option value="Pinterest">
+ <option value="TikTok">
+ <option value="WhatsApp">
+ <option value="Discord">
+ <option value="Snapchat">
+ <option value="Reddit">
+ <option value="Lainnya">
+ </datalist>
+
+ <!-- Add New Social Media Form -->
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="add-social-media-title">
+ <h2 id="add-social-media-title" class="text-xl font-semibold text-admin-text mb-4 flex items-center">
+ <i class="fas fa-plus-circle mr-2 text-admin-textMuted"></i>
+ Tambah Media Sosial Baru
+ </h2>
+ <form id="add-social-media-form" class="space-y-4" role="form" aria-label="Form tambah media sosial baru">
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="new-platform-name">
+ <i class="fas fa-globe mr-1"></i>Nama Platform
+ </label>
+ <input type="text" id="new-platform-name" name="name" list="platform-list" placeholder="Pilih atau ketik platform" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" required aria-required="true" aria-label="Nama platform media sosial">
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="new-platform-url">
+ <i class="fas fa-link mr-1"></i>URL
+ </label>
+ <input type="url" id="new-platform-url" name="url" placeholder="https://example.com" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" required aria-required="true" aria-label="URL media sosial">
+ </div>
+ </div>
+ <button type="submit" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100 flex items-center justify-center" aria-label="Tambah media sosial baru">
+ <i class="fas fa-plus mr-2"></i>
+ Tambah Media Sosial
+ </button>
+ </form>
+ </div>
+
+ <!-- Existing Social Media Links -->
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="social-media-list-title">
+ <h2 id="social-media-list-title" class="text-xl font-semibold text-admin-text mb-4 flex items-center">
+ <i class="fas fa-list mr-2 text-admin-textMuted"></i>
+ Daftar Media Sosial
+ </h2>
+ <div id="social-media-list" class="grid grid-cols-1 lg:grid-cols-2 gap-6" role="list" aria-label="Daftar media sosial yang tersedia">
+ <!-- Social media items will be loaded here dynamically -->
+ </div>
+ <div id="empty-state" class="hidden text-center py-8">
+ <i class="fas fa-share-alt text-admin-accent text-4xl mb-4"></i>
+ <p class="text-admin-textMuted text-lg">Belum ada media sosial yang ditambahkan</p>
+ <p class="text-admin-accent text-sm mt-2">Mulai dengan menambahkan platform media sosial Anda di atas</p>
+ </div>
+ </div>
+ </main>
+
+ <!-- Social Media Item Template -->
+ <template id="social-media-template">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 hover:shadow-polaris-100 transition-all duration-300 social-media-item" role="listitem">
+ <form class="space-y-4" role="form" aria-label="Form edit media sosial">
+ <input type="hidden" name="id" class="social-media-id">
+ 
+ <!-- Platform Icon and Name -->
+ <div class="flex items-center mb-4">
+ <div class="w-12 h-12 bg-admin-surface rounded-polaris-base flex items-center justify-center mr-3">
+ <i class="fas fa-share-alt text-white text-lg platform-icon"></i>
+ </div>
+ <div class="flex-1">
+ <h3 class="text-base font-bold text-admin-text platform-name"></h3>
+ <p class="text-admin-textMuted text-sm platform-url"></p>
+ </div>
+ </div>
+
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="platform-name-{id}">
+ <i class="fas fa-globe mr-1"></i>Nama Platform
+ </label>
+ <input type="text" id="platform-name-{id}" name="name" list="platform-list" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" required aria-required="true" aria-label="Nama platform media sosial">
+ </div>
+ <div>
+ <label class="block text-admin-textMuted font-medium mb-2" for="platform-url-{id}">
+ <i class="fas fa-link mr-1"></i>URL
+ </label>
+ <input type="url" id="platform-url-{id}" name="url" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" required aria-required="true" aria-label="URL media sosial">
+ </div>
+ </div>
+
+ <div class="flex space-x-3 pt-2" role="group" aria-label="Tombol aksi media sosial">
+ <button type="button" class="update-btn flex-1 bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100 flex items-center justify-center" aria-label="Perbarui media sosial">
+ <i class="fas fa-save mr-2"></i>
+ Perbarui
+ </button>
+ <button type="button" class="delete-btn flex-1 bg-admin-surface text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100 flex items-center justify-center" aria-label="Hapus media sosial">
+ <i class="fas fa-trash mr-2"></i>
+ Hapus
+ </button>
+ </div>
+ </form>
+ </div>
+ </template>
+
+ <!-- Delete Confirmation Modal -->
+ <div id="delete-social-media-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-30" role="dialog" aria-labelledby="delete-social-media-title" aria-modal="true">
+ <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md">
+ <div class="flex items-center mb-4">
+ <div class="w-12 h-12 bg-admin-surface rounded-polaris-full flex items-center justify-center mr-4">
+ <i class="fas fa-exclamation-triangle text-admin-critical text-xl"></i>
+ </div>
+ <h3 id="delete-social-media-title" class="text-xl font-semibold text-admin-critical">Konfirmasi Hapus</h3>
+ </div>
+ <p class="text-admin-textMuted mb-4">Apakah Anda yakin ingin menghapus media sosial ini?</p>
+ <div class="bg-admin-surface border border-admin-criticalSurface rounded-polaris-base p-3 mb-4">
+ <p class="text-sm text-admin-critical"><i class="fas fa-exclamation-triangle mr-1"></i> Tindakan ini tidak dapat dibatalkan!</p>
+ </div>
+ <div class="flex justify-end space-x-4" role="group" aria-label="Tombol konfirmasi">
+ <button id="cancel-delete-btn" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal hapus media sosial">Batal</button>
+ <button id="confirm-delete-btn" class="bg-admin-surface text-white px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100" aria-label="Konfirmasi hapus media sosial">Hapus</button>
+ </div>
+ </div>
+ </div>
+{% endblock %}
+
+{% block extra_scripts %}
+ <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+ <script src="{{ url_for('static', filename='js/social-media-management.js') }}"></script>
+{% endblock %}
