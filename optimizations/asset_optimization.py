@@ -96,6 +96,33 @@ class AssetOptimizer:
         except:
             return "00000000"
     
+    def _minify_and_compress_file(self, file_path: Path, minify_func, suffix: str) -> Dict[str, Any]:
+        """Minify and compress a single CSS or JS file"""
+        try:
+            with open(file_path, 'rb') as f:
+                content = f.read()
+            
+            minified_content = minify_func(content.decode('utf-8'))
+            compressed_content = gzip.compress(minified_content.encode('utf-8'), compresslevel=9)
+            
+            compressed_path = file_path.with_suffix(suffix)
+            with open(compressed_path, 'wb') as f:
+                f.write(compressed_content)
+            
+            original_size = len(content)
+            compressed_size = len(compressed_content)
+            size_saved = original_size - compressed_size
+            
+            return {
+                'success': True,
+                'original_size': original_size,
+                'compressed_size': compressed_size,
+                'size_saved': size_saved
+            }
+        except Exception as e:
+            logger.error(f"Error compressing {file_path}: {e}")
+            return {'success': False}
+
     def compress_assets(self) -> Dict[str, Any]:
         """Compress assets for better performance"""
         try:
@@ -110,76 +137,30 @@ class AssetOptimizer:
             # Process CSS files
             for file_path in static_path.rglob('*.css'):
                 if not self._is_compressed(file_path):
-                    try:
-                        # Read original file
-                        with open(file_path, 'rb') as f:
-                            content = f.read()
-                        
-                        # Minify CSS (basic minification)
-                        minified_content = self._minify_css(content.decode('utf-8'))
-                        
-                        # Compress content
-                        compressed_content = gzip.compress(minified_content.encode('utf-8'), compresslevel=9)
-                        
-                        # Write compressed file
-                        compressed_path = file_path.with_suffix('.css.gz')
-                        with open(compressed_path, 'wb') as f:
-                            f.write(compressed_content)
-                        
-                        # Calculate size saved
-                        original_size = len(content)
-                        compressed_size = len(compressed_content)
-                        size_saved = original_size - compressed_size
-                        
-                        if size_saved > 0:
-                            compressed_count += 1
-                            total_size_saved += size_saved
-                            processed_files.append({
-                                'file': str(file_path.name),
-                                'original_size': original_size,
-                                'compressed_size': compressed_size,
-                                'savings_percent': round((size_saved / original_size) * 100, 2)
-                            })
-                            
-                    except Exception as e:
-                        logger.error(f"Error compressing {file_path}: {e}")
+                    res = self._minify_and_compress_file(file_path, self._minify_css, '.css.gz')
+                    if res.get('success') and res['size_saved'] > 0:
+                        compressed_count += 1
+                        total_size_saved += res['size_saved']
+                        processed_files.append({
+                            'file': str(file_path.name),
+                            'original_size': res['original_size'],
+                            'compressed_size': res['compressed_size'],
+                            'savings_percent': round((res['size_saved'] / res['original_size']) * 100, 2)
+                        })
             
             # Process JS files
             for file_path in static_path.rglob('*.js'):
                 if not self._is_compressed(file_path):
-                    try:
-                        # Read original file
-                        with open(file_path, 'rb') as f:
-                            content = f.read()
-                        
-                        # Minify JS (basic minification)
-                        minified_content = self._minify_js(content.decode('utf-8'))
-                        
-                        # Compress content
-                        compressed_content = gzip.compress(minified_content.encode('utf-8'), compresslevel=9)
-                        
-                        # Write compressed file
-                        compressed_path = file_path.with_suffix('.js.gz')
-                        with open(compressed_path, 'wb') as f:
-                            f.write(compressed_content)
-                        
-                        # Calculate size saved
-                        original_size = len(content)
-                        compressed_size = len(compressed_content)
-                        size_saved = original_size - compressed_size
-                        
-                        if size_saved > 0:
-                            compressed_count += 1
-                            total_size_saved += size_saved
-                            processed_files.append({
-                                'file': str(file_path.name),
-                                'original_size': original_size,
-                                'compressed_size': compressed_size,
-                                'savings_percent': round((size_saved / original_size) * 100, 2)
-                            })
-                            
-                    except Exception as e:
-                        logger.error(f"Error compressing {file_path}: {e}")
+                    res = self._minify_and_compress_file(file_path, self._minify_js, '.js.gz')
+                    if res.get('success') and res['size_saved'] > 0:
+                        compressed_count += 1
+                        total_size_saved += res['size_saved']
+                        processed_files.append({
+                            'file': str(file_path.name),
+                            'original_size': res['original_size'],
+                            'compressed_size': res['compressed_size'],
+                            'savings_percent': round((res['size_saved'] / res['original_size']) * 100, 2)
+                        })
             
             return {
                 'success': True,
