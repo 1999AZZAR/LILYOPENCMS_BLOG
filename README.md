@@ -1,8 +1,14 @@
-# LilyOpenCMS - Modern Content Management System
+# LILYOPENCMS_BLOG - Modern Content Management System
 
 A comprehensive Flask-based content management system with advanced SEO features, multimedia management, and robust user permissions. Built for modern web publishing with automatic image optimization, comprehensive sitemap generation, and enterprise-grade security.
 
 ## 🚀 Features
+
+### 🔍 Advanced SEO Engine (LOC Platform)
+- **Smart Content Analysis:** Auto-readability scoring and keyword density extraction.
+- **YAML-driven Quality Rules:** Custom limits for title, description, and keywords configured via `seo_injector/config/quality_rules.yaml`.
+- **Lock-Protected Batch Injection:** Secure batch metadata generation and DB row injection.
+- **Enhanced Diagnostics:** Full interactive dashboard (`admin/seo/analytics.html`) with health checking.
 
 ### 📝 Content Management
 - **Advanced News Management**: Create, edit, delete articles with rich text editing
@@ -94,8 +100,8 @@ A comprehensive Flask-based content management system with advanced SEO features
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd belum-bernama
+   git clone https://github.com/1999AZZAR/LILYOPENCMS_BLOG.git
+   cd LILYOPENCMS_BLOG
    ```
 
 2. **Create virtual environment**
