@@ -30,7 +30,7 @@ flask-profiler==1.8
 psutil==5.9.6
 
 # Development and Testing
-pytest==7.4.3
+pytest==9.0.3
 pytest-flask==1.3.0
 
 # Data Generation (for helper scripts)
