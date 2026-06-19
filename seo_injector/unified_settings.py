@@ -164,6 +164,27 @@ class UnifiedSEOSettings:
                 self._settings['website_url'] = brand_info.website_url
             if brand_info.tagline:
                 self._settings['website_description'] = brand_info.tagline
+
+        # Override with environment variables (highest priority)
+        env_mappings = {
+            'BASE_URL': 'website_url',
+            'WEBSITE_URL': 'website_url',
+            'WEBSITE_NAME': 'website_name',
+            'BRAND_NAME': 'website_name',
+            'WEBSITE_DESCRIPTION': 'website_description',
+            'WEBSITE_LANGUAGE': 'website_language',
+            'ORGANIZATION_NAME': 'organization_name',
+            'ORGANIZATION_LOGO': 'organization_logo',
+            'ORGANIZATION_DESCRIPTION': 'organization_description',
+        }
+        for env_key, setting_key in env_mappings.items():
+            env_val = os.getenv(env_key)
+            if env_val is not None and env_val.strip() != '':
+                self._settings[setting_key] = env_val.strip()
+
+        # Sanitize website URL
+        if 'website_url' in self._settings and self._settings['website_url']:
+            self._settings['website_url'] = self._settings['website_url'].rstrip('/')
     
     def apply_template(self, template, variables):
         """Apply variables to a template string."""

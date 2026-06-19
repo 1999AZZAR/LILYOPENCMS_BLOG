@@ -42,21 +42,12 @@ def seo_management():
 @main_blueprint.route("/settings/seo/settings")
 @login_required
 def seo_settings():
-    """SEO settings page for root SEO and global settings"""
+    """Redirect to Manajemen SEO as global settings are now handled via .env"""
     # Allow access only to admin-tier users
     if not (current_user.is_admin_tier() or current_user.is_owner()):
         abort(403)
-    return render_template('admin/seo/settings.html')
+    return redirect(url_for('main.settings_seo'))
 
-
-@main_blueprint.route("/settings/seo/analytics")
-@login_required
-def seo_analytics():
-    """SEO analytics page for performance metrics and insights"""
-    # Allow access only to admin-tier users
-    if not (current_user.is_admin_tier() or current_user.is_owner()):
-        abort(403)
-    return render_template('admin/seo/analytics.html')
 
 
 # Legacy route for backward compatibility
@@ -1300,21 +1291,23 @@ def get_seo_chapters():
         seo_status = request.args.get('seo_status', '')
         category = request.args.get('category', '')
 
-        # Build base query
+        # Build base query - join News to fetch actual SEO data
         query = db.session.query(
             AlbumChapter.id,
             AlbumChapter.chapter_number,
             AlbumChapter.chapter_title,
-            AlbumChapter.meta_description,
-            AlbumChapter.meta_keywords,
-            AlbumChapter.og_title,
-            AlbumChapter.og_description,
-            AlbumChapter.seo_score,
+            News.meta_description,
+            News.meta_keywords,
+            News.og_title,
+            News.og_description,
+            News.seo_score,
             AlbumChapter.is_visible,
             AlbumChapter.created_at,
             Album.title.label('album_title'),
             Category.name.label('category_name')
-        ).join(Album, AlbumChapter.album_id == Album.id).join(Category, Album.category_id == Category.id)
+        ).join(Album, AlbumChapter.album_id == Album.id)\
+         .join(Category, Album.category_id == Category.id)\
+         .join(News, AlbumChapter.news_id == News.id)
 
         # Apply filters
         if search:
@@ -1339,31 +1332,31 @@ def get_seo_chapters():
             if seo_status == "complete":
                 query = query.filter(
                     db.and_(
-                        AlbumChapter.meta_description.isnot(None),
-                        AlbumChapter.meta_description != "",
-                        AlbumChapter.meta_keywords.isnot(None),
-                        AlbumChapter.meta_keywords != "",
-                        AlbumChapter.og_title.isnot(None),
-                        AlbumChapter.og_title != ""
+                        News.meta_description.isnot(None),
+                        News.meta_description != "",
+                        News.meta_keywords.isnot(None),
+                        News.meta_keywords != "",
+                        News.og_title.isnot(None),
+                        News.og_title != ""
                     )
                 )
             elif seo_status == "incomplete":
                 query = query.filter(
                     db.or_(
-                        AlbumChapter.meta_description.is_(None),
-                        AlbumChapter.meta_description == "",
-                        AlbumChapter.meta_keywords.is_(None),
-                        AlbumChapter.meta_keywords == "",
-                        AlbumChapter.og_title.is_(None),
-                        AlbumChapter.og_title == ""
+                        News.meta_description.is_(None),
+                        News.meta_description == "",
+                        News.meta_keywords.is_(None),
+                        News.meta_keywords == "",
+                        News.og_title.is_(None),
+                        News.og_title == ""
                     )
                 )
             elif seo_status == "missing":
                 query = query.filter(
                     db.and_(
-                        AlbumChapter.meta_description.is_(None),
-                        AlbumChapter.meta_keywords.is_(None),
-                        AlbumChapter.og_title.is_(None)
+                        News.meta_description.is_(None),
+                        News.meta_keywords.is_(None),
+                        News.og_title.is_(None)
                     )
                 )
 
@@ -1390,11 +1383,11 @@ def get_seo_chapters():
             
             filled_fields = sum(1 for field in seo_fields if field and field.strip())
             if filled_fields == len(seo_fields):
-                seo_status = "complete"
+                calculated_seo_status = "complete"
             elif filled_fields == 0:
-                seo_status = "missing"
+                calculated_seo_status = "missing"
             else:
-                seo_status = "incomplete"
+                calculated_seo_status = "incomplete"
 
             chapters.append({
                 "id": result.id,
@@ -1406,7 +1399,7 @@ def get_seo_chapters():
                 "meta_keywords": result.meta_keywords,
                 "og_title": result.og_title,
                 "og_description": result.og_description,
-                "seo_status": seo_status,
+                "seo_status": calculated_seo_status,
                 "seo_score": result.seo_score or 0,
                 "is_visible": result.is_visible,
                 "created_at": result.created_at.isoformat() if result.created_at else None
@@ -1434,62 +1427,72 @@ def get_seo_chapters():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @main_blueprint.route("/api/seo/chapters/<int:chapter_id>", methods=["GET"])
 @login_required
 def get_seo_chapter(chapter_id):
-    """Get a specific chapter for SEO editing"""
+    """Get a specific chapter's associated News article for SEO editing"""
     if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         abort(403)
     
     try:
-        # Eager load album and category to avoid N+1 queries
         from sqlalchemy.orm import joinedload
         chapter = AlbumChapter.query.options(
-            joinedload(AlbumChapter.album).joinedload(Album.category)
+            joinedload(AlbumChapter.album).joinedload(Album.category),
+            joinedload(AlbumChapter.news)
         ).get_or_404(chapter_id)
         
+        # Read SEO values from the linked News article
+        news = chapter.news
+        if not news:
+            return jsonify({'error': 'No associated news article found for this chapter'}), 404
+
         return jsonify({
             'id': chapter.id,
             'chapter_number': chapter.chapter_number,
             'title': chapter.chapter_title,
             'album': chapter.album.title if chapter.album else "N/A",
             'category': chapter.album.category.name if chapter.album and chapter.album.category else "N/A",
-            'meta_description': chapter.meta_description,
-            'meta_keywords': chapter.meta_keywords,
-            'og_title': chapter.og_title,
-            'og_description': chapter.og_description,
-            'og_image': chapter.og_image,
-            'canonical_url': chapter.canonical_url,
-            'seo_slug': chapter.seo_slug,
-            'twitter_card': chapter.twitter_card,
-            'twitter_title': chapter.twitter_title,
-            'twitter_description': chapter.twitter_description,
-            'twitter_image': chapter.twitter_image,
-            'meta_author': chapter.meta_author,
-            'meta_language': chapter.meta_language or 'id',
-            'meta_robots': chapter.meta_robots or 'index, follow',
-            'structured_data_type': chapter.structured_data_type or 'Chapter',
-            'seo_score': chapter.seo_score or 0
+            'meta_description': news.meta_description,
+            'meta_keywords': news.meta_keywords,
+            'og_title': news.og_title,
+            'og_description': news.og_description,
+            'og_image': news.og_image,
+            'canonical_url': news.canonical_url,
+            'seo_slug': news.seo_slug,
+            'twitter_card': news.twitter_card,
+            'twitter_title': news.twitter_title,
+            'twitter_description': news.twitter_description,
+            'twitter_image': news.twitter_image,
+            'meta_author': news.meta_author,
+            'meta_language': news.meta_language or 'id',
+            'meta_robots': news.meta_robots or 'index, follow',
+            'structured_data_type': news.structured_data_type or 'Chapter',
+            'seo_score': news.seo_score or 0
         }), 200
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 @main_blueprint.route("/api/seo/chapters/<int:chapter_id>", methods=["PUT"])
 @login_required
 def update_seo_chapter(chapter_id):
-    """Update SEO fields for a specific chapter"""
+    """Update SEO fields for a specific chapter's associated News article"""
     if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         abort(403)
     
     try:
         chapter = AlbumChapter.query.get_or_404(chapter_id)
-        data = request.get_json()
+        news = chapter.news
+        if not news:
+            return jsonify({'error': 'No associated news article found for this chapter'}), 404
 
+        data = request.get_json()
         if not data:
             return jsonify({"error": "No data provided"}), 400
 
-        # Update SEO fields
+        # Update SEO fields on the News article
         seo_fields = [
             'meta_description', 'meta_keywords', 'og_title', 'og_description',
             'og_image', 'canonical_url', 'seo_slug', 'twitter_card',
@@ -1499,7 +1502,7 @@ def update_seo_chapter(chapter_id):
 
         for field in seo_fields:
             if field in data:
-                setattr(chapter, field, data[field])
+                setattr(news, field, data[field])
 
         # Calculate SEO score
         seo_fields_to_check = [
@@ -1508,8 +1511,9 @@ def update_seo_chapter(chapter_id):
         ]
         
         filled_fields = sum(1 for field in seo_fields_to_check 
-                          if getattr(chapter, field) and getattr(chapter, field).strip())
-        chapter.seo_score = min(100, int((filled_fields / len(seo_fields_to_check)) * 100))
+                          if getattr(news, field) and getattr(news, field).strip())
+        news.seo_score = min(100, int((filled_fields / len(seo_fields_to_check)) * 100))
+        news.last_seo_audit = datetime.now(timezone.utc)
 
         db.session.commit()
         return jsonify({"message": "Chapter SEO updated successfully"}), 200
@@ -1517,6 +1521,7 @@ def update_seo_chapter(chapter_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+
 
 @main_blueprint.route("/api/seo/root", methods=["GET"])
 @login_required

@@ -482,12 +482,10 @@ def inject_album_seo(album_id):
         album.structured_data_type = "Book" if album.is_completed else "CreativeWork"
         # Get website URL from SEO injection settings
         try:
-            from sqlalchemy import text
-            result = db.session.execute(text('SELECT website_url FROM seo_injection_settings LIMIT 1'))
-            row = result.fetchone()
-            website_url = row[0] if row and row[0] else "https://hystory.id"
+            from seo_injector.unified_settings import get_unified_settings
+            website_url = get_unified_settings().get_website_url()
         except Exception as e:
-            current_app.logger.warning(f"Could not load SEO injection settings: {e}")
+            current_app.logger.warning(f"Could not load website URL: {e}")
             website_url = "https://hystory.id"
         
         album.canonical_url = f"{website_url}/album/{album.id}"
@@ -1500,12 +1498,10 @@ def inject_chapter_seo(chapter_id):
         chapter.structured_data_type = "Chapter"
         # Get website URL from SEO injection settings
         try:
-            from sqlalchemy import text
-            result = db.session.execute(text('SELECT website_url FROM seo_injection_settings LIMIT 1'))
-            row = result.fetchone()
-            website_url = row[0] if row and row[0] else "https://hystory.id"
+            from seo_injector.unified_settings import get_unified_settings
+            website_url = get_unified_settings().get_website_url()
         except Exception as e:
-            current_app.logger.warning(f"Could not load SEO injection settings: {e}")
+            current_app.logger.warning(f"Could not load website URL: {e}")
             website_url = "https://hystory.id"
         
         chapter.canonical_url = f"{website_url}/album/{chapter.album_id}/chapter/{chapter.chapter_number}"
@@ -1611,12 +1607,10 @@ def inject_article_seo(article_id):
         article.structured_data_type = "NewsArticle" if article.is_news else "Article"
         # Get website URL from SEO injection settings
         try:
-            from sqlalchemy import text
-            result = db.session.execute(text('SELECT website_url FROM seo_injection_settings LIMIT 1'))
-            row = result.fetchone()
-            website_url = row[0] if row and row[0] else "https://hystory.id"
+            from seo_injector.unified_settings import get_unified_settings
+            website_url = get_unified_settings().get_website_url()
         except Exception as e:
-            current_app.logger.warning(f"Could not load SEO injection settings: {e}")
+            current_app.logger.warning(f"Could not load website URL: {e}")
             website_url = "https://hystory.id"
         
         article.canonical_url = f"{website_url}/news/{article.id}"
