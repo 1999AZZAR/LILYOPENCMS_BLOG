@@ -1,0 +1,41 @@
+auto_inject_albums: true
+auto_inject_chapters: true
+auto_inject_news: true
+auto_inject_root: true
+contact_address: ''
+contact_email: ''
+contact_phone: ''
+default_canonical_url: ''
+default_meta_author: ''
+default_meta_description: ''
+default_meta_keywords: ''
+default_meta_language: id
+default_meta_robots: index, follow
+default_og_description: ''
+default_og_image: ''
+default_og_title: ''
+default_structured_data_type: Article
+default_twitter_card: summary
+default_twitter_description: ''
+default_twitter_title: ''
+facebook_url: ''
+instagram_url: ''
+linkedin_url: ''
+organization_description: Hystory.id adalah platform digital karya anak bangsa yang
+  menghadirkan novel dan cerpen terbaik Indonesia. Kami menjadi ruang bagi penulis
+  untuk berekspresi, membangun komunitas kreatif, dan tumbuh bersama dalam ekosistem
+  literasi digital. Dengan kisah segar, hystory.id mendukung setiap karya untuk berkembang,
+  dikenal luas, dan memberi inspirasi.
+organization_logo: https://hystory.id/static/pic/logo.png
+organization_name: Hystory
+organization_type: Organization
+twitter_url: ''
+website_description: Hystory.id adalah platform digital karya anak bangsa yang menghadirkan
+  novel dan cerpen terbaik Indonesia. Kami menjadi ruang bagi penulis untuk berekspresi,
+  membangun komunitas kreatif, dan tumbuh bersama dalam ekosistem literasi digital.
+  Dengan kisah segar, hystory.id mendukung setiap karya untuk berkembang, dikenal
+  luas, dan memberi inspirasi.
+website_language: id
+website_name: Hystory
+website_url: https://hystory.id
+youtube_url: ''

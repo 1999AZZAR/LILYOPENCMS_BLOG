@@ -1,3 +1,14 @@
+"""
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+"""
+
 from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.exceptions import BadRequest, NotFound
@@ -5,7 +16,7 @@ from sqlalchemy import and_, or_
 from datetime import datetime
 import json
 
-from models import db, RootSEO, User
+from models import db, RootSEO, User, UserRole
 from routes.common_imports import *
 
 # Create blueprint
@@ -15,7 +26,7 @@ root_seo_bp = Blueprint('root_seo', __name__)
 @login_required
 def root_seo_management():
     """Main page for root SEO management."""
-    if not current_user.has_permission('root_seo', 'read'):
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         flash('Anda tidak memiliki izin untuk mengakses halaman ini.', 'error')
         return redirect(url_for('main.settings_dashboard'))
     
@@ -32,7 +43,7 @@ def root_seo_management():
     # Calculate completion rate
     completion_rate = int((complete_seo / total_pages * 100) if total_pages > 0 else 0)
     
-    return render_template('settings/root_seo_management.html',
+    return render_template('admin/seo/root_seo_management.html',
                          root_seo_entries=root_seo_entries,
                          total_pages=total_pages,
                          active_pages=active_pages,
@@ -45,7 +56,7 @@ def root_seo_management():
 @login_required
 def create_root_seo():
     """Create a new root SEO entry."""
-    if not current_user.has_permission('root_seo', 'create'):
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         flash('Anda tidak memiliki izin untuk membuat pengaturan SEO.', 'error')
         return redirect(url_for('root_seo.root_seo_management'))
     
@@ -99,8 +110,12 @@ def create_root_seo():
             db.session.add(root_seo)
             db.session.commit()
             
-            # Record activity
-            current_user.record_activity('create_root_seo', f'Created root SEO for page: {root_seo.page_name}')
+            # Record activity (with safety check)
+            try:
+                if hasattr(current_user, 'record_activity'):
+                    current_user.record_activity('create_root_seo', f'Created root SEO for page: {root_seo.page_name}')
+            except Exception as e:
+                current_app.logger.warning(f"Could not record user activity: {str(e)}")
             
             return jsonify({
                 'success': True,
@@ -114,7 +129,8 @@ def create_root_seo():
             db.session.rollback()
             return jsonify({'success': False, 'message': f'Error creating root SEO: {str(e)}'}), 500
     
-    return render_template('settings/root_seo_create.html')
+    # TODO: Create root_seo_create.html template or redirect to appropriate page
+    return redirect(url_for('root_seo.root_seo_management'))
 
 @root_seo_bp.route('/settings/root-seo/<int:seo_id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
@@ -123,14 +139,14 @@ def manage_root_seo(seo_id):
     root_seo = RootSEO.query.get_or_404(seo_id)
     
     if request.method == 'GET':
-        if not current_user.has_permission('root_seo', 'read'):
+        if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
             flash('Anda tidak memiliki izin untuk melihat pengaturan SEO.', 'error')
             return redirect(url_for('root_seo.root_seo_management'))
         
         return jsonify({'success': True, 'data': root_seo.to_dict()})
     
     elif request.method == 'PUT':
-        if not current_user.has_permission('root_seo', 'update'):
+        if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
             return jsonify({'success': False, 'message': 'Anda tidak memiliki izin untuk mengubah pengaturan SEO.'}), 403
         
         try:
@@ -188,8 +204,12 @@ def manage_root_seo(seo_id):
             root_seo.update_seo_fields()
             db.session.commit()
             
-            # Record activity
-            current_user.record_activity('update_root_seo', f'Updated root SEO for page: {root_seo.page_name}')
+            # Record activity (with safety check)
+            try:
+                if hasattr(current_user, 'record_activity'):
+                    current_user.record_activity('update_root_seo', f'Updated root SEO for page: {root_seo.page_name}')
+            except Exception as e:
+                current_app.logger.warning(f"Could not record user activity: {str(e)}")
             
             return jsonify({
                 'success': True,
@@ -204,7 +224,7 @@ def manage_root_seo(seo_id):
             return jsonify({'success': False, 'message': f'Error updating root SEO: {str(e)}'}), 500
     
     elif request.method == 'DELETE':
-        if not current_user.has_permission('root_seo', 'delete'):
+        if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
             return jsonify({'success': False, 'message': 'Anda tidak memiliki izin untuk menghapus pengaturan SEO.'}), 403
         
         try:
@@ -212,8 +232,12 @@ def manage_root_seo(seo_id):
             db.session.delete(root_seo)
             db.session.commit()
             
-            # Record activity
-            current_user.record_activity('delete_root_seo', f'Deleted root SEO for page: {page_name}')
+            # Record activity (with safety check)
+            try:
+                if hasattr(current_user, 'record_activity'):
+                    current_user.record_activity('delete_root_seo', f'Deleted root SEO for page: {page_name}')
+            except Exception as e:
+                current_app.logger.warning(f"Could not record user activity: {str(e)}")
             
             return jsonify({
                 'success': True,
@@ -228,7 +252,7 @@ def manage_root_seo(seo_id):
 @login_required
 def bulk_update_root_seo():
     """Bulk update root SEO entries."""
-    if not current_user.has_permission('root_seo', 'update'):
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         return jsonify({'success': False, 'message': 'Anda tidak memiliki izin untuk mengubah pengaturan SEO.'}), 403
     
     try:
@@ -255,8 +279,12 @@ def bulk_update_root_seo():
         
         db.session.commit()
         
-        # Record activity
-        current_user.record_activity('bulk_update_root_seo', f'Bulk updated {updated_count} root SEO entries')
+        # Record activity (with safety check)
+        try:
+            if hasattr(current_user, 'record_activity'):
+                current_user.record_activity('bulk_update_root_seo', f'Bulk updated {updated_count} root SEO entries')
+        except Exception as e:
+            current_app.logger.warning(f"Could not record user activity: {str(e)}")
         
         return jsonify({
             'success': True,
@@ -271,7 +299,7 @@ def bulk_update_root_seo():
 @login_required
 def root_seo_analytics():
     """Get analytics data for root SEO."""
-    if not current_user.has_permission('root_seo', 'read'):
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         return jsonify({'success': False, 'message': 'Anda tidak memiliki izin untuk melihat analitik SEO.'}), 403
     
     try:
@@ -323,7 +351,7 @@ def root_seo_analytics():
 @login_required
 def export_root_seo():
     """Export root SEO data as JSON."""
-    if not current_user.has_permission('root_seo', 'read'):
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         flash('Anda tidak memiliki izin untuk mengekspor data SEO.', 'error')
         return redirect(url_for('root_seo.root_seo_management'))
     

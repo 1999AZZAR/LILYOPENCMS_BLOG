@@ -16,6 +16,9 @@ from .routes_roles import *
 from .routes_analytics import *
 from .routes_video import *
 from .routes_albums import *
+from .routes_seo import *
+from .seo_enhanced_dashboard import *
+from .seo_settings_api import *
 
 __all__ = [
     "main_blueprint",
@@ -33,4 +36,7 @@ __all__ = [
     "routes_analytics",
     "routes_video",
     "routes_albums",
+    "routes_seo",
+    "seo_enhanced_dashboard",
+    "seo_settings_api",
 ]

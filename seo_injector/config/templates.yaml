@@ -1,0 +1,128 @@
+album:
+  content_type: album
+  description: Template for album/story collections
+  meta_description_template: '{title} - {description} by {author}. {chapter_count}
+    chapters available on {website_name}.'
+  meta_keywords_template: '{title_keywords}, {author}, {category_keywords}, story,
+    chapters, {website_name}'
+  name: Album/Story Collection
+  og_description_template: '{description}'
+  og_title_template: '{title} by {author} - {website_name}'
+  schema_markup_template: "\n            {\n                \"@context\": \"https://schema.org\"\
+    ,\n                \"@type\": \"Book\",\n                \"name\": \"{title}\"\
+    ,\n                \"description\": \"{description}\",\n                \"author\"\
+    : {\n                    \"@type\": \"Person\",\n                    \"name\"\
+    : \"{author}\"\n                },\n                \"publisher\": {\n       \
+    \             \"@type\": \"Organization\",\n                    \"name\": \"{organization_name}\"\
+    \n                },\n                \"numberOfPages\": \"{chapter_count}\",\n\
+    \                \"inLanguage\": \"{language}\",\n                \"datePublished\"\
+    : \"{date_published}\",\n                \"dateModified\": \"{date_modified}\"\
+    \n            }\n            "
+  twitter_description_template: '{description}'
+  twitter_title_template: '{title} by {author}'
+  variables:
+  - title
+  - description
+  - author
+  - category
+  - chapter_count
+  - date_published
+  - date_modified
+  - language
+  - website_name
+  - organization_name
+chapter:
+  content_type: chapter
+  description: Template for individual chapters
+  meta_description_template: 'Chapter {chapter_number}: {title} - {album_title} by
+    {author} on {website_name}.'
+  meta_keywords_template: '{title_keywords}, {album_title}, {author}, chapter {chapter_number},
+    {category_keywords}, {website_name}'
+  name: Chapter/Episode
+  og_description_template: '{excerpt}'
+  og_title_template: 'Chapter {chapter_number}: {title} - {album_title}'
+  schema_markup_template: "\n            {\n                \"@context\": \"https://schema.org\"\
+    ,\n                \"@type\": \"Chapter\",\n                \"name\": \"{title}\"\
+    ,\n                \"description\": \"{excerpt}\",\n                \"author\"\
+    : {\n                    \"@type\": \"Person\",\n                    \"name\"\
+    : \"{author}\"\n                },\n                \"isPartOf\": {\n        \
+    \            \"@type\": \"Book\",\n                    \"name\": \"{album_title}\"\
+    \n                },\n                \"position\": \"{chapter_number}\",\n  \
+    \              \"datePublished\": \"{date_published}\",\n                \"dateModified\"\
+    : \"{date_modified}\"\n            }\n            "
+  twitter_description_template: '{excerpt}'
+  twitter_title_template: 'Chapter {chapter_number}: {title}'
+  variables:
+  - title
+  - excerpt
+  - author
+  - album_title
+  - chapter_number
+  - category
+  - date_published
+  - date_modified
+  - website_name
+news:
+  content_type: news
+  description: Template for news articles
+  meta_description_template: '{title} - {website_name}. {excerpt}'
+  meta_keywords_template: '{title_keywords}, {category_keywords}, {website_name}'
+  name: News Article
+  og_description_template: '{excerpt}'
+  og_title_template: '{title} - {website_name}'
+  schema_markup_template: "\n            {\n                \"@context\": \"https://schema.org\"\
+    ,\n                \"@type\": \"NewsArticle\",\n                \"headline\":\
+    \ \"{title}\",\n                \"description\": \"{excerpt}\",\n            \
+    \    \"author\": {\n                    \"@type\": \"Person\",\n             \
+    \       \"name\": \"{author}\"\n                },\n                \"publisher\"\
+    : {\n                    \"@type\": \"Organization\",\n                    \"\
+    name\": \"{organization_name}\",\n                    \"logo\": {\n          \
+    \              \"@type\": \"ImageObject\",\n                        \"url\": \"\
+    {organization_logo}\"\n                    }\n                },\n           \
+    \     \"datePublished\": \"{date_published}\",\n                \"dateModified\"\
+    : \"{date_modified}\",\n                \"mainEntityOfPage\": {\n            \
+    \        \"@type\": \"WebPage\",\n                    \"@id\": \"{canonical_url}\"\
+    \n                }\n            }\n            "
+  twitter_description_template: '{excerpt}'
+  twitter_title_template: '{title} - {website_name}'
+  variables:
+  - title
+  - excerpt
+  - author
+  - category
+  - date_published
+  - date_modified
+  - canonical_url
+  - website_name
+  - organization_name
+  - organization_logo
+  - title_keywords
+  - category_keywords
+root:
+  content_type: root
+  description: Template for root website pages
+  meta_description_template: '{page_description} - {website_name}. {website_description}'
+  meta_keywords_template: '{page_keywords}, {website_name}, {organization_name}'
+  name: Website Page
+  og_description_template: '{page_description}'
+  og_title_template: '{page_title} - {website_name}'
+  schema_markup_template: "\n            {\n                \"@context\": \"https://schema.org\"\
+    ,\n                \"@type\": \"WebPage\",\n                \"name\": \"{page_title}\"\
+    ,\n                \"description\": \"{page_description}\",\n                \"\
+    url\": \"{canonical_url}\",\n                \"publisher\": {\n              \
+    \      \"@type\": \"Organization\",\n                    \"name\": \"{organization_name}\"\
+    ,\n                    \"url\": \"{website_url}\"\n                },\n      \
+    \          \"datePublished\": \"{date_published}\",\n                \"dateModified\"\
+    : \"{date_modified}\"\n            }\n            "
+  twitter_description_template: '{page_description}'
+  twitter_title_template: '{page_title} - {website_name}'
+  variables:
+  - page_title
+  - page_description
+  - page_keywords
+  - canonical_url
+  - website_name
+  - website_url
+  - organization_name
+  - date_published
+  - date_modified

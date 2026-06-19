@@ -1,0 +1,12 @@
+max_keywords_count: 10
+max_meta_description_length: 160
+max_meta_keywords_length: 255
+max_og_description_length: 500
+max_og_title_length: 200
+min_content_length: 100
+min_meta_description_length: 50
+min_meta_keywords_length: 10
+min_og_description_length: 50
+min_og_title_length: 10
+min_quality_score: 40
+min_readability_score: 30

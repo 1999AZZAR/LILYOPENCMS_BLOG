@@ -243,6 +243,18 @@ class User(db.Model, UserMixin):
         """Checks if the user is a superuser."""
         return self.role == UserRole.SUPERUSER
     
+    def is_admin_tier(self) -> bool:
+        """Return True if the user should access the admin dashboard."""
+        if self.role in [UserRole.SUPERUSER, UserRole.ADMIN]:
+            return True
+        if self.custom_role and self.custom_role.is_active:
+            return True
+        return False
+
+    def is_writer(self) -> bool:
+        """Return True if the user has write access."""
+        return self.is_admin_tier()
+    
     def has_permission(self, resource, action):
         """Check if user has permission for a specific resource and action."""
         # Superusers have all permissions
