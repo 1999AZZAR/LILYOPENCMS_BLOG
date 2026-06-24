@@ -294,54 +294,53 @@
 </style>
 {% endblock %}
 {% block content %}
-<div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
 
 <div class="mb-6">
- <nav class="flex space-x-1 bg-admin-surfaceHover p-1 rounded-polaris-base" role="tablist">
- <button class="tab-button active bg-white text-admin-text px-4 py-2 rounded-polaris-base font-medium" data-tab="albums">
+ <nav class="flex space-x-1 bg-sa-surface-hover p-1 rounded-sa-md" role="tablist">
+ <button class="tab-button active bg-white text-sa-fg px-4 py-2 rounded-sa-md font-medium" data-tab="albums">
  <i class="fas fa-book-open mr-2"></i>Album Management
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="seo">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="seo">
  <i class="fas fa-search mr-2"></i>SEO Album
  </button>
  </nav>
 </div>
 
  <div id="albums-tab" class="tab-content active">
- <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <main class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card mb-8" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Album Management</h2>
+ <h2 class="text-xl font-semibold text-sa-fg">Album Management</h2>
  <div class="flex space-x-2">
- <button onclick="toggleBulkMode()" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-4 py-2 rounded-polaris-base font-medium focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300">
+ <button onclick="toggleBulkMode()" class="bg-sa-fg hover:bg-sa-sidebar text-white px-4 py-2 rounded-sa-md font-medium focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300">
  <i class="fas fa-tasks mr-2"></i>Bulk Operations
  </button>
- <button onclick="openAlbumModal()" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-4 py-2 rounded-polaris-base font-medium focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300">
+ <button onclick="openAlbumModal()" class="bg-sa-fg hover:bg-sa-sidebar text-white px-4 py-2 rounded-sa-md font-medium focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300">
  <i class="fas fa-plus mr-2"></i>Create Album
  </button>
  </div>
  </div>
 
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-4 mb-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-4 mb-6">
  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="filter-search">
+ <label class="block text-sa-muted font-medium mb-2" for="filter-search">
  <i class="fas fa-search mr-2"></i>Search Albums
  </label>
- <input type="text" id="filter-search" placeholder="Album title..." class="w-full p-3 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-200">
+ <input type="text" id="filter-search" placeholder="Album title..." class="w-full p-3 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-200">
  </div>
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="filter-category">
+ <label class="block text-sa-muted font-medium mb-2" for="filter-category">
  <i class="fas fa-folder mr-2"></i>Category
  </label>
- <select id="filter-category" class="w-full p-3 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-200">
+ <select id="filter-category" class="w-full p-3 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-200">
  <option value="">All Categories</option>
  </select>
  </div>
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="filter-status">
+ <label class="block text-sa-muted font-medium mb-2" for="filter-status">
  <i class="fas fa-eye mr-2"></i>Status
  </label>
- <select id="filter-status" class="w-full p-3 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-200">
+ <select id="filter-status" class="w-full p-3 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-200">
  <option value="">All Status</option>
  <option value="visible">Visible</option>
  <option value="hidden">Hidden</option>
@@ -349,10 +348,10 @@
  </select>
  </div>
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="filter-premium">
+ <label class="block text-sa-muted font-medium mb-2" for="filter-premium">
  <i class="fas fa-crown mr-2"></i>Type
  </label>
- <select id="filter-premium" class="w-full p-3 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-200">
+ <select id="filter-premium" class="w-full p-3 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-200">
  <option value="">All Types</option>
  <option value="regular">Regular</option>
  <option value="premium">Premium</option>
@@ -360,10 +359,10 @@
  </div>
  </div>
  <div class="flex justify-between items-center mt-4">
- <button onclick="applyFilters()" class="group bg-admin-primary hover:bg-admin-primaryHover text-white px-6 py-3 rounded-polaris-lg font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100 hover:shadow-polaris-100 transform hover:-translate-y-0.5">
+ <button onclick="applyFilters()" class="group bg-sa-fg hover:bg-sa-sidebar text-white px-6 py-3 rounded-sa-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card hover:shadow-sa-card transform hover:-translate-y-0.5">
  <i class="fas fa-filter mr-2"></i>Apply Filters
  </button>
- <button onclick="clearFilters()" class="group bg-admin-surface text-white px-6 py-3 rounded-polaris-lg font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100 hover:shadow-polaris-100 transform hover:-translate-y-0.5">
+ <button onclick="clearFilters()" class="group bg-sa-secondary text-white px-6 py-3 rounded-sa-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card hover:shadow-sa-card transform hover:-translate-y-0.5">
  <i class="fas fa-times mr-2"></i>Clear
  </button>
  </div>
@@ -375,18 +374,18 @@
  <div id="empty-state" class="empty-state">
  <div class="text-center space-y-6">
  <div class="relative">
- <div class="w-24 h-24 bg-admin-surface rounded-polaris-full flex items-center justify-center mx-auto mb-4">
- <i class="fas fa-book-open text-4xl text-admin-accent"></i>
+ <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+ <i class="fas fa-book-open text-4xl text-sa-accent"></i>
  </div>
- <div class="absolute -top-2 -right-2 w-8 h-8 bg-admin-surface rounded-polaris-full flex items-center justify-center">
- <i class="fas fa-plus text-sm text-admin-textMuted"></i>
+ <div class="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center">
+ <i class="fas fa-plus text-sm text-sa-muted"></i>
  </div>
  </div>
  <div class="space-y-2">
- <h3 class="text-xl font-bold tracking-tight text-admin-text">No albums yet</h3>
- <p class="text-admin-textMuted max-w-md mx-auto">Start by creating your first album to organize stories and articles into chapters</p>
+ <h3 class="text-xl font-bold tracking-tight text-sa-fg">No albums yet</h3>
+ <p class="text-sa-muted max-w-md mx-auto">Start by creating your first album to organize stories and articles into chapters</p>
  </div>
- <button onclick="openAlbumModal()" class="group bg-admin-primary hover:bg-admin-primaryHover text-white px-8 py-4 rounded-polaris-lg font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100 hover:shadow-polaris-200 transform hover:-translate-y-0.5">
+ <button onclick="openAlbumModal()" class="group bg-sa-fg hover:bg-sa-sidebar text-white px-8 py-4 rounded-sa-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card hover:shadow-sa-overlay transform hover:-translate-y-0.5">
  <i class="fas fa-plus mr-3 group-hover:scale-110 transition-transform"></i>Create First Album
  </button>
  </div>
@@ -398,33 +397,33 @@
  </div>
 
  <div id="seo-tab" class="tab-content hidden">
- <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <main class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card mb-8" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Kelola SEO Album</h2>
+ <h2 class="text-xl font-semibold text-sa-fg">Kelola SEO Album</h2>
  <div class="flex space-x-2">
- <button id="refresh-seo-albums" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="refresh-seo-albums" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Segarkan
  </button>
  </div>
  </div>
 
- <div class="bg-white rounded-polaris-base shadow-polaris-100 overflow-hidden">
+ <div class="bg-white rounded-sa-md shadow-sa-card overflow-hidden">
  <div class="overflow-x-auto">
- <table class="min-w-full divide-y divide-admin-border">
- <thead class="bg-admin-surfaceHover">
+ <table class="min-w-full divide-y divide-sa-border">
+ <thead class="bg-sa-surface-hover">
  <tr>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Judul</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Kategori</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Status SEO</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Meta Desc</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Keywords</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">OG Tags</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Aksi</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Judul</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Kategori</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Status SEO</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Meta Desc</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Keywords</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">OG Tags</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Aksi</th>
  </tr>
  </thead>
- <tbody id="seo-albums-table-body" class="bg-white divide-y divide-admin-border">
+ <tbody id="seo-albums-table-body" class="bg-white divide-y divide-sa-border">
  <tr>
- <td colspan="7" class="px-6 py-4 text-center text-admin-textMuted">
+ <td colspan="7" class="px-6 py-4 text-center text-sa-muted">
  <i class="fas fa-spinner fa-spin text-xl"></i>
  <p class="mt-2">Memuat album...</p>
  </td>
@@ -435,7 +434,7 @@
  </div>
 
  <div class="mt-6 flex justify-between items-center">
- <div class="text-sm text-admin-text">
+ <div class="text-sm text-sa-fg">
  Menampilkan <span id="seo-showing-start">0</span> - <span id="seo-showing-end">0</span> dari <span id="seo-total-albums">0</span> album
  </div>
  <div id="seo-pagination-controls" class="flex space-x-2">
@@ -445,10 +444,10 @@
  </div>
 
  <div id="album-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-40" role="dialog" aria-labelledby="album-modal-title" aria-modal="true">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-overlay w-full max-w-4xl max-h-[90vh] overflow-y-auto">
  <div class="flex justify-between items-center mb-6">
- <h2 id="album-modal-title" class="text-2xl font-semibold text-admin-text">Buat Album Baru</h2>
- <button onclick="closeAlbumModal()" class="text-admin-textMuted hover:text-admin-text text-2xl focus:outline-none focus:ring-2 focus:ring-admin-border rounded-polaris-base p-1">
+ <h2 id="album-modal-title" class="text-2xl font-semibold text-sa-fg">Buat Album Baru</h2>
+ <button onclick="closeAlbumModal()" class="text-sa-muted hover:text-sa-fg text-2xl focus:outline-none focus:ring-2 focus:ring-sa-border rounded-sa-md p-1">
  <i class="fas fa-times"></i>
  </button>
  </div>
@@ -459,85 +458,85 @@
  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
  <div class="space-y-4">
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="album-title">Judul Album *</label>
- <input type="text" id="album-title" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required>
+ <label class="block text-sa-muted font-medium mb-2" for="album-title">Judul Album *</label>
+ <input type="text" id="album-title" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" required>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="album-description">Deskripsi</label>
- <textarea id="album-description" rows="4" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Deskripsi album..."></textarea>
+ <label class="block text-sa-muted font-medium mb-2" for="album-description">Deskripsi</label>
+ <textarea id="album-description" rows="4" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="Deskripsi album..."></textarea>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="album-category">Kategori *</label>
- <select id="album-category" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required>
+ <label class="block text-sa-muted font-medium mb-2" for="album-category">Kategori *</label>
+ <select id="album-category" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" required>
  <option value="">Pilih kategori...</option>
  </select>
  </div>
  
  <div class="space-y-2">
  <div class="flex items-center">
- <input type="checkbox" id="album-premium" class="rounded-polaris-sm border-admin-border text-admin-warning focus:ring-admin-warning">
- <label class="ml-2 text-admin-textMuted font-medium" for="album-premium">Konten Premium</label>
+ <input type="checkbox" id="album-premium" class="rounded-sa-sm border-sa-border text-sa-warning focus:ring-sa-warning">
+ <label class="ml-2 text-sa-muted font-medium" for="album-premium">Konten Premium</label>
  </div>
- <p class="text-sm text-admin-accent ml-6">Centang untuk menandai sebagai konten premium</p>
- </div>
- 
- <div class="space-y-2">
- <div class="flex items-center">
- <input type="checkbox" id="album-completed" class="rounded-polaris-sm border-admin-border text-admin-success focus:ring-admin-success">
- <label class="ml-2 text-admin-textMuted font-medium" for="album-completed">Album Selesai</label>
- </div>
- <p class="text-sm text-admin-accent ml-6">Centang jika album sudah selesai/tamat</p>
+ <p class="text-sm text-sa-accent ml-6">Centang untuk menandai sebagai konten premium</p>
  </div>
  
  <div class="space-y-2">
  <div class="flex items-center">
- <input type="checkbox" id="album-hiatus" class="rounded-polaris-sm border-admin-border text-admin-warning focus:ring-admin-warning">
- <label class="ml-2 text-admin-textMuted font-medium" for="album-hiatus">Sedang Hiatus</label>
+ <input type="checkbox" id="album-completed" class="rounded-sa-sm border-sa-border text-sa-success focus:ring-sa-success">
+ <label class="ml-2 text-sa-muted font-medium" for="album-completed">Album Selesai</label>
  </div>
- <p class="text-sm text-admin-accent ml-6">Centang jika album sedang dalam masa hiatus</p>
+ <p class="text-sm text-sa-accent ml-6">Centang jika album sudah selesai/tamat</p>
+ </div>
+ 
+ <div class="space-y-2">
+ <div class="flex items-center">
+ <input type="checkbox" id="album-hiatus" class="rounded-sa-sm border-sa-border text-sa-warning focus:ring-sa-warning">
+ <label class="ml-2 text-sa-muted font-medium" for="album-hiatus">Sedang Hiatus</label>
+ </div>
+ <p class="text-sm text-sa-accent ml-6">Centang jika album sedang dalam masa hiatus</p>
  </div>
  </div>
  </div>
  
  <div class="space-y-4">
  <div id="image-header-section-album">
- <label class="block text-admin-textMuted font-medium mb-2">Gambar Sampul</label>
+ <label class="block text-sa-muted font-medium mb-2">Gambar Sampul</label>
  <input type="hidden" id="album-cover-image-id">
  <div class="flex items-center gap-x-2">
- <button type="button" onclick="openImageHeaderModalAlbum()" class="flex-grow bg-admin-primary hover:bg-admin-primaryHover text-white py-2 px-4 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <button type="button" onclick="openImageHeaderModalAlbum()" class="flex-grow bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  Pilih Gambar Sampul
  </button>
- <button type="button" id="clear-featured-image-btn-album" title="Hapus Gambar Sampul" class="p-2 bg-admin-surface text-admin-critical rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100">
+ <button type="button" id="clear-featured-image-btn-album" title="Hapus Gambar Sampul" class="p-2 bg-white text-sa-critical rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-critical transition-all duration-300 shadow-sa-card">
  <i class="fas fa-times"></i>
  </button>
  </div>
- <img id="featured-preview-album" src="" class="w-full h-32 object-cover rounded-polaris-base mt-2 hidden" alt="Pratinjau gambar sampul">
+ <img id="featured-preview-album" src="" class="w-full h-32 object-cover rounded-sa-md mt-2 hidden" alt="Pratinjau gambar sampul">
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2">Artikel/Cerita untuk Album</label>
- <div class="bg-white border border-admin-border rounded-polaris-base p-4">
+ <label class="block text-sa-muted font-medium mb-2">Artikel/Cerita untuk Album</label>
+ <div class="bg-white border border-sa-border rounded-sa-md p-4">
  <div class="flex items-center justify-between mb-3">
- <span class="text-sm text-admin-textMuted">Pilih artikel yang akan menjadi chapter</span>
- <button type="button" onclick="openNewsPickerModal()" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-3 py-1 rounded-polaris-sm text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300">
+ <span class="text-sm text-sa-muted">Pilih artikel yang akan menjadi chapter</span>
+ <button type="button" onclick="openNewsPickerModal()" class="bg-sa-fg hover:bg-sa-sidebar text-white px-3 py-1 rounded-sa-sm text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300">
  <i class="fas fa-plus mr-1"></i>Tambah Artikel
  </button>
  </div>
  <div id="selected-news-list" class="space-y-2 max-h-40 overflow-y-auto">
- <p class="text-sm text-admin-accent italic">Belum ada artikel dipilih</p>
+ <p class="text-sm text-sa-accent italic">Belum ada artikel dipilih</p>
  </div>
  </div>
  </div>
  </div>
  </div>
  
- <div class="flex justify-end space-x-4 pt-4 border-t border-admin-border">
- <button type="button" onclick="closeAlbumModal()" class="bg-admin-surface text-admin-text px-6 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <div class="flex justify-end space-x-4 pt-4 border-t border-sa-border">
+ <button type="button" onclick="closeAlbumModal()" class="bg-white text-sa-fg px-6 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  Batal
  </button>
- <button type="submit" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-6 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <button type="submit" class="bg-sa-fg hover:bg-sa-sidebar text-white px-6 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  <i class="fas fa-save mr-2"></i>Simpan Album
  </button>
  </div>
@@ -546,10 +545,10 @@
  </div>
 
  <div id="seo-edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-40" role="dialog" aria-labelledby="seo-edit-modal-title" aria-modal="true">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-overlay w-full max-w-4xl max-h-[90vh] overflow-y-auto">
  <div class="flex justify-between items-center mb-6">
- <h2 id="seo-edit-modal-title" class="text-2xl font-semibold text-admin-text">Edit SEO Album</h2>
- <button onclick="closeSEOEditModal()" class="text-admin-textMuted hover:text-admin-text text-2xl focus:outline-none focus:ring-2 focus:ring-admin-border rounded-polaris-base p-1">
+ <h2 id="seo-edit-modal-title" class="text-2xl font-semibold text-sa-fg">Edit SEO Album</h2>
+ <button onclick="closeSEOEditModal()" class="text-sa-muted hover:text-sa-fg text-2xl focus:outline-none focus:ring-2 focus:ring-sa-border rounded-sa-md p-1">
  <i class="fas fa-times"></i>
  </button>
  </div>
@@ -560,66 +559,66 @@
  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
  <div class="space-y-4">
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-meta-description">Meta Description</label>
- <textarea id="seo-meta-description" rows="3" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Deskripsi untuk mesin pencari (maksimal 500 karakter)"></textarea>
- <p class="text-xs text-admin-accent mt-1">Deskripsi yang akan muncul di hasil pencarian</p>
+ <label class="block text-sa-muted font-medium mb-2" for="seo-meta-description">Meta Description</label>
+ <textarea id="seo-meta-description" rows="3" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="Deskripsi untuk mesin pencari (maksimal 500 karakter)"></textarea>
+ <p class="text-xs text-sa-accent mt-1">Deskripsi yang akan muncul di hasil pencarian</p>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-meta-keywords">Meta Keywords</label>
- <input type="text" id="seo-meta-keywords" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="kata kunci, pencarian, album">
- <p class="text-xs text-admin-accent mt-1">Kata kunci dipisahkan dengan koma</p>
+ <label class="block text-sa-muted font-medium mb-2" for="seo-meta-keywords">Meta Keywords</label>
+ <input type="text" id="seo-meta-keywords" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="kata kunci, pencarian, album">
+ <p class="text-xs text-sa-accent mt-1">Kata kunci dipisahkan dengan koma</p>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-seo-slug">SEO Slug</label>
- <input type="text" id="seo-seo-slug" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="judul-album-seo-friendly">
- <p class="text-xs text-admin-accent mt-1">URL yang SEO-friendly untuk album ini</p>
+ <label class="block text-sa-muted font-medium mb-2" for="seo-seo-slug">SEO Slug</label>
+ <input type="text" id="seo-seo-slug" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="judul-album-seo-friendly">
+ <p class="text-xs text-sa-accent mt-1">URL yang SEO-friendly untuk album ini</p>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-canonical-url">Canonical URL</label>
- <input type="url" id="seo-canonical-url" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="https://example.com/album/url">
- <p class="text-xs text-admin-accent mt-1">URL kanonik untuk mencegah konten duplikat</p>
+ <label class="block text-sa-muted font-medium mb-2" for="seo-canonical-url">Canonical URL</label>
+ <input type="url" id="seo-canonical-url" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="https://example.com/album/url">
+ <p class="text-xs text-sa-accent mt-1">URL kanonik untuk mencegah konten duplikat</p>
  </div>
  </div>
  
  <div class="space-y-4">
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-og-title">Open Graph Title</label>
- <input type="text" id="seo-og-title" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Judul untuk Facebook, Twitter, dll">
- <p class="text-xs text-admin-accent mt-1">Judul yang akan muncul saat dibagikan di media sosial</p>
+ <label class="block text-sa-muted font-medium mb-2" for="seo-og-title">Open Graph Title</label>
+ <input type="text" id="seo-og-title" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="Judul untuk Facebook, Twitter, dll">
+ <p class="text-xs text-sa-accent mt-1">Judul yang akan muncul saat dibagikan di media sosial</p>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-og-description">Open Graph Description</label>
- <textarea id="seo-og-description" rows="3" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Deskripsi untuk media sosial"></textarea>
- <p class="text-xs text-admin-accent mt-1">Deskripsi yang akan muncul saat dibagikan</p>
+ <label class="block text-sa-muted font-medium mb-2" for="seo-og-description">Open Graph Description</label>
+ <textarea id="seo-og-description" rows="3" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="Deskripsi untuk media sosial"></textarea>
+ <p class="text-xs text-sa-accent mt-1">Deskripsi yang akan muncul saat dibagikan</p>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-og-image">Open Graph Image URL</label>
- <input type="url" id="seo-og-image" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="https://example.com/image.jpg">
- <p class="text-xs text-admin-accent mt-1">URL gambar untuk media sosial (1200x630px direkomendasikan)</p>
+ <label class="block text-sa-muted font-medium mb-2" for="seo-og-image">Open Graph Image URL</label>
+ <input type="url" id="seo-og-image" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="https://example.com/image.jpg">
+ <p class="text-xs text-sa-accent mt-1">URL gambar untuk media sosial (1200x630px direkomendasikan)</p>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-meta-author">Meta Author</label>
- <input type="text" id="seo-meta-author" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="Nama penulis">
- <p class="text-xs text-admin-accent mt-1">Nama penulis untuk meta tag</p>
+ <label class="block text-sa-muted font-medium mb-2" for="seo-meta-author">Meta Author</label>
+ <input type="text" id="seo-meta-author" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="Nama penulis">
+ <p class="text-xs text-sa-accent mt-1">Nama penulis untuk meta tag</p>
  </div>
  </div>
  </div>
  
- <div class="border-t border-admin-border pt-6">
- <h4 class="text-md font-semibold text-admin-text mb-4 flex items-center">
+ <div class="border-t border-sa-border pt-6">
+ <h4 class="text-md font-semibold text-sa-fg mb-4 flex items-center">
  <i class="fas fa-cog mr-2"></i>Pengaturan Lanjutan
  </h4>
  
  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-meta-language">Meta Language</label>
- <select id="seo-meta-language" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sa-muted font-medium mb-2" for="seo-meta-language">Meta Language</label>
+ <select id="seo-meta-language" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="id">Indonesia (id)</option>
  <option value="en">English (en)</option>
  <option value="ja">Japanese (ja)</option>
@@ -629,8 +628,8 @@
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-meta-robots">Meta Robots</label>
- <select id="seo-meta-robots" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sa-muted font-medium mb-2" for="seo-meta-robots">Meta Robots</label>
+ <select id="seo-meta-robots" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="index, follow">Index, Follow</option>
  <option value="noindex, follow">No Index, Follow</option>
  <option value="index, nofollow">Index, No Follow</option>
@@ -639,8 +638,8 @@
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="seo-structured-data-type">Structured Data Type</label>
- <select id="seo-structured-data-type" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sa-muted font-medium mb-2" for="seo-structured-data-type">Structured Data Type</label>
+ <select id="seo-structured-data-type" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="Book">Book</option>
  <option value="CreativeWork">Creative Work</option>
  <option value="Article">Article</option>
@@ -650,11 +649,11 @@
  </div>
  </div>
  
- <div class="flex justify-end space-x-4 pt-4 border-t border-admin-border">
- <button type="button" onclick="closeSEOEditModal()" class="bg-admin-surface text-admin-text px-6 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <div class="flex justify-end space-x-4 pt-4 border-t border-sa-border">
+ <button type="button" onclick="closeSEOEditModal()" class="bg-white text-sa-fg px-6 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  Batal
  </button>
- <button type="submit" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-6 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <button type="submit" class="bg-sa-fg hover:bg-sa-sidebar text-white px-6 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  <i class="fas fa-save mr-2"></i>Simpan SEO
  </button>
  </div>
@@ -663,10 +662,10 @@
  </div>
 
  <div id="chapter-edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="chapter-edit-title" aria-modal="true">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-overlay w-full max-w-md">
  <div class="flex justify-between items-center mb-4">
- <h3 id="chapter-edit-title" class="text-xl font-semibold text-admin-text">Edit Chapter</h3>
- <button onclick="closeChapterEditModal()" class="text-admin-textMuted hover:text-admin-text text-xl focus:outline-none focus:ring-2 focus:ring-admin-border rounded-polaris-base p-1">
+ <h3 id="chapter-edit-title" class="text-xl font-semibold text-sa-fg">Edit Chapter</h3>
+ <button onclick="closeChapterEditModal()" class="text-sa-muted hover:text-sa-fg text-xl focus:outline-none focus:ring-2 focus:ring-sa-border rounded-sa-md p-1">
  <i class="fas fa-times"></i>
  </button>
  </div>
@@ -676,25 +675,25 @@
  <input type="hidden" id="chapter-edit-album-id">
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="chapter-edit-number">Nomor Chapter</label>
- <input type="number" id="chapter-edit-number" min="1" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required>
+ <label class="block text-sa-muted font-medium mb-2" for="chapter-edit-number">Nomor Chapter</label>
+ <input type="number" id="chapter-edit-number" min="1" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" required>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="chapter-edit-title-input">Judul Chapter</label>
- <input type="text" id="chapter-edit-title-input" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required>
+ <label class="block text-sa-muted font-medium mb-2" for="chapter-edit-title-input">Judul Chapter</label>
+ <input type="text" id="chapter-edit-title-input" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" required>
  </div>
  
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="chapter-edit-news-title">Artikel Asli</label>
- <input type="text" id="chapter-edit-news-title" class="w-full bg-admin-surfaceHover border border-admin-border text-admin-textMuted p-3 rounded-polaris-base" readonly>
+ <label class="block text-sa-muted font-medium mb-2" for="chapter-edit-news-title">Artikel Asli</label>
+ <input type="text" id="chapter-edit-news-title" class="w-full bg-sa-surface-hover border border-sa-border text-sa-muted p-3 rounded-sa-md" readonly>
  </div>
  
  <div class="flex justify-end space-x-4 pt-4">
- <button type="button" onclick="closeChapterEditModal()" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <button type="button" onclick="closeChapterEditModal()" class="bg-white text-sa-fg px-4 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  Batal
  </button>
- <button type="submit" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-4 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <button type="submit" class="bg-sa-fg hover:bg-sa-sidebar text-white px-4 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  <i class="fas fa-save mr-2"></i>Simpan
  </button>
  </div>
@@ -703,43 +702,43 @@
  </div>
 
  <div id="image-header-modal-album" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-40" role="dialog" aria-labelledby="header-image-title-album" aria-modal="true">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
- <h2 id="header-image-title-album" class="text-xl font-semibold mb-4 text-admin-text">Pilih Gambar Sampul Album</h2>
- <div class="mb-4 p-4 bg-admin-surfaceHover border border-admin-border rounded-polaris-base" role="group" aria-label="Unggah gambar baru">
- <h3 class="text-base font-bold text-admin-text mb-2">Unggah Gambar Baru</h3>
- <input id="header-upload-name-album" type="text" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base mb-2" placeholder="Nama gambar (opsional)" aria-label="Nama gambar">
- <input id="header-upload-file-album" type="file" accept="image/*" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base mb-2" aria-label="Pilih file gambar">
- <input id="header-upload-url-album" type="url" class="w-full bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base mb-2" placeholder="https://contoh.com/gambar.jpg" aria-label="URL gambar">
- <button type="button" id="header-upload-btn-album" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Unggah gambar">Unggah</button>
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-overlay w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+ <h2 id="header-image-title-album" class="text-xl font-semibold mb-4 text-sa-fg">Pilih Gambar Sampul Album</h2>
+ <div class="mb-4 p-4 bg-sa-surface-hover border border-sa-border rounded-sa-md" role="group" aria-label="Unggah gambar baru">
+ <h3 class="text-base font-bold text-sa-fg mb-2">Unggah Gambar Baru</h3>
+ <input id="header-upload-name-album" type="text" class="w-full bg-white border border-sa-border text-sa-muted p-2 rounded-sa-md mb-2" placeholder="Nama gambar (opsional)" aria-label="Nama gambar">
+ <input id="header-upload-file-album" type="file" accept="image/*" class="w-full bg-white border border-sa-border text-sa-muted p-2 rounded-sa-md mb-2" aria-label="Pilih file gambar">
+ <input id="header-upload-url-album" type="url" class="w-full bg-white border border-sa-border text-sa-muted p-2 rounded-sa-md mb-2" placeholder="https://contoh.com/gambar.jpg" aria-label="URL gambar">
+ <button type="button" id="header-upload-btn-album" class="w-full bg-sa-fg hover:bg-sa-sidebar text-white py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card" aria-label="Unggah gambar">Unggah</button>
  </div>
  <div id="header-image-library-album" class="grid grid-cols-1 md:grid-cols-3 gap-4" role="list" aria-label="Daftar gambar sampul"></div>
  <div id="header-image-pagination-controls-album" class="mt-4 mb-4" role="navigation" aria-label="Navigasi halaman gambar sampul">
  </div>
- <button type="button" id="header-image-close-album" class="w-full bg-admin-surface text-admin-text py-3 rounded-polaris-base mt-4 focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Tutup dialog">Tutup</button>
+ <button type="button" id="header-image-close-album" class="w-full bg-white text-sa-fg py-3 rounded-sa-md mt-4 focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card" aria-label="Tutup dialog">Tutup</button>
  </div>
  </div>
 
  <div id="news-picker-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-40" role="dialog" aria-labelledby="news-picker-title" aria-modal="true">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
- <h2 id="news-picker-title" class="text-xl font-semibold mb-4 text-admin-text">Pilih Artikel untuk Album</h2>
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-overlay w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+ <h2 id="news-picker-title" class="text-xl font-semibold mb-4 text-sa-fg">Pilih Artikel untuk Album</h2>
  
  <div class="mb-4 space-y-3">
  <div class="flex gap-3">
- <input type="text" id="news-search" placeholder="Cari artikel..." class="flex-1 bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
- <select id="news-category-filter" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <input type="text" id="news-search" placeholder="Cari artikel..." class="flex-1 bg-white border border-sa-border text-sa-muted p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
+ <select id="news-category-filter" class="bg-white border border-sa-border text-sa-muted p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="">Semua Kategori</option>
  </select>
- <select id="news-status-filter" class="bg-white border border-admin-border text-admin-textMuted p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <select id="news-status-filter" class="bg-white border border-sa-border text-sa-muted p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="">Semua Status</option>
  <option value="visible">Tampilkan</option>
  <option value="hidden">Sembunyikan</option>
  </select>
  </div>
  <div class="flex gap-2">
- <button type="button" onclick="loadNewsPicker()" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-3 py-1 rounded-polaris-sm text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300">
+ <button type="button" onclick="loadNewsPicker()" class="bg-sa-fg hover:bg-sa-sidebar text-white px-3 py-1 rounded-sa-sm text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300">
  <i class="fas fa-refresh mr-1"></i>Muat Ulang
  </button>
- <button type="button" onclick="clearNewsFilters()" class="bg-admin-surface text-admin-text px-3 py-1 rounded-polaris-sm text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300">
+ <button type="button" onclick="clearNewsFilters()" class="bg-white text-sa-fg px-3 py-1 rounded-sa-sm text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300">
  <i class="fas fa-times mr-1"></i>Bersihkan Filter
  </button>
  </div>
@@ -752,10 +751,10 @@
  </div>
  
  <div class="flex justify-end space-x-4 mt-6">
- <button type="button" onclick="closeNewsPickerModal()" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <button type="button" onclick="closeNewsPickerModal()" class="bg-white text-sa-fg px-4 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  Batal
  </button>
- <button type="button" onclick="confirmNewsSelection()" class="bg-admin-primary hover:bg-admin-primaryHover text-white px-4 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <button type="button" onclick="confirmNewsSelection()" class="bg-sa-fg hover:bg-sa-sidebar text-white px-4 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  Pilih Artikel
  </button>
  </div>
@@ -763,14 +762,14 @@
  </div>
 
  <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="confirm-modal-title" aria-modal="true">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md">
- <h3 id="confirm-modal-title" class="text-xl font-semibold text-admin-text mb-4">Konfirmasi</h3>
- <p id="confirm-modal-message" class="text-admin-textMuted mb-6"></p>
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-overlay w-full max-w-md">
+ <h3 id="confirm-modal-title" class="text-xl font-semibold text-sa-fg mb-4">Konfirmasi</h3>
+ <p id="confirm-modal-message" class="text-sa-muted mb-6"></p>
  <div class="flex justify-end space-x-4">
- <button type="button" onclick="closeConfirmModal()" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100">
+ <button type="button" onclick="closeConfirmModal()" class="bg-white text-sa-fg px-4 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card">
  Batal
  </button>
- <button type="button" id="confirm-modal-action" class="bg-admin-surface text-white px-4 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100">
+ <button type="button" id="confirm-modal-action" class="bg-sa-critical text-white px-4 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-critical transition-all duration-300 shadow-sa-card">
  Konfirmasi
  </button>
  </div>

@@ -5,26 +5,26 @@
 {% block content %}
 <main class="container mx-auto px-6 py-12" role="main">
  <!-- Add New Contact Detail -->
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="add-contact-title">
- <h2 id="add-contact-title" class="text-xl font-semibold text-admin-text mb-4">Tambah Detail Kontak Baru</h2>
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card mb-8" role="region" aria-labelledby="add-contact-title">
+ <h2 id="add-contact-title" class="text-xl font-semibold text-sa-fg mb-4">Tambah Detail Kontak Baru</h2>
  <form action="{{ url_for('main.settings_contact_details') }}" method="POST" class="space-y-4" role="form" aria-label="Form tambah detail kontak baru">
  <!-- CSRF protection disabled for this application -->
  <input type="hidden" name="action" value="create">
  <div>
- <label for="new-title" class="block text-admin-text font-medium mb-2">Judul</label>
- <input type="text" id="new-title" name="title" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ <label for="new-title" class="block text-sa-fg font-medium mb-2">Judul</label>
+ <input type="text" id="new-title" name="title" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" required aria-required="true">
  </div>
  <div>
- <label for="new-content" class="block text-admin-text font-medium mb-2">Konten</label>
- <textarea id="new-content" name="content" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" rows="5" required aria-required="true"></textarea>
+ <label for="new-content" class="block text-sa-fg font-medium mb-2">Konten</label>
+ <textarea id="new-content" name="content" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" rows="5" required aria-required="true"></textarea>
  </div>
  <div>
- <label for="new-section-order" class="block text-admin-text font-medium mb-2">Urutan Bagian</label>
- <input type="number" id="new-section-order" name="section_order" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ <label for="new-section-order" class="block text-sa-fg font-medium mb-2">Urutan Bagian</label>
+ <input type="number" id="new-section-order" name="section_order" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" required aria-required="true">
  </div>
  <div>
- <label for="new-icon-class" class="block text-admin-text font-medium mb-2">Kelas Ikon</label>
- <select id="new-icon-class" name="icon_class" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Pilih ikon untuk detail kontak">
+ <label for="new-icon-class" class="block text-sa-fg font-medium mb-2">Kelas Ikon</label>
+ <select id="new-icon-class" name="icon_class" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" aria-label="Pilih ikon untuk detail kontak">
  <option value="">-- Pilih ikon --</option>
  <option value="envelope">Envelope</option>
  <option value="phone">Phone</option>
@@ -42,38 +42,38 @@
  </select>
  </div>
  <div>
- <label for="new-link" class="block text-admin-text font-medium mb-2">Tautan</label>
- <input type="url" id="new-link" name="link" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" placeholder="mis. mailto:you@contoh.com" aria-label="Masukkan tautan untuk detail kontak">
+ <label for="new-link" class="block text-sa-fg font-medium mb-2">Tautan</label>
+ <input type="url" id="new-link" name="link" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="mis. mailto:you@contoh.com" aria-label="Masukkan tautan untuk detail kontak">
  </div>
- <button type="submit" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Tambah detail kontak baru">Tambah Detail Kontak</button>
+ <button type="submit" class="w-full bg-sa-fg hover:bg-sa-sidebar text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card" aria-label="Tambah detail kontak baru">Tambah Detail Kontak</button>
  </form>
  </div>
 
  <!-- Existing Contact Details -->
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100" role="region" aria-labelledby="existing-contacts-title">
- <h2 id="existing-contacts-title" class="text-xl font-semibold text-admin-text mb-4">Detail Kontak yang Ada</h2>
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card" role="region" aria-labelledby="existing-contacts-title">
+ <h2 id="existing-contacts-title" class="text-xl font-semibold text-sa-fg mb-4">Detail Kontak yang Ada</h2>
  <div class="space-y-4" role="list" aria-label="Daftar detail kontak yang ada">
  {% for detail in contact_details %}
- <div class="bg-admin-surface border border-admin-border p-4 rounded-polaris-base shadow-polaris-100 space-y-4" role="listitem" aria-label="Detail kontak: {{ detail.title }}">
+ <div class="bg-white border border-sa-border p-4 rounded-sa-md shadow-sa-card space-y-4" role="listitem" aria-label="Detail kontak: {{ detail.title }}">
  <form action="{{ url_for('main.settings_contact_details') }}" method="POST" class="space-y-4" role="form" aria-label="Form edit detail kontak: {{ detail.title }}">
  <!-- CSRF protection disabled for this application -->
  <input type="hidden" name="detail_id" value="{{ detail.id }}">
  <input type="hidden" name="action" value="update">
  <div>
- <label for="title_{{ detail.id }}" class="block text-admin-text font-medium mb-2">Judul</label>
- <input type="text" id="title_{{ detail.id }}" name="title" value="{{ detail.title }}" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ <label for="title_{{ detail.id }}" class="block text-sa-fg font-medium mb-2">Judul</label>
+ <input type="text" id="title_{{ detail.id }}" name="title" value="{{ detail.title }}" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" required aria-required="true">
  </div>
  <div>
- <label for="content_{{ detail.id }}" class="block text-admin-text font-medium mb-2">Konten</label>
- <textarea id="content_{{ detail.id }}" name="content" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" rows="5" required aria-required="true">{{ detail.content }}</textarea>
+ <label for="content_{{ detail.id }}" class="block text-sa-fg font-medium mb-2">Konten</label>
+ <textarea id="content_{{ detail.id }}" name="content" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" rows="5" required aria-required="true">{{ detail.content }}</textarea>
  </div>
  <div>
- <label for="section_order_{{ detail.id }}" class="block text-admin-text font-medium mb-2">Urutan Bagian</label>
- <input type="number" id="section_order_{{ detail.id }}" name="section_order" value="{{ detail.section_order }}" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" required aria-required="true">
+ <label for="section_order_{{ detail.id }}" class="block text-sa-fg font-medium mb-2">Urutan Bagian</label>
+ <input type="number" id="section_order_{{ detail.id }}" name="section_order" value="{{ detail.section_order }}" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" required aria-required="true">
  </div>
  <div>
- <label for="icon_class_{{ detail.id }}" class="block text-admin-text font-medium mb-2">Kelas Ikon</label>
- <select id="icon_class_{{ detail.id }}" name="icon_class" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Pilih ikon untuk detail kontak">
+ <label for="icon_class_{{ detail.id }}" class="block text-sa-fg font-medium mb-2">Kelas Ikon</label>
+ <select id="icon_class_{{ detail.id }}" name="icon_class" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" aria-label="Pilih ikon untuk detail kontak">
  <option value="" disabled {% if not detail.icon_class %}selected{% endif %}>-- Pilih ikon --</option>
  <option value="envelope" {% if detail.icon_class=='envelope' %}selected{% endif %}>Envelope</option>
  <option value="phone" {% if detail.icon_class=='phone' %}selected{% endif %}>Phone</option>
@@ -91,16 +91,16 @@
  </select>
  </div>
  <div>
- <label for="link_{{ detail.id }}" class="block text-admin-text font-medium mb-2">Tautan</label>
- <input type="url" id="link_{{ detail.id }}" name="link" value="{{ detail.link }}" class="w-full bg-white border border-admin-border text-admin-text p-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent" aria-label="Masukkan tautan untuk detail kontak">
+ <label for="link_{{ detail.id }}" class="block text-sa-fg font-medium mb-2">Tautan</label>
+ <input type="url" id="link_{{ detail.id }}" name="link" value="{{ detail.link }}" class="w-full bg-white border border-sa-border text-sa-fg p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" aria-label="Masukkan tautan untuk detail kontak">
  </div>
  <div class="flex items-center space-x-2">
- <input type="checkbox" name="is_active" id="is_active_{{ detail.id }}" class="rounded-polaris-sm border-admin-border text-admin-success focus:ring-admin-successSurface" {% if detail.is_active %}checked{% endif %} aria-label="Aktifkan detail kontak">
- <label for="is_active_{{ detail.id }}" class="text-admin-text">Aktif</label>
+ <input type="checkbox" name="is_active" id="is_active_{{ detail.id }}" class="rounded-sa-sm border-sa-border text-sa-success focus:ring-sa-success" {% if detail.is_active %}checked{% endif %} aria-label="Aktifkan detail kontak">
+ <label for="is_active_{{ detail.id }}" class="text-sa-fg">Aktif</label>
  </div>
  <div class="flex space-x-4" role="group" aria-label="Tombol aksi untuk detail kontak">
- <button type="submit" class="flex-1 bg-admin-primary hover:bg-admin-primaryHover text-white py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Perbarui detail kontak">Perbarui</button>
- <button type="button" onclick="openDeleteModal(this.form)" class="flex-1 bg-admin-surface text-white py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100" aria-label="Hapus detail kontak">Hapus</button>
+ <button type="submit" class="flex-1 bg-sa-fg hover:bg-sa-sidebar text-white py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card" aria-label="Perbarui detail kontak">Perbarui</button>
+ <button type="button" onclick="openDeleteModal(this.form)" class="flex-1 bg-sa-critical text-white py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-critical transition-all duration-300 shadow-sa-card" aria-label="Hapus detail kontak">Hapus</button>
  </div>
  </form>
  </div>
@@ -111,12 +111,12 @@
 
 <!-- Delete Confirmation Modal for Contact Details -->
 <div id="delete-confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" role="dialog" aria-labelledby="delete-modal-title" aria-modal="true">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-sm">
- <h3 id="delete-modal-title" class="text-xl font-semibold text-admin-text mb-4">Konfirmasi Hapus</h3>
- <p class="mb-4 text-admin-textMuted">Apakah Anda yakin ingin menghapus detail kontak ini?</p>
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-overlay w-full max-w-sm">
+ <h3 id="delete-modal-title" class="text-xl font-semibold text-sa-fg mb-4">Konfirmasi Hapus</h3>
+ <p class="mb-4 text-sa-muted">Apakah Anda yakin ingin menghapus detail kontak ini?</p>
  <div class="flex justify-end space-x-4" role="group" aria-label="Tombol konfirmasi hapus">
- <button id="confirm-delete-btn" type="button" class="bg-admin-surface text-white px-4 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100" aria-label="Konfirmasi hapus detail kontak">Hapus</button>
- <button type="button" onclick="closeDeleteModal()" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal hapus detail kontak">Batal</button>
+ <button id="confirm-delete-btn" type="button" class="bg-sa-critical text-white px-4 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-critical transition-all duration-300 shadow-sa-card" aria-label="Konfirmasi hapus detail kontak">Hapus</button>
+ <button type="button" onclick="closeDeleteModal()" class="bg-white text-sa-fg px-4 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card" aria-label="Batal hapus detail kontak">Batal</button>
  </div>
  </div>
 </div>

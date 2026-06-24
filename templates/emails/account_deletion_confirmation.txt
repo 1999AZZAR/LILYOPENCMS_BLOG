@@ -1,0 +1,30 @@
+{{ brand_name }}
+================================================================================
+
+AKUN ANDA TELAH DIHAPUS
+
+Halo {{ user.first_name or user.username }},
+
+Sesuai dengan permintaan Anda, akun Anda di {{ brand_name }} telah berhasil dihapus secara permanen.
+
+YANG TELAH DIHAPUS
+------------------
+- Informasi profil dan data pribadi
+- Riwayat aktivitas akun
+- Preferensi dan pengaturan
+
+PERHATIAN
+---------
+Tindakan ini bersifat permanen. Anda tidak dapat memulihkan akun atau data yang telah dihapus.
+
+INGIN BERGABUNG KEMBALI?
+------------------------
+Anda selalu dapat mendaftar kembali di {{ brand_name }} kapan saja dengan membuat akun baru.
+
+Terima kasih telah menjadi bagian dari komunitas {{ brand_name }}. Kami berharap dapat melayani Anda lagi di masa mendatang.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

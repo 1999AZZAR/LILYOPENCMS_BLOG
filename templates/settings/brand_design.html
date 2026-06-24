@@ -1,0 +1,233 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends "admin_base.html" %}
+{% block title %}Design Settings{% endblock %}
+{% block hero_title %}Design Settings{% endblock %}
+{% block hero_desc %}Atur pengaturan desain website{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+  <div class="flex items-center gap-2 text-sm text-sa-muted mb-6">
+    <a href="{{ url_for('main.settings_brand_identity') }}" class="hover:text-sa-accent transition-colors">Brand Management</a>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+    <span class="text-sa-fg font-medium">Design Settings</span>
+  </div>
+
+  <!-- Homepage Design Section -->
+  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="Homepage Design Management">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" /></svg>
+      </div>
+      <h2 class="text-xl font-bold tracking-tight text-sa-fg">Homepage Design</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="News-Focused Design">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+            News-Focused Design
+          </h3>
+        </div>
+        <p class="text-sa-muted mb-4">Perfect for news websites, blogs, and content-focused sites. Features news articles, latest updates, and popular content.</p>
+        <form id="form-homepage-news" class="space-y-3">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="homepage_design" value="news">
+          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set news-focused design">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            {% if brand_info.homepage_design == 'news' %}Active{% else %}Set as Active{% endif %}
+          </button>
+        </form>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- Categories Display Location Section -->
+  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="Categories Display Location Management">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M4.25 2A2.25 2.25 0 0 0 2 4.25v11.5A2.25 2.25 0 0 0 4.25 18h11.5A2.25 2.25 0 0 0 18 15.75V4.25A2.25 2.25 0 0 0 15.75 2H4.25ZM2.5 7.75v5.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-5.5H2.5Zm11-3H2.5V4.75c0-.138.112-.25.25-.25h10.5a.25.25 0 0 1 .25.25V5Z" clip-rule="evenodd" /></svg>
+      </div>
+      <h2 class="text-xl font-bold tracking-tight text-sa-fg">Categories Display Location</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Body Display">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+            Body Display
+          </h3>
+        </div>
+        <p class="text-sa-muted mb-4">Categories are displayed as cards in the main content area of the homepage.</p>
+        <form id="form-categories-body" class="space-y-3">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="categories_display_location" value="body">
+          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set body display">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            {% if brand_info.categories_display_location == 'body' %}Active{% else %}Set as Active{% endif %}
+          </button>
+        </form>
+      </div>
+
+      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Navbar Dropdown Display">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+            Navbar Dropdown
+          </h3>
+        </div>
+        <p class="text-sa-muted mb-4">Categories are displayed as a dropdown menu in the navigation bar.</p>
+        <form id="form-categories-navbar" class="space-y-3">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="categories_display_location" value="navbar">
+          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set navbar dropdown display">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            {% if brand_info.categories_display_location == 'navbar' %}Active{% else %}Set as Active{% endif %}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- News Card Design Section -->
+  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="News Card Design Management">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+      </div>
+      <h2 class="text-xl font-bold tracking-tight text-sa-fg">News Card Design</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Classic Card Design">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+            Classic
+          </h3>
+        </div>
+        <div class="bg-sa-surface-hover rounded-sa-lg p-3 mb-4 h-32 flex items-center justify-center">
+          <div class="text-center">
+            <div class="w-16 h-12 bg-sa-border rounded mb-2 mx-auto"></div>
+            <div class="w-20 h-2 bg-sa-border rounded mb-1 mx-auto"></div>
+            <div class="w-16 h-2 bg-sa-border rounded mx-auto"></div>
+          </div>
+        </div>
+        <p class="text-sa-muted mb-4 text-sm">Traditional card layout with image on top, title, excerpt, and metadata below.</p>
+        <form id="form-card-classic" class="space-y-3">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="card_design" value="classic">
+          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set classic card design">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            {% if brand_info.card_design == 'classic' %}Active{% else %}Set as Active{% endif %}
+          </button>
+        </form>
+      </div>
+
+      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Modern Card Design">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" /></svg>
+            Modern
+          </h3>
+        </div>
+        <div class="bg-sa-surface-hover rounded-sa-lg p-3 mb-4 h-32 flex items-center justify-center">
+          <div class="text-center">
+            <div class="w-16 h-12 bg-gradient-to-r from-sa-accent to-sa-sidebar rounded-lg mb-2 mx-auto"></div>
+            <div class="w-20 h-2 bg-sa-border rounded mb-1 mx-auto"></div>
+            <div class="w-16 h-2 bg-sa-border rounded mx-auto"></div>
+          </div>
+        </div>
+        <p class="text-sa-muted mb-4 text-sm">Contemporary design with gradient overlays, rounded corners, and enhanced visual hierarchy.</p>
+        <form id="form-card-modern" class="space-y-3">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="card_design" value="modern">
+          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set modern card design">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            {% if brand_info.card_design == 'modern' %}Active{% else %}Set as Active{% endif %}
+          </button>
+        </form>
+      </div>
+
+      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Minimal Card Design">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 018.25 20.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
+            Minimal
+          </h3>
+        </div>
+        <div class="bg-sa-surface-hover rounded-sa-lg p-3 mb-4 h-32 flex items-center justify-center">
+          <div class="text-center">
+            <div class="w-16 h-12 bg-sa-card rounded mb-2 mx-auto border border-sa-border"></div>
+            <div class="w-20 h-2 bg-sa-border rounded mb-1 mx-auto"></div>
+            <div class="w-16 h-2 bg-sa-border rounded mx-auto"></div>
+          </div>
+        </div>
+        <p class="text-sa-muted mb-4 text-sm">Clean and simple design with minimal visual elements. Focuses on content readability.</p>
+        <form id="form-card-minimal" class="space-y-3">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="card_design" value="minimal">
+          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set minimal card design">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            {% if brand_info.card_design == 'minimal' %}Active{% else %}Set as Active{% endif %}
+          </button>
+        </form>
+      </div>
+
+      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Featured Card Design">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+            Featured
+          </h3>
+        </div>
+        <div class="bg-sa-surface-hover rounded-sa-lg p-3 mb-4 h-32 flex items-center justify-center">
+          <div class="text-center">
+            <div class="w-16 h-12 bg-gradient-to-r from-sa-warning to-sa-accent rounded-lg mb-2 mx-auto relative">
+              <div class="absolute -top-1 -right-1 w-4 h-4 bg-sa-error rounded-full"></div>
+            </div>
+            <div class="w-20 h-2 bg-sa-border rounded mb-1 mx-auto"></div>
+            <div class="w-16 h-2 bg-sa-border rounded mx-auto"></div>
+          </div>
+        </div>
+        <p class="text-sa-muted mb-4 text-sm">Premium design with enhanced visual elements, larger images, and prominent featured indicators.</p>
+        <form id="form-card-featured" class="space-y-3">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="card_design" value="featured">
+          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set featured card design">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            {% if brand_info.card_design == 'featured' %}Active{% else %}Set as Active{% endif %}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+<script src="/static/js/brand-management.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        const messagesData = '{{ get_flashed_messages(with_categories=true) | tojson | safe }}';
+        if (!messagesData || messagesData.trim() === '' || messagesData === 'null' || messagesData === 'undefined') return;
+        let messages;
+        try { messages = JSON.parse(messagesData); } catch (parseError) { return; }
+        if (Array.isArray(messages)) messages.forEach(([category, message]) => showToast(category, message));
+    } catch (e) { console.error('Error in flash messages handler:', e); }
+});
+</script>
+{% endblock %}

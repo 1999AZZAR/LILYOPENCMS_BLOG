@@ -1,5 +1,4 @@
 from .common_imports import *
-main_blueprint = Blueprint("main", __name__)
 
 from .routes_auth import *
 from .routes_chategories import *

@@ -1,299 +1,372 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
- <script>
- tailwind.config = {
- theme: {
- extend: {
- fontFamily: {
- sans: ["-apple-system", "BlinkMacSystemFont", "San Francisco", "Segoe UI", "Roboto", "Helvetica Neue", "sans-serif"]
- },
- colors: {
- admin: {
- primary: "#202223", // Ink
- primaryHover: "#000000",
- accent: "#008060", // Teal
- accentHover: "#004C3F",
- surface: "#FFFFFF",
- surfaceHover: "#F4F6F8",
- background: "#F4F6F8",
- border: "#C9CCCF",
- text: "#202223",
- textMuted: "#6D7175",
- critical: "#D82C0D",
- criticalHover: "#bc2200",
- criticalSurface: "#FDEAE7",
- warning: "#FFC453",
- warningHover: "#FFB320",
- warningSurface: "#FFFBED",
- success: "#008060",
- successHover: "#006e52",
- successSurface: "#F1F8F5"
- }
- },
- boxShadow: {
- "polaris-100": "0 1px 0 0 rgba(0,0,0,0.05)",
- "polaris-200": "0 3px 6px -3px rgba(23,24,24,0.08), 0 8px 20px -4px rgba(23,24,24,0.12)",
- "polaris-300": "0 4px 8px -2px rgba(23,24,24,0.08), 0 12px 32px -4px rgba(23,24,24,0.12)"
- },
- borderRadius: {
- "polaris-sm": "4px",
- "polaris-base": "8px",
- "polaris-lg": "12px",
- "polaris-full": "9999px"
- }
- }
- }
- }
- </script>
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
- <link rel="preconnect" href="https://fonts.googleapis.com">
- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
- <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.png') }}">
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
- <meta name="csrf-token" content="{{ csrf_token() }}">
- <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
- <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_base_css.css') }}">
- <title>{% block title %}Dasbor Admin - Exposeur Admin{% endblock %}</title>
- {% block extra_head %}{% endblock %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+          mono: ['JetBrains Mono', 'monospace']
+        },
+        colors: {
+          sa: {
+            bg: '#EFE9DC',
+            'bg-alt': '#F5F1E8',
+            surface: '#FFFFFF',
+            'surface-hover': '#FAF8F4',
+            fg: '#2A2520',
+            muted: '#A49C92',
+            'muted-strong': '#6F675D',
+            border: '#D6CFC3',
+            'border-light': '#E5DFD3',
+            accent: '#9C3D3B',
+            'accent-hover': '#943A38',
+            'accent-active': '#6F2B2A',
+            success: '#3A6B3A',
+            'success-hover': '#2E562E',
+            'success-bg': '#EEF5EE',
+            warning: '#8B6B1A',
+            'warning-hover': '#7A5E16',
+            'warning-bg': '#F8F4EB',
+            critical: '#B33A3A',
+            'critical-hover': '#9A2F2F',
+            'critical-bg': '#F8EEEE',
+            sidebar: '#1F1B18',
+            'sidebar-hover': '#2A2520',
+            'sidebar-border': '#3A3430',
+            'sidebar-text': '#C4BEB4',
+            'sidebar-accent': '#B85C5A'
+          },
+          admin: {
+            primary: '#2A2520',
+            primaryHover: '#1F1B18',
+            accent: '#9C3D3B',
+            accentHover: '#943A38',
+            surface: '#FFFFFF',
+            surfaceHover: '#FAF8F4',
+            surface0: '#2A2520',
+            background: '#EFE9DC',
+            border: '#D6CFC3',
+            text: '#2A2520',
+            textMuted: '#A49C92',
+            critical: '#B33A3A',
+            criticalHover: '#9A2F2F',
+            criticalSurface: '#F8EEEE',
+            warning: '#8B6B1A',
+            warningHover: '#7A5E16',
+            warningSurface: '#F8F4EB',
+            success: '#3A6B3A',
+            successHover: '#2E562E',
+            successSurface: '#EEF5EE'
+          }
+        },
+        borderRadius: {
+          'sa-sm': '4px',
+          'sa-md': '6px',
+          'sa-lg': '12px',
+          'polaris-sm': '4px',
+          'polaris-base': '6px',
+          'polaris-lg': '12px',
+          'polaris-full': '9999px'
+        },
+        boxShadow: {
+          'sa-card': '0 1px 3px rgba(42,37,32,0.06)',
+          'sa-overlay': '0 4px 12px rgba(42,37,32,0.12)',
+          'sa-dropdown': '0 1px 3px rgba(42,37,32,0.1)',
+          'polaris-100': '0 1px 3px rgba(42,37,32,0.06)',
+          'polaris-200': '0 4px 12px rgba(42,37,32,0.1)',
+          'polaris-300': '0 8px 24px rgba(42,37,32,0.12)'
+        },
+        fontSize: {
+          'label': ['0.75rem', { lineHeight: '1', fontWeight: '600', letterSpacing: '0.1em' }],
+          'micro': ['0.625rem', { lineHeight: '1', fontWeight: '600', letterSpacing: '0.1em' }]
+        }
+      }
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.png') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_base_css.css') }}">
+  <title>{% block title %}Dasbor Admin - Exposeur Admin{% endblock %}</title>
+  {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-admin-background text-admin-text font-sans">
- <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:bg-white focus:px-4 focus:py-2 focus:z-50">Skip to main content</a>
- <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="alert" aria-live="assertive" aria-atomic="true"></div>
- <!-- Loading Spinner -->
- <div id="loading-spinner" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
- <div class="animate-spin rounded-polaris-full h-16 w-16 border-t-4 border-admin-textMuted"></div>
- </div>
- <!-- Sidebar Toggle Button -->
- <button id="sidebar-toggle-button" class="fixed left-6 top-6 text-admin-textMuted hover:text-admin-text transition-colors duration-200 z-40" aria-expanded="false" aria-controls="sidebar" aria-label="Toggle navigation menu">
- <i class="fas fa-bars text-3xl"></i>
- </button>
- <!-- Sidebar -->
- <div id="sidebar" class="fixed inset-y-0 left-0 w-80 bg-admin-surface border-r border-admin-border transform -translate-x-full transition-transform duration-300 ease-in-out z-50" role="navigation" aria-label="Admin navigation">
- <div class="flex flex-col h-full">
- <!-- Logo -->
- <div class="p-8 border-b border-admin-textMuted bg-admin-primary">
- <div class="text-4xl font-bold text-white font-black tracking-tight text-center">
- LILY CMS by <a href="https://azzar.netlify.app/porto" class="text-white hover:text-admin-textMuted underline" target="_blank" rel="noopener">azzar</a>
- <div class="text-sm font-normal text-admin-textMuted mt-2">Admin Dashboard</div>
- </div>
- </div>
- <!-- Sidebar Links -->
- <div class="flex-1 p-8 overflow-y-auto">
- {% set nav_groups = [
- {
- 'id': 'dashboard',
- 'title': 'Dashboard',
- 'icon': 'fas fa-tachometer-alt',
- 'links': [
- {'url': url_for('main.settings_dashboard'), 'icon': 'fas fa-gears', 'label': 'Dasbor', 'roles': ['su','admin','general']}
- ]
- },
- {
- 'id': 'content',
- 'title': 'Manajemen Konten',
- 'icon': 'fas fa-newspaper',
- 'links': [
- {'url': url_for('main.create_news'), 'icon': 'fas fa-plus-circle', 'label': 'Buat Cerita', 'roles': ['su','admin','general']},
- {'url': url_for('main.manage_news'), 'icon': 'fas fa-pen-', 'label': 'Kelola Cerita', 'roles': ['su','admin','general']},
- {'url': url_for('main.albums_management'), 'icon': 'fas fa-book-open', 'label': 'Manajemen Album', 'roles': ['su','admin','general']},
- {'url': url_for('main.settings_categories'), 'icon': 'fas fa-tags', 'label': 'Manajemen Kategori', 'roles': ['admin','su']},
- {'url': url_for('main.settingsimage'), 'icon': 'fas fa-image', 'label': 'Manajemen Gambar', 'roles': ['su','admin','general']},
- {'url': url_for('main.settings_youtube'), 'icon': 'fab fa-youtube', 'label': 'Manajemen Video', 'roles': ['admin','su']}
- ]
- },
- {
- 'id': 'users',
- 'title': 'Manajemen Pengguna',
- 'icon': 'fas fa-users',
- 'links': [
- {'url': url_for('main.user_account'), 'icon': 'fas fa-user', 'label': 'Manajemen Akun', 'roles': ['admin','su']},
- {'url': url_for('main.settings_users'), 'icon': 'fas fa-users-cog', 'label': 'Manajemen Pengguna', 'roles': ['admin','su']}
- ]
- },
- {
- 'id': 'brand',
- 'title': 'Brand & Identitas',
- 'icon': 'fas fa-palette',
- 'links': [
- {'url': url_for('main.settings_brand_identity'), 'icon': 'fas fa-palette', 'label': 'Brand Identity', 'roles': ['su']},
- {'url': url_for('main.settings_social_media'), 'icon': 'fas fa-share-alt', 'label': 'Media Sosial', 'roles': ['admin','su']},
- {'url': url_for('main.settings_contact_details'), 'icon': 'fas fa-address-book', 'label': 'Detail Kontak', 'roles': ['admin','su']},
- {'url': url_for('main.settings_team_members'), 'icon': 'fas fa-user-friends', 'label': 'Anggota Tim', 'roles': ['admin','su']}
- ]
- },
- {
- 'id': 'navigation',
- 'title': 'Navigasi & SEO',
- 'icon': 'fas fa-sitemap',
- 'links': [
- {'url': url_for('main.navigation_management'), 'icon': 'fas fa-link', 'label': 'Manajemen Navigasi', 'roles': ['admin','su']},
- {'url': url_for('main.seo_management'), 'icon': 'fas fa-globe', 'label': 'Manajemen SEO', 'roles': ['admin','su']}
- ]
- },
- {
- 'id': 'analytics',
- 'title': 'Analitik & Performa',
- 'icon': 'fas fa-chart-line',
- 'links': [
- {'url': url_for('main.settings_analytics'), 'icon': 'fas fa-chart-bar', 'label': 'Dashboard Analitik', 'roles': ['su']},
- {'url': url_for('main.settings_performance'), 'icon': 'fas fa-tachometer-alt', 'label': 'Dashboard Performa', 'roles': ['su']},
- {'url': url_for('main.settings_asset_optimization'), 'icon': 'fas fa-compress-arrows-alt', 'label': 'Optimasi Asset', 'roles': ['su']},
- {'url': url_for('main.settings_ssr_optimization'), 'icon': 'fas fa-server', 'label': 'Optimasi SSR', 'roles': ['su']}
- ]
- },
- {
- 'id': 'legal',
- 'title': 'Legal & Kebijakan',
- 'icon': 'fas fa-shield-alt',
- 'links': [
- {'url': url_for('main.settings_privacy_policy'), 'icon': 'fas fa-shield-alt', 'label': 'Kebijakan Privasi', 'roles': ['admin','su']},
- {'url': url_for('main.settings_media_guidelines'), 'icon': 'fas fa-book', 'label': 'Pedoman Media', 'roles': ['admin','su']},
- {'url': url_for('main.settings_pedomanhak'), 'icon': 'fas fa-handshake', 'label': 'Pedoman Hak', 'roles': ['admin','su']},
- {'url': url_for('main.settings_penyangkalan'), 'icon': 'fas fa-file', 'label': 'Penyangkalan', 'roles': ['admin','su']},
- {'url': url_for('main.settings_visi_misi'), 'icon': 'fas fa-braille', 'label': 'Visi Misi', 'roles': ['admin','su']}
- ]
- },
- {
- 'id': 'account',
- 'title': 'Akun & Sistem',
- 'icon': 'fas fa-user-cog',
- 'links': [
- {'url': url_for('main.logout'), 'icon': 'fas fa-sign-out-alt', 'label': 'Logout (' + current_user.username + ')', 'roles': ['su','admin','general']}
- ]
- }
- ] %}
- 
- <div class="space-y-8">
- {% for group in nav_groups %}
- <div class="nav-group border-b border-admin-border p-4 rounded-none bg-transparent" data-group="{{ group.id }}">
- <button class="nav-group-toggle w-full flex items-center justify-between text-admin-text font-bold hover:text-admin-accent hover:bg-admin-surfaceHover px-4 py-3 rounded-polaris-base transition-all duration-300" aria-expanded="true" aria-controls="nav-group-{{ group.id }}">
- <div class="flex items-center">
- <i class="{{ group.icon }} mr-4 text-admin-textMuted text-lg"></i>
- <span class="font-semibold text-base">{{ group.title }}</span>
- </div>
- <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
- </button>
- <ul id="nav-group-{{ group.id }}" class="nav-group-content mt-3 space-y-2 ml-6">
- {% for link in group.links %}
- <li role="menuitem">
- <a href="{{ link.url }}" class="{% if group.id == 'account' %}text-admin-critical hover:text-admin-critical hover:bg-admin-criticalSurface{% else %}text-admin-textMuted font-medium hover:text-admin-text hover:bg-admin-surfaceHover{% endif %} px-4 py-3 rounded-polaris-base transition-all duration-300 flex items-center text-sm">
- <i class="{{ link.icon }} mr-4 {% if group.id == 'account' %}text-admin-critical{% else %}text-admin-textMuted{% endif %}"></i>{{ link.label }}
- </a>
- </li>
- {% endfor %}
- </ul>
- </div>
- {% endfor %}
- </div>
- </div>
- </div>
- </div>
- <!-- Overlay for Mobile -->
- <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-25 z-30 hidden" aria-hidden="true"></div>
- <!-- Hero Section -->
- <section id="hero-toggle" class="bg-admin-surface border-b border-admin-border px-8 py-8 text-left" role="banner" aria-label="Admin dashboard header">
- <h1 class="text-3xl font-black text-admin-text tracking-tight">{% block hero_title %}Dasbor Admin{% endblock %}</h1>
- <p class="text-base text-admin-textMuted max-w-2xl mt-2 font-medium">{% block hero_desc %}Kelola pengguna, cerita, dan pengaturan sistem{% endblock %}</p>
- </section>
- <!-- Admin Content -->
- <main id="main-content" class="w-full px-8 py-12 bg-admin-background min-h-screen" role="main" tabindex="-1">
- <div class="" role="region" aria-label="Content">
- {% block content %}{% endblock %}
- </div>
- </main>
- <script>
- async function fetchQuickStats() { try { const response = await fetch('/api/settings/stats'); if (!response.ok) throw new Error('Failed to fetch stats'); const stats = await response.json(); document.getElementById('total-users').textContent = stats.total_users; document.getElementById('total-news').textContent = stats.total_news; document.getElementById('total-images').textContent = stats.total_images; } catch (error) { console.error(error); document.getElementById('total-users').textContent = 'Error'; document.getElementById('total-news').textContent = 'Error'; document.getElementById('total-images').textContent = 'Error'; } }
+<body class="bg-sa-bg text-sa-fg font-sans antialiased">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:bg-white focus:px-4 focus:py-2 focus:z-50 focus:outline-2 focus:outline-sa-accent">Skip to main content</a>
+
+  <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+  <div id="loading-spinner" class="hidden fixed inset-0 bg-sa-fg/40 flex items-center justify-center z-50">
+    <div class="spinner"></div>
+  </div>
+
+  <button id="sidebar-toggle-button"
+    class="fixed top-4 left-4 z-50 w-9 h-9 flex items-center justify-center rounded-sa-md text-sa-sidebar-text hover:text-white hover:bg-sa-sidebar-hover transition-colors duration-150"
+    aria-expanded="false"
+    aria-controls="sidebar"
+    aria-label="Toggle navigation menu">
+    <i class="fas fa-bars text-lg"></i>
+  </button>
+
+  <div id="sidebar"
+    class="fixed inset-y-0 left-0 w-[280px] bg-sa-sidebar border-r border-sa-sidebar-border transform -translate-x-full transition-transform duration-300 ease-out z-40 flex flex-col"
+    role="navigation"
+    aria-label="Admin navigation">
+    <div class="px-6 pt-14 pb-6 border-b border-sa-sidebar-border">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-sa-sm bg-sa-accent flex items-center justify-center text-white text-sm font-bold">L</div>
+        <div>
+          <div class="text-sm font-semibold text-white tracking-tight">LILY CMS</div>
+          <div class="text-micro text-sa-muted">Admin Panel</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-3 pt-3 pb-1">
+      <div class="relative">
+        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-sa-sidebar-text opacity-50 text-xs"></i>
+        <input type="text" id="sidebar-search" placeholder="Cari menu..." class="w-full bg-sa-sidebar-hover border border-sa-sidebar-border text-white text-sm rounded-sa-md pl-8 pr-3 py-2 placeholder-sa-muted/50 focus:outline-none focus:border-sa-accent focus:ring-1 focus:ring-sa-accent transition-all duration-150">
+      </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-3 py-2 space-y-1">
+      {% set nav_groups = [
+      {
+      'id': 'dashboard',
+      'title': 'Dashboard',
+      'icon': 'fas fa-tachometer-alt',
+      'links': [
+      {'url': url_for('main.settings_dashboard'), 'icon': 'fas fa-gears', 'label': 'Dasbor', 'roles': ['su','admin','general']}
+      ]
+      },
+      {
+      'id': 'content',
+      'title': 'Manajemen Konten',
+      'icon': 'fas fa-newspaper',
+      'links': [
+      {'url': url_for('main.create_news'), 'icon': 'fas fa-plus-circle', 'label': 'Buat Cerita', 'roles': ['su','admin','general']},
+      {'url': url_for('main.manage_news'), 'icon': 'fas fa-pen-', 'label': 'Kelola Cerita', 'roles': ['su','admin','general']},
+      {'url': url_for('main.albums_management'), 'icon': 'fas fa-book-open', 'label': 'Manajemen Album', 'roles': ['su','admin','general']},
+      {'url': url_for('main.settings_categories'), 'icon': 'fas fa-tags', 'label': 'Manajemen Kategori', 'roles': ['admin','su']},
+      {'url': url_for('main.settingsimage'), 'icon': 'fas fa-image', 'label': 'Manajemen Gambar', 'roles': ['su','admin','general']},
+      {'url': url_for('main.settings_youtube'), 'icon': 'fab fa-youtube', 'label': 'Manajemen Video', 'roles': ['admin','su']}
+      ]
+      },
+      {
+      'id': 'users',
+      'title': 'Manajemen Pengguna',
+      'icon': 'fas fa-users',
+      'links': [
+      {'url': url_for('main.user_account'), 'icon': 'fas fa-user', 'label': 'Manajemen Akun', 'roles': ['admin','su']},
+      {'url': url_for('main.settings_users'), 'icon': 'fas fa-users-cog', 'label': 'Manajemen Pengguna', 'roles': ['admin','su']}
+      ]
+      },
+      {
+      'id': 'brand',
+      'title': 'Brand & Identitas',
+      'icon': 'fas fa-palette',
+      'links': [
+      {'url': url_for('main.settings_brand_identity'), 'icon': 'fas fa-palette', 'label': 'Brand Identity', 'roles': ['su']},
+      {'url': url_for('main.settings_brand_info'), 'icon': 'fas fa-info-circle', 'label': 'Brand Info', 'roles': ['su']},
+      {'url': url_for('main.settings_brand_design'), 'icon': 'fas fa-paint-brush', 'label': 'Brand Design', 'roles': ['su']},
+      {'url': url_for('main.settings_brand_assets'), 'icon': 'fas fa-images', 'label': 'Brand Assets', 'roles': ['su']},
+      {'url': url_for('main.settings_brand_colors'), 'icon': 'fas fa-fill-drip', 'label': 'Brand Colors', 'roles': ['su']},
+      {'url': url_for('main.settings_social_media'), 'icon': 'fas fa-share-alt', 'label': 'Media Sosial', 'roles': ['admin','su']},
+      {'url': url_for('main.settings_contact_details'), 'icon': 'fas fa-address-book', 'label': 'Detail Kontak', 'roles': ['admin','su']},
+      {'url': url_for('main.settings_team_members'), 'icon': 'fas fa-user-friends', 'label': 'Anggota Tim', 'roles': ['admin','su']}
+      ]
+      },
+      {
+      'id': 'navigation',
+      'title': 'Navigasi & SEO',
+      'icon': 'fas fa-sitemap',
+      'links': [
+      {'url': url_for('main.navigation_management'), 'icon': 'fas fa-link', 'label': 'Manajemen Navigasi', 'roles': ['admin','su']},
+      {'url': url_for('main.seo_management'), 'icon': 'fas fa-globe', 'label': 'Manajemen SEO', 'roles': ['admin','su']}
+      ]
+      },
+      {
+      'id': 'analytics',
+      'title': 'Analitik & Performa',
+      'icon': 'fas fa-chart-line',
+      'links': [
+      {'url': url_for('main.settings_analytics'), 'icon': 'fas fa-chart-bar', 'label': 'Dashboard Analitik', 'roles': ['su']},
+      {'url': url_for('main.settings_performance'), 'icon': 'fas fa-tachometer-alt', 'label': 'Dashboard Performa', 'roles': ['su']},
+      {'url': url_for('main.settings_asset_optimization'), 'icon': 'fas fa-compress-arrows-alt', 'label': 'Optimasi Asset', 'roles': ['su']},
+      {'url': url_for('main.settings_ssr_optimization'), 'icon': 'fas fa-server', 'label': 'Optimasi SSR', 'roles': ['su']}
+      ]
+      },
+      {
+      'id': 'legal',
+      'title': 'Legal & Kebijakan',
+      'icon': 'fas fa-shield-alt',
+      'links': [
+      {'url': url_for('main.settings_privacy_policy'), 'icon': 'fas fa-shield-alt', 'label': 'Kebijakan Privasi', 'roles': ['admin','su']},
+      {'url': url_for('main.settings_media_guidelines'), 'icon': 'fas fa-book', 'label': 'Pedoman Media', 'roles': ['admin','su']},
+      {'url': url_for('main.settings_pedomanhak'), 'icon': 'fas fa-handshake', 'label': 'Pedoman Hak', 'roles': ['admin','su']},
+      {'url': url_for('main.settings_penyangkalan'), 'icon': 'fas fa-file', 'label': 'Penyangkalan', 'roles': ['admin','su']},
+      {'url': url_for('main.settings_visi_misi'), 'icon': 'fas fa-braille', 'label': 'Visi Misi', 'roles': ['admin','su']}
+      ]
+      },
+      {
+      'id': 'account',
+      'title': 'Akun & Sistem',
+      'icon': 'fas fa-user-cog',
+      'links': [
+      {'url': url_for('main.logout'), 'icon': 'fas fa-sign-out-alt', 'label': 'Logout (' + current_user.username + ')', 'roles': ['su','admin','general']}
+      ]
+      }
+      ] %}
+
+      {% for group in nav_groups %}
+      <div class="nav-group" data-group="{{ group.id }}">
+        <button class="nav-group-toggle" aria-expanded="true" aria-controls="nav-group-{{ group.id }}">
+          <div class="flex items-center gap-3">
+            <i class="{{ group.icon }} text-xs w-4 text-center opacity-60"></i>
+            <span>{{ group.title }}</span>
+          </div>
+          <i class="fas fa-chevron-down chevron"></i>
+        </button>
+        <ul id="nav-group-{{ group.id }}" class="nav-group-content">
+          {% for link in group.links %}
+          <li role="menuitem">
+            <a href="{{ link.url }}">
+              <i class="{{ link.icon }}"></i>
+              {{ link.label }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div id="sidebar-overlay" class="fixed inset-0 bg-sa-fg/20 z-30 hidden" aria-hidden="true"></div>
+
+  <header class="bg-white border-b border-sa-border">
+    <div class="pl-16 pr-8 py-4 flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-bold text-sa-fg tracking-tight">{% block hero_title %}Dasbor Admin{% endblock %}</h1>
+        <p class="text-sm text-sa-muted mt-0.5 font-[500]">{% block hero_desc %}Kelola pengguna, cerita, dan pengaturan sistem{% endblock %}</p>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="min-h-screen" role="main" tabindex="-1">
+    <div class="max-w-[80rem] mx-auto px-8 py-8">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <script>
+  async function fetchQuickStats() { try { const response = await fetch('/api/settings/stats'); if (!response.ok) throw new Error('Failed to fetch stats'); const stats = await response.json(); document.getElementById('total-users').textContent = stats.total_users; document.getElementById('total-news').textContent = stats.total_news; document.getElementById('total-images').textContent = stats.total_images; } catch (error) { console.error(error); document.getElementById('total-users').textContent = 'Error'; document.getElementById('total-news').textContent = 'Error'; document.getElementById('total-images').textContent = 'Error'; } }
   async function fetchAdvancedStats() { try { const response = await fetch('/api/settings/advanced-stats'); if (!response.ok) throw new Error('Failed to fetch advanced stats'); const stats = await response.json(); const elements = { 'today-news-count': stats.today_news || '0', 'week-news-count': stats.week_news || '0', 'month-news-count': stats.month_news || '0', 'total-views': stats.total_views?.toLocaleString() || '0', 'total-shares': stats.total_shares?.toLocaleString() || '0', 'avg-views': stats.avg_views || '0' }; for (const [id, val] of Object.entries(elements)) { const el = document.getElementById(id); if (el) el.textContent = val; } const popularContent = document.getElementById('popular-content'); if (popularContent && stats.popular_content) { popularContent.innerHTML = ''; stats.popular_content.slice(0, 3).forEach(article => { const div = document.createElement('div'); div.className = 'text-sm'; div.innerHTML = `<div class="flex justify-between items-center"><span class="text-muted-foreground truncate" title="${article.title}">${article.title.length > 20 ? article.title.substring(0, 20) + '...' : article.title}</span><span class="text-xs font-medium text-card-foreground">${article.read_count || 0} views</span></div>`; popularContent.appendChild(div); }); } } catch (error) { console.error('Advanced stats error:', error); ['today-news-count', 'week-news-count', 'month-news-count'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = '-'; }); } }
- async function checkUserRole() { try { const response = await fetch('/api/user/role'); if (!response.ok) throw new Error('Failed to fetch user role'); const data = await response.json(); const userRole = data.role; if (userRole === 'su' || userRole === 'admin') { document.getElementById('user-management-card').classList.remove('hidden'); document.getElementById('privacy-policy-card').classList.remove('hidden'); document.getElementById('media-guidelines-card').classList.remove('hidden'); document.getElementById('pedoman-hak-card').classList.remove('hidden'); document.getElementById('penyangkalan-card').classList.remove('hidden'); document.getElementById('visi-misi-card').classList.remove('hidden'); document.getElementById('social-media-card').classList.remove('hidden'); } } catch (error) { console.error('Error fetching user role:', error); } }
- // Run only on DOM ready and when elements exist
- document.addEventListener('DOMContentLoaded', () => {
- if (document.getElementById('total-users')) {
- fetchQuickStats();
- fetchAdvancedStats();
- }
- if (document.getElementById('user-management-card')) {
- checkUserRole();
- }
- });
- </script>
- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
- <script src="{{ url_for('static', filename='js/csrf-utils.js') }}"></script>
- <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
- <script>
- {% with messages = get_flashed_messages(with_categories=true) %}
- document.addEventListener('DOMContentLoaded', function() {
- {% for category, message in messages %}
- showToast("{{ category }}", {{ message|tojson }});
- {% endfor %}
- });
- {% endwith %}
- </script>
- <script src="{{ url_for('static', filename='js/sidebar-toggle.js') }}"></script>
- <script>
- // Navigation Group Toggle Functionality
- document.addEventListener('DOMContentLoaded', function() {
- const navGroupToggles = document.querySelectorAll('.nav-group-toggle');
- 
- navGroupToggles.forEach(toggle => {
- toggle.addEventListener('click', function() {
- const groupId = this.getAttribute('aria-controls');
- const content = document.getElementById(groupId);
- const chevron = this.querySelector('.fas.fa-chevron-down');
- const isExpanded = this.getAttribute('aria-expanded') === 'true';
- 
- // Toggle content visibility
- if (isExpanded) {
- content.style.display = 'none';
- this.setAttribute('aria-expanded', 'false');
- chevron.style.transform = 'rotate(-90deg)';
- } else {
- content.style.display = 'block';
- this.setAttribute('aria-expanded', 'true');
- chevron.style.transform = 'rotate(0deg)';
- }
- });
- });
- 
- // Auto-expand group containing current page
- const currentPath = window.location.pathname;
- const navLinks = document.querySelectorAll('.nav-group-content a');
- 
- navLinks.forEach(link => {
- if (link.getAttribute('href') === currentPath) {
- const group = link.closest('.nav-group');
- const toggle = group.querySelector('.nav-group-toggle');
- const content = group.querySelector('.nav-group-content');
- const chevron = toggle.querySelector('.fas.fa-chevron-down');
- 
- // Ensure group is expanded
- content.style.display = 'block';
- toggle.setAttribute('aria-expanded', 'true');
- chevron.style.transform = 'rotate(0deg)';
- 
- // Highlight current link
- link.classList.add('bg-admin-primaryHover', 'text-admin-textMuted', 'active');
- 
- // Add subtle animation to the group
- group.style.animation = 'pulse 2s ease-in-out';
- }
- });
- 
- // Add keyboard navigation support
- navGroupToggles.forEach(toggle => {
- toggle.addEventListener('keydown', function(e) {
- if (e.key === 'Enter' || e.key === ' ') {
- e.preventDefault();
- this.click();
- }
- });
- });
- });
- </script>
- {% block extra_scripts %}{% endblock %}
+  async function checkUserRole() { try { const response = await fetch('/api/user/role'); if (!response.ok) throw new Error('Failed to fetch user role'); const data = await response.json(); const userRole = data.role; if (userRole === 'su' || userRole === 'admin') { document.getElementById('user-management-card').classList.remove('hidden'); document.getElementById('privacy-policy-card').classList.remove('hidden'); document.getElementById('media-guidelines-card').classList.remove('hidden'); document.getElementById('pedoman-hak-card').classList.remove('hidden'); document.getElementById('penyangkalan-card').classList.remove('hidden'); document.getElementById('visi-misi-card').classList.remove('hidden'); document.getElementById('social-media-card').classList.remove('hidden'); } } catch (error) { console.error('Error fetching user role:', error); } }
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('total-users')) {
+      fetchQuickStats();
+      fetchAdvancedStats();
+    }
+    if (document.getElementById('user-management-card')) {
+      checkUserRole();
+    }
+  });
+  </script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="{{ url_for('static', filename='js/csrf-utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+  <script>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  document.addEventListener('DOMContentLoaded', function() {
+    {% for category, message in messages %}
+    showToast("{{ category }}", {{ message|tojson }});
+    {% endfor %}
+  });
+  {% endwith %}
+  </script>
+  <script src="{{ url_for('static', filename='js/sidebar-toggle.js') }}"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const navGroupToggles = document.querySelectorAll('.nav-group-toggle');
+    navGroupToggles.forEach(toggle => {
+      toggle.addEventListener('click', function() {
+        const groupId = this.getAttribute('aria-controls');
+        const content = document.getElementById(groupId);
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        if (isExpanded) {
+          content.style.display = 'none';
+          this.setAttribute('aria-expanded', 'false');
+        } else {
+          content.style.display = 'block';
+          this.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.nav-group-content a');
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        const group = link.closest('.nav-group');
+        const toggle = group.querySelector('.nav-group-toggle');
+        const content = group.querySelector('.nav-group-content');
+        content.style.display = 'block';
+        toggle.setAttribute('aria-expanded', 'true');
+        link.classList.add('active');
+      }
+    });
+    navGroupToggles.forEach(toggle => {
+      toggle.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
+      });
+    });
+
+    const searchInput = document.getElementById('sidebar-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        const groups = document.querySelectorAll('.nav-group');
+        groups.forEach(group => {
+          const links = group.querySelectorAll('.nav-group-content a');
+          let hasMatch = false;
+          links.forEach(link => {
+            const text = link.textContent.toLowerCase();
+            const match = !query || text.includes(query);
+            link.style.display = match ? '' : 'none';
+            if (match) hasMatch = true;
+          });
+          const toggleBtn = group.querySelector('.nav-group-toggle');
+          const title = toggleBtn ? toggleBtn.querySelector('span').textContent.toLowerCase() : '';
+          const titleMatch = !query || title.includes(query);
+          group.style.display = (hasMatch || titleMatch) ? '' : 'none';
+          if (hasMatch && toggleBtn && toggleBtn.getAttribute('aria-expanded') === 'false') {
+            toggleBtn.click();
+          }
+        });
+      });
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          this.value = '';
+          this.dispatchEvent(new Event('input'));
+          this.blur();
+        }
+      });
+    }
+  });
+  </script>
+  {% block extra_scripts %}{% endblock %}
 </body>
 </html>

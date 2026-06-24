@@ -5,21 +5,20 @@
 {% block hero_desc %}Monitor performa sistem dan optimasi real-time{% endblock %}
 
 {% block content %}
-<div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
 
 <!-- Navigation Tabs -->
 <div class="mb-6">
- <nav class="flex space-x-1 bg-admin-surfaceHover p-1 rounded-polaris-base" role="tablist">
- <button class="tab-button active bg-white text-admin-text px-4 py-2 rounded-polaris-base font-medium" data-tab="overview">
+ <nav class="flex space-x-1 bg-sa-surface-hover p-1 rounded-sa-md" role="tablist">
+ <button class="tab-button active bg-white text-sa-fg px-4 py-2 rounded-sa-md font-medium" data-tab="overview">
  <i class="fas fa-chart-line mr-2"></i>Ringkasan
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="routes">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="routes">
  <i class="fas fa-route mr-2"></i>Performa Rute
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="database">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="database">
  <i class="fas fa-database mr-2"></i>Database
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="cache">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="cache">
  <i class="fas fa-memory mr-2"></i>Cache
  </button>
  </nav>
@@ -27,14 +26,14 @@
 
 <!-- Overview Tab -->
 <div id="overview-tab" class="tab-content active">
- <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <main class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card mb-8" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Ringkasan Performa Sistem</h2>
+ <h2 class="text-xl font-semibold text-sa-fg">Ringkasan Performa Sistem</h2>
  <div class="flex space-x-2">
- <button id="refresh-performance" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="refresh-performance" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Segarkan
  </button>
- <button id="clear-cache" class="bg-admin-critical hover:bg-admin-criticalHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="clear-cache" class="bg-sa-critical hover:bg-sa-critical-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-trash mr-2"></i>Bersihkan Cache
  </button>
  </div>
@@ -43,80 +42,80 @@
  <!-- System Metrics Cards -->
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
  <!-- CPU Usage -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-microchip text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-microchip text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Penggunaan CPU</p>
- <p class="text-2xl font-bold text-admin-text">
+ <p class="text-sm font-medium text-sa-muted">Penggunaan CPU</p>
+ <p class="text-2xl font-bold text-sa-fg">
  {{ "%.1f"|format(performance_summary.system.cpu_percent|default(0)) }}%
  </p>
  </div>
  </div>
  <div class="mt-4">
- <div class="w-full bg-admin-surfaceHover rounded-polaris-full h-2">
- <div class="bg-admin-accentHover h-2 rounded-polaris-full" style="width: {{ performance_summary.system.cpu_percent|default(0) }}%"></div>
+ <div class="w-full bg-sa-surface-hover rounded-full h-2">
+ <div class="bg-sa-accent-hover h-2 rounded-full" style="width: {{ performance_summary.system.cpu_percent|default(0) }}%"></div>
  </div>
  </div>
  </div>
 
  <!-- Memory Usage -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-success">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-success">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-memory text-admin-success text-2xl"></i>
+ <i class="fas fa-memory text-sa-success text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Penggunaan Memori</p>
- <p class="text-2xl font-bold text-admin-text">
+ <p class="text-sm font-medium text-sa-muted">Penggunaan Memori</p>
+ <p class="text-2xl font-bold text-sa-fg">
  {{ "%.1f"|format(performance_summary.system.memory_percent|default(0)) }}%
  </p>
  </div>
  </div>
  <div class="mt-4">
- <div class="w-full bg-admin-surfaceHover rounded-polaris-full h-2">
- <div class="bg-admin-successHover h-2 rounded-polaris-full" style="width: {{ performance_summary.system.memory_percent|default(0) }}%"></div>
+ <div class="w-full bg-sa-surface-hover rounded-full h-2">
+ <div class="bg-sa-success-hover h-2 rounded-full" style="width: {{ performance_summary.system.memory_percent|default(0) }}%"></div>
  </div>
  </div>
  </div>
 
  <!-- Disk Usage -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-hdd text-admin-accent text-2xl"></i>
+ <i class="fas fa-hdd text-sa-accent text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Penggunaan Disk</p>
- <p class="text-2xl font-bold text-admin-text">
+ <p class="text-sm font-medium text-sa-muted">Penggunaan Disk</p>
+ <p class="text-2xl font-bold text-sa-fg">
  {{ "%.1f"|format(performance_summary.system.disk_percent|default(0)) }}%
  </p>
  </div>
  </div>
  <div class="mt-4">
- <div class="w-full bg-admin-surfaceHover rounded-polaris-full h-2">
- <div class="bg-admin-accentHover h-2 rounded-polaris-full" style="width: {{ performance_summary.system.disk_percent|default(0) }}%"></div>
+ <div class="w-full bg-sa-surface-hover rounded-full h-2">
+ <div class="bg-sa-accent-hover h-2 rounded-full" style="width: {{ performance_summary.system.disk_percent|default(0) }}%"></div>
  </div>
  </div>
  </div>
 
  <!-- Total Requests -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-chart-line text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-chart-line text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Total Request</p>
- <p class="text-2xl font-bold text-admin-text">
+ <p class="text-sm font-medium text-sa-muted">Total Request</p>
+ <p class="text-2xl font-bold text-sa-fg">
  {{ performance_summary.total_requests|default(0) }}
  </p>
  </div>
  </div>
  <div class="mt-4">
- <span class="text-xs text-admin-textMuted bg-admin-surfaceHover px-2 py-1 rounded-polaris-full">
+ <span class="text-xs text-sa-muted bg-sa-surface-hover px-2 py-1 rounded-full">
  <i class="fas fa-clock mr-1"></i>Real-time
  </span>
  </div>
@@ -126,43 +125,43 @@
  <!-- Additional System Metrics -->
  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
  <!-- Load Average -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-tachometer-alt text-admin-accent text-2xl"></i>
+ <i class="fas fa-tachometer-alt text-sa-accent text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Load Average</p>
- <p class="text-2xl font-bold text-admin-text">{{ performance_summary.system.load_avg_1min|default(0) }}</p>
- <p class="text-xs text-admin-textMuted">1min / {{ performance_summary.system.load_avg_5min|default(0) }} 5min / {{ performance_summary.system.load_avg_15min|default(0) }} 15min</p>
+ <p class="text-sm font-medium text-sa-muted">Load Average</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ performance_summary.system.load_avg_1min|default(0) }}</p>
+ <p class="text-xs text-sa-muted">1min / {{ performance_summary.system.load_avg_5min|default(0) }} 5min / {{ performance_summary.system.load_avg_15min|default(0) }} 15min</p>
  </div>
  </div>
  </div>
 
  <!-- Process Memory -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-critical">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-critical">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-cogs text-admin-critical text-2xl"></i>
+ <i class="fas fa-cogs text-sa-critical text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Process Memory</p>
- <p class="text-2xl font-bold text-admin-text">{{ performance_summary.system.process_memory_mb|default(0) }}MB</p>
- <p class="text-xs text-admin-textMuted">Application Usage</p>
+ <p class="text-sm font-medium text-sa-muted">Process Memory</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ performance_summary.system.process_memory_mb|default(0) }}MB</p>
+ <p class="text-xs text-sa-muted">Application Usage</p>
  </div>
  </div>
  </div>
 
  <!-- Active Connections -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-plug text-admin-accent text-2xl"></i>
+ <i class="fas fa-plug text-sa-accent text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Active Connections</p>
- <p class="text-2xl font-bold text-admin-text">{{ performance_summary.system.active_connections|default(0) }}</p>
- <p class="text-xs text-admin-textMuted">Network Connections</p>
+ <p class="text-sm font-medium text-sa-muted">Active Connections</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ performance_summary.system.active_connections|default(0) }}</p>
+ <p class="text-xs text-sa-muted">Network Connections</p>
  </div>
  </div>
  </div>
@@ -171,60 +170,60 @@
  <!-- Network Activity -->
  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
  <!-- Network Sent -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-upload text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-upload text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Network Sent</p>
- <p class="text-2xl font-bold text-admin-text">{{ performance_summary.system.network_bytes_sent_mb|default(0) }}MB</p>
- <p class="text-xs text-admin-textMuted">Data Transmitted</p>
+ <p class="text-sm font-medium text-sa-muted">Network Sent</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ performance_summary.system.network_bytes_sent_mb|default(0) }}MB</p>
+ <p class="text-xs text-sa-muted">Data Transmitted</p>
  </div>
  </div>
  </div>
 
  <!-- Network Received -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-success">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-success">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-download text-admin-success text-2xl"></i>
+ <i class="fas fa-download text-sa-success text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Network Received</p>
- <p class="text-2xl font-bold text-admin-text">{{ performance_summary.system.network_bytes_recv_mb|default(0) }}MB</p>
- <p class="text-xs text-admin-textMuted">Data Received</p>
+ <p class="text-sm font-medium text-sa-muted">Network Received</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ performance_summary.system.network_bytes_recv_mb|default(0) }}MB</p>
+ <p class="text-xs text-sa-muted">Data Received</p>
  </div>
  </div>
  </div>
  </div>
 
  <!-- Performance Alerts -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 mb-6">
- <h3 class="text-lg font-semibold text-admin-text mb-4">Peringatan Performa</h3>
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 mb-6">
+ <h3 class="text-lg font-semibold text-sa-fg mb-4">Peringatan Performa</h3>
  <div class="space-y-3">
  {% if performance_summary.system.cpu_percent|default(0) > 80 %}
- <div class="flex items-center p-3 bg-admin-criticalSurface border border-admin-criticalSurface rounded-polaris-base">
- <i class="fas fa-exclamation-triangle text-admin-critical mr-3"></i>
- <span class="text-admin-criticalHover">CPU usage tinggi: {{ "%.1f"|format(performance_summary.system.cpu_percent|default(0)) }}%</span>
+ <div class="flex items-center p-3 bg-sa-critical-bg border border-sa-critical rounded-sa-md">
+ <i class="fas fa-exclamation-triangle text-sa-critical mr-3"></i>
+ <span class="text-sa-critical-hover">CPU usage tinggi: {{ "%.1f"|format(performance_summary.system.cpu_percent|default(0)) }}%</span>
  </div>
  {% endif %}
  {% if performance_summary.system.memory_percent|default(0) > 85 %}
- <div class="flex items-center p-3 bg-admin-criticalSurface border border-admin-criticalSurface rounded-polaris-base">
- <i class="fas fa-exclamation-triangle text-admin-critical mr-3"></i>
- <span class="text-admin-criticalHover">Memory usage tinggi: {{ "%.1f"|format(performance_summary.system.memory_percent|default(0)) }}%</span>
+ <div class="flex items-center p-3 bg-sa-critical-bg border border-sa-critical rounded-sa-md">
+ <i class="fas fa-exclamation-triangle text-sa-critical mr-3"></i>
+ <span class="text-sa-critical-hover">Memory usage tinggi: {{ "%.1f"|format(performance_summary.system.memory_percent|default(0)) }}%</span>
  </div>
  {% endif %}
  {% if performance_summary.system.disk_percent|default(0) > 90 %}
- <div class="flex items-center p-3 bg-admin-criticalSurface border border-admin-criticalSurface rounded-polaris-base">
- <i class="fas fa-exclamation-triangle text-admin-critical mr-3"></i>
- <span class="text-admin-criticalHover">Disk usage tinggi: {{ "%.1f"|format(performance_summary.system.disk_percent|default(0)) }}%</span>
+ <div class="flex items-center p-3 bg-sa-critical-bg border border-sa-critical rounded-sa-md">
+ <i class="fas fa-exclamation-triangle text-sa-critical mr-3"></i>
+ <span class="text-sa-critical-hover">Disk usage tinggi: {{ "%.1f"|format(performance_summary.system.disk_percent|default(0)) }}%</span>
  </div>
  {% endif %}
  {% if performance_summary.system.cpu_percent|default(0) <= 80 and performance_summary.system.memory_percent|default(0) <= 85 and performance_summary.system.disk_percent|default(0) <= 90 %}
- <div class="flex items-center p-3 bg-admin-successSurface border border-admin-successSurface rounded-polaris-base">
- <i class="fas fa-check-circle text-admin-success mr-3"></i>
- <span class="text-admin-successHover">Semua sistem berjalan dengan baik</span>
+ <div class="flex items-center p-3 bg-sa-success-bg border border-sa-success rounded-sa-md">
+ <i class="fas fa-check-circle text-sa-success mr-3"></i>
+ <span class="text-sa-success-hover">Semua sistem berjalan dengan baik</span>
  </div>
  {% endif %}
  </div>
@@ -234,41 +233,41 @@
 
 <!-- Routes Performance Tab -->
 <div id="routes-tab" class="tab-content hidden">
- <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <main class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card mb-8" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Performa Rute</h2>
- <button id="refresh-routes" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <h2 class="text-xl font-semibold text-sa-fg">Performa Rute</h2>
+ <button id="refresh-routes" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Segarkan
  </button>
  </div>
 
  <!-- Routes Table -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 overflow-hidden">
+ <div class="bg-white rounded-sa-md shadow-sa-card overflow-hidden">
  <div class="overflow-x-auto">
- <table class="min-w-full divide-y divide-admin-border">
- <thead class="bg-admin-surfaceHover">
+ <table class="min-w-full divide-y divide-sa-border">
+ <thead class="bg-sa-surface-hover">
  <tr>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Rute</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Request</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Rata-rata (ms)</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Min (ms)</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Max (ms)</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Terakhir</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Rute</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Request</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Rata-rata (ms)</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Min (ms)</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Max (ms)</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Terakhir</th>
  </tr>
  </thead>
- <tbody class="bg-white divide-y divide-admin-border">
+ <tbody class="bg-white divide-y divide-sa-border">
  {% for route, metrics in performance_summary.routes.items() %}
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">{{ route }}</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">{{ metrics.count|default(0) }}</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">{{ "%.2f"|format(metrics.avg_time|default(0) * 1000) }}</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">{{ "%.2f"|format(metrics.min_time|default(0) * 1000) }}</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">{{ "%.2f"|format(metrics.max_time|default(0) * 1000) }}</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">{{ metrics.last_request|default('N/A') }}</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">{{ route }}</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">{{ metrics.count|default(0) }}</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">{{ "%.2f"|format(metrics.avg_time|default(0) * 1000) }}</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">{{ "%.2f"|format(metrics.min_time|default(0) * 1000) }}</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">{{ "%.2f"|format(metrics.max_time|default(0) * 1000) }}</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">{{ metrics.last_request|default('N/A') }}</td>
  </tr>
  {% else %}
  <tr>
- <td colspan="6" class="px-6 py-4 text-center text-admin-textMuted">
+ <td colspan="6" class="px-6 py-4 text-center text-sa-muted">
  <i class="fas fa-info-circle text-xl"></i>
  <p class="mt-2">Belum ada data performa rute</p>
  </td>
@@ -283,23 +282,23 @@
 
 <!-- Database Tab -->
 <div id="database-tab" class="tab-content hidden">
- <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <main class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card mb-8" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Performa Database</h2>
+ <h2 class="text-xl font-semibold text-sa-fg">Performa Database</h2>
  <div class="flex space-x-2">
- <button id="optimize-database" class="bg-admin-success hover:bg-admin-successHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="optimize-database" class="bg-sa-success hover:bg-sa-success-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-cogs mr-2"></i>Optimize DB
  </button>
- <button id="cleanup-database" class="bg-admin-warning hover:bg-admin-warningHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="cleanup-database" class="bg-sa-warning hover:bg-sa-warning-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-broom mr-2"></i>Cleanup
  </button>
- <button id="backup-database" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="backup-database" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-download mr-2"></i>Create Backup
  </button>
- <button id="list-backups" class="bg-admin-accent hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="list-backups" class="bg-sa-accent hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-list mr-2"></i>List Backups
  </button>
- <button id="refresh-database" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="refresh-database" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Refresh
  </button>
  </div>
@@ -307,103 +306,103 @@
 
  <!-- Database Metrics -->
  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-database text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-database text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Total Query</p>
- <p class="text-2xl font-bold text-admin-text">{{ performance_summary.database.query_count|default(0) if performance_summary.database else 0 }}</p>
+ <p class="text-sm font-medium text-sa-muted">Total Query</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ performance_summary.database.query_count|default(0) if performance_summary.database else 0 }}</p>
  </div>
  </div>
  </div>
 
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-clock text-admin-success text-2xl"></i>
+ <i class="fas fa-clock text-sa-success text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Rata-rata Waktu</p>
- <p class="text-2xl font-bold text-admin-text">{{ "%.2f"|format(performance_summary.database.avg_query_time|default(0)) if performance_summary.database else "0.00" }}ms</p>
+ <p class="text-sm font-medium text-sa-muted">Rata-rata Waktu</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ "%.2f"|format(performance_summary.database.avg_query_time|default(0)) if performance_summary.database else "0.00" }}ms</p>
  </div>
  </div>
  </div>
 
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-exclamation-triangle text-admin-critical text-2xl"></i>
+ <i class="fas fa-exclamation-triangle text-sa-critical text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Query Lambat</p>
- <p class="text-2xl font-bold text-admin-text">{{ performance_summary.database.slow_queries|default(0) if performance_summary.database else "0" }}</p>
+ <p class="text-sm font-medium text-sa-muted">Query Lambat</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ performance_summary.database.slow_queries|default(0) if performance_summary.database else "0" }}</p>
  </div>
  </div>
  </div>
  </div>
 
  <!-- Database Management -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 mb-6">
- <h3 class="text-lg font-semibold text-admin-text mb-4">Database Management</h3>
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 mb-6">
+ <h3 class="text-lg font-semibold text-sa-fg mb-4">Database Management</h3>
  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
- <div class="p-4 border border-admin-border rounded-polaris-base">
- <h4 class="font-medium text-admin-text mb-2">Database Tables</h4>
+ <div class="p-4 border border-sa-border rounded-sa-md">
+ <h4 class="font-medium text-sa-fg mb-2">Database Tables</h4>
  <div class="space-y-2 text-sm">
  <div class="flex justify-between">
  <span>Users:</span>
- <span class="text-admin-textMuted" id="users-count">-</span>
+ <span class="text-sa-muted" id="users-count">-</span>
  </div>
  <div class="flex justify-between">
  <span>News:</span>
- <span class="text-admin-success" id="news-count">-</span>
+ <span class="text-sa-success" id="news-count">-</span>
  </div>
  <div class="flex justify-between">
  <span>Images:</span>
- <span class="text-admin-accent" id="images-count">-</span>
+ <span class="text-sa-accent" id="images-count">-</span>
  </div>
  <div class="flex justify-between">
  <span>Activities:</span>
- <span class="text-admin-warning" id="activities-count">-</span>
+ <span class="text-sa-warning" id="activities-count">-</span>
  </div>
  </div>
  </div>
- <div class="p-4 border border-admin-border rounded-polaris-base">
- <h4 class="font-medium text-admin-text mb-2">Database Info</h4>
+ <div class="p-4 border border-sa-border rounded-sa-md">
+ <h4 class="font-medium text-sa-fg mb-2">Database Info</h4>
  <div class="space-y-2 text-sm">
  <div class="flex justify-between">
  <span>Size:</span>
- <span class="text-admin-textMuted" id="database-size">-</span>
+ <span class="text-sa-muted" id="database-size">-</span>
  </div>
  <div class="flex justify-between">
  <span>Type:</span>
- <span class="text-admin-success" id="database-type">-</span>
+ <span class="text-sa-success" id="database-type">-</span>
  </div>
  <div class="flex justify-between">
  <span>Integrity:</span>
- <span class="text-admin-accent" id="database-integrity">-</span>
+ <span class="text-sa-accent" id="database-integrity">-</span>
  </div>
  </div>
  </div>
- <div class="p-4 border border-admin-border rounded-polaris-base">
- <h4 class="font-medium text-admin-text mb-2">Detailed Stats</h4>
+ <div class="p-4 border border-sa-border rounded-sa-md">
+ <h4 class="font-medium text-sa-fg mb-2">Detailed Stats</h4>
  <div class="space-y-2 text-sm">
  <div class="flex justify-between">
  <span>Active Users:</span>
- <span class="text-admin-textMuted" id="active-users">-</span>
+ <span class="text-sa-muted" id="active-users">-</span>
  </div>
  <div class="flex justify-between">
  <span>Published News:</span>
- <span class="text-admin-success" id="published-news">-</span>
+ <span class="text-sa-success" id="published-news">-</span>
  </div>
  <div class="flex justify-between">
  <span>Draft News:</span>
- <span class="text-admin-warning" id="draft-news">-</span>
+ <span class="text-sa-warning" id="draft-news">-</span>
  </div>
  <div class="flex justify-between">
  <span>Featured News:</span>
- <span class="text-admin-accent" id="featured-news">-</span>
+ <span class="text-sa-accent" id="featured-news">-</span>
  </div>
  </div>
  </div>
@@ -414,20 +413,20 @@
 
 <!-- Cache Tab -->
 <div id="cache-tab" class="tab-content hidden">
- <main class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="main">
+ <main class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card mb-8" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Performa Cache</h2>
+ <h2 class="text-xl font-semibold text-sa-fg">Performa Cache</h2>
  <div class="flex space-x-2">
- <button id="invalidate-news-cache" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="invalidate-news-cache" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-newspaper mr-2"></i>Invalidate News
  </button>
- <button id="invalidate-users-cache" class="bg-admin-accent hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="invalidate-users-cache" class="bg-sa-accent hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-users mr-2"></i>Invalidate Users
  </button>
- <button id="clear-all-cache" class="bg-admin-critical hover:bg-admin-criticalHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="clear-all-cache" class="bg-sa-critical hover:bg-sa-critical-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-trash mr-2"></i>Clear All
  </button>
- <button id="refresh-cache" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="refresh-cache" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Refresh
  </button>
  </div>
@@ -435,75 +434,75 @@
 
  <!-- Cache Metrics -->
  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-memory text-admin-accent text-2xl"></i>
+ <i class="fas fa-memory text-sa-accent text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Hit Rate</p>
- <p class="text-2xl font-bold text-admin-text">{{ "%.1f"|format(performance_summary.cache.hit_rate|default(0)) if performance_summary.cache else "0.0" }}%</p>
+ <p class="text-sm font-medium text-sa-muted">Hit Rate</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ "%.1f"|format(performance_summary.cache.hit_rate|default(0)) if performance_summary.cache else "0.0" }}%</p>
  </div>
  </div>
  </div>
 
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-times-circle text-admin-critical text-2xl"></i>
+ <i class="fas fa-times-circle text-sa-critical text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Miss Rate</p>
- <p class="text-2xl font-bold text-admin-text">{{ "%.1f"|format(performance_summary.cache.miss_rate|default(0)) if performance_summary.cache else "0.0" }}%</p>
+ <p class="text-sm font-medium text-sa-muted">Miss Rate</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ "%.1f"|format(performance_summary.cache.miss_rate|default(0)) if performance_summary.cache else "0.0" }}%</p>
  </div>
  </div>
  </div>
 
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-chart-line text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-chart-line text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Total Request</p>
- <p class="text-2xl font-bold text-admin-text">{{ performance_summary.cache.total_requests|default(0) if performance_summary.cache else "0" }}</p>
+ <p class="text-sm font-medium text-sa-muted">Total Request</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ performance_summary.cache.total_requests|default(0) if performance_summary.cache else "0" }}</p>
  </div>
  </div>
  </div>
  </div>
 
  <!-- Cache Management -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 mb-6">
- <h3 class="text-lg font-semibold text-admin-text mb-4">Cache Management</h3>
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 mb-6">
+ <h3 class="text-lg font-semibold text-sa-fg mb-4">Cache Management</h3>
  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
- <div class="p-4 border border-admin-border rounded-polaris-base">
- <h4 class="font-medium text-admin-text mb-2">Cache Patterns</h4>
+ <div class="p-4 border border-sa-border rounded-sa-md">
+ <h4 class="font-medium text-sa-fg mb-2">Cache Patterns</h4>
  <div class="space-y-2 text-sm">
  <div class="flex justify-between">
  <span>News Cache:</span>
- <span class="text-admin-textMuted">lilycms_news_*</span>
+ <span class="text-sa-muted">lilycms_news_*</span>
  </div>
  <div class="flex justify-between">
  <span>Users Cache:</span>
- <span class="text-admin-accent">lilycms_users_*</span>
+ <span class="text-sa-accent">lilycms_users_*</span>
  </div>
  <div class="flex justify-between">
  <span>Categories Cache:</span>
- <span class="text-admin-success">lilycms_categories_*</span>
+ <span class="text-sa-success">lilycms_categories_*</span>
  </div>
  <div class="flex justify-between">
  <span>Images Cache:</span>
- <span class="text-admin-warning">lilycms_images_*</span>
+ <span class="text-sa-warning">lilycms_images_*</span>
  </div>
  </div>
  </div>
- <div class="p-4 border border-admin-border rounded-polaris-base">
- <h4 class="font-medium text-admin-text mb-2">Cache Actions</h4>
+ <div class="p-4 border border-sa-border rounded-sa-md">
+ <h4 class="font-medium text-sa-fg mb-2">Cache Actions</h4>
  <div class="space-y-2 text-sm">
- <p class="text-admin-textMuted">• Invalidate specific cache patterns</p>
- <p class="text-admin-textMuted">• Clear all cache entries</p>
- <p class="text-admin-textMuted">• Monitor cache performance</p>
- <p class="text-admin-textMuted">• View cache statistics</p>
+ <p class="text-sa-muted">• Invalidate specific cache patterns</p>
+ <p class="text-sa-muted">• Clear all cache entries</p>
+ <p class="text-sa-muted">• Monitor cache performance</p>
+ <p class="text-sa-muted">• View cache statistics</p>
  </div>
  </div>
  </div>

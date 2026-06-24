@@ -14,7 +14,6 @@ from flask import jsonify
 @login_required
 def settings_social_media():
     """Admin page for managing social media links."""
-    # Ensure user has the necessary role (Admin or Superuser)
     if not current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
         current_app.logger.warning(
             f"Forbidden access attempt to /settings/social-media by user {current_user.username} (ID: {current_user.id})"
@@ -22,7 +21,6 @@ def settings_social_media():
         abort(
             403, "You do not have permission to access this page."
         )
-    # Renders the HTML page where admins can interact with the API (e.g., using JavaScript)
     return render_template("settings/social_media_management.html")
 
 
@@ -31,16 +29,69 @@ def settings_social_media():
 def settings_brand_identity():
     if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         abort(403)
-    
-    # Get brand identity info
     from models import BrandIdentity
     brand_info = BrandIdentity.query.first()
     if not brand_info:
         brand_info = BrandIdentity()
         db.session.add(brand_info)
         db.session.commit()
-    
     return render_template("settings/brand_management.html", brand_info=brand_info)
+
+
+@main_blueprint.route("/settings/brand/info")
+@login_required
+def settings_brand_info():
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        abort(403)
+    from models import BrandIdentity
+    brand_info = BrandIdentity.query.first()
+    if not brand_info:
+        brand_info = BrandIdentity()
+        db.session.add(brand_info)
+        db.session.commit()
+    return render_template("settings/brand_info.html", brand_info=brand_info)
+
+
+@main_blueprint.route("/settings/brand/design")
+@login_required
+def settings_brand_design():
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        abort(403)
+    from models import BrandIdentity
+    brand_info = BrandIdentity.query.first()
+    if not brand_info:
+        brand_info = BrandIdentity()
+        db.session.add(brand_info)
+        db.session.commit()
+    return render_template("settings/brand_design.html", brand_info=brand_info)
+
+
+@main_blueprint.route("/settings/brand/assets")
+@login_required
+def settings_brand_assets():
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        abort(403)
+    from models import BrandIdentity
+    brand_info = BrandIdentity.query.first()
+    if not brand_info:
+        brand_info = BrandIdentity()
+        db.session.add(brand_info)
+        db.session.commit()
+    return render_template("settings/brand_assets.html", brand_info=brand_info)
+
+
+@main_blueprint.route("/settings/brand/colors")
+@login_required
+def settings_brand_colors():
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        abort(403)
+    from models import BrandIdentity
+    brand_info = BrandIdentity.query.first()
+    if not brand_info:
+        brand_info = BrandIdentity()
+        db.session.add(brand_info)
+        db.session.commit()
+    return render_template("settings/brand_colors.html", brand_info=brand_info)
 
 
 @main_blueprint.route("/api/brand-identity", methods=["GET"])
@@ -52,6 +103,27 @@ def get_brand_identity():
     brand = BrandIdentity.query.first()
     if not brand:
         return jsonify({}), 200
+    return jsonify(brand.to_dict()), 200
+
+
+@main_blueprint.route("/api/brand-info", methods=["GET"])
+def get_public_brand_info():
+    """Public endpoint for getting brand info (no auth required)"""
+    from models import BrandIdentity
+    db.session.expire_all()
+    brand = BrandIdentity.query.first()
+    if brand:
+        try:
+            db.session.refresh(brand)
+        except Exception:
+            pass
+    if not brand:
+        return jsonify({
+            "brand_name": "LilyOpenCMS",
+            "card_design": "classic",
+            "homepage_design": "news",
+            "categories_display_location": "body"
+        }), 200
     return jsonify(brand.to_dict()), 200
 
 
@@ -82,11 +154,22 @@ def update_brand_identity():
                 return jsonify({"error": str(e)}), 400
             setattr(brand, field, fixed_urls[field])
             updated = True
-    # Always set the fields to the fixed URLs (in case files were replaced outside DB)
     for field, url in fixed_urls.items():
         setattr(brand, field, url)
+
+    for toggle in ["enable_comments", "enable_ratings"]:
+        val = request.form.get(toggle)
+        if val is not None:
+            setattr(brand, toggle, val.lower() in ['true', '1', 'on', 'yes'])
+            updated = True
+
     if updated:
         db.session.commit()
+        try:
+            from optimizations import invalidate_cache_pattern
+            invalidate_cache_pattern("brand_info*")
+        except ImportError:
+            pass
     return jsonify(brand.to_dict()), 200
 
 
@@ -95,26 +178,56 @@ def update_brand_identity():
 def update_brand_identity_text():
     if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         abort(403)
-    
+
     from models import BrandIdentity
     data = request.get_json()
     field = data.get("field")
     value = data.get("value")
-    
-    if not field or not value:
-        return jsonify({"error": "Missing field or value"}), 400
-    
-    if field not in ["brand_name", "tagline"]:
+
+    if field is None:
+        return jsonify({"error": "Missing field"}), 400
+
+    allowed = [
+        "brand_name", "tagline", "brand_description",
+        "homepage_design", "categories_display_location", "card_design",
+        "enable_comments", "enable_ratings", "enable_ads", "enable_campaigns",
+        "enable_videos", "enable_gallery", "enable_albums", "enable_news",
+        "enable_premium", "enable_about", "enable_bookmarks",
+        "enable_reading_history", "enable_community", "enable_user_stats",
+        "min_story_word_count", "min_chapter_word_count"
+    ]
+    if field not in allowed:
         return jsonify({"error": "Invalid field"}), 400
-    
+
     brand = BrandIdentity.query.first()
     if not brand:
         brand = BrandIdentity()
         db.session.add(brand)
-    
-    setattr(brand, field, value)
+
+    toggle_fields = [
+        "enable_comments", "enable_ratings", "enable_ads", "enable_campaigns",
+        "enable_videos", "enable_gallery", "enable_albums", "enable_news",
+        "enable_premium", "enable_about", "enable_bookmarks",
+        "enable_reading_history", "enable_community", "enable_user_stats"
+    ]
+    if field in toggle_fields:
+        setattr(brand, field, str(value).lower() in ['true', '1', 'on', 'yes'])
+    elif field in ["min_story_word_count", "min_chapter_word_count"]:
+        try:
+            setattr(brand, field, int(value))
+        except (TypeError, ValueError):
+            return jsonify({"error": "Invalid integer value"}), 400
+    else:
+        setattr(brand, field, value)
+
     db.session.commit()
-    
+
+    try:
+        from optimizations import invalidate_cache_pattern
+        invalidate_cache_pattern("brand_info*")
+    except ImportError:
+        pass
+
     return jsonify(brand.to_dict()), 200
 
 
@@ -140,7 +253,6 @@ def update_brand_colors():
                 if line.strip().startswith(":root"):
                     in_root = True
                 if in_root and variable in line:
-                    # Replace the value for this variable
                     parts = line.split(";")
                     new_parts = []
                     for part in parts:
@@ -170,30 +282,22 @@ def get_brand_colors():
     try:
         with open(css_path, "r") as f:
             content = f.read()
-        
-        # Find the :root block
         import re
         root_match = re.search(r':root\s*\{([^}]+)\}', content, re.DOTALL)
         if not root_match:
             return jsonify([]), 200
-        
         root_content = root_match.group(1)
         color_vars = []
-        
-        # Parse each line in the :root block
         lines = root_content.split(';')
         for line in lines:
             line = line.strip()
             if line.startswith('--') and ':' in line:
-                # Split on first colon to handle values that might contain colons
                 parts = line.split(':', 1)
                 if len(parts) == 2:
                     var_name = parts[0].strip()
                     var_value = parts[1].strip()
-                    # Only include color variables (exclude --radius)
                     if not var_name.endswith('radius'):
                         color_vars.append({"name": var_name, "value": var_value})
-        
         return jsonify(color_vars), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

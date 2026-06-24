@@ -1,0 +1,30 @@
+{{ brand_name }}
+================================================================================
+
+PERMINTAAN PENGHAPUSAN AKUN DITERIMA
+
+Halo {{ user.first_name or user.username }},
+
+Kami telah menerima permintaan penghapusan akun Anda dari {{ brand_name }}. Permintaan ini sedang dalam proses peninjauan oleh tim kami.
+
+STATUS: DALAM PENINJAUAN
+------------------------
+Permintaan Anda akan diproses sesuai dengan kebijakan platform kami. Proses ini biasanya memakan waktu 7-14 hari kerja.
+
+SELAMA MASA PENINJAUAN
+----------------------
+- Akun Anda tetap aktif dan dapat digunakan
+- Anda masih dapat membatalkan permintaan
+- Konten Anda tetap tersedia untuk pengguna lain
+
+BERUBAH PIKIRAN?
+----------------
+Jika ingin membatalkan permintaan ini, silakan masuk ke akun Anda dan akses pengaturan akun, atau hubungi tim dukungan kami.
+
+Terima kasih atas waktu yang telah Anda habiskan bersama kami di {{ brand_name }}.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

@@ -1,0 +1,36 @@
+{{ brand_name }}
+================================================================================
+
+AKUN ANDA TELAH DITANGGUHKAN
+
+Halo {{ user.first_name or user.username }},
+
+Akun Anda di {{ brand_name }} telah ditangguhkan oleh administrator karena pelanggaran terhadap ketentuan layanan kami.
+
+{% if reason %}
+ALASAN PENANGGUHAN
+------------------
+{{ reason }}
+{% endif %}
+
+{% if duration_days %}
+DURASI PENANGGUHAN
+------------------
+Akun Anda ditangguhkan selama {{ duration_days }} hari.
+{% endif %}
+
+SELAMA PENANGGUHAN, ANDA TIDAK DAPAT:
+-------------------------------------
+- Masuk ke akun Anda
+- Mengakses konten premium
+- Berpartisipasi dalam komentar dan rating
+
+MENGAJUKAN BANDING?
+-------------------
+Jika Anda merasa penangguhan ini adalah kesalahan, silakan hubungi tim dukungan kami untuk klarifikasi dan mengajukan banding.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

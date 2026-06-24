@@ -1,0 +1,32 @@
+{{ brand_name }}
+================================================================================
+
+PERMINTAAN EDIT ANDA DISETUJUI
+
+Halo {{ user.first_name or user.username }},
+
+Kabar baik! Permintaan edit Anda untuk konten di {{ brand_name }} telah disetujui.
+
+DETAIL KONTEN
+-------------
+Judul: {{ content_title }}
+Jenis: {{ content_type_id|title }}
+Tanggal Persetujuan: {{ approval_date }}
+
+Anda sekarang dapat mengedit konten ini. Setelah selesai mengedit, konten akan kembali ke status seperti sebelumnya.
+
+PASTIKAN UNTUK:
+---------------
+- Menjaga kualitas konten sesuai pedoman
+- Tidak mengubah konteks utama konten
+- Menyimpan perubahan sebelum meninggalkan halaman
+
+Edit Konten: {{ edit_url }}
+
+Selamat mengedit konten Anda!
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

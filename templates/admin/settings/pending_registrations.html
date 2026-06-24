@@ -1,0 +1,402 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends "admin_base.html" %}
+
+{% block title %}Registrasi Tertunda - LilyOpenCms Admin{% endblock %}
+
+{% block hero_title %}Manajemen Registrasi Tertunda{% endblock %}
+{% block hero_desc %}Kelola dan moderasi registrasi pengguna yang menunggu persetujuan{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center">
+        <div>
+            <h2 class="text-2xl font-bold text-sa-fg">Registrasi Tertunda</h2>
+            <p class="text-sa-fg-tertiary mt-2">Kelola registrasi pengguna yang menunggu persetujuan admin</p>
+        </div>
+        <div class="flex space-x-3">
+            <button id="refresh-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sa-lg transition-colors duration-200 flex items-center">
+                <i class="fas fa-sync-alt mr-2"></i>
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-sa-card p-6 rounded-sa-xl shadow-sa-card border border-sa-border">
+            <div class="flex items-center">
+                <div class="p-3 bg-yellow-100 rounded-sa-lg">
+                    <i class="fas fa-user-clock text-yellow-600 text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-sa-fg-tertiary">Total Tertunda</p>
+                    <p id="total-pending" class="text-2xl font-bold text-sa-fg">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-sa-card p-6 rounded-sa-xl shadow-sa-card border border-sa-border">
+            <div class="flex items-center">
+                <div class="p-3 bg-green-100 rounded-sa-lg">
+                    <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-sa-fg-tertiary">Disetujui Hari Ini</p>
+                    <p id="approved-today" class="text-2xl font-bold text-sa-fg">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-sa-card p-6 rounded-sa-xl shadow-sa-card border border-sa-border">
+            <div class="flex items-center">
+                <div class="p-3 bg-red-100 rounded-sa-lg">
+                    <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-sa-fg-tertiary">Ditolak Hari Ini</p>
+                    <p id="rejected-today" class="text-2xl font-bold text-sa-fg">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters and Actions -->
+    <div class="bg-sa-card p-6 rounded-sa-xl shadow-sa-card border border-sa-border">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm font-medium text-sa-fg-secondary">Filter:</label>
+                    <select id="status-filter" class="border border-sa-border rounded-sa-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sa-accent">
+                        <option value="all">Semua Status</option>
+                        <option value="pending">Tertunda</option>
+                        <option value="recent">Registrasi Terbaru</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm font-medium text-sa-fg-secondary">Urutkan:</label>
+                    <select id="sort-filter" class="border border-sa-border rounded-sa-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sa-accent">
+                        <option value="newest">Terbaru</option>
+                        <option value="oldest">Terlama</option>
+                        <option value="username">Username</option>
+                        <option value="email">Email</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex space-x-2">
+                <button id="bulk-approve-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-sa-lg transition-colors duration-200 flex items-center text-sm">
+                    <i class="fas fa-check mr-2"></i>
+                    Setujui Terpilih
+                </button>
+                <button id="bulk-reject-btn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-sa-lg transition-colors duration-200 flex items-center text-sm">
+                    <i class="fas fa-times mr-2"></i>
+                    Tolak Terpilih
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registrations Table -->
+    <div class="bg-sa-card rounded-sa-xl shadow-sa-card border border-sa-border overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-sa-border">
+                <thead class="bg-sa-surface">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">
+                            <input type="checkbox" id="select-all" class="rounded border-sa-border text-sa-accent focus:ring-sa-accent">
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Pengguna</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Role</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Tanggal Registrasi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="registrations-table-body" class="bg-sa-card divide-y divide-sa-border">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+        <div id="loading" class="p-8 text-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+            <p class="text-sa-fg-tertiary mt-2">Memuat data...</p>
+        </div>
+        <div id="empty-state" class="p-8 text-center hidden">
+            <i class="fas fa-user-clock text-4xl text-sa-border mb-4"></i>
+            <h3 class="text-lg font-medium text-sa-fg mb-2">Tidak ada registrasi tertunda</h3>
+            <p class="text-sa-fg-tertiary">Semua registrasi telah diproses atau tidak ada registrasi baru.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div id="reject-modal" class="fixed inset-0 bg-sa-fg bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-sa-card rounded-sa-md bg-sa-card">
+        <div class="mt-3">
+            <h3 class="text-lg font-medium text-sa-fg mb-4">Tolak Registrasi</h3>
+            <p class="text-sm text-sa-fg-tertiary mb-4">Berikan alasan penolakan untuk <span id="reject-username" class="font-medium"></span>:</p>
+            <textarea id="reject-reason" rows="4" class="w-full border border-sa-border rounded-sa-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="Masukkan alasan penolakan..."></textarea>
+            <div class="flex justify-end space-x-3 mt-4">
+                <button id="cancel-reject" class="px-4 py-2 text-sm font-medium text-sa-fg-secondary bg-sa-surface hover:bg-sa-border rounded-sa-md transition-colors duration-200">
+                    Batal
+                </button>
+                <button id="confirm-reject" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-sa-md transition-colors duration-200">
+                    Tolak
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let pendingRegistrations = [];
+    let selectedRegistrations = new Set();
+
+    // Load pending registrations
+    async function loadPendingRegistrations() {
+        try {
+            const response = await fetch('/api/registrations/pending');
+            if (!response.ok) throw new Error('Failed to fetch data');
+            
+            pendingRegistrations = await response.json();
+            updateStats();
+            renderTable();
+        } catch (error) {
+            console.error('Error loading pending registrations:', error);
+            showToast('error', 'Gagal memuat data registrasi tertunda');
+        }
+    }
+
+    // Update statistics
+    function updateStats() {
+        document.getElementById('total-pending').textContent = pendingRegistrations.length;
+        // TODO: Add today's approved/rejected counts
+        document.getElementById('approved-today').textContent = '0';
+        document.getElementById('rejected-today').textContent = '0';
+    }
+
+    // Render table
+    function renderTable() {
+        const tbody = document.getElementById('registrations-table-body');
+        const loading = document.getElementById('loading');
+        const emptyState = document.getElementById('empty-state');
+
+        if (pendingRegistrations.length === 0) {
+            loading.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+            return;
+        }
+
+        loading.classList.add('hidden');
+        emptyState.classList.add('hidden');
+
+        tbody.innerHTML = pendingRegistrations.map(registration => `
+            <tr class="hover:bg-sa-surface">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <input type="checkbox" class="registration-checkbox rounded border-sa-border text-sa-accent focus:ring-sa-accent" value="${registration.id}">
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                            <div class="h-10 w-10 rounded-full bg-sa-border flex items-center justify-center">
+                                <i class="fas fa-user text-sa-fg-tertiary"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-sa-fg">${registration.username}</div>
+                            <div class="text-sm text-sa-fg-tertiary">${registration.first_name || ''} ${registration.last_name || ''}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-fg">${registration.email}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                        ${registration.role || 'User'}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-fg-tertiary">
+                    ${new Date(registration.created_at).toLocaleDateString('id-ID')}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                        Tertunda
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button onclick="approveRegistration(${registration.id})" class="text-green-600 hover:text-green-900 mr-3">
+                        <i class="fas fa-check"></i> Setujui
+                    </button>
+                    <button onclick="rejectRegistration(${registration.id}, '${registration.username}')" class="text-red-600 hover:text-red-900">
+                        <i class="fas fa-times"></i> Tolak
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+        // Add event listeners to checkboxes
+        document.querySelectorAll('.registration-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateBulkActions);
+        });
+    }
+
+    // Update bulk actions visibility
+    function updateBulkActions() {
+        const checkboxes = document.querySelectorAll('.registration-checkbox:checked');
+        const bulkButtons = document.querySelectorAll('#bulk-approve-btn, #bulk-reject-btn');
+        
+        bulkButtons.forEach(btn => {
+            btn.disabled = checkboxes.length === 0;
+            btn.classList.toggle('opacity-50', checkboxes.length === 0);
+        });
+
+        selectedRegistrations.clear();
+        checkboxes.forEach(checkbox => {
+            selectedRegistrations.add(parseInt(checkbox.value));
+        });
+    }
+
+    // Approve registration
+    window.approveRegistration = async function(userId) {
+        try {
+            const response = await fetch(`/api/registrations/${userId}/approve`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (!response.ok) throw new Error('Failed to approve registration');
+
+            showToast('success', 'Registrasi berhasil disetujui');
+            loadPendingRegistrations();
+        } catch (error) {
+            console.error('Error approving registration:', error);
+            showToast('error', 'Gagal menyetujui registrasi');
+        }
+    };
+
+    // Reject registration
+    window.rejectRegistration = function(userId, username) {
+        document.getElementById('reject-username').textContent = username;
+        document.getElementById('reject-modal').classList.remove('hidden');
+        
+        document.getElementById('confirm-reject').onclick = async function() {
+            const reason = document.getElementById('reject-reason').value.trim();
+            if (!reason) {
+                showToast('error', 'Alasan penolakan harus diisi');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/registrations/${userId}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reason })
+                });
+
+                if (!response.ok) throw new Error('Failed to reject registration');
+
+                showToast('success', 'Registrasi berhasil ditolak');
+                document.getElementById('reject-modal').classList.add('hidden');
+                document.getElementById('reject-reason').value = '';
+                loadPendingRegistrations();
+            } catch (error) {
+                console.error('Error rejecting registration:', error);
+                showToast('error', 'Gagal menolak registrasi');
+            }
+        };
+    };
+
+    // Bulk approve
+    document.getElementById('bulk-approve-btn').addEventListener('click', async function() {
+        if (selectedRegistrations.size === 0) return;
+
+        if (!confirm(`Setujui ${selectedRegistrations.size} registrasi terpilih?`)) return;
+
+        try {
+            const response = await fetch('/api/registrations/bulk/approve', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_ids: Array.from(selectedRegistrations) })
+            });
+
+            if (!response.ok) throw new Error('Failed to bulk approve');
+
+            showToast('success', `${selectedRegistrations.size} registrasi berhasil disetujui`);
+            loadPendingRegistrations();
+        } catch (error) {
+            console.error('Error bulk approving:', error);
+            showToast('error', 'Gagal menyetujui registrasi secara massal');
+        }
+    });
+
+    // Bulk reject
+    document.getElementById('bulk-reject-btn').addEventListener('click', function() {
+        if (selectedRegistrations.size === 0) return;
+        
+        document.getElementById('reject-username').textContent = `${selectedRegistrations.size} pengguna`;
+        document.getElementById('reject-modal').classList.remove('hidden');
+        
+        document.getElementById('confirm-reject').onclick = async function() {
+            const reason = document.getElementById('reject-reason').value.trim();
+            if (!reason) {
+                showToast('error', 'Alasan penolakan harus diisi');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/registrations/bulk/reject', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        user_ids: Array.from(selectedRegistrations),
+                        reason 
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to bulk reject');
+
+                showToast('success', `${selectedRegistrations.size} registrasi berhasil ditolak`);
+                document.getElementById('reject-modal').classList.add('hidden');
+                document.getElementById('reject-reason').value = '';
+                loadPendingRegistrations();
+            } catch (error) {
+                console.error('Error bulk rejecting:', error);
+                showToast('error', 'Gagal menolak registrasi secara massal');
+            }
+        };
+    });
+
+    // Select all checkbox
+    document.getElementById('select-all').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.registration-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+        updateBulkActions();
+    });
+
+    // Modal close handlers
+    document.getElementById('cancel-reject').addEventListener('click', function() {
+        document.getElementById('reject-modal').classList.add('hidden');
+        document.getElementById('reject-reason').value = '';
+    });
+
+    // Refresh button
+    document.getElementById('refresh-btn').addEventListener('click', loadPendingRegistrations);
+
+    // Initial load
+    loadPendingRegistrations();
+});
+</script>
+{% endblock %}

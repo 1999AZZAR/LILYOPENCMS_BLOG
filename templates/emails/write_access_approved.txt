@@ -1,0 +1,29 @@
+{{ brand_name }}
+================================================================================
+
+AKSES TULIS ANDA TELAH DISETUJUI
+
+Halo {{ user.first_name or user.username }},
+
+Selamat! Permintaan akses tulis Anda di {{ brand_name }} telah disetujui. Anda sekarang dapat membuat dan menerbitkan konten.
+
+STATUS: AKSES TULIS AKTIF
+-------------------------
+Akses tulis telah diaktifkan untuk akun Anda. Anda dapat mulai membuat konten sekarang.
+
+DENGAN AKSES TULIS, ANDA DAPAT:
+-------------------------------
+- Membuat dan menerbitkan artikel
+- Membuat dan mengelola album
+- Mengunggah gambar dan media
+- Mengakses fitur penulis lainnya
+
+Mulai Menulis: {{ login_url }}
+
+Selamat berkreasi di {{ brand_name }}!
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

@@ -1,0 +1,147 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends "admin_base.html" %}
+{% block title %}Color Management{% endblock %}
+{% block hero_title %}Color Management{% endblock %}
+{% block hero_desc %}Kelola palet warna brand{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+  <div class="flex items-center gap-2 text-sm text-sa-muted mb-6">
+    <a href="{{ url_for('main.settings_brand_identity') }}" class="hover:text-sa-accent transition-colors">Brand Management</a>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+    <span class="text-sa-fg font-medium">Color Management</span>
+  </div>
+
+  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="Color Palette Management">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 01-3.75-3.75V14.25M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H6.75M6.75 21a3.75 3.75 0 01-3.75-3.75V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 01-3.75-3.75V14.25" /></svg>
+      </div>
+      <h2 class="text-xl font-bold tracking-tight text-sa-fg">Color Palette</h2>
+    </div>
+
+    <!-- Palette Preset UI -->
+    <div class="bg-sa-card border border-sa-border rounded-sa-lg p-4 mb-6">
+      <div class="mb-4">
+        <h3 class="text-base font-bold text-sa-fg mb-3">Choose Color Palette</h3>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-4" role="tablist" aria-label="Color palette categories">
+          <button class="palette-tab active bg-sa-fg text-white px-4 py-2 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card flex items-center gap-2"
+                  data-tab="classic" role="tab" aria-selected="true" aria-controls="classic-palettes">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" /></svg>
+            Classic
+          </button>
+          <button class="palette-tab bg-sa-surface text-sa-fg px-4 py-2 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card flex items-center gap-2"
+                  data-tab="capuchin" role="tab" aria-selected="false" aria-controls="capuchin-palettes">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
+            Capuchin
+          </button>
+          <button class="palette-tab bg-sa-surface text-sa-fg px-4 py-2 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card flex items-center gap-2"
+                  data-tab="themed" role="tab" aria-selected="false" aria-controls="themed-palettes">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423L16.5 15.75l.394 1.183a2.25 2.25 0 001.423 1.423L19.5 18.75l-1.183.394a2.25 2.25 0 00-1.423 1.423z" /></svg>
+            Themed
+          </button>
+        </div>
+
+        <div class="palette-content" id="classic-palettes" role="tabpanel" aria-labelledby="classic-tab">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+        </div>
+        <div class="palette-content hidden" id="capuchin-palettes" role="tabpanel" aria-labelledby="capuchin-tab">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+        </div>
+        <div class="palette-content hidden" id="themed-palettes" role="tabpanel" aria-labelledby="themed-tab">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Color Palette Table -->
+    <div class="bg-sa-card border border-sa-border rounded-sa-lg overflow-hidden shadow-sa-card">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-sa-border">
+          <thead class="bg-sa-surface-hover">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 01-3.75-3.75V14.25M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H6.75M6.75 21a3.75 3.75 0 01-3.75-3.75V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 01-3.75-3.75V14.25" /></svg>
+                  Color
+                </div>
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+                  Variable
+                </div>
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+                  Value
+                </div>
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">
+                <div class="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.792-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.5M6 18l-2.685.792a4.5 4.5 0 01-1.897-1.13L6 18z" /></svg>
+                  Action
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="color-palette-table" class="bg-white divide-y divide-sa-border"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Color Picker Modal -->
+<div id="color-picker-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden p-4 z-[60] opacity-0 transition-opacity duration-300" onclick="closeColorPickerModalOnClickOutside(event)" role="dialog" aria-labelledby="color-picker-modal-title" aria-modal="true">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md">
+    <div class="bg-white border border-sa-border p-6 rounded-sa-lg shadow-sa-overlay w-full">
+      <div class="flex items-center justify-between mb-4">
+        <h3 id="color-picker-modal-title" class="text-xl font-semibold text-sa-fg flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 01-3.75-3.75V14.25M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H6.75M6.75 21a3.75 3.75 0 01-3.75-3.75V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 01-3.75-3.75V14.25" /></svg>
+          Edit Warna
+        </h3>
+        <button onclick="closeColorPickerModal()" class="w-8 h-8 flex items-center justify-center bg-sa-surface-hover hover:bg-sa-border text-sa-muted rounded-full focus:outline-none focus:ring-2 focus:ring-sa-border transition-colors" aria-label="Tutup modal">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+      <div id="color-picker-content" class="space-y-4"></div>
+      <div class="flex items-center justify-end space-x-3 mt-6" role="group" aria-label="Tombol aksi edit warna">
+        <button id="confirm-color-btn" class="w-10 h-10 flex items-center justify-center bg-sa-success text-white rounded-full focus:outline-none focus:ring-2 focus:ring-sa-success transition-all duration-300 shadow-sa-card" aria-label="Konfirmasi perubahan warna" title="Konfirmasi">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+        </button>
+        <button id="cancel-color-btn" class="w-10 h-10 flex items-center justify-center bg-white text-sa-fg rounded-full focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card" aria-label="Batal edit warna" title="Batal">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+<script src="/static/js/brand-management.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        const messagesData = '{{ get_flashed_messages(with_categories=true) | tojson | safe }}';
+        if (!messagesData || messagesData.trim() === '' || messagesData === 'null' || messagesData === 'undefined') return;
+        let messages;
+        try { messages = JSON.parse(messagesData); } catch (parseError) { return; }
+        if (Array.isArray(messages)) messages.forEach(([category, message]) => showToast(category, message));
+    } catch (e) { console.error('Error in flash messages handler:', e); }
+});
+</script>
+{% endblock %}

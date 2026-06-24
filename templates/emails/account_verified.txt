@@ -1,0 +1,29 @@
+{{ brand_name }}
+================================================================================
+
+AKUN ANDA TELAH DIVERIFIKASI
+
+Halo {{ user.first_name or user.username }},
+
+Selamat! Akun Anda di {{ brand_name }} telah berhasil diverifikasi. Anda sekarang dapat menikmati semua fitur platform kami.
+
+STATUS: AKUN AKTIF
+------------------
+Akun Anda sekarang aktif dan siap digunakan untuk mengakses seluruh fitur.
+
+YANG DAPAT ANDA LAKUKAN SEKARANG
+--------------------------------
+1. Login ke akun Anda kapan saja
+2. Mengakses semua fitur platform
+3. Mengirim dan menerbitkan konten
+4. Berinteraksi dengan komunitas
+
+Masuk ke Akun: {{ login_url }}
+
+Terima kasih telah bergabung dengan {{ brand_name }}.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

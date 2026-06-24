@@ -1,0 +1,38 @@
+{{ brand_name }}
+================================================================================
+
+{% if is_urgent %}PERMINTAAN EDIT DARI EDITOR (URGENT){% else %}PERMINTAAN EDIT DARI EDITOR{% endif %}
+
+Halo {{ author_full_name }},
+
+Editor {{ editor_username }} telah mengirimkan permintaan edit untuk konten Anda di {{ brand_name }}.
+
+DETAIL PERMINTAAN{% if is_urgent %} - URGENT{% endif %}
+----------------
+Judul: {{ content_title }}
+Jenis: {{ content_type }}
+Editor: {{ editor_username }}
+Tanggal: {{ request_date }}
+
+PESAN DARI EDITOR
+-----------------
+"{{ editor_message }}"
+
+CARA MENANGGAPI
+---------------
+1. Kunjungi halaman "Editor Requests" di profil Anda
+2. Klik "Edit Now" untuk mulai mengedit konten
+3. Atau klik "Mark as Addressed" jika sudah ditangani
+4. Atau klik "Dismiss" jika tidak ingin menangani
+
+Konten Anda tetap dapat diakses oleh pembaca selama proses edit.
+
+Lihat permintaan edit: {{ editor_requests_url }}
+
+--------------------------------------------------------------------------------
+Terima kasih telah berkontribusi di {{ brand_name }}.
+
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

@@ -5,6 +5,7 @@ class NavigationManager {
         this.links = [];
         this.editingLink = null;
         this.deletingLink = null;
+        this.selectedLinks = new Set();
         
         this.init();
     }
@@ -29,6 +30,40 @@ class NavigationManager {
         document.getElementById('cancel-delete-btn').addEventListener('click', () => this.hideDeleteModal());
         document.getElementById('confirm-delete-btn').addEventListener('click', () => this.deleteLink());
         
+        // Copy links button
+        const copyBtn = document.getElementById('copy-links-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => this.showCopyModal());
+        }
+        
+        // Copy modal events
+        const cancelCopyBtn = document.getElementById('cancel-copy-btn');
+        const confirmCopyBtn = document.getElementById('confirm-copy-btn');
+        const copyFrom = document.getElementById('copy-from');
+        const copyTo = document.getElementById('copy-to');
+        
+        if (cancelCopyBtn) cancelCopyBtn.addEventListener('click', () => this.hideCopyModal());
+        if (confirmCopyBtn) confirmCopyBtn.addEventListener('click', () => this.copyLinks());
+        if (copyFrom) copyFrom.addEventListener('change', () => this.updateCopyPreview());
+        if (copyTo) copyTo.addEventListener('change', () => this.updateCopyPreview());
+        
+        // Bulk action events
+        const bulkActivateBtn = document.getElementById('bulk-activate-btn');
+        const bulkDeactivateBtn = document.getElementById('bulk-deactivate-btn');
+        const bulkDeleteBtn = document.getElementById('bulk-delete-btn');
+        const bulkClearBtn = document.getElementById('bulk-clear-btn');
+        
+        if (bulkActivateBtn) bulkActivateBtn.addEventListener('click', () => this.bulkActivate());
+        if (bulkDeactivateBtn) bulkDeactivateBtn.addEventListener('click', () => this.bulkDeactivate());
+        if (bulkDeleteBtn) bulkDeleteBtn.addEventListener('click', () => this.showBulkDeleteModal());
+        if (bulkClearBtn) bulkClearBtn.addEventListener('click', () => this.clearSelection());
+        
+        // Bulk delete modal events
+        const cancelBulkDeleteBtn = document.getElementById('cancel-bulk-delete-btn');
+        const confirmBulkDeleteBtn = document.getElementById('confirm-bulk-delete-btn');
+        if (cancelBulkDeleteBtn) cancelBulkDeleteBtn.addEventListener('click', () => this.hideBulkDeleteModal());
+        if (confirmBulkDeleteBtn) confirmBulkDeleteBtn.addEventListener('click', () => this.bulkDelete());
+        
         // Internal links functionality
         this.bindInternalLinksEvents();
         
@@ -39,6 +74,18 @@ class NavigationManager {
         document.getElementById('delete-modal').addEventListener('click', (e) => {
             if (e.target.id === 'delete-modal') this.hideDeleteModal();
         });
+        const copyModal = document.getElementById('copy-modal');
+        if (copyModal) {
+            copyModal.addEventListener('click', (e) => {
+                if (e.target.id === 'copy-modal') this.hideCopyModal();
+            });
+        }
+        const bulkDeleteModal = document.getElementById('bulk-delete-modal');
+        if (bulkDeleteModal) {
+            bulkDeleteModal.addEventListener('click', (e) => {
+                if (e.target.id === 'bulk-delete-modal') this.hideBulkDeleteModal();
+            });
+        }
     }
     
     bindInternalLinksEvents() {
@@ -133,19 +180,23 @@ class NavigationManager {
         const statusClass = link.is_active ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-600';
         const statusText = link.is_active ? 'Aktif' : 'Nonaktif';
         const externalIcon = link.is_external ? '<svg class="w-4 h-4 ml-1 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>' : '';
+        const isSelected = this.selectedLinks.has(link.id) ? 'ring-2 ring-blue-500' : '';
         
         return `
-            <div class="bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300" data-link-id="${link.id}">
+            <div class="bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 ${isSelected}" data-link-id="${link.id}">
                 <div class="flex items-center justify-between">
-                    <div class="flex-1">
-                        <div class="flex items-center mb-2">
-                            <h3 class="text-lg font-semibold text-amber-800">${link.name}</h3>
-                            ${externalIcon}
-                        </div>
-                        <p class="text-sm text-amber-600 mb-2">${link.url}</p>
-                        <div class="flex items-center space-x-2">
-                            <span class="px-2 py-1 text-xs rounded-full ${statusClass}">${statusText}</span>
-                            <span class="text-xs text-amber-600">Urutan: ${link.order}</span>
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" class="link-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500" data-link-id="${link.id}" ${this.selectedLinks.has(link.id) ? 'checked' : ''}>
+                        <div class="flex-1">
+                            <div class="flex items-center mb-2">
+                                <h3 class="text-lg font-semibold text-amber-800">${link.name}</h3>
+                                ${externalIcon}
+                            </div>
+                            <p class="text-sm text-amber-600 mb-2">${link.url}</p>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 text-xs rounded-full ${statusClass}">${statusText}</span>
+                                <span class="text-xs text-amber-600">Urutan: ${link.order}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -166,6 +217,22 @@ class NavigationManager {
     }
     
     bindCardEvents() {
+        // Checkbox events
+        document.querySelectorAll('.link-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const linkId = parseInt(e.target.dataset.linkId);
+                
+                if (e.target.checked) {
+                    this.selectedLinks.add(linkId);
+                } else {
+                    this.selectedLinks.delete(linkId);
+                }
+                
+                this.updateBulkActionBar();
+                this.renderLinks();
+            });
+        });
+        
         // Edit buttons
         document.querySelectorAll('.edit-link-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -357,6 +424,199 @@ class NavigationManager {
         }
     }
     
+    updateBulkActionBar() {
+        const bulkActions = document.getElementById('bulk-actions');
+        const selectedCount = document.getElementById('selected-count');
+        
+        if (!bulkActions) return;
+        
+        if (this.selectedLinks.size > 0) {
+            bulkActions.classList.remove('hidden');
+            bulkActions.style.display = 'flex';
+            if (selectedCount) selectedCount.textContent = `${this.selectedLinks.size} selected`;
+        } else {
+            bulkActions.classList.add('hidden');
+            bulkActions.style.display = 'none';
+        }
+    }
+    
+    clearSelection() {
+        this.selectedLinks.clear();
+        document.querySelectorAll('.link-checkbox').forEach(cb => { cb.checked = false; });
+        this.updateBulkActionBar();
+        const bulkActions = document.getElementById('bulk-actions');
+        if (bulkActions) {
+            bulkActions.classList.add('hidden');
+            bulkActions.style.display = 'none';
+        }
+        this.renderLinks();
+    }
+    
+    showCopyModal() {
+        const modal = document.getElementById('copy-modal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        const copyFrom = document.getElementById('copy-from');
+        const copyTo = document.getElementById('copy-to');
+        const overwrite = document.getElementById('copy-overwrite');
+        if (copyFrom) copyFrom.value = '';
+        if (copyTo) copyTo.value = '';
+        if (overwrite) overwrite.checked = false;
+        const preview = document.getElementById('copy-preview');
+        if (preview) preview.classList.add('hidden');
+    }
+    
+    hideCopyModal() {
+        const modal = document.getElementById('copy-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+    
+    updateCopyPreview() {
+        const copyFrom = document.getElementById('copy-from');
+        const copyTo = document.getElementById('copy-to');
+        const preview = document.getElementById('copy-preview');
+        const previewContent = document.getElementById('copy-preview-content');
+        
+        if (!copyFrom || !copyTo || !preview || !previewContent) return;
+        
+        if (copyFrom.value && copyTo.value && copyFrom.value !== copyTo.value) {
+            const sourceLinks = this.links.filter(link => link.location === copyFrom.value);
+            previewContent.innerHTML = sourceLinks.map(link =>
+                `<div class="py-1">• ${link.name} (${link.url})</div>`
+            ).join('');
+            preview.classList.remove('hidden');
+        } else {
+            preview.classList.add('hidden');
+        }
+    }
+    
+    async copyLinks() {
+        const copyFrom = document.getElementById('copy-from');
+        const copyTo = document.getElementById('copy-to');
+        const overwrite = document.getElementById('copy-overwrite');
+        
+        if (!copyFrom || !copyTo) return;
+        
+        if (!copyFrom.value || !copyTo.value || copyFrom.value === copyTo.value) {
+            this.showError('Pilih sumber dan tujuan yang berbeda');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/navigation-links/copy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    from_location: copyFrom.value,
+                    to_location: copyTo.value,
+                    overwrite: overwrite ? overwrite.checked : false
+                })
+            });
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to copy links');
+            }
+            
+            const result = await response.json();
+            this.hideCopyModal();
+            this.showSuccess(`Berhasil menyalin ${result.copied_count} link dari ${copyFrom.value} ke ${copyTo.value}`);
+            
+            setTimeout(() => window.location.reload(), 1000);
+        } catch (error) {
+            console.error('Error copying links:', error);
+            this.showError(error.message || 'Gagal menyalin link');
+        }
+    }
+    
+    showBulkDeleteModal() {
+        const modal = document.getElementById('bulk-delete-modal');
+        const count = document.getElementById('bulk-delete-count');
+        if (!modal) return;
+        if (count) count.textContent = this.selectedLinks.size;
+        modal.classList.remove('hidden');
+    }
+    
+    hideBulkDeleteModal() {
+        const modal = document.getElementById('bulk-delete-modal');
+        if (modal) modal.classList.add('hidden');
+    }
+    
+    async bulkActivate() {
+        if (this.selectedLinks.size === 0) {
+            this.showError('Pilih link yang akan diaktifkan');
+            return;
+        }
+        await this.bulkUpdateStatus(true);
+    }
+    
+    async bulkDeactivate() {
+        if (this.selectedLinks.size === 0) {
+            this.showError('Pilih link yang akan dinonaktifkan');
+            return;
+        }
+        await this.bulkUpdateStatus(false);
+    }
+    
+    async bulkUpdateStatus(isActive) {
+        if (this.selectedLinks.size === 0) return;
+        
+        try {
+            const response = await fetch('/api/navigation-links/bulk-status', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    link_ids: Array.from(this.selectedLinks),
+                    is_active: isActive
+                })
+            });
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to update links');
+            }
+            
+            this.showSuccess(`Berhasil ${isActive ? 'mengaktifkan' : 'menonaktifkan'} ${this.selectedLinks.size} link`);
+            this.clearSelection();
+            
+            setTimeout(() => window.location.reload(), 1000);
+        } catch (error) {
+            console.error('Error updating links:', error);
+            this.showError(error.message || 'Gagal mengupdate link');
+        }
+    }
+    
+    async bulkDelete() {
+        if (this.selectedLinks.size === 0) {
+            this.showError('Pilih link yang akan dihapus');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/navigation-links/bulk-delete', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    link_ids: Array.from(this.selectedLinks)
+                })
+            });
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to delete links');
+            }
+            
+            this.hideBulkDeleteModal();
+            this.showSuccess(`Berhasil menghapus ${this.selectedLinks.size} link`);
+            this.clearSelection();
+            
+            setTimeout(() => window.location.reload(), 1000);
+        } catch (error) {
+            console.error('Error deleting links:', error);
+            this.showError(error.message || 'Gagal menghapus link');
+        }
+    }
+    
     showLoading() {
         document.getElementById('loading').classList.remove('hidden');
     }
@@ -369,7 +629,7 @@ class NavigationManager {
         if (typeof showToast === 'function') {
             showToast('success', message);
         } else {
-            alert(message);
+            this.inlineToast('success', message);
         }
     }
     
@@ -377,12 +637,58 @@ class NavigationManager {
         if (typeof showToast === 'function') {
             showToast('error', message);
         } else {
-            alert('Error: ' + message);
+            this.inlineToast('error', 'Error: ' + message);
         }
+    }
+    
+    inlineToast(type, message) {
+        const containerId = 'toast-container';
+        let container = document.getElementById(containerId);
+        if (!container) {
+            container = document.createElement('div');
+            container.id = containerId;
+            container.className = 'fixed top-5 right-5 space-y-2 z-50';
+            document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        const bgClass = type === 'error' ? 'bg-sa-critical'
+            : type === 'warning' ? 'bg-sa-warning'
+            : 'bg-sa-success';
+        toast.className = `${bgClass} text-white px-4 py-2 rounded-sa-md shadow-sa-card`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
     }
 }
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new NavigationManager();
+    const manager = new NavigationManager();
+    
+    // Debug helpers for console testing
+    window.toggleLinkSelection = (linkId) => {
+        const id = parseInt(linkId);
+        if (manager.selectedLinks.has(id)) {
+            manager.selectedLinks.delete(id);
+        } else {
+            manager.selectedLinks.add(id);
+        }
+        manager.updateBulkActionBar();
+        manager.renderLinks();
+    };
+    window.selectAllLinks = () => {
+        const locationLinks = manager.links.filter(l => l.location === manager.currentLocation);
+        locationLinks.forEach(l => manager.selectedLinks.add(l.id));
+        manager.updateBulkActionBar();
+        manager.renderLinks();
+    };
+    window.deselectAllLinks = () => {
+        manager.selectedLinks.clear();
+        manager.updateBulkActionBar();
+        manager.renderLinks();
+    };
+    window.bulkActivateLinks = () => manager.bulkActivate();
+    window.bulkDeactivateLinks = () => manager.bulkDeactivate();
+    window.bulkDeleteLinks = () => manager.showBulkDeleteModal();
+    window.copyLinks = () => manager.showCopyModal();
 }); 

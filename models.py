@@ -646,6 +646,7 @@ class News(db.Model):
     structured_data_type = db.Column(db.String(50), nullable=True)  # Type of structured data (Article, NewsArticle, etc.)
     seo_score = db.Column(db.Integer, nullable=True)           # Calculated SEO score (0-100)
     last_seo_audit = db.Column(db.DateTime, nullable=True)     # Last SEO audit timestamp
+    is_seo_lock = db.Column(db.Boolean, default=False, nullable=False)  # Lock SEO fields from automatic updates
 
     # Foreign Keys with explicit names
     category_id = db.Column(
@@ -929,6 +930,7 @@ class Album(db.Model):
     structured_data_type = db.Column(db.String(50), nullable=True)  # Type of structured data (Book, CreativeWork, etc.)
     seo_score = db.Column(db.Integer, nullable=True)           # Calculated SEO score (0-100)
     last_seo_audit = db.Column(db.DateTime, nullable=True)     # Last SEO audit timestamp
+    is_seo_lock = db.Column(db.Boolean, default=False, nullable=False)  # Lock SEO fields from automatic updates
 
     # Foreign Keys
     user_id = db.Column(
@@ -1146,6 +1148,7 @@ class AlbumChapter(db.Model):
         onupdate=default_utcnow,
         nullable=False,
     )
+    is_seo_lock = db.Column(db.Boolean, default=False, nullable=False)  # Lock SEO fields from automatic updates
 
     # Foreign Keys
     album_id = db.Column(
@@ -1441,17 +1444,27 @@ class BrandIdentity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
     # Brand Information
-    brand_name = db.Column(db.String(100), nullable=True, default="LilyOpenCMS")  # Brand name
-    tagline = db.Column(db.String(255), nullable=True, default="Modern content management for the digital age")  # Brand tagline
-    
+    brand_name = db.Column(db.String(100), nullable=True, default="LilyOpenCMS")
+    tagline = db.Column(db.String(255), nullable=True, default="Modern content management for the digital age")
+    brand_description = db.Column(db.Text, nullable=True, default="")
+    website_url = db.Column(db.String(255), nullable=True, default="https://hystory.id")
+
+    # Homepage Design Preference
+    homepage_design = db.Column(db.String(50), nullable=True, default="news")  # 'news' or 'albums'
+
+    # Categories Display Location
+    categories_display_location = db.Column(db.String(50), nullable=True, default="body")  # 'body' or 'navbar'
+
+    # News Card Design Preference
+    card_design = db.Column(db.String(50), nullable=True, default="classic")  # 'classic', 'modern', 'minimal', 'featured'
+
     # Brand Assets
-    logo_header = db.Column(db.String(255), nullable=True)  # Always /static/pic/logo.png
+    logo_header = db.Column(db.String(255), nullable=True)  # /static/pic/logo.png
     logo_footer = db.Column(db.String(255), nullable=True)
     favicon = db.Column(db.String(255), nullable=True)
     placeholder_image = db.Column(db.String(255), nullable=True)
 
-    # Brand color palette — stored as HSL component strings e.g. "220 80% 55%"
-    # Default: soft pastel indigo-blue (M3 Studio Blue)
+    # Brand color palette — HSL strings e.g. "220 70% 60%"
     color_primary = db.Column(db.String(50), nullable=True, default="220 70% 60%")
     color_primary_foreground = db.Column(db.String(50), nullable=True, default="0 0% 100%")
     color_secondary = db.Column(db.String(50), nullable=True, default="220 14% 96%")
@@ -1461,12 +1474,41 @@ class BrandIdentity(db.Model):
     color_background = db.Column(db.String(50), nullable=True, default="220 20% 98%")
     color_foreground = db.Column(db.String(50), nullable=True, default="220 15% 15%")
 
+    # Feature toggles
+    enable_comments = db.Column(db.Boolean, nullable=False, default=True)
+    enable_ratings = db.Column(db.Boolean, nullable=False, default=True)
+    enable_ads = db.Column(db.Boolean, nullable=False, default=True)
+    enable_campaigns = db.Column(db.Boolean, nullable=False, default=True)
+
+
+    # UI Page visibility
+    enable_videos = db.Column(db.Boolean, nullable=False, default=True)
+    enable_gallery = db.Column(db.Boolean, nullable=False, default=True)
+    enable_albums = db.Column(db.Boolean, nullable=False, default=True)
+    enable_news = db.Column(db.Boolean, nullable=False, default=True)
+    enable_premium = db.Column(db.Boolean, nullable=False, default=True)
+    enable_about = db.Column(db.Boolean, nullable=False, default=True)
+    enable_bookmarks = db.Column(db.Boolean, nullable=False, default=True)
+    enable_reading_history = db.Column(db.Boolean, nullable=False, default=True)
+    enable_community = db.Column(db.Boolean, nullable=False, default=True)
+    enable_user_stats = db.Column(db.Boolean, nullable=False, default=True)
+
+    # SEO & quality settings
+    seo_settings = db.Column(db.JSON, nullable=True)
+    min_story_word_count = db.Column(db.Integer, nullable=False, default=1000)
+    min_chapter_word_count = db.Column(db.Integer, nullable=False, default=1000)
+
     updated_at = db.Column(db.DateTime, default=default_utcnow, onupdate=default_utcnow, nullable=False)
 
     def to_dict(self):
         return {
             "brand_name": self.brand_name,
             "tagline": self.tagline,
+            "brand_description": self.brand_description,
+            "homepage_design": self.homepage_design,
+            "categories_display_location": self.categories_display_location or "body",
+            "card_design": self.card_design or "classic",
+            "website_url": self.website_url,
             "logo_header": self.logo_header,
             "logo_footer": self.logo_footer,
             "favicon": self.favicon,
@@ -1479,6 +1521,24 @@ class BrandIdentity(db.Model):
             "color_accent_foreground": self.color_accent_foreground,
             "color_background": self.color_background,
             "color_foreground": self.color_foreground,
+            "enable_comments": self.enable_comments,
+            "enable_ratings": self.enable_ratings,
+            "enable_ads": self.enable_ads,
+            "enable_campaigns": self.enable_campaigns,
+
+            "enable_videos": self.enable_videos,
+            "enable_gallery": self.enable_gallery,
+            "enable_albums": self.enable_albums,
+            "enable_news": self.enable_news,
+            "enable_premium": self.enable_premium,
+            "enable_about": self.enable_about,
+            "enable_bookmarks": self.enable_bookmarks,
+            "enable_reading_history": self.enable_reading_history,
+            "enable_community": self.enable_community,
+            "enable_user_stats": self.enable_user_stats,
+            "seo_settings": self.seo_settings,
+            "min_story_word_count": self.min_story_word_count,
+            "min_chapter_word_count": self.min_chapter_word_count,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }
 
@@ -1750,6 +1810,100 @@ class RootSEO(db.Model):
     
     def __repr__(self):
         return f"<RootSEO {self.page_identifier}: {self.page_name}>"
+
+
+# Email Tracking and Analytics Models
+
+class EmailType(Enum):
+    """Email type enumeration"""
+    VERIFICATION = "verification"
+    PASSWORD_RESET = "password_reset"
+    SUSPENSION = "suspension"
+    WRITE_ACCESS_APPROVED = "write_access_approved"
+    WRITE_ACCESS_REJECTED = "write_access_rejected"
+    ACCOUNT_DELETION_REQUEST = "account_deletion_request"
+    ACCOUNT_DELETION_CONFIRMATION = "account_deletion_confirmation"
+    CONTENT_APPROVED = "content_approved"
+    CONTENT_REJECTED = "content_rejected"
+    CONTENT_DELETION = "content_deletion"
+    PROFILE_UPDATE = "profile_update"
+    EDIT_REQUEST_APPROVED = "edit_request_approved"
+    EDIT_REQUEST_REJECTED = "edit_request_rejected"
+    ALBUM_EDIT_REQUEST_SUBMITTED = "album_edit_request_submitted"
+    EDITOR_EDIT_REQUEST_NOTIFICATION = "editor_edit_request_notification"
+    CHAPTER_PUBLISHED = "chapter_published"
+    SCHEDULED_CONTENT_PUBLISHED = "scheduled_content_published"
+    CUSTOM = "custom"
+
+
+class EmailStatus(Enum):
+    """Email delivery status"""
+    QUEUED = "queued"
+    SENT = "sent"
+    DELIVERED = "delivered"
+    FAILED = "failed"
+    BOUNCED = "bounced"
+    COMPLAINT = "complaint"
+
+
+class EmailLog(db.Model):
+    """Tracks all email deliveries for analytics and monitoring"""
+    __tablename__ = 'email_logs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    message_id = db.Column(db.String(255), unique=True, nullable=True)  # SMTP Message-ID
+    celery_task_id = db.Column(db.String(255), nullable=True)  # Celery task ID for async emails
+
+    # Email details
+    recipient = db.Column(db.String(255), nullable=False, index=True)
+    sender = db.Column(db.String(255), nullable=False)
+    subject = db.Column(db.String(500), nullable=False)
+    email_type = db.Column(db.Enum(EmailType), nullable=False, default=EmailType.CUSTOM)
+
+    # Status tracking
+    status = db.Column(db.Enum(EmailStatus), nullable=False, default=EmailStatus.QUEUED)
+    status_updated_at = db.Column(db.DateTime(timezone=True), default=default_utcnow, onupdate=default_utcnow)
+
+    # Timestamps
+    queued_at = db.Column(db.DateTime(timezone=True), default=default_utcnow)
+    sent_at = db.Column(db.DateTime(timezone=True), nullable=True)
+    delivered_at = db.Column(db.DateTime(timezone=True), nullable=True)
+    failed_at = db.Column(db.DateTime(timezone=True), nullable=True)
+
+    # Error tracking
+    error_message = db.Column(db.Text, nullable=True)
+    retry_count = db.Column(db.Integer, default=0)
+    max_retries = db.Column(db.Integer, default=3)
+
+    # Rate limiting info
+    rate_limit_hit = db.Column(db.Boolean, default=False)
+    rate_limit_reason = db.Column(db.String(255), nullable=True)
+
+    # User association (nullable for system emails)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    user = db.relationship('User', backref=db.backref('email_logs', lazy='dynamic'))
+
+    # Additional metadata
+    extra_data = db.Column(db.JSON, nullable=True)  # Store additional tracking data
+    ip_address = db.Column(db.String(45), nullable=True)  # IPv4/IPv6
+    user_agent = db.Column(db.String(500), nullable=True)
+
+    # Template info
+    template_name = db.Column(db.String(255), nullable=True)
+
+    def update_status(self, status: EmailStatus, error_message: str = None):
+        """Update status of email log with timestamp"""
+        self.status = status
+        self.status_updated_at = default_utcnow()
+        if status == EmailStatus.SENT:
+            self.sent_at = default_utcnow()
+        elif status == EmailStatus.DELIVERED:
+            self.delivered_at = default_utcnow()
+        elif status == EmailStatus.FAILED:
+            self.failed_at = default_utcnow()
+            self.error_message = error_message
+        db.session.commit()
+
 
 # Event listeners
 @event.listens_for(Image, "after_delete")

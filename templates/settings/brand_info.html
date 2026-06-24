@@ -1,0 +1,123 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends "admin_base.html" %}
+{% block title %}Brand Information{% endblock %}
+{% block hero_title %}Brand Information{% endblock %}
+{% block hero_desc %}Kelola informasi dasar brand{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+  <div class="flex items-center gap-2 text-sm text-sa-muted mb-6">
+    <a href="{{ url_for('main.settings_brand_identity') }}" class="hover:text-sa-accent transition-colors">Brand Management</a>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+    <span class="text-sa-fg font-medium">Brand Information</span>
+  </div>
+
+  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="Brand Information Management">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+      </div>
+      <h2 class="text-xl font-bold tracking-tight text-sa-fg">Brand Information</h2>
+    </div>
+
+    <div class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Brand Name">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+              Brand Name
+            </h3>
+          </div>
+          <form id="form-brand-name" class="space-y-3">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="relative">
+              <input type="text" name="brand_name" id="brand-name-input"
+                     value="{{ brand_info.brand_name|default('LilyOpenCMS') }}"
+                     class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent"
+                     placeholder="Enter brand name">
+            </div>
+            <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Save brand name">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+              Save
+            </button>
+          </form>
+        </div>
+
+        <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Brand Tagline">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+              Tagline
+            </h3>
+          </div>
+          <form id="form-tagline" class="space-y-3">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="relative">
+              <input type="text" name="tagline" id="tagline-input"
+                     value="{{ brand_info.tagline|default('Modern content management for the digital age') }}"
+                     class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent"
+                     placeholder="Enter brand tagline">
+            </div>
+            <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Save tagline">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+              Save
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6">
+        <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Brand Description">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+              Brand Description
+            </h3>
+          </div>
+          <form id="form-brand-description" class="space-y-3">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="relative">
+              <textarea name="brand_description" id="brand-description-input"
+                        rows="6"
+                        class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent resize-vertical"
+                        placeholder="Enter detailed brand description that will be displayed on the about page">{{ brand_info.brand_description|default('LilyOpenCMS is a modern, open-source content management system designed for the digital age.') }}</textarea>
+            </div>
+            <div class="flex items-center justify-between">
+              <p class="text-sm text-sa-muted">This description will be displayed on the About page</p>
+              <button type="submit" class="flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Save brand description">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+<script src="/static/js/brand-management.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        const messagesData = '{{ get_flashed_messages(with_categories=true) | tojson | safe }}';
+        if (!messagesData || messagesData.trim() === '' || messagesData === 'null' || messagesData === 'undefined') return;
+        let messages;
+        try { messages = JSON.parse(messagesData); } catch (parseError) { return; }
+        if (Array.isArray(messages)) messages.forEach(([category, message]) => showToast(category, message));
+    } catch (e) { console.error('Error in flash messages handler:', e); }
+});
+</script>
+{% endblock %}

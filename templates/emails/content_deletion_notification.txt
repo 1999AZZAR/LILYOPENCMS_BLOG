@@ -1,0 +1,32 @@
+{{ brand_name }}
+================================================================================
+
+KONTEN ANDA TELAH DIHAPUS
+
+Halo {{ user.first_name or user.username }},
+
+Kami ingin memberitahukan bahwa konten Anda di {{ brand_name }} telah dihapus dari platform.
+
+DETAIL KONTEN
+-------------
+Jenis: {{ content_type_id|title }}
+Judul: {{ content_title }}
+Tanggal Penghapusan: {{ deletion_date }}
+
+{% if deletion_reason %}
+ALASAN PENGHAPUSAN
+------------------
+{{ deletion_reason }}
+{% endif %}
+
+PERHATIAN
+---------
+Konten yang telah dihapus tidak dapat dipulihkan. Pastikan untuk menyimpan salinan konten penting Anda.
+
+Jika Anda memiliki pertanyaan tentang penghapusan ini, silakan hubungi tim dukungan kami.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

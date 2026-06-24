@@ -1,0 +1,33 @@
+{{ brand_name }}
+================================================================================
+
+PERMINTAAN AKSES TULIS DITOLAK
+
+Halo {{ user.first_name or user.username }},
+
+Setelah peninjauan, permintaan akses tulis Anda di {{ brand_name }} tidak dapat disetujui saat ini.
+
+{% if reason %}
+ALASAN
+------
+{{ reason }}
+{% endif %}
+
+YANG DAPAT ANDA LAKUKAN SAAT INI:
+---------------------------------
+- Membaca dan menjelajahi konten di platform
+- Memberikan komentar dan rating
+- Mengikuti penulis favorit Anda
+- Menyimpan konten ke daftar baca
+
+MENGAJUKAN KEMBALI?
+-------------------
+Anda dapat mengajukan permintaan akses tulis kembali setelah memenuhi persyaratan yang diperlukan. Silakan hubungi tim dukungan kami untuk informasi lebih lanjut.
+
+Terima kasih atas pengertian Anda.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

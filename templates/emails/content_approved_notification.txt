@@ -1,0 +1,28 @@
+{{ brand_name }}
+================================================================================
+
+KONTEN ANDA TELAH DISETUJUI
+
+Halo {{ user.first_name or user.username }},
+
+Kabar baik! Konten Anda di {{ brand_name }} telah disetujui dan sekarang dipublikasikan.
+
+DETAIL KONTEN
+-------------
+Jenis: {{ content_type_id|title }}
+Judul: {{ content_title }}
+Tanggal Persetujuan: {{ approval_date }}
+
+Konten Anda sekarang dapat dilihat oleh pengguna lain di platform kami. Terus berkreasi dan bagikan konten berkualitas dengan komunitas.
+
+TIPS
+----
+Bagikan konten Anda ke media sosial untuk menjangkau lebih banyak pembaca.
+
+Selamat atas konten yang telah disetujui!
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

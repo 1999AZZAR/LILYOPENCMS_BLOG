@@ -1,0 +1,157 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends "_base.html" %}
+
+{% block title %}Permintaan Edit dari Editor - {{ brand_name }}{% endblock %}
+
+{% block preview %}Editor {{ editor_username }} mengirimkan permintaan edit untuk "{{ content_title }}"{% if is_urgent %} - URGENT{% endif %}.{% endblock %}
+
+{% block status_bar %}
+<tr>
+    <td style="background-color: {% if is_urgent %}#ef4444{% else %}#f59e0b{% endif %}; padding: 12px 30px; text-align: center;">
+        <p style="margin: 0; font-size: 14px; color: #ffffff; font-weight: 500;">{% if is_urgent %}Permintaan Urgent{% else %}Permintaan Edit{% endif %}</p>
+    </td>
+</tr>
+{% endblock %}
+
+{% block content %}
+<h2 style="margin: 0 0 20px 0; font-size: 24px; font-weight: 600; color: #2A2520; line-height: 1.3;">Permintaan Edit dari Editor</h2>
+
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #4A4040; line-height: 1.6;">
+    Halo <strong style="color: #2A2520;">{{ author_full_name }}</strong>,
+</p>
+
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #4A4040; line-height: 1.6;">
+    Editor <strong style="color: #2A2520;">{{ editor_username }}</strong> telah mengirimkan permintaan edit untuk konten Anda di <strong style="color: #2A2520;">{{ brand_name }}</strong>.
+</p>
+
+<!-- Request details -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 25px 0;">
+    <tr>
+        <td style="background-color: {% if is_urgent %}#fef2f2{% else %}#fef3c7{% endif %}; border-left: 4px solid {% if is_urgent %}#ef4444{% else %}#f59e0b{% endif %}; padding: 20px; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; font-size: 14px; color: {% if is_urgent %}#991b1b{% else %}#92400e{% endif %}; font-weight: 500;">Detail Permintaan{% if is_urgent %} - URGENT{% endif %}</p>
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 12px;">
+                <tr>
+                    <td style="padding: 6px 0; font-size: 14px; color: {% if is_urgent %}#b91c1c{% else %}#b45309{% endif %};">
+                        <strong>Judul:</strong> {{ content_title }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px 0; font-size: 14px; color: {% if is_urgent %}#b91c1c{% else %}#b45309{% endif %};">
+                        <strong>Jenis:</strong> {{ content_type }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px 0; font-size: 14px; color: {% if is_urgent %}#b91c1c{% else %}#b45309{% endif %};">
+                        <strong>Editor:</strong> {{ editor_username }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px 0; font-size: 14px; color: {% if is_urgent %}#b91c1c{% else %}#b45309{% endif %};">
+                        <strong>Tanggal:</strong> {{ request_date }}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Editor message -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 25px 0;">
+    <tr>
+        <td style="background-color: #F5EDE5; border-left: 4px solid #9C3D3B; padding: 20px; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; font-size: 14px; color: #7A2E2D; font-weight: 500;">Pesan dari Editor</p>
+            <p style="margin: 8px 0 0 0; font-size: 14px; color: #9C3D3B; line-height: 1.5; font-style: italic;">
+                "{{ editor_message }}"
+            </p>
+        </td>
+    </tr>
+</table>
+
+<!-- Actions -->
+<p style="margin: 25px 0 15px 0; font-size: 16px; color: #2A2520; font-weight: 600;">Cara Menanggapi:</p>
+
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+        <td style="padding: 10px 0; border-bottom: 1px solid #D6CFC3;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td width="30" valign="top" style="padding-right: 12px;">
+                        <div style="width: 24px; height: 24px; background-color: #F5EDE5; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; color: #9C3D3B;">1</div>
+                    </td>
+                    <td style="font-size: 15px; color: #4A4040;">Kunjungi halaman "Editor Requests" di profil Anda</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px 0; border-bottom: 1px solid #D6CFC3;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td width="30" valign="top" style="padding-right: 12px;">
+                        <div style="width: 24px; height: 24px; background-color: #F5EDE5; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; color: #9C3D3B;">2</div>
+                    </td>
+                    <td style="font-size: 15px; color: #4A4040;">Klik "Edit Now" untuk mulai mengedit konten</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px 0; border-bottom: 1px solid #D6CFC3;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td width="30" valign="top" style="padding-right: 12px;">
+                        <div style="width: 24px; height: 24px; background-color: #F5EDE5; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; color: #9C3D3B;">3</div>
+                    </td>
+                    <td style="font-size: 15px; color: #4A4040;">Atau klik "Mark as Addressed" jika sudah ditangani</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px 0;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td width="30" valign="top" style="padding-right: 12px;">
+                        <div style="width: 24px; height: 24px; background-color: #F5EDE5; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; color: #9C3D3B;">4</div>
+                    </td>
+                    <td style="font-size: 15px; color: #4A4040;">Atau klik "Dismiss" jika tidak ingin menangani</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Info note -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 25px 0;">
+    <tr>
+        <td style="background-color: #EFE9DC; padding: 16px; border-radius: 8px; text-align: center;">
+            <p style="margin: 0; font-size: 14px; color: #6B6060; line-height: 1.5;">
+                Konten Anda tetap dapat diakses oleh pembaca selama proses edit.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<!-- CTA Button -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 30px 0;">
+    <tr>
+        <td style="text-align: center;">
+            <a href="{{ editor_requests_url }}" style="display: inline-block; background: linear-gradient(135deg, #9C3D3B 0%, #7A2E2D 100%); color: #ffffff; padding: 14px 32px; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 8px; box-shadow: 0 2px 4px rgba(122, 46, 45, 0.2);">Lihat Permintaan Edit</a>
+        </td>
+    </tr>
+</table>
+
+<p style="margin: 20px 0 0 0; font-size: 14px; color: #6B6060; line-height: 1.6; text-align: center;">
+    Terima kasih telah berkontribusi di <strong style="color: #4A4040;">{{ brand_name }}</strong>.
+</p>
+{% endblock %}

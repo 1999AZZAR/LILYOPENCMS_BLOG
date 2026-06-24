@@ -1,0 +1,16 @@
+{{ brand_name }}
+================================================================================
+
+{{ subject | upper }}
+
+Halo {{ user.first_name or user.username }},
+
+{{ message }}
+
+--------------------------------------------------------------------------------
+Pesan ini dikirimkan langsung oleh Administrator Situs untuk Anda.
+
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

@@ -324,6 +324,24 @@ except ImportError as e:
 except Exception as e:
     app.logger.error(f"❌ Unexpected error during root_seo blueprint registration: {e}", exc_info=True)
 
+try:
+    from routes.seo_enhanced_dashboard import seo_enhanced_bp
+    app.register_blueprint(seo_enhanced_bp)
+    app.logger.info("✅ Blueprint 'seo_enhanced_bp' registered successfully.")
+except ImportError as e:
+    app.logger.error(f"❌ Failed to import or register blueprint 'seo_enhanced_bp': {e}")
+except Exception as e:
+    app.logger.error(f"❌ Unexpected error during seo_enhanced blueprint registration: {e}", exc_info=True)
+
+try:
+    from routes.seo_settings_api import seo_settings_bp
+    app.register_blueprint(seo_settings_bp)
+    app.logger.info("✅ Blueprint 'seo_settings_bp' registered successfully.")
+except ImportError as e:
+    app.logger.error(f"❌ Failed to import or register blueprint 'seo_settings_bp': {e}")
+except Exception as e:
+    app.logger.error(f"❌ Unexpected error during seo_settings blueprint registration: {e}", exc_info=True)
+
 # ----------------------
 # 🔧 Database Initialization
 # ----------------------

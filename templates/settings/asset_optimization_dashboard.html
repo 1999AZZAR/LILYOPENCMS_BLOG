@@ -7,17 +7,17 @@
 {% block content %}
 <!-- Navigation Tabs -->
 <div class="mb-6">
- <nav class="flex space-x-1 bg-admin-surfaceHover p-1 rounded-polaris-base" role="tablist">
- <button class="tab-button active bg-white text-admin-text px-4 py-2 rounded-polaris-base font-medium" data-tab="overview">
+ <nav class="flex space-x-1 bg-sa-surface-hover p-1 rounded-sa-md" role="tablist">
+ <button class="tab-button active bg-white text-sa-fg px-4 py-2 rounded-sa-md font-medium" data-tab="overview">
  <i class="fas fa-chart-pie mr-2"></i>Ringkasan
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="management">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="management">
  <i class="fas fa-cogs mr-2"></i>Manajemen
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="optimization">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="optimization">
  <i class="fas fa-compress mr-2"></i>Optimasi
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="settings">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="settings">
  <i class="fas fa-sliders-h mr-2"></i>Pengaturan
  </button>
  </nav>
@@ -25,14 +25,14 @@
 
 <!-- Overview Tab -->
 <div id="overview-tab" class="tab-content active">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100" role="main">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Ringkasan Optimasi Asset</h2>
+ <h2 class="text-xl font-semibold text-sa-fg">Ringkasan Optimasi Asset</h2>
  <div class="flex space-x-2">
- <button id="refresh-assets" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="refresh-assets" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Segarkan
  </button>
- <button id="precompile-assets" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="precompile-assets" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-compress mr-2"></i>Precompile
  </button>
  </div>
@@ -41,72 +41,72 @@
  <!-- Asset Metrics Cards -->
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
  <!-- Compressed Assets -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-compress text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-compress text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Asset Terkompresi</p>
- <p class="text-2xl font-bold text-admin-text">{{ asset_stats.compressed_assets_count|default(0) }}</p>
+ <p class="text-sm font-medium text-sa-muted">Asset Terkompresi</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ asset_stats.compressed_assets_count|default(0) }}</p>
  </div>
  </div>
  <div class="mt-4">
- <span class="text-xs text-admin-textMuted bg-admin-surfaceHover px-2 py-1 rounded-polaris-full">
+ <span class="text-xs text-sa-muted bg-sa-surface-hover px-2 py-1 rounded-full">
  <i class="fas fa-check mr-1"></i>Optimized
  </span>
  </div>
  </div>
 
  <!-- Asset Hashes -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-success">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-success">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-hashtag text-admin-success text-2xl"></i>
+ <i class="fas fa-hashtag text-sa-success text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Asset Hash</p>
- <p class="text-2xl font-bold text-admin-text">{{ asset_stats.asset_hashes_count|default(0) }}</p>
+ <p class="text-sm font-medium text-sa-muted">Asset Hash</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ asset_stats.asset_hashes_count|default(0) }}</p>
  </div>
  </div>
  <div class="mt-4">
- <span class="text-xs text-admin-success bg-admin-successSurface px-2 py-1 rounded-polaris-full">
+ <span class="text-xs text-sa-success bg-sa-success-bg px-2 py-1 rounded-full">
  <i class="fas fa-shield-alt mr-1"></i>Versioned
  </span>
  </div>
  </div>
 
  <!-- Supported Types -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-file-code text-admin-accent text-2xl"></i>
+ <i class="fas fa-file-code text-sa-accent text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Tipe Didukung</p>
- <p class="text-2xl font-bold text-admin-text">{{ asset_stats.supported_types|length|default(0) }}</p>
+ <p class="text-sm font-medium text-sa-muted">Tipe Didukung</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ asset_stats.supported_types|length|default(0) }}</p>
  </div>
  </div>
  <div class="mt-4">
- <span class="text-xs text-admin-accent bg-admin-surfaceHover px-2 py-1 rounded-polaris-full">
+ <span class="text-xs text-sa-accent bg-sa-surface-hover px-2 py-1 rounded-full">
  <i class="fas fa-list mr-1"></i>Types
  </span>
  </div>
  </div>
 
  <!-- Static Folder -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-folder text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-folder text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Folder Statis</p>
- <p class="text-2xl font-bold text-admin-text">{{ asset_stats.static_folder.split('/')[-1]|default('static') }}</p>
+ <p class="text-sm font-medium text-sa-muted">Folder Statis</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ asset_stats.static_folder.split('/')[-1]|default('static') }}</p>
  </div>
  </div>
  <div class="mt-4">
- <span class="text-xs text-admin-textMuted bg-admin-surfaceHover px-2 py-1 rounded-polaris-full">
+ <span class="text-xs text-sa-muted bg-sa-surface-hover px-2 py-1 rounded-full">
  <i class="fas fa-folder-open mr-1"></i>Active
  </span>
  </div>
@@ -114,34 +114,34 @@
  </div>
 
  <!-- Optimization Progress -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 mb-6">
- <h3 class="text-lg font-semibold text-admin-text mb-4">Progress Optimasi</h3>
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 mb-6">
+ <h3 class="text-lg font-semibold text-sa-fg mb-4">Progress Optimasi</h3>
  <div class="space-y-4">
  <div>
  <div class="flex justify-between items-center mb-2">
- <span class="text-sm font-medium text-admin-text">CSS Files</span>
- <span class="text-sm text-admin-textMuted">{{ "%.1f"|format(asset_stats.optimization_ratio|default(0) * 100) }}%</span>
+ <span class="text-sm font-medium text-sa-fg">CSS Files</span>
+ <span class="text-sm text-sa-muted">{{ "%.1f"|format(asset_stats.optimization_ratio|default(0) * 100) }}%</span>
  </div>
- <div class="w-full bg-admin-surfaceHover rounded-polaris-full h-2">
- <div class="bg-admin-accentHover h-2 rounded-polaris-full" style="width: {{ (asset_stats.optimization_ratio|default(0) * 100)|round }}%"></div>
- </div>
- </div>
- <div>
- <div class="flex justify-between items-center mb-2">
- <span class="text-sm font-medium text-admin-text">JavaScript Files</span>
- <span class="text-sm text-admin-textMuted">{{ "%.1f"|format(asset_stats.optimization_ratio|default(0) * 100) }}%</span>
- </div>
- <div class="w-full bg-admin-surfaceHover rounded-polaris-full h-2">
- <div class="bg-admin-successHover h-2 rounded-polaris-full" style="width: {{ (asset_stats.optimization_ratio|default(0) * 100)|round }}%"></div>
+ <div class="w-full bg-sa-surface-hover rounded-full h-2">
+ <div class="bg-sa-accent-hover h-2 rounded-full" style="width: {{ (asset_stats.optimization_ratio|default(0) * 100)|round }}%"></div>
  </div>
  </div>
  <div>
  <div class="flex justify-between items-center mb-2">
- <span class="text-sm font-medium text-admin-text">Image Files</span>
- <span class="text-sm text-admin-textMuted">{{ "%.1f"|format(asset_stats.optimization_ratio|default(0) * 100) }}%</span>
+ <span class="text-sm font-medium text-sa-fg">JavaScript Files</span>
+ <span class="text-sm text-sa-muted">{{ "%.1f"|format(asset_stats.optimization_ratio|default(0) * 100) }}%</span>
  </div>
- <div class="w-full bg-admin-surfaceHover rounded-polaris-full h-2">
- <div class="bg-admin-accentHover h-2 rounded-polaris-full" style="width: {{ (asset_stats.optimization_ratio|default(0) * 100)|round }}%"></div>
+ <div class="w-full bg-sa-surface-hover rounded-full h-2">
+ <div class="bg-sa-success-hover h-2 rounded-full" style="width: {{ (asset_stats.optimization_ratio|default(0) * 100)|round }}%"></div>
+ </div>
+ </div>
+ <div>
+ <div class="flex justify-between items-center mb-2">
+ <span class="text-sm font-medium text-sa-fg">Image Files</span>
+ <span class="text-sm text-sa-muted">{{ "%.1f"|format(asset_stats.optimization_ratio|default(0) * 100) }}%</span>
+ </div>
+ <div class="w-full bg-sa-surface-hover rounded-full h-2">
+ <div class="bg-sa-accent-hover h-2 rounded-full" style="width: {{ (asset_stats.optimization_ratio|default(0) * 100)|round }}%"></div>
  </div>
  </div>
  </div>
@@ -151,48 +151,48 @@
 
 <!-- Management Tab -->
 <div id="management-tab" class="tab-content hidden">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100" role="main">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Manajemen Asset</h2>
- <button id="refresh-management" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <h2 class="text-xl font-semibold text-sa-fg">Manajemen Asset</h2>
+ <button id="refresh-management" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Segarkan
  </button>
  </div>
 
  <!-- Asset Table -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 overflow-hidden">
+ <div class="bg-white rounded-sa-md shadow-sa-card overflow-hidden">
  <div class="overflow-x-auto">
- <table class="min-w-full divide-y divide-admin-border">
- <thead class="bg-admin-surfaceHover">
+ <table class="min-w-full divide-y divide-sa-border">
+ <thead class="bg-sa-surface-hover">
  <tr>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Tipe File</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Status</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Ukuran</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Aksi</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Tipe File</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Status</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Ukuran</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Aksi</th>
  </tr>
  </thead>
- <tbody class="bg-white divide-y divide-admin-border">
+ <tbody class="bg-white divide-y divide-sa-border">
  {% for file_type in asset_stats.supported_types %}
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">{{ file_type|upper }}</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">{{ file_type|upper }}</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Didukung
  </span>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">-</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">-</td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-compress"></i> Optimasi
  </button>
- <button class="text-admin-success hover:text-admin-successHover">
+ <button class="text-sa-success hover:text-sa-success-hover">
  <i class="fas fa-eye"></i> Lihat
  </button>
  </td>
  </tr>
  {% else %}
  <tr>
- <td colspan="4" class="px-6 py-4 text-center text-admin-textMuted">
+ <td colspan="4" class="px-6 py-4 text-center text-sa-muted">
  <i class="fas fa-info-circle text-xl"></i>
  <p class="mt-2">Belum ada data asset</p>
  </td>
@@ -207,38 +207,38 @@
 
 <!-- Optimization Tab -->
 <div id="optimization-tab" class="tab-content hidden">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100" role="main">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Optimasi Asset</h2>
- <button id="run-optimization" class="bg-admin-success hover:bg-admin-successHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <h2 class="text-xl font-semibold text-sa-fg">Optimasi Asset</h2>
+ <button id="run-optimization" class="bg-sa-success hover:bg-sa-success-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-play mr-2"></i>Jalankan Optimasi
  </button>
  </div>
 
  <!-- Optimization Actions -->
  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
- <h3 class="text-lg font-semibold text-admin-text mb-4">Aksi Optimasi</h3>
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
+ <h3 class="text-lg font-semibold text-sa-fg mb-4">Aksi Optimasi</h3>
  <div class="space-y-3">
- <button class="w-full bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button class="w-full bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-compress mr-2"></i>Precompile Assets
  </button>
- <button class="w-full bg-admin-warning hover:bg-admin-warningHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button class="w-full bg-sa-warning hover:bg-sa-warning-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-trash mr-2"></i>Clear Asset Cache
  </button>
- <button class="w-full bg-admin-accent hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button class="w-full bg-sa-accent hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync mr-2"></i>Regenerate Hashes
  </button>
  </div>
  </div>
 
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
- <h3 class="text-lg font-semibold text-admin-text mb-4">Tipe File Didukung</h3>
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
+ <h3 class="text-lg font-semibold text-sa-fg mb-4">Tipe File Didukung</h3>
  <div class="space-y-2">
  {% for file_type in asset_stats.supported_types %}
  <div class="flex items-center">
- <i class="fas fa-check text-admin-success mr-2"></i>
- <span class="text-sm text-admin-text">{{ file_type|upper }}</span>
+ <i class="fas fa-check text-sa-success mr-2"></i>
+ <span class="text-sm text-sa-fg">{{ file_type|upper }}</span>
  </div>
  {% endfor %}
  </div>
@@ -249,41 +249,41 @@
 
 <!-- Settings Tab -->
 <div id="settings-tab" class="tab-content hidden">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100" role="main">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Pengaturan Optimasi</h2>
- <button id="save-settings" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <h2 class="text-xl font-semibold text-sa-fg">Pengaturan Optimasi</h2>
+ <button id="save-settings" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-save mr-2"></i>Simpan
  </button>
  </div>
 
  <!-- Settings Form -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
  <div>
- <label class="block text-sm font-medium text-admin-text mb-2">Kompresi CSS</label>
- <select class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sm font-medium text-sa-fg mb-2">Kompresi CSS</label>
+ <select class="w-full px-3 py-2 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="enabled">Diaktifkan</option>
  <option value="disabled">Dinonaktifkan</option>
  </select>
  </div>
  <div>
- <label class="block text-sm font-medium text-admin-text mb-2">Kompresi JavaScript</label>
- <select class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sm font-medium text-sa-fg mb-2">Kompresi JavaScript</label>
+ <select class="w-full px-3 py-2 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="enabled">Diaktifkan</option>
  <option value="disabled">Dinonaktifkan</option>
  </select>
  </div>
  <div>
- <label class="block text-sm font-medium text-admin-text mb-2">Optimasi Gambar</label>
- <select class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sm font-medium text-sa-fg mb-2">Optimasi Gambar</label>
+ <select class="w-full px-3 py-2 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="enabled">Diaktifkan</option>
  <option value="disabled">Dinonaktifkan</option>
  </select>
  </div>
  <div>
- <label class="block text-sm font-medium text-admin-text mb-2">Cache Duration</label>
- <input type="number" value="31536000" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sm font-medium text-sa-fg mb-2">Cache Duration</label>
+ <input type="number" value="31536000" class="w-full px-3 py-2 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  </div>
  </div>
  </div>

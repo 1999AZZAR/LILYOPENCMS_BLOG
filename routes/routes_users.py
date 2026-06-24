@@ -1158,3 +1158,41 @@ def export_user_performance(user_id):
         mimetype="text/csv",
         headers={"Content-Disposition": f"attachment;filename=performance_{user.username}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"}
     )
+
+
+@main_blueprint.route("/api/users/<int:user_id>/send-email", methods=["POST"])
+@login_required
+def send_custom_email(user_id):
+    """Send a custom email to a specific user."""
+    if not current_user.is_admin_tier():
+        abort(403)
+
+    user = User.query.get_or_404(user_id)
+    if not user.email:
+        return jsonify({"error": "User does not have a valid email address"}), 400
+
+    data = request.get_json()
+    if not data or not data.get('subject') or not data.get('message'):
+        return jsonify({"error": "Subject and message are required"}), 400
+
+    try:
+        preview_text = data['message'][:100] + '...' if len(data['message']) > 100 else data['message']
+        success = email_service.send_email(
+            to=user.email,
+            subject=data['subject'],
+            body=data['message'],
+            user_id=user.id,
+            template_name='custom_email',
+            message=data['message'],
+            preview_text=preview_text
+        )
+
+        if success:
+            current_app.logger.info(f"Custom email sent to {user.email}")
+            return jsonify({"success": True, "message": "Email sent successfully"})
+        else:
+            return jsonify({"error": "Failed to send email via mail server"}), 500
+
+    except Exception as e:
+        current_app.logger.error(f"Error sending custom email to {user.email}: {e}")
+        return jsonify({"error": str(e)}), 500

@@ -1,0 +1,78 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends "_base.html" %}
+
+{% block title %}Akun Berhasil Dihapus - {{ brand_name }}{% endblock %}
+
+{% block preview %}Akun {{ brand_name }} Anda telah berhasil dihapus sesuai permintaan.{% endblock %}
+
+{% block status_bar %}
+<tr>
+    <td style="background-color: #6B6060; padding: 12px 30px; text-align: center;">
+        <p style="margin: 0; font-size: 14px; color: #ffffff; font-weight: 500;">Penghapusan Selesai</p>
+    </td>
+</tr>
+{% endblock %}
+
+{% block content %}
+<h2 style="margin: 0 0 20px 0; font-size: 24px; font-weight: 600; color: #2A2520; line-height: 1.3;">Akun Anda Telah Dihapus</h2>
+
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #4A4040; line-height: 1.6;">
+    Halo <strong style="color: #2A2520;">{{ user.first_name or user.username }}</strong>,
+</p>
+
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #4A4040; line-height: 1.6;">
+    Sesuai dengan permintaan Anda, akun Anda di <strong style="color: #2A2520;">{{ brand_name }}</strong> telah berhasil dihapus secara permanen.
+</p>
+
+<!-- Info box -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 25px 0;">
+    <tr>
+        <td style="background-color: #EFE9DC; border-left: 4px solid #6B6060; padding: 20px; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; font-size: 14px; color: #4A4040; font-weight: 500;">Yang telah dihapus:</p>
+            <ul style="margin: 10px 0 0 0; padding-left: 20px; font-size: 14px; color: #6B6060; line-height: 1.8;">
+                <li>Informasi profil dan data pribadi</li>
+                <li>Riwayat aktivitas akun</li>
+                <li>Preferensi dan pengaturan</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+<!-- Important notice -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 25px 0;">
+    <tr>
+        <td style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; font-size: 14px; color: #92400e; font-weight: 500;">Perhatian</p>
+            <p style="margin: 8px 0 0 0; font-size: 14px; color: #b45309; line-height: 1.5;">
+                Tindakan ini bersifat permanen. Anda tidak dapat memulihkan akun atau data yang telah dihapus.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<!-- Rejoin info -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 25px 0;">
+    <tr>
+        <td style="background-color: #F5EDE5; border-left: 4px solid #9C3D3B; padding: 20px; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; font-size: 14px; color: #7A2E2D; font-weight: 500;">Ingin Bergabung Kembali?</p>
+            <p style="margin: 8px 0 0 0; font-size: 14px; color: #9C3D3B; line-height: 1.5;">
+                Anda selalu dapat mendaftar kembali di {{ brand_name }} kapan saja dengan membuat akun baru.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<p style="margin: 20px 0 0 0; font-size: 14px; color: #6B6060; line-height: 1.6;">
+    Terima kasih telah menjadi bagian dari komunitas <strong style="color: #4A4040;">{{ brand_name }}</strong>. Kami berharap dapat melayani Anda lagi di masa mendatang.
+</p>
+{% endblock %}

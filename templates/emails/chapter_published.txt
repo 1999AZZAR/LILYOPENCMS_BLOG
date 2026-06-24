@@ -1,0 +1,31 @@
+{{ brand_name }}
+================================================================================
+
+CHAPTER BARU TELAH DITERBITKAN
+
+Halo {{ user.first_name or user.username }},
+
+Kabar baik! Chapter baru dari album yang Anda ikuti telah diterbitkan di {{ brand_name }}.
+
+DETAIL CHAPTER
+--------------
+Album: {{ album_title }}
+Chapter: {{ chapter_number }} - {{ chapter_title }}
+Penulis: {{ album_author or 'Tidak diketahui' }}
+Tanggal Terbit: {{ publish_date }}
+
+Chapter ini sekarang tersedia untuk dibaca.
+
+Baca Chapter: {{ chapter_url }}
+
+Lihat Album: {{ album_url }}
+
+Terima kasih telah menjadi bagian dari komunitas {{ brand_name }}.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Jika Anda tidak ingin menerima notifikasi ini, Anda dapat mengubah preferensi email di pengaturan akun Anda.
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

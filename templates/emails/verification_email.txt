@@ -1,0 +1,24 @@
+{{ brand_name }}
+================================================================================
+
+VERIFIKASI ALAMAT EMAIL ANDA
+
+Halo {{ user.first_name or user.username }},
+
+Terima kasih telah mendaftar di {{ brand_name }}. Untuk menyelesaikan proses pendaftaran dan mengaktifkan akun Anda, silakan verifikasi alamat email ini.
+
+LANGKAH SELANJUTNYA
+-------------------
+Klik tautan di bawah untuk memverifikasi alamat email dan mengaktifkan akun Anda.
+
+Verifikasi Email: {{ verify_url }}
+
+PERHATIAN
+---------
+Tautan ini akan kedaluwarsa dalam 3 hari. Jika Anda tidak membuat akun ini, abaikan email ini.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

@@ -135,32 +135,36 @@ function loadCategoryFilters() {
                 albumsCategoryFilter.innerHTML = '<option value="">Semua Kategori</option>';
                 chaptersCategoryFilter.innerHTML = '<option value="">Semua Kategori</option>';
                 
-                // Add category options with grouped structure
-                data.forEach(groupData => {
-                    const optgroup = document.createElement('optgroup');
-                    optgroup.label = groupData.group.name;
-                    
-                    groupData.categories.forEach(category => {
-                        const articlesOption = document.createElement('option');
-                        articlesOption.value = category.id;
-                        articlesOption.textContent = category.name;
-                        optgroup.appendChild(articlesOption.cloneNode(true));
-                        
-                        const albumsOption = document.createElement('option');
-                        albumsOption.value = category.id;
-                        albumsOption.textContent = category.name;
-                        optgroup.appendChild(albumsOption.cloneNode(true));
-                        
-                        const chaptersOption = document.createElement('option');
-                        chaptersOption.value = category.id;
-                        chaptersOption.textContent = category.name;
-                        optgroup.appendChild(chaptersOption.cloneNode(true));
-                    });
-                    
-                    articlesCategoryFilter.appendChild(optgroup.cloneNode(true));
-                    albumsCategoryFilter.appendChild(optgroup.cloneNode(true));
-                    chaptersCategoryFilter.appendChild(optgroup.cloneNode(true));
-                });
+                // Add category options dynamically supporting both flat and grouped formats
+                if (data.length > 0) {
+                    const isGrouped = data[0] && typeof data[0] === 'object' && 'group' in data[0] && 'categories' in data[0];
+                    if (isGrouped) {
+                        data.forEach(groupData => {
+                            if (!groupData.group || !groupData.categories) return;
+                            const optgroup = document.createElement('optgroup');
+                            optgroup.label = groupData.group.name || 'Lainnya';
+                            groupData.categories.forEach(category => {
+                                ['articles', 'albums', 'chapters'].forEach(type => {
+                                    const option = document.createElement('option');
+                                    option.value = category.id;
+                                    option.textContent = category.name;
+                                    const filterEl = document.getElementById(`${type}-category-filter`);
+                                    if (filterEl) filterEl.appendChild(option);
+                                });
+                            });
+                        });
+                    } else {
+                        data.forEach(category => {
+                            ['articles', 'albums', 'chapters'].forEach(type => {
+                                const option = document.createElement('option');
+                                option.value = category.id;
+                                option.textContent = category.name;
+                                const filterEl = document.getElementById(`${type}-category-filter`);
+                                if (filterEl) filterEl.appendChild(option);
+                            });
+                        });
+                    }
+                }
             }
         })
         .catch(error => {

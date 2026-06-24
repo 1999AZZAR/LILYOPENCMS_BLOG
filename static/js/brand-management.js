@@ -1,120 +1,582 @@
 // Brand Management JavaScript
 let COLOR_VARIABLES = [];
 
-// Professional Color Palettes for M3 Pastel Glass
+// Professional Color Palettes
 const FIXED_PRESETS = {
-  "Studio Mix": {
-    "--background": "210 20% 96% / 1",
-    "--foreground": "215 28% 17% / 1",
-    "--card": "210 20% 96% / 1",
-    "--card-foreground": "215 28% 17% / 1",
-    "--popover": "210 20% 96% / 1",
-    "--popover-foreground": "215 28% 17% / 1",
-    "--primary": "206 63% 86% / 1",
-    "--primary-foreground": "206 100% 17% / 1",
-    "--secondary": "264 57% 87% / 1",
-    "--secondary-foreground": "264 100% 17% / 1",
-    "--muted": "60 30% 96% / 1",
-    "--muted-foreground": "60 10% 40% / 1",
-    "--accent": "44 82% 89% / 1",
-    "--accent-foreground": "44 100% 17% / 1",
-    "--destructive": "356 82% 88% / 1",
-    "--destructive-foreground": "356 100% 17% / 1",
-    "--border": "210 20% 92% / 1",
-    "--input": "210 20% 98% / 1",
-    "--ring": "206 63% 86% / 1"
+  'Current': {
+    '--background': '51 100% 95% / 1',
+    '--foreground': '220 80% 20% / 1',
+    '--card': '0 0% 100% / 1',
+    '--card-foreground': '220 80% 20% / 1',
+    '--popover': '0 0% 100% / 1',
+    '--popover-foreground': '220 80% 20% / 1',
+    '--primary': '200 100% 50% / 1',
+    '--primary-foreground': '0 0% 100% / 1',
+    '--secondary': '340 100% 70% / 1',
+    '--secondary-foreground': '220 80% 20% / 1',
+    '--muted': '120 60% 90% / 1',
+    '--muted-foreground': '220 80% 20% / 1',
+    '--accent': '40 100% 60% / 1',
+    '--accent-foreground': '220 80% 20% / 1',
+    '--destructive': '0 72% 51% / 1',
+    '--destructive-foreground': '0 0% 100% / 1',
+    '--border': '220 13% 91% / 1',
+    '--input': '0 0% 100% / 1',
+    '--ring': '200 100% 50% / 1'
   },
-  "Warm Blush": {
-    "--background": "12 50% 95% / 1",
-    "--foreground": "12 40% 15% / 1",
-    "--card": "12 50% 95% / 1",
-    "--card-foreground": "12 40% 15% / 1",
-    "--popover": "12 50% 95% / 1",
-    "--popover-foreground": "12 40% 15% / 1",
-    "--primary": "9 68% 75% / 1",
-    "--primary-foreground": "9 100% 15% / 1",
-    "--secondary": "11 88% 90% / 1",
-    "--secondary-foreground": "11 100% 15% / 1",
-    "--muted": "12 30% 92% / 1",
-    "--muted-foreground": "12 20% 45% / 1",
-    "--accent": "28 97% 80% / 1",
-    "--accent-foreground": "28 100% 15% / 1",
-    "--destructive": "0 84% 60% / 1",
-    "--destructive-foreground": "0 0% 100% / 1",
-    "--border": "12 40% 90% / 1",
-    "--input": "12 50% 98% / 1",
-    "--ring": "9 68% 75% / 1"
+  'Original': {
+    '--background': '220 20% 99% / 1',
+    '--foreground': '220 10% 15% / 1',
+    '--card': '0 0% 100% / 1',
+    '--card-foreground': '220 10% 15% / 1',
+    '--popover': '0 0% 100% / 1',
+    '--popover-foreground': '220 10% 15% / 1',
+    '--primary': '358 50% 39% / 1',
+    '--primary-foreground': '0 0% 100% / 1',
+    '--secondary': '220 14% 96% / 1',
+    '--secondary-foreground': '220 9% 31% / 1',
+    '--muted': '220 14% 96% / 1',
+    '--muted-foreground': '220 9% 46% / 1',
+    '--accent': '220 14% 96% / 1',
+    '--accent-foreground': '220 10% 15% / 1',
+    '--destructive': '0 72% 51% / 1',
+    '--destructive-foreground': '0 0% 100% / 1',
+    '--border': '220 13% 91% / 1',
+    '--input': '0 0% 100% / 1',
+    '--ring': '358 50% 39% / 1'
   },
-  "Soft Studio": {
-    "--background": "51 20% 93% / 1",
-    "--foreground": "225 30% 15% / 1",
-    "--card": "51 20% 93% / 1",
-    "--card-foreground": "225 30% 15% / 1",
-    "--popover": "51 20% 93% / 1",
-    "--popover-foreground": "225 30% 15% / 1",
-    "--primary": "224 83% 93% / 1",
-    "--primary-foreground": "224 100% 15% / 1",
-    "--secondary": "162 30% 91% / 1",
-    "--secondary-foreground": "162 100% 15% / 1",
-    "--muted": "51 10% 88% / 1",
-    "--muted-foreground": "51 10% 45% / 1",
-    "--accent": "224 83% 90% / 1",
-    "--accent-foreground": "224 100% 15% / 1",
-    "--destructive": "356 82% 90% / 1",
-    "--destructive-foreground": "356 100% 15% / 1",
-    "--border": "51 20% 88% / 1",
-    "--input": "51 30% 98% / 1",
-    "--ring": "224 83% 93% / 1"
+  'Light': {
+    '--background': '0 0% 100% / 1',
+    '--foreground': '222 84% 4.9% / 1',
+    '--card': '0 0% 100% / 1',
+    '--card-foreground': '222 84% 4.9% / 1',
+    '--popover': '0 0% 100% / 1',
+    '--popover-foreground': '222 84% 4.9% / 1',
+    '--primary': '222 84% 4.9% / 1',
+    '--primary-foreground': '210 40% 98% / 1',
+    '--secondary': '210 40% 96% / 1',
+    '--secondary-foreground': '222 84% 4.9% / 1',
+    '--muted': '210 40% 96% / 1',
+    '--muted-foreground': '215 16% 47% / 1',
+    '--accent': '210 40% 96% / 1',
+    '--accent-foreground': '222 84% 4.9% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '210 40% 98% / 1',
+    '--border': '214 32% 91% / 1',
+    '--input': '214 32% 91% / 1',
+    '--ring': '222 84% 4.9% / 1'
   },
-  "Soft Cream": {
-    "--background": "12 50% 95% / 1",
-    "--foreground": "12 30% 15% / 1",
-    "--card": "12 50% 95% / 1",
-    "--card-foreground": "12 30% 15% / 1",
-    "--popover": "12 50% 95% / 1",
-    "--popover-foreground": "12 30% 15% / 1",
-    "--primary": "9 97% 86% / 1",
-    "--primary-foreground": "9 100% 15% / 1",
-    "--secondary": "32 28% 89% / 1",
-    "--secondary-foreground": "32 100% 15% / 1",
-    "--muted": "12 20% 90% / 1",
-    "--muted-foreground": "12 20% 45% / 1",
-    "--accent": "28 97% 80% / 1",
-    "--accent-foreground": "28 100% 15% / 1",
-    "--destructive": "0 84% 60% / 1",
-    "--destructive-foreground": "0 0% 100% / 1",
-    "--border": "12 30% 90% / 1",
-    "--input": "12 50% 98% / 1",
-    "--ring": "9 97% 86% / 1"
+  'Dark': {
+    '--background': '222 84% 4.9% / 1',
+    '--foreground': '210 40% 98% / 1',
+    '--card': '222 84% 4.9% / 1',
+    '--card-foreground': '210 40% 98% / 1',
+    '--popover': '222 84% 4.9% / 1',
+    '--popover-foreground': '210 40% 98% / 1',
+    '--primary': '210 40% 98% / 1',
+    '--primary-foreground': '222 84% 4.9% / 1',
+    '--secondary': '217 33% 17% / 1',
+    '--secondary-foreground': '210 40% 98% / 1',
+    '--muted': '217 33% 17% / 1',
+    '--muted-foreground': '215 20% 65% / 1',
+    '--accent': '217 33% 17% / 1',
+    '--accent-foreground': '210 40% 98% / 1',
+    '--destructive': '0 63% 31% / 1',
+    '--destructive-foreground': '210 40% 98% / 1',
+    '--border': '217 33% 17% / 1',
+    '--input': '217 33% 17% / 1',
+    '--ring': '212 100% 50% / 1'
   },
-  "Midnight Glass": {
-    "--background": "225 30% 8% / 1",
-    "--foreground": "210 20% 98% / 1",
-    "--card": "225 30% 8% / 1",
-    "--card-foreground": "210 20% 98% / 1",
-    "--popover": "225 30% 8% / 1",
-    "--popover-foreground": "210 20% 98% / 1",
-    "--primary": "206 63% 56% / 1",
-    "--primary-foreground": "0 0% 100% / 1",
-    "--secondary": "264 57% 57% / 1",
-    "--secondary-foreground": "0 0% 100% / 1",
-    "--muted": "225 20% 15% / 1",
-    "--muted-foreground": "225 20% 70% / 1",
-    "--accent": "206 63% 56% / 1",
-    "--accent-foreground": "0 0% 100% / 1",
-    "--destructive": "356 82% 56% / 1",
-    "--destructive-foreground": "0 0% 100% / 1",
-    "--border": "225 30% 15% / 1",
-    "--input": "225 30% 12% / 1",
-    "--ring": "206 63% 56% / 1"
+  'Capuchin': {
+    '--background': '45 100% 98% / 1',
+    '--foreground': '25 30% 15% / 1',
+    '--card': '45 100% 99% / 1',
+    '--card-foreground': '25 30% 15% / 1',
+    '--popover': '45 100% 99% / 1',
+    '--popover-foreground': '25 30% 15% / 1',
+    '--primary': '25 95% 53% / 1',
+    '--primary-foreground': '45 100% 98% / 1',
+    '--secondary': '35 100% 85% / 1',
+    '--secondary-foreground': '25 30% 15% / 1',
+    '--muted': '45 50% 92% / 1',
+    '--muted-foreground': '25 30% 35% / 1',
+    '--accent': '15 100% 70% / 1',
+    '--accent-foreground': '25 30% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '45 100% 98% / 1',
+    '--border': '45 50% 88% / 1',
+    '--input': '45 100% 99% / 1',
+    '--ring': '25 95% 53% / 1'
+  },
+  'Golden Orange': {
+    '--background': '35 100% 97% / 1',
+    '--foreground': '35 40% 15% / 1',
+    '--card': '35 100% 99% / 1',
+    '--card-foreground': '35 40% 15% / 1',
+    '--popover': '35 100% 99% / 1',
+    '--popover-foreground': '35 40% 15% / 1',
+    '--primary': '35 100% 50% / 1',
+    '--primary-foreground': '35 100% 97% / 1',
+    '--secondary': '25 100% 80% / 1',
+    '--secondary-foreground': '35 40% 15% / 1',
+    '--muted': '35 50% 90% / 1',
+    '--muted-foreground': '35 40% 35% / 1',
+    '--accent': '45 100% 65% / 1',
+    '--accent-foreground': '35 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '35 100% 97% / 1',
+    '--border': '35 50% 85% / 1',
+    '--input': '35 100% 99% / 1',
+    '--ring': '35 100% 50% / 1'
+  },
+  'Ocean': {
+    '--background': '190 50% 98% / 1',
+    '--foreground': '190 40% 15% / 1',
+    '--card': '190 50% 99% / 1',
+    '--card-foreground': '190 40% 15% / 1',
+    '--popover': '190 50% 99% / 1',
+    '--popover-foreground': '190 40% 15% / 1',
+    '--primary': '190 100% 45% / 1',
+    '--primary-foreground': '190 50% 98% / 1',
+    '--secondary': '180 100% 80% / 1',
+    '--secondary-foreground': '190 40% 15% / 1',
+    '--muted': '190 30% 90% / 1',
+    '--muted-foreground': '190 40% 35% / 1',
+    '--accent': '170 100% 70% / 1',
+    '--accent-foreground': '190 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '190 50% 98% / 1',
+    '--border': '190 30% 85% / 1',
+    '--input': '190 50% 99% / 1',
+    '--ring': '190 100% 45% / 1'
+  },
+  'Forest': {
+    '--background': '140 30% 98% / 1',
+    '--foreground': '140 40% 15% / 1',
+    '--card': '140 30% 99% / 1',
+    '--card-foreground': '140 40% 15% / 1',
+    '--popover': '140 30% 99% / 1',
+    '--popover-foreground': '140 40% 15% / 1',
+    '--primary': '140 100% 35% / 1',
+    '--primary-foreground': '140 30% 98% / 1',
+    '--secondary': '160 100% 80% / 1',
+    '--secondary-foreground': '140 40% 15% / 1',
+    '--muted': '140 20% 90% / 1',
+    '--muted-foreground': '140 40% 35% / 1',
+    '--accent': '120 100% 70% / 1',
+    '--accent-foreground': '140 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '140 30% 98% / 1',
+    '--border': '140 20% 85% / 1',
+    '--input': '140 30% 99% / 1',
+    '--ring': '140 100% 35% / 1'
+  },
+  'Sunset': {
+    '--background': '10 100% 98% / 1',
+    '--foreground': '10 40% 15% / 1',
+    '--card': '10 100% 99% / 1',
+    '--card-foreground': '10 40% 15% / 1',
+    '--popover': '10 100% 99% / 1',
+    '--popover-foreground': '10 40% 15% / 1',
+    '--primary': '10 100% 55% / 1',
+    '--primary-foreground': '10 100% 98% / 1',
+    '--secondary': '25 100% 80% / 1',
+    '--secondary-foreground': '10 40% 15% / 1',
+    '--muted': '10 50% 90% / 1',
+    '--muted-foreground': '10 40% 35% / 1',
+    '--accent': '0 100% 70% / 1',
+    '--accent-foreground': '10 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '10 100% 98% / 1',
+    '--border': '10 50% 85% / 1',
+    '--input': '10 100% 99% / 1',
+    '--ring': '10 100% 55% / 1'
+  },
+  'Vibrant': {
+    '--background': '280 100% 95% / 1',
+    '--foreground': '280 80% 20% / 1',
+    '--card': '0 0% 100% / 1',
+    '--card-foreground': '280 80% 20% / 1',
+    '--popover': '0 0% 100% / 1',
+    '--popover-foreground': '280 80% 20% / 1',
+    '--primary': '280 100% 60% / 1',
+    '--primary-foreground': '0 0% 100% / 1',
+    '--secondary': '320 100% 70% / 1',
+    '--secondary-foreground': '280 80% 20% / 1',
+    '--muted': '280 60% 90% / 1',
+    '--muted-foreground': '280 80% 20% / 1',
+    '--accent': '300 100% 60% / 1',
+    '--accent-foreground': '280 80% 20% / 1',
+    '--destructive': '0 72% 51% / 1',
+    '--destructive-foreground': '0 0% 100% / 1',
+    '--border': '280 13% 91% / 1',
+    '--input': '0 0% 100% / 1',
+    '--ring': '280 100% 60% / 1'
+  },
+  'Midnight': {
+    '--background': '240 10% 8% / 1',
+    '--foreground': '240 10% 95% / 1',
+    '--card': '240 10% 12% / 1',
+    '--card-foreground': '240 10% 95% / 1',
+    '--popover': '240 10% 12% / 1',
+    '--popover-foreground': '240 10% 95% / 1',
+    '--primary': '240 100% 60% / 1',
+    '--primary-foreground': '240 10% 8% / 1',
+    '--secondary': '240 10% 20% / 1',
+    '--secondary-foreground': '240 10% 95% / 1',
+    '--muted': '240 10% 20% / 1',
+    '--muted-foreground': '240 10% 70% / 1',
+    '--accent': '240 10% 20% / 1',
+    '--accent-foreground': '240 10% 95% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '240 10% 95% / 1',
+    '--border': '240 10% 25% / 1',
+    '--input': '240 10% 12% / 1',
+    '--ring': '240 100% 60% / 1'
+  },
+  'Rose': {
+    '--background': '350 100% 98% / 1',
+    '--foreground': '350 40% 15% / 1',
+    '--card': '350 100% 99% / 1',
+    '--card-foreground': '350 40% 15% / 1',
+    '--popover': '350 100% 99% / 1',
+    '--popover-foreground': '350 40% 15% / 1',
+    '--primary': '350 100% 55% / 1',
+    '--primary-foreground': '350 100% 98% / 1',
+    '--secondary': '340 100% 85% / 1',
+    '--secondary-foreground': '350 40% 15% / 1',
+    '--muted': '350 50% 92% / 1',
+    '--muted-foreground': '350 40% 35% / 1',
+    '--accent': '330 100% 70% / 1',
+    '--accent-foreground': '350 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '350 100% 98% / 1',
+    '--border': '350 50% 88% / 1',
+    '--input': '350 100% 99% / 1',
+    '--ring': '350 100% 55% / 1'
+  },
+  'Neutral': {
+    '--background': '0 0% 98% / 1',
+    '--foreground': '0 0% 15% / 1',
+    '--card': '0 0% 100% / 1',
+    '--card-foreground': '0 0% 15% / 1',
+    '--popover': '0 0% 100% / 1',
+    '--popover-foreground': '0 0% 15% / 1',
+    '--primary': '0 0% 25% / 1',
+    '--primary-foreground': '0 0% 98% / 1',
+    '--secondary': '0 0% 85% / 1',
+    '--secondary-foreground': '0 0% 15% / 1',
+    '--muted': '0 0% 92% / 1',
+    '--muted-foreground': '0 0% 45% / 1',
+    '--accent': '0 0% 80% / 1',
+    '--accent-foreground': '0 0% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '0 0% 98% / 1',
+    '--border': '0 0% 88% / 1',
+    '--input': '0 0% 100% / 1',
+    '--ring': '0 0% 25% / 1'
+  },
+  'Warm': {
+    '--background': '50 50% 98% / 1',
+    '--foreground': '50 40% 15% / 1',
+    '--card': '50 50% 100% / 1',
+    '--card-foreground': '50 40% 15% / 1',
+    '--popover': '50 50% 100% / 1',
+    '--popover-foreground': '50 40% 15% / 1',
+    '--primary': '50 100% 45% / 1',
+    '--primary-foreground': '50 50% 98% / 1',
+    '--secondary': '60 100% 80% / 1',
+    '--secondary-foreground': '50 40% 15% / 1',
+    '--muted': '50 30% 92% / 1',
+    '--muted-foreground': '50 40% 35% / 1',
+    '--accent': '40 100% 70% / 1',
+    '--accent-foreground': '50 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '50 50% 98% / 1',
+    '--border': '50 30% 88% / 1',
+    '--input': '50 50% 100% / 1',
+    '--ring': '50 100% 45% / 1'
+  },
+  'Cool': {
+    '--background': '240 50% 98% / 1',
+    '--foreground': '240 40% 15% / 1',
+    '--card': '240 50% 100% / 1',
+    '--card-foreground': '240 40% 15% / 1',
+    '--popover': '240 50% 100% / 1',
+    '--popover-foreground': '240 40% 15% / 1',
+    '--primary': '240 100% 45% / 1',
+    '--primary-foreground': '240 50% 98% / 1',
+    '--secondary': '250 100% 80% / 1',
+    '--secondary-foreground': '240 40% 15% / 1',
+    '--muted': '240 30% 92% / 1',
+    '--muted-foreground': '240 40% 35% / 1',
+    '--accent': '260 100% 70% / 1',
+    '--accent-foreground': '240 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '240 50% 98% / 1',
+    '--border': '240 30% 88% / 1',
+    '--input': '240 50% 100% / 1',
+    '--ring': '240 100% 45% / 1'
+  },
+  'Elegant': {
+    '--background': '320 30% 98% / 1',
+    '--foreground': '320 40% 15% / 1',
+    '--card': '320 30% 100% / 1',
+    '--card-foreground': '320 40% 15% / 1',
+    '--popover': '320 30% 100% / 1',
+    '--popover-foreground': '320 40% 15% / 1',
+    '--primary': '320 100% 45% / 1',
+    '--primary-foreground': '320 30% 98% / 1',
+    '--secondary': '340 100% 80% / 1',
+    '--secondary-foreground': '320 40% 15% / 1',
+    '--muted': '320 20% 92% / 1',
+    '--muted-foreground': '320 40% 35% / 1',
+    '--accent': '340 100% 70% / 1',
+    '--accent-foreground': '320 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '320 30% 98% / 1',
+    '--border': '320 20% 88% / 1',
+    '--input': '320 30% 100% / 1',
+    '--ring': '320 100% 45% / 1'
+  },
+  'Classic Red': {
+    '--background': '0 0% 98% / 1',
+    '--foreground': '0 0% 15% / 1',
+    '--card': '0 0% 100% / 1',
+    '--card-foreground': '0 0% 15% / 1',
+    '--popover': '0 0% 100% / 1',
+    '--popover-foreground': '0 0% 15% / 1',
+    '--primary': '0 100% 50% / 1',
+    '--primary-foreground': '0 0% 98% / 1',
+    '--secondary': '0 0% 85% / 1',
+    '--secondary-foreground': '0 0% 15% / 1',
+    '--muted': '0 0% 92% / 1',
+    '--muted-foreground': '0 0% 45% / 1',
+    '--accent': '0 100% 70% / 1',
+    '--accent-foreground': '0 0% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '0 0% 98% / 1',
+    '--border': '0 0% 88% / 1',
+    '--input': '0 0% 100% / 1',
+    '--ring': '0 100% 50% / 1'
+  },
+  'Elegance Red': {
+    '--background': '0 20% 98% / 1',
+    '--foreground': '0 30% 15% / 1',
+    '--card': '0 15% 99% / 1',
+    '--card-foreground': '0 30% 15% / 1',
+    '--popover': '0 15% 99% / 1',
+    '--popover-foreground': '0 30% 15% / 1',
+    '--primary': '0 85% 45% / 1',
+    '--primary-foreground': '0 20% 98% / 1',
+    '--secondary': '0 25% 88% / 1',
+    '--secondary-foreground': '0 30% 15% / 1',
+    '--muted': '0 20% 94% / 1',
+    '--muted-foreground': '0 25% 40% / 1',
+    '--accent': '0 75% 65% / 1',
+    '--accent-foreground': '0 30% 15% / 1',
+    '--destructive': '0 80% 55% / 1',
+    '--destructive-foreground': '0 20% 98% / 1',
+    '--border': '0 20% 90% / 1',
+    '--input': '0 15% 99% / 1',
+    '--ring': '0 85% 45% / 1'
+  },
+  'Aurora': {
+    '--background': '160 50% 98% / 1',
+    '--foreground': '160 40% 15% / 1',
+    '--card': '160 50% 100% / 1',
+    '--card-foreground': '160 40% 15% / 1',
+    '--popover': '160 50% 100% / 1',
+    '--popover-foreground': '160 40% 15% / 1',
+    '--primary': '160 100% 45% / 1',
+    '--primary-foreground': '160 50% 98% / 1',
+    '--secondary': '180 100% 80% / 1',
+    '--secondary-foreground': '160 40% 15% / 1',
+    '--muted': '160 30% 92% / 1',
+    '--muted-foreground': '160 40% 35% / 1',
+    '--accent': '140 100% 70% / 1',
+    '--accent-foreground': '160 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '160 50% 98% / 1',
+    '--border': '160 30% 88% / 1',
+    '--input': '160 50% 100% / 1',
+    '--ring': '160 100% 45% / 1'
+  },
+  'Coral': {
+    '--background': '15 50% 98% / 1',
+    '--foreground': '15 40% 15% / 1',
+    '--card': '15 50% 100% / 1',
+    '--card-foreground': '15 40% 15% / 1',
+    '--popover': '15 50% 100% / 1',
+    '--popover-foreground': '15 40% 15% / 1',
+    '--primary': '15 100% 45% / 1',
+    '--primary-foreground': '15 50% 98% / 1',
+    '--secondary': '25 100% 80% / 1',
+    '--secondary-foreground': '15 40% 15% / 1',
+    '--muted': '15 30% 92% / 1',
+    '--muted-foreground': '15 40% 35% / 1',
+    '--accent': '5 100% 70% / 1',
+    '--accent-foreground': '15 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '15 50% 98% / 1',
+    '--border': '15 30% 88% / 1',
+    '--input': '15 50% 100% / 1',
+    '--ring': '15 100% 45% / 1'
+  },
+  'Capuchin Blue': {
+    '--background': '220 50% 98% / 1',
+    '--foreground': '220 40% 15% / 1',
+    '--card': '220 50% 99% / 1',
+    '--card-foreground': '220 40% 15% / 1',
+    '--popover': '220 50% 99% / 1',
+    '--popover-foreground': '220 40% 15% / 1',
+    '--primary': '220 100% 45% / 1',
+    '--primary-foreground': '220 50% 98% / 1',
+    '--secondary': '230 100% 80% / 1',
+    '--secondary-foreground': '220 40% 15% / 1',
+    '--muted': '220 30% 90% / 1',
+    '--muted-foreground': '220 40% 35% / 1',
+    '--accent': '240 100% 70% / 1',
+    '--accent-foreground': '220 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '220 50% 98% / 1',
+    '--border': '220 30% 85% / 1',
+    '--input': '220 50% 99% / 1',
+    '--ring': '220 100% 45% / 1'
+  },
+  'Capuchin Green': {
+    '--background': '100 30% 98% / 1',
+    '--foreground': '100 40% 15% / 1',
+    '--card': '100 30% 99% / 1',
+    '--card-foreground': '100 40% 15% / 1',
+    '--popover': '100 30% 99% / 1',
+    '--popover-foreground': '100 40% 15% / 1',
+    '--primary': '100 100% 35% / 1',
+    '--primary-foreground': '100 30% 98% / 1',
+    '--secondary': '120 100% 80% / 1',
+    '--secondary-foreground': '100 40% 15% / 1',
+    '--muted': '100 20% 90% / 1',
+    '--muted-foreground': '100 40% 35% / 1',
+    '--accent': '80 100% 70% / 1',
+    '--accent-foreground': '100 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '100 30% 98% / 1',
+    '--border': '100 20% 85% / 1',
+    '--input': '100 30% 99% / 1',
+    '--ring': '100 100% 35% / 1'
+  },
+  'Capuchin Dark': {
+    '--background': '25 30% 8% / 1',
+    '--foreground': '45 100% 95% / 1',
+    '--card': '25 30% 12% / 1',
+    '--card-foreground': '45 100% 95% / 1',
+    '--popover': '25 30% 12% / 1',
+    '--popover-foreground': '45 100% 95% / 1',
+    '--primary': '25 95% 53% / 1',
+    '--primary-foreground': '25 30% 8% / 1',
+    '--secondary': '35 100% 20% / 1',
+    '--secondary-foreground': '45 100% 95% / 1',
+    '--muted': '25 30% 20% / 1',
+    '--muted-foreground': '45 50% 70% / 1',
+    '--accent': '15 100% 40% / 1',
+    '--accent-foreground': '45 100% 95% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '45 100% 95% / 1',
+    '--border': '25 30% 25% / 1',
+    '--input': '25 30% 12% / 1',
+    '--ring': '25 95% 53% / 1'
+  },
+  'Capuchin Blue Dark': {
+    '--background': '210 40% 8% / 1',
+    '--foreground': '210 50% 95% / 1',
+    '--card': '210 40% 12% / 1',
+    '--card-foreground': '210 50% 95% / 1',
+    '--popover': '210 40% 12% / 1',
+    '--popover-foreground': '210 50% 95% / 1',
+    '--primary': '210 100% 45% / 1',
+    '--primary-foreground': '210 40% 8% / 1',
+    '--secondary': '200 100% 20% / 1',
+    '--secondary-foreground': '210 50% 95% / 1',
+    '--muted': '210 30% 20% / 1',
+    '--muted-foreground': '210 50% 70% / 1',
+    '--accent': '220 100% 40% / 1',
+    '--accent-foreground': '210 50% 95% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '210 50% 95% / 1',
+    '--border': '210 30% 25% / 1',
+    '--input': '210 40% 12% / 1',
+    '--ring': '210 100% 45% / 1'
+  },
+  'Capuchin Green Dark': {
+    '--background': '120 30% 8% / 1',
+    '--foreground': '120 40% 95% / 1',
+    '--card': '120 30% 12% / 1',
+    '--card-foreground': '120 40% 95% / 1',
+    '--popover': '120 30% 12% / 1',
+    '--popover-foreground': '120 40% 95% / 1',
+    '--primary': '120 100% 35% / 1',
+    '--primary-foreground': '120 30% 8% / 1',
+    '--secondary': '140 100% 20% / 1',
+    '--secondary-foreground': '120 40% 95% / 1',
+    '--muted': '120 20% 20% / 1',
+    '--muted-foreground': '120 40% 70% / 1',
+    '--accent': '100 100% 40% / 1',
+    '--accent-foreground': '120 40% 95% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '120 40% 95% / 1',
+    '--border': '120 20% 25% / 1',
+    '--input': '120 30% 12% / 1',
+    '--ring': '120 100% 35% / 1'
+  },
+  'Capuchin Purple': {
+    '--background': '270 30% 98% / 1',
+    '--foreground': '270 40% 15% / 1',
+    '--card': '270 30% 99% / 1',
+    '--card-foreground': '270 40% 15% / 1',
+    '--popover': '270 30% 99% / 1',
+    '--popover-foreground': '270 40% 15% / 1',
+    '--primary': '270 100% 35% / 1',
+    '--primary-foreground': '270 30% 98% / 1',
+    '--secondary': '280 100% 80% / 1',
+    '--secondary-foreground': '270 40% 15% / 1',
+    '--muted': '270 20% 90% / 1',
+    '--muted-foreground': '270 40% 35% / 1',
+    '--accent': '260 100% 70% / 1',
+    '--accent-foreground': '270 40% 15% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '270 30% 98% / 1',
+    '--border': '270 20% 85% / 1',
+    '--input': '270 30% 99% / 1',
+    '--ring': '270 100% 35% / 1'
+  },
+  'Capuchin Purple Dark': {
+    '--background': '270 40% 8% / 1',
+    '--foreground': '270 30% 95% / 1',
+    '--card': '270 40% 12% / 1',
+    '--card-foreground': '270 30% 95% / 1',
+    '--popover': '270 40% 12% / 1',
+    '--popover-foreground': '270 30% 95% / 1',
+    '--primary': '270 100% 35% / 1',
+    '--primary-foreground': '270 40% 8% / 1',
+    '--secondary': '280 100% 20% / 1',
+    '--secondary-foreground': '270 30% 95% / 1',
+    '--muted': '270 30% 15% / 1',
+    '--muted-foreground': '270 30% 65% / 1',
+    '--accent': '260 100% 40% / 1',
+    '--accent-foreground': '270 30% 95% / 1',
+    '--destructive': '0 84% 60% / 1',
+    '--destructive-foreground': '270 40% 8% / 1',
+    '--border': '270 30% 20% / 1',
+    '--input': '270 40% 12% / 1',
+    '--ring': '270 100% 35% / 1'
   }
 };
 
 // Categorize presets
 const PRESET_CATEGORIES = {
-  classic: ["Studio Mix", "Warm Blush", "Soft Studio", "Soft Cream", "Midnight Glass"],
-  capuchin: [],
-  themed: []
+  classic: ['Current', 'Original', 'Light', 'Dark', 'Neutral', 'Warm', 'Cool', 'Elegant', 'Classic Red', 'Elegance Red'],
+  capuchin: ['Capuchin', 'Capuchin Dark', 'Capuchin Blue', 'Capuchin Blue Dark', 'Capuchin Green', 'Capuchin Green Dark', 'Capuchin Purple', 'Capuchin Purple Dark'],
+  themed: ['Ocean', 'Forest', 'Sunset', 'Vibrant', 'Midnight', 'Rose', 'Aurora', 'Coral']
 };
 
 function createPaletteCard(name, palette) {
@@ -198,6 +660,15 @@ function populatePaletteTabs() {
   }
 }
 
+function getCustomPresets() {
+  try {
+    const stored = localStorage.getItem('brand_custom_presets');
+    return stored ? JSON.parse(stored) : {};
+  } catch {
+    return {};
+  }
+}
+
 function getPresetPalette(name) {
   if (name.startsWith('__custom__')) {
     const custom = getCustomPresets();
@@ -262,7 +733,7 @@ function handleBrandTextForm(formId, fieldName) {
   
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    const input = form.querySelector('input[type="text"]');
+    const input = form.querySelector('input[type="text"], textarea');
     const value = input.value.trim();
     
     if (!value) {
@@ -290,16 +761,168 @@ function handleBrandTextForm(formId, fieldName) {
       
       if (!resp.ok) throw new Error('Update failed');
       
-      showToast('success', `${fieldName === 'brand_name' ? 'Brand name' : 'Tagline'} berhasil diperbarui!`);
+      const labels = { brand_name: 'Brand name', tagline: 'Tagline', brand_description: 'Brand description' };
+      showToast('success', `${labels[fieldName] || fieldName} berhasil diperbarui!`);
       
       // Update the input value to reflect the saved state
       input.value = value;
       
     } catch (err) {
       console.error('Update error:', err);
-      showToast('error', `Gagal memperbarui ${fieldName === 'brand_name' ? 'brand name' : 'tagline'}: ` + err.message);
+      const errLabels = { brand_name: 'brand name', tagline: 'tagline', brand_description: 'brand description' };
+      showToast('error', `Gagal memperbarui ${errLabels[fieldName] || fieldName}: ` + err.message);
     }
   });
+}
+
+// fetchWithCSRF wrapper — adds CSRF header automatically
+async function fetchWithCSRF(url, options = {}) {
+  const csrfToken = getCSRFToken();
+  if (csrfToken) {
+    options.headers = options.headers || {};
+    options.headers['X-CSRFToken'] = csrfToken;
+  }
+  return fetch(url, options);
+}
+
+// Asset type name helper
+function getAssetTypeName(fieldName) {
+  const names = {
+    'logo_header': 'Logo Header',
+    'logo_footer': 'Logo Footer',
+    'favicon': 'Favicon',
+    'placeholder_image': 'Placeholder'
+  };
+  return names[fieldName] || 'Gambar';
+}
+
+// Homepage Design Management
+function handleHomepageDesignForm(formId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  const newForm = form.cloneNode(true);
+  form.parentNode.replaceChild(newForm, form);
+  newForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = newForm.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg> Updating...';
+    const designType = new FormData(newForm).get('homepage_design');
+    try {
+      const resp = await fetchWithCSRF('/api/brand-identity/text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ field: 'homepage_design', value: designType })
+      });
+      if (!resp.ok) throw new Error(await resp.json().then(d => d.error).catch(() => `HTTP ${resp.status}`));
+      showToast('success', 'Homepage design updated!');
+      document.querySelectorAll('[name="homepage_design"]').forEach(el => {
+        const f = el.closest('form');
+        el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (f.id === formId ? 'Active' : 'Set as Active');
+      });
+    } catch (err) {
+      showToast('error', 'Failed: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  });
+}
+
+// Categories Display Location Management
+function handleCategoriesDisplayForm(formId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  const newForm = form.cloneNode(true);
+  form.parentNode.replaceChild(newForm, form);
+  newForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = newForm.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg> Updating...';
+    const location = new FormData(newForm).get('categories_display_location');
+    try {
+      const resp = await fetchWithCSRF('/api/brand-identity/text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ field: 'categories_display_location', value: location })
+      });
+      if (!resp.ok) throw new Error(await resp.json().then(d => d.error).catch(() => `HTTP ${resp.status}`));
+      showToast('success', 'Categories display updated!');
+      document.querySelectorAll('[name="categories_display_location"]').forEach(el => {
+        const f = el.closest('form');
+        el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (f.id === formId ? 'Active' : 'Set as Active');
+      });
+    } catch (err) {
+      showToast('error', 'Failed: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  });
+}
+
+// Card Design Management
+function handleCardDesignForm(formId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  const newForm = form.cloneNode(true);
+  form.parentNode.replaceChild(newForm, form);
+  newForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = newForm.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg> Updating...';
+    const cardDesign = new FormData(newForm).get('card_design');
+    try {
+      const resp = await fetchWithCSRF('/api/brand-identity/text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ field: 'card_design', value: cardDesign })
+      });
+      if (!resp.ok) throw new Error(await resp.json().then(d => d.error).catch(() => `HTTP ${resp.status}`));
+      showToast('success', 'Card design updated!');
+      document.querySelectorAll('[name="card_design"]').forEach(el => {
+        const f = el.closest('form');
+        el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (f.id === formId ? 'Active' : 'Set as Active');
+      });
+      window.dispatchEvent(new CustomEvent('cardDesignChanged', { detail: { cardDesign } }));
+    } catch (err) {
+      showToast('error', 'Failed: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    }
+  });
+}
+
+// Feature toggle handler — for enable_* boolean fields
+function handleFeatureToggle(toggleId, fieldName) {
+  const toggle = document.getElementById(toggleId);
+  if (!toggle) return;
+  toggle.addEventListener('change', async function() {
+    try {
+      const resp = await fetchWithCSRF('/api/brand-identity/text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ field: fieldName, value: this.checked })
+      });
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      showToast('success', `${fieldName} diperbarui!`);
+    } catch (err) {
+      this.checked = !this.checked;
+      showToast('error', 'Gagal: ' + err.message);
+    }
+  });
+}
+
+// Invalidate CSS cache
+function invalidateBrandCache() {
+  const link = document.querySelector('link[href*="base_css.css"]');
+  if (link) link.href = link.href.split('?')[0] + '?v=' + Date.now();
 }
 
 // Initialize everything
@@ -323,6 +946,25 @@ document.addEventListener('DOMContentLoaded', function() {
   // Brand text form handlers
   handleBrandTextForm('form-brand-name', 'brand_name');
   handleBrandTextForm('form-tagline', 'tagline');
+  handleBrandTextForm('form-brand-description', 'brand_description');
+  
+  // Homepage design form handlers
+  handleHomepageDesignForm('form-homepage-news');
+  
+  // Categories display form handlers
+  handleCategoriesDisplayForm('form-categories-body');
+  handleCategoriesDisplayForm('form-categories-navbar');
+  
+  // Card design form handlers
+  handleCardDesignForm('form-card-classic');
+  handleCardDesignForm('form-card-modern');
+  handleCardDesignForm('form-card-minimal');
+  handleCardDesignForm('form-card-featured');
+  
+  // Feature toggle handlers
+  document.querySelectorAll('[data-feature-toggle]').forEach(el => {
+    handleFeatureToggle(el.id, el.getAttribute('data-feature-toggle'));
+  });
   
   // Tab switching functionality
   const paletteTabs = document.querySelectorAll('.palette-tab');

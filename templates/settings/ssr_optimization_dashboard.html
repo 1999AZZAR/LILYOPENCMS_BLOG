@@ -7,17 +7,17 @@
 {% block content %}
 <!-- Navigation Tabs -->
 <div class="mb-6">
- <nav class="flex space-x-1 bg-admin-surfaceHover p-1 rounded-polaris-base" role="tablist">
- <button class="tab-button active bg-white text-admin-text px-4 py-2 rounded-polaris-base font-medium" data-tab="overview">
+ <nav class="flex space-x-1 bg-sa-surface-hover p-1 rounded-sa-md" role="tablist">
+ <button class="tab-button active bg-white text-sa-fg px-4 py-2 rounded-sa-md font-medium" data-tab="overview">
  <i class="fas fa-chart-line mr-2"></i>Ringkasan
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="templates">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="templates">
  <i class="fas fa-file-code mr-2"></i>Templates
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="cache">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="cache">
  <i class="fas fa-memory mr-2"></i>Cache
  </button>
- <button class="tab-button bg-admin-surfaceHover text-admin-textMuted px-4 py-2 rounded-polaris-base font-medium" data-tab="settings">
+ <button class="tab-button bg-sa-surface-hover text-sa-muted px-4 py-2 rounded-sa-md font-medium" data-tab="settings">
  <i class="fas fa-sliders-h mr-2"></i>Pengaturan
  </button>
  </nav>
@@ -25,14 +25,14 @@
 
 <!-- Overview Tab -->
 <div id="overview-tab" class="tab-content active">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100" role="main">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Ringkasan Optimasi SSR</h2>
+ <h2 class="text-xl font-semibold text-sa-fg">Ringkasan Optimasi SSR</h2>
  <div class="flex space-x-2">
- <button id="refresh-ssr" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="refresh-ssr" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Segarkan
  </button>
- <button id="clear-ssr-cache" class="bg-admin-critical hover:bg-admin-criticalHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button id="clear-ssr-cache" class="bg-sa-critical hover:bg-sa-critical-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-trash mr-2"></i>Bersihkan Cache
  </button>
  </div>
@@ -41,72 +41,72 @@
  <!-- SSR Metrics Cards -->
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
  <!-- Total Renders -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-server text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-server text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Total Render</p>
- <p class="text-2xl font-bold text-admin-text">{{ ssr_stats.total_renders|default(0) }}</p>
+ <p class="text-sm font-medium text-sa-muted">Total Render</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ ssr_stats.total_renders|default(0) }}</p>
  </div>
  </div>
  <div class="mt-4">
- <span class="text-xs text-admin-textMuted bg-admin-surfaceHover px-2 py-1 rounded-polaris-full">
+ <span class="text-xs text-sa-muted bg-sa-surface-hover px-2 py-1 rounded-full">
  <i class="fas fa-chart-line mr-1"></i>Total
  </span>
  </div>
  </div>
 
  <!-- Cached Renders -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-success">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-success">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-memory text-admin-success text-2xl"></i>
+ <i class="fas fa-memory text-sa-success text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Render Cache</p>
- <p class="text-2xl font-bold text-admin-text">{{ ssr_stats.cached_renders|default(0) }}</p>
+ <p class="text-sm font-medium text-sa-muted">Render Cache</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ ssr_stats.cached_renders|default(0) }}</p>
  </div>
  </div>
  <div class="mt-4">
- <span class="text-xs text-admin-success bg-admin-successSurface px-2 py-1 rounded-polaris-full">
+ <span class="text-xs text-sa-success bg-sa-success-bg px-2 py-1 rounded-full">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </div>
  </div>
 
  <!-- Cache Hit Rate -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-percentage text-admin-accent text-2xl"></i>
+ <i class="fas fa-percentage text-sa-accent text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Hit Rate</p>
- <p class="text-2xl font-bold text-admin-text">{{ ssr_stats.cache_hit_rate|default(0) }}%</p>
+ <p class="text-sm font-medium text-sa-muted">Hit Rate</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ ssr_stats.cache_hit_rate|default(0) }}%</p>
  </div>
  </div>
  <div class="mt-4">
- <div class="w-full bg-admin-surfaceHover rounded-polaris-full h-2">
- <div class="bg-admin-accentHover h-2 rounded-polaris-full" style="width: {{ ssr_stats.cache_hit_rate|default(0) }}%"></div>
+ <div class="w-full bg-sa-surface-hover rounded-full h-2">
+ <div class="bg-sa-accent-hover h-2 rounded-full" style="width: {{ ssr_stats.cache_hit_rate|default(0) }}%"></div>
  </div>
  </div>
  </div>
 
  <!-- Avg Render Time -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 border-l-4 border-admin-accent">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 border-l-4 border-sa-accent">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-clock text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-clock text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Rata-rata Waktu</p>
- <p class="text-2xl font-bold text-admin-text">{{ "%.2f"|format(ssr_stats.avg_render_time|default(0)) }}s</p>
+ <p class="text-sm font-medium text-sa-muted">Rata-rata Waktu</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ "%.2f"|format(ssr_stats.avg_render_time|default(0)) }}s</p>
  </div>
  </div>
  <div class="mt-4">
- <span class="text-xs text-admin-textMuted bg-admin-surfaceHover px-2 py-1 rounded-polaris-full">
+ <span class="text-xs text-sa-muted bg-sa-surface-hover px-2 py-1 rounded-full">
  <i class="fas fa-tachometer-alt mr-1"></i>Performance
  </span>
  </div>
@@ -114,66 +114,66 @@
  </div>
 
  <!-- Performance Indicators -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6 mb-6 border border-admin-border">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6 mb-6 border border-sa-border">
  <div class="flex items-center mb-4">
- <i class="fas fa-chart-line text-admin-textMuted mr-3 text-xl"></i>
- <h3 class="text-lg font-semibold text-admin-text">Indikator Performa</h3>
+ <i class="fas fa-chart-line text-sa-muted mr-3 text-xl"></i>
+ <h3 class="text-lg font-semibold text-sa-fg">Indikator Performa</h3>
  </div>
  
  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
  <!-- Statistik Waktu Render -->
- <div class="bg-admin-surfaceHover rounded-polaris-base p-4 border border-admin-border">
+ <div class="bg-sa-surface-hover rounded-sa-md p-4 border border-sa-border">
  <div class="flex items-center mb-3">
- <i class="fas fa-clock text-admin-textMuted mr-2"></i>
- <h4 class="text-md font-medium text-admin-text">Statistik Waktu Render</h4>
+ <i class="fas fa-clock text-sa-muted mr-2"></i>
+ <h4 class="text-md font-medium text-sa-fg">Statistik Waktu Render</h4>
  </div>
  <div class="space-y-2">
  <div class="flex justify-between items-center py-1">
- <span class="text-sm text-admin-textMuted">Rata-rata:</span>
- <span class="text-sm font-semibold text-admin-text">{{ "%.3f"|format(ssr_stats.avg_render_time|default(0)) }}s</span>
+ <span class="text-sm text-sa-muted">Rata-rata:</span>
+ <span class="text-sm font-semibold text-sa-fg">{{ "%.3f"|format(ssr_stats.avg_render_time|default(0)) }}s</span>
  </div>
  <div class="flex justify-between items-center py-1">
- <span class="text-sm text-admin-textMuted">Maksimum:</span>
- <span class="text-sm font-semibold text-admin-text">{{ "%.3f"|format(ssr_stats.max_render_time|default(0)) }}s</span>
+ <span class="text-sm text-sa-muted">Maksimum:</span>
+ <span class="text-sm font-semibold text-sa-fg">{{ "%.3f"|format(ssr_stats.max_render_time|default(0)) }}s</span>
  </div>
  <div class="flex justify-between items-center py-1">
- <span class="text-sm text-admin-textMuted">Minimum:</span>
- <span class="text-sm font-semibold text-admin-text">{{ "%.3f"|format(ssr_stats.min_render_time|default(0)) }}s</span>
+ <span class="text-sm text-sa-muted">Minimum:</span>
+ <span class="text-sm font-semibold text-sa-fg">{{ "%.3f"|format(ssr_stats.min_render_time|default(0)) }}s</span>
  </div>
  </div>
  </div>
  
  <!-- Statistik Cache -->
- <div class="bg-admin-surfaceHover rounded-polaris-base p-4 border border-admin-border">
+ <div class="bg-sa-surface-hover rounded-sa-md p-4 border border-sa-border">
  <div class="flex items-center mb-3">
- <i class="fas fa-memory text-admin-success mr-2"></i>
- <h4 class="text-md font-medium text-admin-text">Statistik Cache</h4>
+ <i class="fas fa-memory text-sa-success mr-2"></i>
+ <h4 class="text-md font-medium text-sa-fg">Statistik Cache</h4>
  </div>
  <div class="space-y-2">
  <div class="flex justify-between items-center py-1">
- <span class="text-sm text-admin-textMuted">Ukuran Cache:</span>
- <span class="text-sm font-semibold text-admin-text">{{ ssr_stats.template_cache_size|default(0) }}</span>
+ <span class="text-sm text-sa-muted">Ukuran Cache:</span>
+ <span class="text-sm font-semibold text-sa-fg">{{ ssr_stats.template_cache_size|default(0) }}</span>
  </div>
  <div class="flex justify-between items-center py-1">
- <span class="text-sm text-admin-textMuted">Hit Rate:</span>
- <span class="text-sm font-semibold text-admin-text">{{ ssr_stats.cache_hit_rate|default(0) }}%</span>
+ <span class="text-sm text-sa-muted">Hit Rate:</span>
+ <span class="text-sm font-semibold text-sa-fg">{{ ssr_stats.cache_hit_rate|default(0) }}%</span>
  </div>
  <div class="flex justify-between items-center py-1">
- <span class="text-sm text-admin-textMuted">Total Render:</span>
- <span class="text-sm font-semibold text-admin-text">{{ ssr_stats.total_renders|default(0) }}</span>
+ <span class="text-sm text-sa-muted">Total Render:</span>
+ <span class="text-sm font-semibold text-sa-fg">{{ ssr_stats.total_renders|default(0) }}</span>
  </div>
  </div>
  </div>
  </div>
  
  <!-- Performance Progress Bar -->
- <div class="mt-6 bg-admin-surfaceHover rounded-polaris-base p-4 border border-admin-border">
+ <div class="mt-6 bg-sa-surface-hover rounded-sa-md p-4 border border-sa-border">
  <div class="flex items-center mb-3">
- <i class="fas fa-percentage text-admin-accent mr-2"></i>
- <h4 class="text-md font-medium text-admin-text">Cache Hit Rate</h4>
+ <i class="fas fa-percentage text-sa-accent mr-2"></i>
+ <h4 class="text-md font-medium text-sa-fg">Cache Hit Rate</h4>
  </div>
- <div class="w-full bg-admin-surfaceHover rounded-polaris-full h-4 mb-2">
- <div class="bg-admin-surface h-4 rounded-polaris-full transition-all duration-300 flex items-center justify-center" 
+ <div class="w-full bg-sa-surface-hover rounded-full h-4 mb-2">
+ <div class="bg-white h-4 rounded-full transition-all duration-300 flex items-center justify-center" 
  style="width: {{ ssr_stats.cache_hit_rate|default(0) }}%"
  role="progressbar" 
  aria-valuenow="{{ ssr_stats.cache_hit_rate|default(0) }}" 
@@ -182,13 +182,13 @@
  <span class="text-xs font-semibold text-white">{{ ssr_stats.cache_hit_rate|default(0) }}%</span>
  </div>
  </div>
- <div class="text-xs text-admin-textMuted text-center">Cache Hit Rate: {{ ssr_stats.cache_hit_rate|default(0) }}%</div>
+ <div class="text-xs text-sa-muted text-center">Cache Hit Rate: {{ ssr_stats.cache_hit_rate|default(0) }}%</div>
  
  {% if ssr_stats.avg_render_time|default(0) > 0.5 %}
- <div class="mt-4 p-3 bg-admin-warningSurface border border-admin-warningSurface rounded-polaris-base">
+ <div class="mt-4 p-3 bg-sa-warning-bg border border-sa-warning rounded-sa-md">
  <div class="flex items-center">
- <i class="fas fa-exclamation-triangle text-admin-warning mr-2"></i>
- <span class="text-admin-warningHover text-sm">Rata-rata waktu render tinggi: {{ "%.3f"|format(ssr_stats.avg_render_time|default(0)) }}s</span>
+ <i class="fas fa-exclamation-triangle text-sa-warning mr-2"></i>
+ <span class="text-sa-warning-hover text-sm">Rata-rata waktu render tinggi: {{ "%.3f"|format(ssr_stats.avg_render_time|default(0)) }}s</span>
  </div>
  </div>
  {% endif %}
@@ -199,403 +199,403 @@
 
 <!-- Templates Tab -->
 <div id="templates-tab" class="tab-content hidden">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100" role="main">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Manajemen Template</h2>
- <button id="refresh-templates" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <h2 class="text-xl font-semibold text-sa-fg">Manajemen Template</h2>
+ <button id="refresh-templates" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Segarkan
  </button>
  </div>
 
  <!-- Template Performance Table -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 overflow-hidden">
+ <div class="bg-white rounded-sa-md shadow-sa-card overflow-hidden">
  <div class="overflow-x-auto">
- <table class="min-w-full divide-y divide-admin-border">
- <thead class="bg-admin-surfaceHover">
+ <table class="min-w-full divide-y divide-sa-border">
+ <thead class="bg-sa-surface-hover">
  <tr>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Template</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Render Count</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Avg Time</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Cache Status</th>
- <th class="px-6 py-3 text-left text-xs font-medium text-admin-textMuted uppercase tracking-wider">Aksi</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Template</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Render Count</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Avg Time</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Cache Status</th>
+ <th class="px-6 py-3 text-left text-xs font-medium text-sa-muted uppercase tracking-wider">Aksi</th>
  </tr>
  </thead>
- <tbody class="bg-white divide-y divide-admin-border">
+ <tbody class="bg-white divide-y divide-sa-border">
  <!-- Core Templates -->
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center">
- <i class="fas fa-file-code text-admin-textMuted mr-2"></i>
+ <i class="fas fa-file-code text-sa-muted mr-2"></i>
  base.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">2,847</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.023s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">2,847</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.023s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center">
- <i class="fas fa-shield-alt text-admin-accent mr-2"></i>
+ <i class="fas fa-shield-alt text-sa-accent mr-2"></i>
  admin_base.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">1,234</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.045s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">1,234</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.045s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center">
- <i class="fas fa-exclamation-triangle text-admin-warning mr-2"></i>
+ <i class="fas fa-exclamation-triangle text-sa-warning mr-2"></i>
  error.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">156</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.012s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">156</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.012s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-warningSurface text-admin-warningHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-warning-bg text-sa-warning-hover">
  <i class="fas fa-clock mr-1"></i>Pending
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center">
- <i class="fas fa-list-ol text-admin-success mr-2"></i>
+ <i class="fas fa-list-ol text-sa-success mr-2"></i>
  pagination.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">892</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.018s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">892</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.018s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center">
- <i class="fas fa-shoe-prints text-admin-textMuted mr-2"></i>
+ <i class="fas fa-shoe-prints text-sa-muted mr-2"></i>
  footer.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">3,421</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.015s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">3,421</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.015s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  
  <!-- Public Templates -->
- <tr class="bg-admin-surface">
+ <tr class="bg-white">
  <td colspan="5" class="px-6 py-3">
  <div class="flex items-center">
- <i class="fas fa-globe text-admin-textMuted mr-2"></i>
- <span class="text-sm font-semibold text-admin-text">Public Templates</span>
+ <i class="fas fa-globe text-sa-muted mr-2"></i>
+ <span class="text-sm font-semibold text-sa-fg">Public Templates</span>
  </div>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-home text-admin-textMuted mr-2"></i>
+ <i class="fas fa-home text-sa-muted mr-2"></i>
  public/index.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">4,567</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.089s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">4,567</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.089s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-newspaper text-admin-textMuted mr-2"></i>
+ <i class="fas fa-newspaper text-sa-muted mr-2"></i>
  public/news.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">2,134</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.056s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">2,134</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.056s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-book-open text-admin-textMuted mr-2"></i>
+ <i class="fas fa-book-open text-sa-muted mr-2"></i>
  public/articles.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">1,789</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.043s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">1,789</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.043s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-play text-admin-textMuted mr-2"></i>
+ <i class="fas fa-play text-sa-muted mr-2"></i>
  public/videos.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">987</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.034s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">987</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.034s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-warningSurface text-admin-warningHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-warning-bg text-sa-warning-hover">
  <i class="fas fa-clock mr-1"></i>Pending
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-images text-admin-textMuted mr-2"></i>
+ <i class="fas fa-images text-sa-muted mr-2"></i>
  public/gallery.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">756</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.067s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">756</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.067s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-user text-admin-textMuted mr-2"></i>
+ <i class="fas fa-user text-sa-muted mr-2"></i>
  public/login.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">432</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.023s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">432</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.023s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-crown text-admin-textMuted mr-2"></i>
+ <i class="fas fa-crown text-sa-muted mr-2"></i>
  public/premium.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">234</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.078s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">234</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.078s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-warningSurface text-admin-warningHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-warning-bg text-sa-warning-hover">
  <i class="fas fa-clock mr-1"></i>Pending
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-file-alt text-admin-textMuted mr-2"></i>
+ <i class="fas fa-file-alt text-sa-muted mr-2"></i>
  public/reader.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">3,245</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.112s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">3,245</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.112s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-info-circle text-admin-textMuted mr-2"></i>
+ <i class="fas fa-info-circle text-sa-muted mr-2"></i>
  public/about.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">567</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.045s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">567</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.045s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-fire text-admin-textMuted mr-2"></i>
+ <i class="fas fa-fire text-sa-muted mr-2"></i>
  public/hypes.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">345</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.038s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">345</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.038s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
  </tr>
  <tr>
- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-admin-text">
+ <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sa-fg">
  <div class="flex items-center ml-4">
- <i class="fas fa-newspaper text-admin-textMuted mr-2"></i>
+ <i class="fas fa-newspaper text-sa-muted mr-2"></i>
  public/utama.html
  </div>
  </td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">1,234</td>
- <td class="px-6 py-4 whitespace-nowrap text-sm text-admin-textMuted">0.052s</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">1,234</td>
+ <td class="px-6 py-4 whitespace-nowrap text-sm text-sa-muted">0.052s</td>
  <td class="px-6 py-4 whitespace-nowrap">
- <span class="inline-flex items-center px-2.5 py-0.5 rounded-polaris-full text-xs font-medium bg-admin-successSurface text-admin-successHover">
+ <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success-hover">
  <i class="fas fa-check mr-1"></i>Cached
  </span>
  </td>
  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
- <button class="text-admin-textMuted hover:text-admin-text mr-3">
+ <button class="text-sa-muted hover:text-sa-fg mr-3">
  <i class="fas fa-eye"></i> Lihat
  </button>
- <button class="text-admin-critical hover:text-admin-criticalHover">
+ <button class="text-sa-critical hover:text-sa-critical-hover">
  <i class="fas fa-trash"></i> Clear
  </button>
  </td>
@@ -609,64 +609,64 @@
 
 <!-- Cache Tab -->
 <div id="cache-tab" class="tab-content hidden">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100" role="main">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Manajemen Cache</h2>
- <button id="refresh-cache" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <h2 class="text-xl font-semibold text-sa-fg">Manajemen Cache</h2>
+ <button id="refresh-cache" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync-alt mr-2"></i>Segarkan
  </button>
  </div>
 
  <!-- Cache Statistics -->
  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-memory text-admin-textMuted text-2xl"></i>
+ <i class="fas fa-memory text-sa-muted text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Cache Size</p>
- <p class="text-2xl font-bold text-admin-text">{{ ssr_stats.template_cache_size|default(0) }}</p>
+ <p class="text-sm font-medium text-sa-muted">Cache Size</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ ssr_stats.template_cache_size|default(0) }}</p>
  </div>
  </div>
  </div>
 
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-percentage text-admin-success text-2xl"></i>
+ <i class="fas fa-percentage text-sa-success text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Hit Rate</p>
- <p class="text-2xl font-bold text-admin-text">{{ ssr_stats.cache_hit_rate|default(0) }}%</p>
+ <p class="text-sm font-medium text-sa-muted">Hit Rate</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ ssr_stats.cache_hit_rate|default(0) }}%</p>
  </div>
  </div>
  </div>
 
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="flex items-center">
  <div class="flex-shrink-0">
- <i class="fas fa-clock text-admin-accent text-2xl"></i>
+ <i class="fas fa-clock text-sa-accent text-2xl"></i>
  </div>
  <div class="ml-4">
- <p class="text-sm font-medium text-admin-textMuted">Avg Time</p>
- <p class="text-2xl font-bold text-admin-text">{{ "%.2f"|format(ssr_stats.avg_render_time|default(0)) }}s</p>
+ <p class="text-sm font-medium text-sa-muted">Avg Time</p>
+ <p class="text-2xl font-bold text-sa-fg">{{ "%.2f"|format(ssr_stats.avg_render_time|default(0)) }}s</p>
  </div>
  </div>
  </div>
  </div>
 
  <!-- Cache Actions -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
- <h3 class="text-lg font-semibold text-admin-text mb-4">Aksi Cache</h3>
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
+ <h3 class="text-lg font-semibold text-sa-fg mb-4">Aksi Cache</h3>
  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
- <button class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-sync mr-2"></i>Refresh Cache
  </button>
- <button class="bg-admin-warning hover:bg-admin-warningHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button class="bg-sa-warning hover:bg-sa-warning-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-trash mr-2"></i>Clear Cache
  </button>
- <button class="bg-admin-success hover:bg-admin-successHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <button class="bg-sa-success hover:bg-sa-success-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-download mr-2"></i>Export Cache
  </button>
  </div>
@@ -676,35 +676,35 @@
 
 <!-- Settings Tab -->
 <div id="settings-tab" class="tab-content hidden">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100" role="main">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card" role="main">
  <div class="flex justify-between items-center mb-6">
- <h2 class="text-xl font-semibold text-admin-text">Pengaturan SSR</h2>
- <button id="save-ssr-settings" class="bg-admin-surface0 hover:bg-admin-accentHover text-white px-4 py-2 rounded-polaris-base font-medium">
+ <h2 class="text-xl font-semibold text-sa-fg">Pengaturan SSR</h2>
+ <button id="save-ssr-settings" class="bg-sa-fg hover:bg-sa-accent-hover text-white px-4 py-2 rounded-sa-md font-medium">
  <i class="fas fa-save mr-2"></i>Simpan
  </button>
  </div>
 
  <!-- Settings Form -->
- <div class="bg-white rounded-polaris-base shadow-polaris-100 p-6">
+ <div class="bg-white rounded-sa-md shadow-sa-card p-6">
  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
  <div>
- <label class="block text-sm font-medium text-admin-text mb-2">Template Caching</label>
- <select class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sm font-medium text-sa-fg mb-2">Template Caching</label>
+ <select class="w-full px-3 py-2 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="enabled">Diaktifkan</option>
  <option value="disabled">Dinonaktifkan</option>
  </select>
  </div>
  <div>
- <label class="block text-sm font-medium text-admin-text mb-2">Cache Duration</label>
- <input type="number" value="300" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sm font-medium text-sa-fg mb-2">Cache Duration</label>
+ <input type="number" value="300" class="w-full px-3 py-2 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  </div>
  <div>
- <label class="block text-sm font-medium text-admin-text mb-2">Max Cache Size</label>
- <input type="number" value="100" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sm font-medium text-sa-fg mb-2">Max Cache Size</label>
+ <input type="number" value="100" class="w-full px-3 py-2 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  </div>
  <div>
- <label class="block text-sm font-medium text-admin-text mb-2">Auto Clear</label>
- <select class="w-full px-3 py-2 border border-admin-border rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent">
+ <label class="block text-sm font-medium text-sa-fg mb-2">Auto Clear</label>
+ <select class="w-full px-3 py-2 border border-sa-border rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent">
  <option value="enabled">Diaktifkan</option>
  <option value="disabled">Dinonaktifkan</option>
  </select>

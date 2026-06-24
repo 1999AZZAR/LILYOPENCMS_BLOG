@@ -46,8 +46,7 @@ def seo_settings():
     # Allow access only to admin-tier users
     if not (current_user.is_admin_tier() or current_user.is_owner()):
         abort(403)
-    return redirect(url_for('main.settings_seo'))
-
+    return render_template('admin/seo/settings.html')
 
 
 # Legacy route for backward compatibility
@@ -610,7 +609,7 @@ def update_global_seo_settings():
         abort(403)
     
     try:
-        request.get_json()
+        data = request.get_json()
         
         # For now, just return success - this could be extended to store in database
         # In a real implementation, you might want to store these in a settings table
@@ -629,7 +628,7 @@ def update_global_og_settings():
         abort(403)
     
     try:
-        request.get_json()
+        data = request.get_json()
         
         # For now, just return success - this could be extended to store in database
         

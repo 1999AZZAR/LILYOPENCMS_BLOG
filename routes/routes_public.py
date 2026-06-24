@@ -3,6 +3,7 @@ from .common_imports import *
 from optimizations import cache_with_args, CACHE_TIMEOUTS
 from optimizations import optimize_news_query, optimize_image_query, monitor_ssr_render
 from optimizations.cache_config import safe_cache_get, safe_cache_set
+from sqlalchemy import text
 import time
 
 # Context processor to make navigation links and brand info available to all templates
@@ -800,6 +801,161 @@ def bulk_update_navigation_links():
         return jsonify({"error": "Failed to update navigation links"}), 500
 
 
+@main_blueprint.route("/api/navigation-links/bulk-status", methods=["PUT"])
+@login_required
+def bulk_update_navigation_status():
+    """Bulk update navigation links status (activate/deactivate)."""
+    if not current_user.verified:
+        return jsonify({"error": "Account not verified"}), 403
+
+    try:
+        data = request.get_json()
+        if not data or 'link_ids' not in data or 'is_active' not in data:
+            return jsonify({"error": "Invalid data format"}), 400
+
+        link_ids = data['link_ids']
+        is_active = data['is_active']
+
+        updated_count = 0
+        for link_id in link_ids:
+            link = NavigationLink.query.get(link_id)
+            if link:
+                link.is_active = is_active
+                link.updated_at = default_utcnow()
+                updated_count += 1
+
+        db.session.commit()
+
+        try:
+            from optimizations import invalidate_cache_pattern
+            invalidate_cache_pattern("navigation*")
+        except ImportError:
+            pass
+
+        return jsonify({
+            "message": f"Successfully updated {updated_count} navigation links",
+            "updated_count": updated_count
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Error bulk updating navigation links status: {e}")
+        return jsonify({"error": f"Failed to update navigation links: {str(e)}"}), 500
+
+
+@main_blueprint.route("/api/navigation-links/bulk-delete", methods=["DELETE"])
+@login_required
+def bulk_delete_navigation_links():
+    """Bulk delete navigation links."""
+    if not current_user.verified:
+        return jsonify({"error": "Account not verified"}), 403
+
+    try:
+        data = request.get_json()
+        if not data or 'link_ids' not in data:
+            return jsonify({"error": "Invalid data format"}), 400
+
+        link_ids = data['link_ids']
+        deleted_count = 0
+
+        for link_id in link_ids:
+            link = NavigationLink.query.get(link_id)
+            if link:
+                db.session.delete(link)
+                deleted_count += 1
+
+        db.session.commit()
+
+        try:
+            from optimizations import invalidate_cache_pattern
+            invalidate_cache_pattern("navigation*")
+        except ImportError:
+            pass
+
+        return jsonify({
+            "message": f"Successfully deleted {deleted_count} navigation links",
+            "deleted_count": deleted_count
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Error bulk deleting navigation links: {e}")
+        return jsonify({"error": "Failed to delete navigation links"}), 500
+
+
+@main_blueprint.route("/api/navigation-links/copy", methods=["POST"])
+@login_required
+def copy_navigation_links():
+    """Copy navigation links from one location to another."""
+    if not current_user.verified:
+        return jsonify({"error": "Account not verified"}), 403
+
+    try:
+        data = request.get_json()
+        if not data or 'from_location' not in data or 'to_location' not in data:
+            return jsonify({"error": "Invalid data format"}), 400
+
+        from_location = data['from_location']
+        to_location = data['to_location']
+        overwrite = data.get('overwrite', False)
+
+        source_links = NavigationLink.query.filter_by(location=from_location).order_by(NavigationLink.order).all()
+
+        if not source_links:
+            return jsonify({"error": f"No links found in {from_location}"}), 404
+
+        if not overwrite:
+            existing_links = NavigationLink.query.filter_by(location=to_location).count()
+            if existing_links > 0:
+                return jsonify({"error": f"Destination {to_location} already has links. Enable overwrite to continue."}), 409
+
+        copied_count = 0
+        max_order = 0
+
+        if not overwrite:
+            max_order_result = db.session.query(db.func.max(NavigationLink.order)).filter_by(location=to_location).scalar()
+            max_order = max_order_result or 0
+
+        if overwrite:
+            NavigationLink.query.filter_by(location=to_location).delete()
+
+        for link in source_links:
+            new_link = NavigationLink(
+                name=link.name,
+                url=link.url,
+                location=to_location,
+                order=max_order + link.order + 1,
+                is_active=link.is_active,
+                is_external=link.is_external,
+                user_id=current_user.id
+            )
+            db.session.add(new_link)
+            copied_count += 1
+
+        db.session.commit()
+
+        try:
+            from optimizations import invalidate_cache_pattern
+            invalidate_cache_pattern("navigation*")
+        except ImportError:
+            pass
+
+        return jsonify({
+            "message": f"Successfully copied {copied_count} links from {from_location} to {to_location}",
+            "copied_count": copied_count,
+            "from_location": from_location,
+            "to_location": to_location
+        })
+
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Error copying navigation links: {e}")
+        return jsonify({"error": "Failed to copy navigation links"}), 500
+
+
+
+
+
 @main_blueprint.route("/settings/albums")
 @login_required
 def albums_management():
@@ -808,4 +964,136 @@ def albums_management():
         return redirect(url_for('main.login'))
     
     return render_template("settings/albums_management.html")
+
+
+@main_blueprint.route("/robots.txt")
+def robots_txt():
+    """Serve dynamically generated robots.txt file based on request host and environment."""
+    import os
+
+    flask_env = os.getenv("FLASK_ENV", "development").lower()
+
+    try:
+        result = db.session.execute(text('SELECT website_url FROM seo_injection_settings LIMIT 1'))
+        row = result.fetchone()
+        website_url = row[0] if row and row[0] else None
+    except Exception:
+        website_url = None
+
+    if not website_url:
+        website_url = request.url_root.rstrip('/')
+    else:
+        website_url = website_url.rstrip('/')
+
+    if flask_env != "production":
+        robots_content = f"""# ==================================================
+# robots.txt (Dynamic - Non-Production Profile)
+# ==================================================
+
+User-agent: *
+Allow: /
+
+Disallow: /settings/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /logout
+
+Allow: /news/
+Allow: /videos/
+Allow: /gallery/
+Allow: /about/
+Allow: /utama/
+Allow: /hypes/
+Allow: /premium/
+
+Crawl-delay: 1
+
+# ==================================================
+# SITEMAPS
+# ==================================================
+Sitemap: {website_url}/sitemap.xml
+Sitemap: {website_url}/sitemap-news.xml
+Sitemap: {website_url}/sitemap-index.xml
+"""
+    else:
+        robots_content = f"""# ==================================================
+# robots.txt (Dynamic - Production Profile)
+# ==================================================
+
+User-agent: *
+Allow: /
+
+Allow: /api/
+Allow: /api/v1/
+Allow: /news/
+Allow: /videos/
+Allow: /gallery/
+Allow: /about/
+Allow: /utama/
+Allow: /hypes/
+Allow: /premium/
+Allow: /assets/
+Allow: /images/
+Allow: /static/
+Allow: /public/
+Allow: /feeds/
+Allow: /rss/
+Allow: /news/rss/
+Allow: /news/json/
+
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.svg$
+Allow: /*.webp$
+Allow: /*.mp4$
+Allow: /*.webm$
+Allow: /*.json$
+
+Disallow: /settings/
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /logout
+Disallow: /cgi-bin/
+Disallow: /*?*
+
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+
+User-agent: Googlebot-News
+Allow: /news/
+Allow: /hypes/
+Allow: /premium/
+
+User-agent: Googlebot-Video
+Allow: /videos/
+Allow: /news/
+Disallow: /admin/
+
+User-agent: AdsBot-Google
+Allow: /
+Disallow: /admin/
+
+User-agent: Mediapartners-Google
+Allow: /
+Disallow: /admin/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+
+# ==================================================
+# SITEMAPS
+# ==================================================
+Sitemap: {website_url}/sitemap.xml
+Sitemap: {website_url}/sitemap-news.xml
+Sitemap: {website_url}/sitemap-index.xml
+"""
+    return Response(robots_content, mimetype="text/plain")
 

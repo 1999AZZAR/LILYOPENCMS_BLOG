@@ -20,52 +20,51 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 {% endblock %}
 
 {% block content %}
-<div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
 
 <!-- Main Content -->
 <div class="space-y-8">
   <!-- Root SEO Settings Section -->
-  <div class="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 rounded-lg shadow-lg">
+  <div class="bg-gradient-to-br from-gray-50 to-gray-100 border border-sa-border p-6 rounded-sa-lg shadow-sa-card">
     <div class="flex justify-between items-center mb-6">
       <div class="flex items-center space-x-3">
-        <div class="h-12 w-12 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center">
+        <div class="h-12 w-12 rounded-sa-lg bg-purple-100 text-purple-600 flex items-center justify-center">
           <i class="fas fa-cog text-xl"></i>
         </div>
         <div>
-          <h2 class="text-xl font-semibold text-gray-800">Pengaturan Root SEO</h2>
-          <p class="text-sm text-gray-600">Konfigurasi pengaturan SEO untuk halaman root dan template default</p>
+          <h2 class="text-xl font-semibold text-sa-fg">Pengaturan Root SEO</h2>
+          <p class="text-sm text-sa-fg-tertiary">Konfigurasi pengaturan SEO untuk halaman root dan template default</p>
         </div>
       </div>
       <div class="flex space-x-3">
-        <a href="{{ url_for('main.settings_analytics') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-md">
+        <a href="{{ url_for('main.settings_analytics') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card">
           <i class="fas fa-rocket mr-2"></i>Enhanced Dashboard
         </a>
-        <button id="root-seo-settings-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-md">
+        <button id="root-seo-settings-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card">
           <i class="fas fa-cog mr-2"></i>Edit Pengaturan
         </button>
       </div>
     </div>
 
     <!-- Current Settings Display -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">Pengaturan Saat Ini</h3>
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card p-6">
+      <h3 class="text-lg font-semibold text-sa-fg mb-4">Pengaturan Saat Ini</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <h4 class="font-medium text-gray-800 mb-2">Brand Information</h4>
+        <div class="bg-sa-surface p-4 rounded-sa-lg">
+          <h4 class="font-medium text-sa-fg mb-2">Brand Information</h4>
           <div class="space-y-2 text-sm">
             <div><span class="font-medium">Brand Name:</span> <span id="current-brand-name">Loading...</span></div>
             <div><span class="font-medium">Website URL:</span> <span id="current-website-url">Loading...</span></div>
           </div>
         </div>
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <h4 class="font-medium text-gray-800 mb-2">Default Templates</h4>
+        <div class="bg-sa-surface p-4 rounded-sa-lg">
+          <h4 class="font-medium text-sa-fg mb-2">Default Templates</h4>
           <div class="space-y-2 text-sm">
             <div><span class="font-medium">Home Page:</span> <span id="current-home-template">Loading...</span></div>
             <div><span class="font-medium">About Page:</span> <span id="current-about-template">Loading...</span></div>
           </div>
         </div>
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <h4 class="font-medium text-gray-800 mb-2">Social Media</h4>
+        <div class="bg-sa-surface p-4 rounded-sa-lg">
+          <h4 class="font-medium text-sa-fg mb-2">Social Media</h4>
           <div class="space-y-2 text-sm">
             <div><span class="font-medium">OG Type:</span> <span id="current-og-type">Loading...</span></div>
             <div><span class="font-medium">Twitter Card:</span> <span id="current-twitter-card">Loading...</span></div>
@@ -76,28 +75,28 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
   </div>
 
   <!-- Global SEO Settings Section -->
-  <div class="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 rounded-lg shadow-lg">
+  <div class="bg-gradient-to-br from-gray-50 to-gray-100 border border-sa-border p-6 rounded-sa-lg shadow-sa-card">
     <div class="flex justify-between items-center mb-6">
       <div class="flex items-center space-x-3">
-        <div class="h-12 w-12 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+        <div class="h-12 w-12 rounded-sa-lg bg-blue-100 text-blue-600 flex items-center justify-center">
           <i class="fas fa-globe text-xl"></i>
         </div>
         <div>
-          <h2 class="text-xl font-semibold text-gray-800">Pengaturan SEO Global</h2>
-          <p class="text-sm text-gray-600">Konfigurasi pengaturan SEO yang berlaku untuk seluruh website</p>
+          <h2 class="text-xl font-semibold text-sa-fg">Pengaturan SEO Global</h2>
+          <p class="text-sm text-sa-fg-tertiary">Konfigurasi pengaturan SEO yang berlaku untuk seluruh website</p>
         </div>
       </div>
     </div>
 
     <!-- Global Settings Form -->
-    <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card p-6">
       <form id="global-seo-settings-form" class="space-y-6">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <!-- Basic SEO Settings -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
-            <label for="global-meta-language" class="block text-sm font-medium text-gray-700 mb-1">Default Language</label>
-            <select id="global-meta-language" name="default_language" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label for="global-meta-language" class="block text-sm font-medium text-sa-fg-secondary mb-1">Default Language</label>
+            <select id="global-meta-language" name="default_language" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
               <option value="id">Indonesia (id)</option>
               <option value="en">English (en)</option>
               <option value="ja">Japanese (ja)</option>
@@ -106,8 +105,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </select>
           </div>
           <div>
-            <label for="global-meta-robots" class="block text-sm font-medium text-gray-700 mb-1">Default Meta Robots</label>
-            <select id="global-meta-robots" name="default_meta_robots" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label for="global-meta-robots" class="block text-sm font-medium text-sa-fg-secondary mb-1">Default Meta Robots</label>
+            <select id="global-meta-robots" name="default_meta_robots" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
               <option value="index, follow">Index, Follow</option>
               <option value="noindex, follow">No Index, Follow</option>
               <option value="index, nofollow">Index, No Follow</option>
@@ -119,8 +118,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
         <!-- Social Media Defaults -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
-            <label for="global-og-type" class="block text-sm font-medium text-gray-700 mb-1">Default Open Graph Type</label>
-            <select id="global-og-type" name="default_og_type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label for="global-og-type" class="block text-sm font-medium text-sa-fg-secondary mb-1">Default Open Graph Type</label>
+            <select id="global-og-type" name="default_og_type" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
               <option value="website">Website</option>
               <option value="article">Article</option>
               <option value="book">Book</option>
@@ -128,8 +127,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </select>
           </div>
           <div>
-            <label for="global-twitter-card" class="block text-sm font-medium text-gray-700 mb-1">Default Twitter Card Type</label>
-            <select id="global-twitter-card" name="default_twitter_card" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label for="global-twitter-card" class="block text-sm font-medium text-sa-fg-secondary mb-1">Default Twitter Card Type</label>
+            <select id="global-twitter-card" name="default_twitter_card" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
               <option value="summary_large_image">Summary Large Image</option>
               <option value="summary">Summary</option>
               <option value="app">App</option>
@@ -141,19 +140,19 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
         <!-- Default Images -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
-            <label for="global-og-image" class="block text-sm font-medium text-gray-700 mb-1">Default Open Graph Image</label>
+            <label for="global-og-image" class="block text-sm font-medium text-sa-fg-secondary mb-1">Default Open Graph Image</label>
             <div class="flex items-center gap-x-2">
-              <input type="text" id="global-og-image" name="default_og_image" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg" placeholder="https://example.com/default-og-image.jpg">
-              <button type="button" onclick="openImageSelector('global-og-image')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 shadow-md">
+              <input type="text" id="global-og-image" name="default_og_image" class="flex-1 px-3 py-2 border border-sa-border rounded-sa-lg" placeholder="https://example.com/default-og-image.jpg">
+              <button type="button" onclick="openImageSelector('global-og-image')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card">
                 <i class="fas fa-image mr-1"></i>Pilih
               </button>
             </div>
           </div>
           <div>
-            <label for="global-twitter-image" class="block text-sm font-medium text-gray-700 mb-1">Default Twitter Image</label>
+            <label for="global-twitter-image" class="block text-sm font-medium text-sa-fg-secondary mb-1">Default Twitter Image</label>
             <div class="flex items-center gap-x-2">
-              <input type="text" id="global-twitter-image" name="default_twitter_image" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg" placeholder="https://example.com/default-twitter-image.jpg">
-              <button type="button" onclick="openImageSelector('global-twitter-image')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 shadow-md">
+              <input type="text" id="global-twitter-image" name="default_twitter_image" class="flex-1 px-3 py-2 border border-sa-border rounded-sa-lg" placeholder="https://example.com/default-twitter-image.jpg">
+              <button type="button" onclick="openImageSelector('global-twitter-image')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card">
                 <i class="fas fa-image mr-1"></i>Pilih
               </button>
             </div>
@@ -161,11 +160,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-          <button type="button" id="reset-global-settings" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-300">
+        <div class="flex justify-end space-x-3 pt-4 border-t border-sa-border">
+          <button type="button" id="reset-global-settings" class="px-4 py-2 border border-sa-border text-sa-fg-secondary rounded-sa-lg hover:bg-sa-surface transition-all duration-300">
             Reset ke Default
           </button>
-          <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all duration-300 shadow-md">
+          <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card">
             <i class="fas fa-save mr-2"></i>Simpan Pengaturan Global
           </button>
         </div>
@@ -174,75 +173,75 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
   </div>
 
   <!-- SEO Injection Settings Section -->
-  <div class="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 rounded-lg shadow-lg">
+  <div class="bg-gradient-to-br from-gray-50 to-gray-100 border border-sa-border p-6 rounded-sa-lg shadow-sa-card">
     <div class="flex justify-between items-center mb-6">
       <div class="flex items-center space-x-3">
-        <div class="h-12 w-12 rounded-lg bg-green-100 text-green-600 flex items-center justify-center">
+        <div class="h-12 w-12 rounded-sa-lg bg-green-100 text-green-600 flex items-center justify-center">
           <i class="fas fa-magic text-xl"></i>
         </div>
         <div>
-          <h2 class="text-xl font-semibold text-gray-800">Pengaturan SEO Injection</h2>
-          <p class="text-sm text-gray-600">Konfigurasi untuk proses otomatis SEO injection</p>
+          <h2 class="text-xl font-semibold text-sa-fg">Pengaturan SEO Injection</h2>
+          <p class="text-sm text-sa-fg-tertiary">Konfigurasi untuk proses otomatis SEO injection</p>
         </div>
       </div>
     </div>
 
     <!-- Injection Settings -->
-    <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card p-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <h4 class="font-medium text-gray-800 mb-3">Auto Injection</h4>
+        <div class="bg-sa-surface p-4 rounded-sa-lg">
+          <h4 class="font-medium text-sa-fg mb-3">Auto Injection</h4>
           <div class="space-y-3">
             <label class="flex items-center">
-              <input type="checkbox" id="auto-inject-articles" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-              <span class="ml-2 text-sm text-gray-700">Artikel baru</span>
+              <input type="checkbox" id="auto-inject-articles" class="rounded border-sa-border text-blue-600 focus:ring-sa-accent">
+              <span class="ml-2 text-sm text-sa-fg-secondary">Artikel baru</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" id="auto-inject-albums" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-              <span class="ml-2 text-sm text-gray-700">Album baru</span>
+              <input type="checkbox" id="auto-inject-albums" class="rounded border-sa-border text-blue-600 focus:ring-sa-accent">
+              <span class="ml-2 text-sm text-sa-fg-secondary">Album baru</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" id="auto-inject-chapters" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-              <span class="ml-2 text-sm text-gray-700">Bab baru</span>
+              <input type="checkbox" id="auto-inject-chapters" class="rounded border-sa-border text-blue-600 focus:ring-sa-accent">
+              <span class="ml-2 text-sm text-sa-fg-secondary">Bab baru</span>
             </label>
           </div>
         </div>
 
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <h4 class="font-medium text-gray-800 mb-3">SEO Lock</h4>
+        <div class="bg-sa-surface p-4 rounded-sa-lg">
+          <h4 class="font-medium text-sa-fg mb-3">SEO Lock</h4>
           <div class="space-y-3">
             <label class="flex items-center">
-              <input type="checkbox" id="enable-seo-lock" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-              <span class="ml-2 text-sm text-gray-700">Aktifkan SEO lock</span>
+              <input type="checkbox" id="enable-seo-lock" class="rounded border-sa-border text-blue-600 focus:ring-sa-accent">
+              <span class="ml-2 text-sm text-sa-fg-secondary">Aktifkan SEO lock</span>
             </label>
             <label class="flex items-center">
-              <input type="checkbox" id="lock-after-injection" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-              <span class="ml-2 text-sm text-gray-700">Lock setelah injection</span>
+              <input type="checkbox" id="lock-after-injection" class="rounded border-sa-border text-blue-600 focus:ring-sa-accent">
+              <span class="ml-2 text-sm text-sa-fg-secondary">Lock setelah injection</span>
             </label>
           </div>
         </div>
 
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <h4 class="font-medium text-gray-800 mb-3">Batch Processing</h4>
+        <div class="bg-sa-surface p-4 rounded-sa-lg">
+          <h4 class="font-medium text-sa-fg mb-3">Batch Processing</h4>
           <div class="space-y-3">
             <div>
-              <label for="batch-size" class="block text-sm font-medium text-gray-700 mb-1">Batch Size</label>
-              <input type="number" id="batch-size" name="batch_size" min="1" max="100" value="20" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <label for="batch-size" class="block text-sm font-medium text-sa-fg-secondary mb-1">Batch Size</label>
+              <input type="number" id="batch-size" name="batch_size" min="1" max="100" value="20" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             </div>
             <div>
-              <label for="delay-between-batches" class="block text-sm font-medium text-gray-700 mb-1">Delay (ms)</label>
-              <input type="number" id="delay-between-batches" name="delay_between_batches" min="0" max="5000" value="100" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <label for="delay-between-batches" class="block text-sm font-medium text-sa-fg-secondary mb-1">Delay (ms)</label>
+              <input type="number" id="delay-between-batches" name="delay_between_batches" min="0" max="5000" value="100" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             </div>
           </div>
         </div>
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex justify-end space-x-3 pt-4 mt-6 border-t border-gray-200">
-        <button type="button" id="test-injection-settings" class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-all duration-300">
+      <div class="flex justify-end space-x-3 pt-4 mt-6 border-t border-sa-border">
+        <button type="button" id="test-injection-settings" class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-sa-lg font-medium transition-all duration-300">
           <i class="fas fa-vial mr-2"></i>Test Injection
         </button>
-        <button type="button" id="save-injection-settings" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-all duration-300 shadow-md">
+        <button type="button" id="save-injection-settings" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card">
           <i class="fas fa-save mr-2"></i>Simpan Pengaturan Injection
         </button>
       </div>
@@ -253,22 +252,22 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 <!-- Root SEO Settings Modal -->
 <div id="root-seo-settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
   <div class="flex items-center justify-center min-h-screen p-4">
-    <div class="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-gradient-to-br from-white to-gray-50 border border-sa-border rounded-sa-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
       <div class="p-6">
         <div class="flex justify-between items-center mb-6">
           <div class="flex items-center space-x-2">
-            <div class="h-10 w-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center">
+            <div class="h-10 w-10 rounded-sa-lg bg-purple-100 text-purple-600 flex items-center justify-center">
               <i class="fas fa-cog"></i>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900">Pengaturan Root SEO</h3>
+            <h3 class="text-xl font-semibold text-sa-fg">Pengaturan Root SEO</h3>
           </div>
-          <button id="close-root-seo-settings" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+          <button id="close-root-seo-settings" class="text-sa-fg-tertiary hover:text-sa-fg transition-colors duration-200">
             <i class="fas fa-times text-xl"></i>
           </button>
         </div>
 
         <!-- Brand Integration Info -->
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div class="bg-blue-50 border border-blue-200 rounded-sa-lg p-4 mb-6">
           <div class="flex items-start space-x-3">
             <i class="fas fa-info-circle text-blue-600 mt-1"></i>
             <div>
@@ -281,103 +280,103 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
         <form id="root-seo-settings-form" class="space-y-6">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <!-- Brand Information Section -->
-          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <h4 class="font-medium text-gray-800 mb-3">Informasi Brand (dari Brand Identity)</h4>
+          <div class="bg-sa-surface p-4 rounded-sa-lg border border-sa-border">
+            <h4 class="font-medium text-sa-fg mb-3">Informasi Brand (dari Brand Identity)</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Brand Name</label>
-                <input type="text" id="brand-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600" readonly>
-                <p class="text-xs text-gray-500 mt-1">Nama brand yang akan digunakan sebagai default</p>
+                <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Brand Name</label>
+                <input type="text" id="brand-name" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg-tertiary" readonly>
+                <p class="text-xs text-sa-fg-tertiary mt-1">Nama brand yang akan digunakan sebagai default</p>
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
-                <input type="url" id="website-url" name="website_url" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com" pattern="https?://.+" title="Please enter a valid URL starting with http:// or https://">
-                <p class="text-xs text-gray-500 mt-1">URL website untuk canonical dan schema markup (harus dimulai dengan http:// atau https://)</p>
+                <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Website URL</label>
+                <input type="url" id="website-url" name="website_url" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="https://example.com" pattern="https?://.+" title="Please enter a valid URL starting with http:// or https://">
+                <p class="text-xs text-sa-fg-tertiary mt-1">URL website untuk canonical dan schema markup (harus dimulai dengan http:// atau https://)</p>
               </div>
             </div>
           </div>
 
           <!-- Root Page Templates -->
-          <div class="bg-white rounded-lg shadow-md p-6">
-            <h4 class="text-lg font-semibold text-gray-900 mb-4">
+          <div class="bg-sa-card rounded-sa-lg shadow-sa-card p-6">
+            <h4 class="text-lg font-semibold text-sa-fg mb-4">
               <i class="fas fa-file-alt mr-2 text-blue-600"></i>Template Halaman Root
             </h4>
-            <p class="text-sm text-gray-600 mb-4">Konfigurasi template untuk halaman-halaman root yang akan dibuat otomatis oleh SEO injector.</p>
+            <p class="text-sm text-sa-fg-tertiary mb-4">Konfigurasi template untuk halaman-halaman root yang akan dibuat otomatis oleh SEO injector.</p>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <!-- Home Page Template -->
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h5 class="font-medium text-gray-800 mb-3">🏠 Home Page</h5>
+              <div class="border border-sa-border rounded-sa-lg p-4">
+                <h5 class="font-medium text-sa-fg mb-3">🏠 Home Page</h5>
                 <div class="space-y-3">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title Template</label>
-                    <input type="text" id="home-meta-title" name="home_meta_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{brand_name} - Platform Digital Penulis Indonesia">
-                    <p class="text-xs text-gray-500 mt-1">Gunakan {brand_name} untuk nama brand</p>
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Title Template</label>
+                    <input type="text" id="home-meta-title" name="home_meta_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{brand_name} - Platform Digital Penulis Indonesia">
+                    <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {brand_name} untuk nama brand</p>
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
-                    <textarea id="home-meta-desc" name="home_meta_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg">Hystory.id adalah platform digital karya anak bangsa yang menghadirkan novel dan cerpen terbaik Indonesia. Kami menjadi ruang bagi penulis untuk berekspresi, membangun komunitas kreatif, dan tumbuh bersama dalam ekosistem literasi digital.</textarea>
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Description</label>
+                    <textarea id="home-meta-desc" name="home_meta_description" rows="3" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg">Hystory.id adalah platform digital karya anak bangsa yang menghadirkan novel dan cerpen terbaik Indonesia. Kami menjadi ruang bagi penulis untuk berekspresi, membangun komunitas kreatif, dan tumbuh bersama dalam ekosistem literasi digital.</textarea>
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Keywords</label>
-                    <input type="text" id="home-meta-keywords" name="home_meta_keywords" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="hystory, novel indonesia, cerpen, penulis indonesia, platform digital, literasi digital, komunitas kreatif">
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Keywords</label>
+                    <input type="text" id="home-meta-keywords" name="home_meta_keywords" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="hystory, novel indonesia, cerpen, penulis indonesia, platform digital, literasi digital, komunitas kreatif">
                   </div>
                 </div>
               </div>
 
               <!-- About Page Template -->
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h5 class="font-medium text-gray-800 mb-3">ℹ️ About Page</h5>
+              <div class="border border-sa-border rounded-sa-lg p-4">
+                <h5 class="font-medium text-sa-fg mb-3">ℹ️ About Page</h5>
                 <div class="space-y-3">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title Template</label>
-                    <input type="text" id="about-meta-title" name="about_meta_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="About Us - {brand_name}">
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Title Template</label>
+                    <input type="text" id="about-meta-title" name="about_meta_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="About Us - {brand_name}">
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
-                    <textarea id="about-meta-desc" name="about_meta_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg">Pelajari tentang Hystory.id, misi kami, tim, dan komitmen untuk memberikan solusi platform digital bagi penulis dan kreator konten Indonesia untuk berkembang dan dikenal luas.</textarea>
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Description</label>
+                    <textarea id="about-meta-desc" name="about_meta_description" rows="3" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg">Pelajari tentang Hystory.id, misi kami, tim, dan komitmen untuk memberikan solusi platform digital bagi penulis dan kreator konten Indonesia untuk berkembang dan dikenal luas.</textarea>
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Keywords</label>
-                    <input type="text" id="about-meta-keywords" name="about_meta_keywords" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="tentang hystory, misi, tim, platform digital indonesia, penulis, literasi, kreativitas"
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Keywords</label>
+                    <input type="text" id="about-meta-keywords" name="about_meta_keywords" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="tentang hystory, misi, tim, platform digital indonesia, penulis, literasi, kreativitas"
                   </div>
                 </div>
               </div>
 
               <!-- News Page Template -->
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h5 class="font-medium text-gray-800 mb-3">📰 News Page</h5>
+              <div class="border border-sa-border rounded-sa-lg p-4">
+                <h5 class="font-medium text-sa-fg mb-3">📰 News Page</h5>
                 <div class="space-y-3">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title Template</label>
-                    <input type="text" id="news-meta-title" name="news_meta_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="Latest News - {brand_name}">
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Title Template</label>
+                    <input type="text" id="news-meta-title" name="news_meta_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="Latest News - {brand_name}">
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
-                    <textarea id="news-meta-desc" name="news_meta_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg">Stay updated with the latest news, articles, and current events. Browse our comprehensive collection of news content and stay informed.</textarea>
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Description</label>
+                    <textarea id="news-meta-desc" name="news_meta_description" rows="3" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg">Stay updated with the latest news, articles, and current events. Browse our comprehensive collection of news content and stay informed.</textarea>
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Keywords</label>
-                    <input type="text" id="news-meta-keywords" name="news_meta_keywords" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="news, articles, current events, latest updates, breaking news, journalism">
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Keywords</label>
+                    <input type="text" id="news-meta-keywords" name="news_meta_keywords" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="news, articles, current events, latest updates, breaking news, journalism">
                   </div>
                 </div>
               </div>
 
               <!-- Albums Page Template -->
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h5 class="font-medium text-gray-800 mb-3">📚 Albums Page</h5>
+              <div class="border border-sa-border rounded-sa-lg p-4">
+                <h5 class="font-medium text-sa-fg mb-3">📚 Albums Page</h5>
                 <div class="space-y-3">
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title Template</label>
-                    <input type="text" id="albums-meta-title" name="albums_meta_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="Albums & Stories - {brand_name}">
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Title Template</label>
+                    <input type="text" id="albums-meta-title" name="albums_meta_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="Albums & Stories - {brand_name}">
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
-                    <textarea id="albums-meta-desc" name="albums_meta_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg">Explore our collection of albums, stories, and serialized content. Discover novels, comics, and creative works from talented authors.</textarea>
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Description</label>
+                    <textarea id="albums-meta-desc" name="albums_meta_description" rows="3" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg">Explore our collection of albums, stories, and serialized content. Discover novels, comics, and creative works from talented authors.</textarea>
                   </div>
                   <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Keywords</label>
-                    <input type="text" id="albums-meta-keywords" name="albums_meta_keywords" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="albums, stories, novels, comics, creative works, serialized content">
+                    <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Keywords</label>
+                    <input type="text" id="albums-meta-keywords" name="albums_meta_keywords" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="albums, stories, novels, comics, creative works, serialized content">
                   </div>
                 </div>
               </div>
@@ -385,86 +384,86 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           </div>
 
           <!-- Content Type SEO Templates -->
-          <div class="bg-white rounded-lg shadow-md p-6">
-            <h4 class="text-lg font-semibold text-gray-900 mb-4">
+          <div class="bg-sa-card rounded-sa-lg shadow-sa-card p-6">
+            <h4 class="text-lg font-semibold text-sa-fg mb-4">
               <i class="fas fa-layer-group mr-2 text-green-600"></i>Template SEO Konten
             </h4>
-            <p class="text-sm text-gray-600 mb-4">Konfigurasi template default untuk SEO konten individual (artikel, album, bab) yang akan digunakan saat injection otomatis.</p>
+            <p class="text-sm text-sa-fg-tertiary mb-4">Konfigurasi template default untuk SEO konten individual (artikel, album, bab) yang akan digunakan saat injection otomatis.</p>
             
             <!-- Articles SEO Template -->
-            <div class="border border-gray-200 rounded-lg p-4 mb-6">
-              <h5 class="font-medium text-gray-800 mb-3">📰 Template Artikel</h5>
+            <div class="border border-sa-border rounded-sa-lg p-4 mb-6">
+              <h5 class="font-medium text-sa-fg mb-3">📰 Template Artikel</h5>
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title Template</label>
-                  <input type="text" id="article-meta-title" name="article_meta_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{title} - {brand_name}">
-                  <p class="text-xs text-gray-500 mt-1">Gunakan {title}, {category}, {brand_name} untuk variabel</p>
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Title Template</label>
+                  <input type="text" id="article-meta-title" name="article_meta_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{title} - {brand_name}">
+                  <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {title}, {category}, {brand_name} untuk variabel</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description Template</label>
-                  <textarea id="article-meta-desc" name="article_meta_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg">{excerpt} - Read the full article on {brand_name}.</textarea>
-                  <p class="text-xs text-gray-500 mt-1">Gunakan {excerpt}, {title}, {category} untuk variabel</p>
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Description Template</label>
+                  <textarea id="article-meta-desc" name="article_meta_description" rows="3" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg">{excerpt} - Read the full article on {brand_name}.</textarea>
+                  <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {excerpt}, {title}, {category} untuk variabel</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Meta Keywords Template</label>
-                  <input type="text" id="article-meta-keywords" name="article_meta_keywords" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{category}, {title_keywords}, news, article, {brand_name}">
-                  <p class="text-xs text-gray-500 mt-1">Gunakan {category}, {title_keywords} untuk variabel</p>
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Keywords Template</label>
+                  <input type="text" id="article-meta-keywords" name="article_meta_keywords" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{category}, {title_keywords}, news, article, {brand_name}">
+                  <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {category}, {title_keywords} untuk variabel</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">OG Title Template</label>
-                  <input type="text" id="article-og-title" name="article_og_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{title} - {brand_name}">
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">OG Title Template</label>
+                  <input type="text" id="article-og-title" name="article_og_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{title} - {brand_name}">
                 </div>
               </div>
             </div>
 
             <!-- Albums SEO Template -->
-            <div class="border border-gray-200 rounded-lg p-4 mb-6">
-              <h5 class="font-medium text-gray-800 mb-3">📚 Template Album</h5>
+            <div class="border border-sa-border rounded-sa-lg p-4 mb-6">
+              <h5 class="font-medium text-sa-fg mb-3">📚 Template Album</h5>
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title Template</label>
-                  <input type="text" id="album-meta-title" name="album_meta_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{title} - {brand_name}">
-                  <p class="text-xs text-gray-500 mt-1">Gunakan {title}, {category}, {brand_name} untuk variabel</p>
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Title Template</label>
+                  <input type="text" id="album-meta-title" name="album_meta_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{title} - {brand_name}">
+                  <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {title}, {category}, {brand_name} untuk variabel</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description Template</label>
-                  <textarea id="album-meta-desc" name="album_meta_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg">Discover {title} - a captivating story with {chapter_count} chapters. Read online for free on {brand_name}.</textarea>
-                  <p class="text-xs text-gray-500 mt-1">Gunakan {title}, {chapter_count}, {category} untuk variabel</p>
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Description Template</label>
+                  <textarea id="album-meta-desc" name="album_meta_description" rows="3" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg">Discover {title} - a captivating story with {chapter_count} chapters. Read online for free on {brand_name}.</textarea>
+                  <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {title}, {chapter_count}, {category} untuk variabel</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Meta Keywords Template</label>
-                  <input type="text" id="album-meta-keywords" name="album_meta_keywords" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{category}, {title_keywords}, story, novel, {brand_name}">
-                  <p class="text-xs text-gray-500 mt-1">Gunakan {category}, {title_keywords} untuk variabel</p>
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Keywords Template</label>
+                  <input type="text" id="album-meta-keywords" name="album_meta_keywords" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{category}, {title_keywords}, story, novel, {brand_name}">
+                  <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {category}, {title_keywords} untuk variabel</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">OG Title Template</label>
-                  <input type="text" id="album-og-title" name="album_og_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{title} - {brand_name}">
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">OG Title Template</label>
+                  <input type="text" id="album-og-title" name="album_og_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{title} - {brand_name}">
                 </div>
               </div>
             </div>
 
             <!-- Chapters SEO Template -->
-            <div class="border border-gray-200 rounded-lg p-4">
-              <h5 class="font-medium text-gray-800 mb-3">📖 Template Bab</h5>
+            <div class="border border-sa-border rounded-sa-lg p-4">
+              <h5 class="font-medium text-sa-fg mb-3">📖 Template Bab</h5>
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title Template</label>
-                  <input type="text" id="chapter-meta-title" name="chapter_meta_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{title} - Chapter {chapter_number} - {album_title} - {brand_name}">
-                  <p class="text-xs text-gray-500 mt-1">Gunakan {title}, {chapter_number}, {album_title}, {brand_name} untuk variabel</p>
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Title Template</label>
+                  <input type="text" id="chapter-meta-title" name="chapter_meta_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{title} - Chapter {chapter_number} - {album_title} - {brand_name}">
+                  <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {title}, {chapter_number}, {album_title}, {brand_name} untuk variabel</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description Template</label>
-                  <textarea id="chapter-meta-desc" name="chapter_meta_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg">Read Chapter {chapter_number}: {title} from {album_title}. {excerpt} - Read online for free on {brand_name}.</textarea>
-                  <p class="text-xs text-gray-500 mt-1">Gunakan {chapter_number}, {title}, {album_title}, {excerpt} untuk variabel</p>
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Description Template</label>
+                  <textarea id="chapter-meta-desc" name="chapter_meta_description" rows="3" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg">Read Chapter {chapter_number}: {title} from {album_title}. {excerpt} - Read online for free on {brand_name}.</textarea>
+                  <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {chapter_number}, {title}, {album_title}, {excerpt} untuk variabel</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Meta Keywords Template</label>
-                  <input type="text" id="chapter-meta-keywords" name="chapter_meta_keywords" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{album_category}, {title_keywords}, chapter {chapter_number}, {album_title}, {brand_name}">
-                  <p class="text-xs text-gray-500 mt-1">Gunakan {album_category}, {title_keywords}, {chapter_number} untuk variabel</p>
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">Meta Keywords Template</label>
+                  <input type="text" id="chapter-meta-keywords" name="chapter_meta_keywords" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{album_category}, {title_keywords}, chapter {chapter_number}, {album_title}, {brand_name}">
+                  <p class="text-xs text-sa-fg-tertiary mt-1">Gunakan {album_category}, {title_keywords}, {chapter_number} untuk variabel</p>
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">OG Title Template</label>
-                  <input type="text" id="chapter-og-title" name="chapter_og_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="{title} - Chapter {chapter_number} - {album_title} - {brand_name}">
+                  <label class="block text-sm font-medium text-sa-fg-secondary mb-1">OG Title Template</label>
+                  <input type="text" id="chapter-og-title" name="chapter_og_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg" value="{title} - Chapter {chapter_number} - {album_title} - {brand_name}">
                 </div>
               </div>
             </div>
@@ -472,10 +471,10 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
           <!-- Action Buttons -->
           <div class="flex justify-end space-x-3">
-            <button type="button" id="cancel-root-seo-settings" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-300">
+            <button type="button" id="cancel-root-seo-settings" class="px-4 py-2 border border-sa-border text-sa-fg-secondary rounded-sa-lg hover:bg-sa-surface transition-all duration-300">
               Batal
             </button>
-            <button type="submit" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-all duration-300 shadow-md">
+            <button type="submit" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card">
               <i class="fas fa-save mr-2"></i>Simpan Pengaturan Root SEO
             </button>
           </div>
@@ -487,11 +486,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Image Selector Modal -->
 <div id="image-selector-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-60" role="dialog" aria-labelledby="image-selector-title" aria-modal="true">
-  <div class="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-    <h2 id="image-selector-title" class="text-xl font-semibold mb-4 text-gray-800">Pilih Gambar</h2>
+  <div class="bg-gradient-to-br from-gray-50 to-gray-100 border border-sa-border p-6 rounded-sa-lg shadow-sa-card w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+    <h2 id="image-selector-title" class="text-xl font-semibold mb-4 text-sa-fg">Pilih Gambar</h2>
     <div class="mb-4" role="radiogroup" aria-label="Pilih sumber gambar">
-      <label class="inline-flex items-center"><input type="radio" name="image-source-selector" value="library" checked class="form-radio text-blue-600" aria-label="Pilih dari perpustakaan"><span class="ml-2 text-gray-700">Perpustakaan</span></label>
-      <label class="inline-flex items-center ml-4"><input type="radio" name="image-source-selector" value="url" class="form-radio text-blue-600" aria-label="Gunakan URL eksternal"><span class="ml-2 text-gray-700">URL Eksternal</span></label>
+      <label class="inline-flex items-center"><input type="radio" name="image-source-selector" value="library" checked class="form-radio text-blue-600" aria-label="Pilih dari perpustakaan"><span class="ml-2 text-sa-fg-secondary">Perpustakaan</span></label>
+      <label class="inline-flex items-center ml-4"><input type="radio" name="image-source-selector" value="url" class="form-radio text-blue-600" aria-label="Gunakan URL eksternal"><span class="ml-2 text-sa-fg-secondary">URL Eksternal</span></label>
     </div>
     <div id="image-library-section-selector" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4" role="list" aria-label="Daftar gambar perpustakaan"></div>
     <!-- Pagination for Image Library -->
@@ -499,12 +498,12 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
         <!-- Image selector pagination will be generated here -->
     </div>
     <div id="image-url-section-selector" class="hidden space-y-4 mb-4">
-      <input id="image-url-input-selector" type="text" inputmode="url" class="w-full bg-white border border-gray-300 text-gray-700 p-2 rounded-lg" placeholder="https://contoh.com/gambar.jpg" aria-label="URL gambar">
-      <input id="image-alt-input-selector" type="text" class="w-full bg-white border border-gray-300 text-gray-700 p-2 rounded-lg" placeholder="Alt teks (opsional)" aria-label="Teks alternatif gambar">
+      <input id="image-url-input-selector" type="text" inputmode="url" class="w-full bg-sa-surface border border-sa-border text-sa-fg-secondary p-2 rounded-sa-lg" placeholder="https://contoh.com/gambar.jpg" aria-label="URL gambar">
+      <input id="image-alt-input-selector" type="text" class="w-full bg-sa-surface border border-sa-border text-sa-fg-secondary p-2 rounded-sa-lg" placeholder="Alt teks (opsional)" aria-label="Teks alternatif gambar">
     </div>
     <div class="flex space-x-4" role="group" aria-label="Tombol aksi gambar">
-      <button type="button" id="select-image-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300 shadow-md" aria-label="Pilih gambar">Pilih</button>
-      <button type="button" id="close-image-selector" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 shadow-md" aria-label="Tutup dialog">Tutup</button>
+      <button type="button" id="select-image-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-sa-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-300 shadow-sa-card" aria-label="Pilih gambar">Pilih</button>
+      <button type="button" id="close-image-selector" class="flex-1 bg-gray-200 hover:bg-gray-300 text-sa-fg py-3 rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 shadow-sa-card" aria-label="Tutup dialog">Tutup</button>
     </div>
   </div>
 </div>

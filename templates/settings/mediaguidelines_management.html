@@ -4,14 +4,13 @@
 {% block hero_desc %}Kelola konten pedoman media{% endblock %}
 {% block content %}
  <!-- Toast Container -->
- <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
 
  <!-- Main Content -->
  <main class="container mx-auto px-6 py-12" role="main">
  <!-- Add New Section Form -->
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="add-section-title">
- <h2 id="add-section-title" class="text-xl font-semibold text-admin-text mb-4 flex items-center">
- <i class="fas fa-plus-circle mr-2 text-admin-textMuted"></i>
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card mb-8" role="region" aria-labelledby="add-section-title">
+ <h2 id="add-section-title" class="text-xl font-semibold text-sa-fg mb-4 flex items-center">
+ <i class="fas fa-plus-circle mr-2 text-sa-muted"></i>
  Tambah Bagian Baru
  </h2>
  <form action="{{ url_for('main.settings_media_guidelines') }}" method="POST" class="space-y-4" role="form" aria-label="Form tambah bagian baru">
@@ -20,30 +19,30 @@
  
  <!-- Title Input -->
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="new-title">
+ <label class="block text-sa-muted font-medium mb-2" for="new-title">
  <i class="fas fa-heading mr-1"></i>Judul
  </label>
- <input type="text" name="title" id="new-title" placeholder="Masukkan judul pedoman media..." class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" required aria-required="true" aria-label="Judul bagian baru">
+ <input type="text" name="title" id="new-title" placeholder="Masukkan judul pedoman media..." class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-300" required aria-required="true" aria-label="Judul bagian baru">
  </div>
 
  <!-- Content Textarea -->
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="new-content">
+ <label class="block text-sa-muted font-medium mb-2" for="new-content">
  <i class="fas fa-edit mr-1"></i>Konten
  </label>
- <textarea name="content" id="new-content" placeholder="Tulis konten pedoman media di sini..." class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" rows="5" required aria-required="true" aria-label="Konten bagian baru"></textarea>
+ <textarea name="content" id="new-content" placeholder="Tulis konten pedoman media di sini..." class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-300" rows="5" required aria-required="true" aria-label="Konten bagian baru"></textarea>
  </div>
 
  <!-- Order Input -->
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="new-section-order">
+ <label class="block text-sa-muted font-medium mb-2" for="new-section-order">
  <i class="fas fa-sort-numeric-up mr-1"></i>Urutan Bagian
  </label>
- <input type="number" name="section_order" id="new-section-order" placeholder="1, 2, 3..." class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" required aria-required="true" aria-label="Urutan bagian baru">
+ <input type="number" name="section_order" id="new-section-order" placeholder="1, 2, 3..." class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-300" required aria-required="true" aria-label="Urutan bagian baru">
  </div>
 
  <!-- Submit Button -->
- <button type="submit" class="w-full bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100 flex items-center justify-center" aria-label="Tambah bagian baru">
+ <button type="submit" class="w-full bg-sa-fg hover:bg-sa-sidebar text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card flex items-center justify-center" aria-label="Tambah bagian baru">
  <i class="fas fa-plus mr-2"></i>
  Tambah Bagian
  </button>
@@ -51,24 +50,24 @@
  </div>
 
  <!-- Existing Sections -->
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 mb-8" role="region" aria-labelledby="existing-sections-title">
- <h2 id="existing-sections-title" class="text-xl font-semibold text-admin-text mb-4 flex items-center">
- <i class="fas fa-list mr-2 text-admin-textMuted"></i>
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card mb-8" role="region" aria-labelledby="existing-sections-title">
+ <h2 id="existing-sections-title" class="text-xl font-semibold text-sa-fg mb-4 flex items-center">
+ <i class="fas fa-list mr-2 text-sa-muted"></i>
  Bagian yang Ada
  </h2>
  <div class="space-y-6" role="list" aria-label="Daftar bagian pedoman media">
  {% for guideline in guidelines %}
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-100 hover:shadow-polaris-100 transition-all duration-300" role="listitem">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-card hover:shadow-sa-card transition-all duration-300" role="listitem">
  <!-- Section Header -->
  <div class="flex items-center justify-between mb-4">
  <div class="flex items-center">
- <div class="w-10 h-10 bg-admin-surface rounded-polaris-base flex items-center justify-center mr-3">
+ <div class="w-10 h-10 bg-white rounded-sa-md flex items-center justify-center mr-3">
  <i class="fas fa-newspaper text-white"></i>
  </div>
- <h3 class="text-base font-bold text-admin-text">{{ guideline.title }}</h3>
+ <h3 class="text-base font-bold text-sa-fg">{{ guideline.title }}</h3>
  </div>
  <div class="flex items-center space-x-2">
- <span class="px-2 py-1 text-xs font-medium rounded-polaris-full {% if guideline.is_active %}bg-admin-surface text-admin-successHover{% else %}bg-admin-surface text-admin-textMuted{% endif %}">
+ <span class="px-2 py-1 text-xs font-medium rounded-full {% if guideline.is_active %}bg-white text-sa-success-hover{% else %}bg-white text-sa-muted{% endif %}">
  {% if guideline.is_active %}Aktif{% else %}Nonaktif{% endif %}
  </span>
  </div>
@@ -81,42 +80,42 @@
  
  <!-- Title Input -->
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="title-{{ guideline.id }}">
+ <label class="block text-sa-muted font-medium mb-2" for="title-{{ guideline.id }}">
  <i class="fas fa-heading mr-1"></i>Judul
  </label>
- <input type="text" name="title" id="title-{{ guideline.id }}" value="{{ guideline.title }}" placeholder="Masukkan judul pedoman media..." class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" required aria-required="true" aria-label="Judul bagian">
+ <input type="text" name="title" id="title-{{ guideline.id }}" value="{{ guideline.title }}" placeholder="Masukkan judul pedoman media..." class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-300" required aria-required="true" aria-label="Judul bagian">
  </div>
 
  <!-- Content Textarea -->
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="content-{{ guideline.id }}">
+ <label class="block text-sa-muted font-medium mb-2" for="content-{{ guideline.id }}">
  <i class="fas fa-edit mr-1"></i>Konten
  </label>
- <textarea name="content" id="content-{{ guideline.id }}" placeholder="Tulis konten pedoman media di sini..." class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" rows="4" required aria-required="true" aria-label="Konten bagian">{{ guideline.content }}</textarea>
+ <textarea name="content" id="content-{{ guideline.id }}" placeholder="Tulis konten pedoman media di sini..." class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-300" rows="4" required aria-required="true" aria-label="Konten bagian">{{ guideline.content }}</textarea>
  </div>
 
  <!-- Order Input -->
  <div>
- <label class="block text-admin-textMuted font-medium mb-2" for="section-order-{{ guideline.id }}">
+ <label class="block text-sa-muted font-medium mb-2" for="section-order-{{ guideline.id }}">
  <i class="fas fa-sort-numeric-up mr-1"></i>Urutan Bagian
  </label>
- <input type="number" name="section_order" id="section-order-{{ guideline.id }}" value="{{ guideline.section_order }}" class="w-full bg-white border border-admin-border text-admin-textMuted p-3 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-accent transition-all duration-300" required aria-required="true" aria-label="Urutan bagian">
+ <input type="number" name="section_order" id="section-order-{{ guideline.id }}" value="{{ guideline.section_order }}" class="w-full bg-white border border-sa-border text-sa-muted p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-300" required aria-required="true" aria-label="Urutan bagian">
  </div>
 
  <!-- Active Status -->
- <div class="flex items-center space-x-3 p-3 bg-admin-surfaceHover border border-admin-border rounded-polaris-base" role="group" aria-label="Status bagian">
- <input type="checkbox" name="is_active" id="is_active_{{ guideline.id }}" class="rounded-polaris-sm border-admin-border text-admin-accent focus:ring-admin-accent" {% if guideline.is_active %}checked{% endif %} aria-label="Aktifkan bagian">
- <label for="is_active_{{ guideline.id }}" class="text-admin-textMuted font-medium">Aktif</label>
- <span class="text-admin-textMuted text-sm">(Tampilkan di halaman publik)</span>
+ <div class="flex items-center space-x-3 p-3 bg-sa-surface-hover border border-sa-border rounded-sa-md" role="group" aria-label="Status bagian">
+ <input type="checkbox" name="is_active" id="is_active_{{ guideline.id }}" class="rounded-sa-sm border-sa-border text-sa-accent focus:ring-sa-accent" {% if guideline.is_active %}checked{% endif %} aria-label="Aktifkan bagian">
+ <label for="is_active_{{ guideline.id }}" class="text-sa-muted font-medium">Aktif</label>
+ <span class="text-sa-muted text-sm">(Tampilkan di halaman publik)</span>
  </div>
 
  <!-- Action Buttons -->
  <div class="flex space-x-3 pt-2" role="group" aria-label="Tombol aksi bagian">
- <button type="submit" class="flex-1 bg-admin-primary hover:bg-admin-primaryHover text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100 flex items-center justify-center" aria-label="Perbarui bagian">
+ <button type="submit" class="flex-1 bg-sa-fg hover:bg-sa-sidebar text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card flex items-center justify-center" aria-label="Perbarui bagian">
  <i class="fas fa-save mr-2"></i>
  Perbarui Bagian
  </button>
- <button type="submit" formaction="{{ url_for('main.settings_media_guidelines') }}" formmethod="POST" name="action" value="delete" class="flex-1 bg-admin-surface text-white py-3 rounded-polaris-base font-semibold focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100 flex items-center justify-center" aria-label="Hapus bagian">
+ <button type="submit" formaction="{{ url_for('main.settings_media_guidelines') }}" formmethod="POST" name="action" value="delete" class="flex-1 bg-sa-critical text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-critical transition-all duration-300 shadow-sa-card flex items-center justify-center" aria-label="Hapus bagian">
  <i class="fas fa-trash mr-2"></i>
  Hapus Bagian
  </button>
@@ -129,11 +128,11 @@
  <!-- Empty State -->
  {% if not guidelines %}
  <div class="text-center py-12">
- <div class="w-16 h-16 bg-admin-surface rounded-polaris-full flex items-center justify-center mx-auto mb-4">
- <i class="fas fa-newspaper text-admin-textMuted text-2xl"></i>
+ <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+ <i class="fas fa-newspaper text-sa-muted text-2xl"></i>
  </div>
- <h3 class="text-base font-bold text-admin-text mb-2">Belum ada Pedoman Media</h3>
- <p class="text-admin-textMuted">Mulai dengan menambahkan pedoman media organisasi Anda di atas</p>
+ <h3 class="text-base font-bold text-sa-fg mb-2">Belum ada Pedoman Media</h3>
+ <p class="text-sa-muted">Mulai dengan menambahkan pedoman media organisasi Anda di atas</p>
  </div>
  {% endif %}
  </div>
@@ -141,20 +140,20 @@
 
  <!-- Delete Confirmation Modal -->
  <div id="delete-media-guidelines-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-30" role="dialog" aria-labelledby="delete-modal-title" aria-modal="true">
- <div class="bg-admin-surface border border-admin-border p-6 rounded-polaris-base shadow-polaris-200 w-full max-w-md">
+ <div class="bg-white border border-sa-border p-6 rounded-sa-md shadow-sa-overlay w-full max-w-md">
  <div class="flex items-center mb-4">
- <div class="w-12 h-12 bg-admin-surface rounded-polaris-full flex items-center justify-center mr-4">
- <i class="fas fa-exclamation-triangle text-admin-critical text-xl"></i>
+ <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mr-4">
+ <i class="fas fa-exclamation-triangle text-sa-critical text-xl"></i>
  </div>
- <h3 id="delete-modal-title" class="text-xl font-semibold text-admin-critical">Konfirmasi Hapus</h3>
+ <h3 id="delete-modal-title" class="text-xl font-semibold text-sa-critical">Konfirmasi Hapus</h3>
  </div>
- <p class="text-admin-textMuted mb-4">Apakah Anda yakin ingin menghapus bagian pedoman media ini?</p>
- <div class="bg-admin-surface border border-admin-criticalSurface rounded-polaris-base p-3 mb-4">
- <p class="text-sm text-admin-critical"><i class="fas fa-exclamation-triangle mr-1"></i> Tindakan ini tidak dapat dibatalkan!</p>
+ <p class="text-sa-muted mb-4">Apakah Anda yakin ingin menghapus bagian pedoman media ini?</p>
+ <div class="bg-white border border-sa-critical rounded-sa-md p-3 mb-4">
+ <p class="text-sm text-sa-critical"><i class="fas fa-exclamation-triangle mr-1"></i> Tindakan ini tidak dapat dibatalkan!</p>
  </div>
  <div class="flex justify-end space-x-4" role="group" aria-label="Tombol konfirmasi hapus">
- <button id="cancel-delete-guideline-btn" class="bg-admin-surface text-admin-text px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-border transition-all duration-300 shadow-polaris-100" aria-label="Batal hapus bagian">Batal</button>
- <button id="confirm-delete-guideline-btn" class="bg-admin-surface text-white px-4 py-2 rounded-polaris-base focus:outline-none focus:ring-2 focus:ring-admin-criticalSurface transition-all duration-300 shadow-polaris-100" aria-label="Konfirmasi hapus bagian">Hapus</button>
+ <button id="cancel-delete-guideline-btn" class="bg-white text-sa-fg px-4 py-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-border transition-all duration-300 shadow-sa-card" aria-label="Batal hapus bagian">Batal</button>
+ <button id="confirm-delete-guideline-btn" class="bg-sa-critical text-white px-4 py-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-critical transition-all duration-300 shadow-sa-card" aria-label="Konfirmasi hapus bagian">Hapus</button>
  </div>
  </div>
  </div>

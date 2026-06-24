@@ -1,0 +1,31 @@
+{{ brand_name }}
+================================================================================
+
+KONTEN TERJADWAL TELAH DITERBITKAN
+
+Halo {{ user.first_name or user.username }},
+
+Konten yang Anda jadwalkan di {{ brand_name }} telah berhasil diterbitkan sesuai jadwal.
+
+DETAIL KONTEN
+-------------
+Judul: {{ content_title }}
+Jenis: {{ content_type }}
+Lokasi: {{ content_location }}
+
+INFORMASI JADWAL
+----------------
+Jadwal Asli: {{ scheduled_date }}
+Waktu Terbit: {{ actual_publish_date }}
+
+Konten Anda sekarang dapat dilihat oleh semua pengguna di platform.
+
+Lihat Konten: {{ content_url }}
+
+Terima kasih telah menggunakan fitur penjadwalan konten {{ brand_name }}.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

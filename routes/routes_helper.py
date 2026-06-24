@@ -30,6 +30,56 @@ def save_file(file, name=None):
     return unique_filename, file_path
 
 
+def update_robots_txt():
+    """Update robots.txt with correct website URL from SEO settings."""
+    try:
+        from sqlalchemy import text
+        result = db.session.execute(text('SELECT website_url FROM seo_injection_settings LIMIT 1'))
+        row = result.fetchone()
+        website_url = row[0] if row and row[0] else "https://hystory.id"
+
+        website_url = website_url.rstrip('/')
+
+        robots_content = f"""User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /settings/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /logout
+
+# Allow important public content
+Allow: /news/
+Allow: /videos/
+Allow: /gallery/
+Allow: /about/
+Allow: /utama/
+Allow: /hypes/
+Allow: /premium/
+
+# Crawl delay (optional - be respectful to server)
+Crawl-delay: 1
+
+# Sitemap locations
+Sitemap: {website_url}/sitemap.xml
+Sitemap: {website_url}/sitemap-news.xml
+Sitemap: {website_url}/sitemap-index.xml
+"""
+
+        with open('robots.txt', 'w', encoding='utf-8') as f:
+            f.write(robots_content)
+
+        current_app.logger.info(f"Updated robots.txt with website URL: {website_url}")
+        return True
+
+    except Exception as e:
+        current_app.logger.error(f"Failed to update robots.txt: {e}")
+        return False
+
+
 
 def download_image(image_url):
     """Downloads an image from a URL, saves it locally with a short unique name, and returns filename & path."""

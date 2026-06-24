@@ -20,21 +20,20 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 {% endblock %}
 
 {% block content %}
-<div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
 
 <!-- Navigation Tabs -->
 <div class="mb-6">
-  <nav class="flex space-x-1 bg-gray-100 p-1 rounded-lg" role="tablist">
-    <button class="tab-button active bg-white text-gray-800 px-4 py-2 rounded-md font-medium" data-tab="articles">
+  <nav class="flex space-x-1 bg-sa-surface p-1 rounded-sa-lg" role="tablist">
+    <button class="tab-button active bg-sa-card text-sa-fg px-4 py-2 rounded-sa-md font-medium" data-tab="articles">
       <i class="fas fa-newspaper mr-2"></i>Artikel
     </button>
-    <button class="tab-button bg-gray-200 text-gray-700 px-4 py-2 rounded-md font-medium" data-tab="albums">
+    <button class="tab-button bg-sa-border text-sa-fg-secondary px-4 py-2 rounded-sa-md font-medium" data-tab="albums">
       <i class="fas fa-images mr-2"></i>Album
     </button>
-    <button class="tab-button bg-gray-200 text-gray-700 px-4 py-2 rounded-md font-medium" data-tab="chapters">
+    <button class="tab-button bg-sa-border text-sa-fg-secondary px-4 py-2 rounded-sa-md font-medium" data-tab="chapters">
       <i class="fas fa-book-open mr-2"></i>Bab
     </button>
-    <button class="tab-button bg-gray-200 text-gray-700 px-4 py-2 rounded-md font-medium" data-tab="root">
+    <button class="tab-button bg-sa-border text-sa-fg-secondary px-4 py-2 rounded-sa-md font-medium" data-tab="root">
       <i class="fas fa-globe mr-2"></i>Halaman Root
     </button>
 
@@ -43,21 +42,21 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Articles Tab -->
 <div id="articles-tab" class="tab-content active">
-  <main class="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 rounded-lg shadow-lg mb-8" role="main">
+  <main class="bg-gradient-to-br from-sa-surface to-sa-surface border border-sa-border p-6 rounded-sa-lg shadow-sa-card mb-8" role="main">
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-xl font-semibold text-gray-800">Kelola SEO Artikel</h2>
+      <h2 class="text-xl font-semibold text-sa-fg">Kelola SEO Artikel</h2>
       <div class="flex space-x-2">
-        <a href="{{ url_for('main.settings_analytics') }}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300">
+        <a href="{{ url_for('main.settings_analytics') }}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-sa-lg font-medium transition-all duration-300">
           <i class="fas fa-rocket mr-2"></i>Enhanced SEO Dashboard
         </a>
-        <button id="run-articles-seo-injection" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium">
+        <button id="run-articles-seo-injection" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-sa-lg font-medium">
           <i class="fas fa-magic mr-2"></i>Jalankan SEO Injection
         </button>
-        <button id="refresh-articles-seo" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
+        <button id="refresh-articles-seo" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sa-lg font-medium">
           <i class="fas fa-sync-alt mr-2"></i>Segarkan
         </button>
         <div class="relative">
-          <select id="articles-category-filter" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select id="articles-category-filter" class="bg-sa-surface border border-sa-border text-sa-fg-secondary px-4 py-2 rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua Kategori</option>
           </select>
         </div>
@@ -65,15 +64,15 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
 
     <!-- Search and Filter -->
-    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card p-4 mb-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label for="search-articles" class="block text-sm font-medium text-gray-700 mb-1">Cari Artikel</label>
-          <input type="text" id="search-articles" placeholder="Judul artikel..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="search-articles" class="block text-sm font-medium text-sa-fg-secondary mb-1">Cari Artikel</label>
+          <input type="text" id="search-articles" placeholder="Judul artikel..." class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
         </div>
         <div>
-          <label for="articles-status-filter" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-          <select id="articles-status-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="articles-status-filter" class="block text-sm font-medium text-sa-fg-secondary mb-1">Status</label>
+          <select id="articles-status-filter" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua Status</option>
             <option value="published">Dipublikasi</option>
             <option value="draft">Draft</option>
@@ -81,8 +80,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           </select>
         </div>
         <div>
-          <label for="articles-seo-status-filter" class="block text-sm font-medium text-gray-700 mb-1">Status SEO</label>
-          <select id="articles-seo-status-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="articles-seo-status-filter" class="block text-sm font-medium text-sa-fg-secondary mb-1">Status SEO</label>
+          <select id="articles-seo-status-filter" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua</option>
             <option value="complete">Lengkap</option>
             <option value="incomplete">Tidak Lengkap</option>
@@ -93,23 +92,23 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
 
     <!-- Articles Table -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card overflow-hidden">
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-sa-border">
+          <thead class="bg-sa-surface">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status SEO</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Meta Desc</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keywords</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">OG Tags</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Judul</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Kategori</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Status SEO</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Meta Desc</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Keywords</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">OG Tags</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
-          <tbody id="articles-table-body" class="bg-white divide-y divide-gray-200">
+          <tbody id="articles-table-body" class="bg-sa-card divide-y divide-sa-border">
             <tr>
-              <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+              <td colspan="7" class="px-6 py-4 text-center text-sa-fg-tertiary">
                 <i class="fas fa-spinner fa-spin text-xl"></i>
                 <p class="mt-2">Memuat artikel...</p>
               </td>
@@ -121,7 +120,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
     <!-- Pagination -->
     <div class="mt-6 flex justify-between items-center">
-      <div class="text-sm text-gray-700">
+      <div class="text-sm text-sa-fg-secondary">
         Menampilkan <span id="articles-showing-start">0</span> - <span id="articles-showing-end">0</span> dari <span id="articles-total">0</span> artikel (20 per halaman)
       </div>
       <div class="flex space-x-2" id="articles-pagination-controls">
@@ -133,18 +132,18 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Albums Tab -->
 <div id="albums-tab" class="tab-content">
-  <main class="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 rounded-lg shadow-lg mb-8" role="main">
+  <main class="bg-gradient-to-br from-sa-surface to-sa-surface border border-sa-border p-6 rounded-sa-lg shadow-sa-card mb-8" role="main">
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-xl font-semibold text-gray-800">Kelola SEO Album</h2>
+      <h2 class="text-xl font-semibold text-sa-fg">Kelola SEO Album</h2>
       <div class="flex space-x-2">
-        <button id="run-albums-seo-injection" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium">
+        <button id="run-albums-seo-injection" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-sa-lg font-medium">
           <i class="fas fa-magic mr-2"></i>Jalankan SEO Injection
         </button>
-        <button id="refresh-albums-seo" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
+        <button id="refresh-albums-seo" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sa-lg font-medium">
           <i class="fas fa-sync-alt mr-2"></i>Segarkan
         </button>
         <div class="relative">
-          <select id="albums-category-filter" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select id="albums-category-filter" class="bg-sa-surface border border-sa-border text-sa-fg-secondary px-4 py-2 rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua Kategori</option>
           </select>
         </div>
@@ -152,15 +151,15 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
 
     <!-- Search and Filter -->
-    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card p-4 mb-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label for="search-albums" class="block text-sm font-medium text-gray-700 mb-1">Cari Album</label>
-          <input type="text" id="search-albums" placeholder="Judul album..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="search-albums" class="block text-sm font-medium text-sa-fg-secondary mb-1">Cari Album</label>
+          <input type="text" id="search-albums" placeholder="Judul album..." class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
         </div>
         <div>
-          <label for="albums-status-filter" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-          <select id="albums-status-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="albums-status-filter" class="block text-sm font-medium text-sa-fg-secondary mb-1">Status</label>
+          <select id="albums-status-filter" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua Status</option>
             <option value="published">Dipublikasi</option>
             <option value="draft">Draft</option>
@@ -168,8 +167,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           </select>
         </div>
         <div>
-          <label for="albums-seo-status-filter" class="block text-sm font-medium text-gray-700 mb-1">Status SEO</label>
-          <select id="albums-seo-status-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline:none focus:ring-2 focus:ring-blue-500">
+          <label for="albums-seo-status-filter" class="block text-sm font-medium text-sa-fg-secondary mb-1">Status SEO</label>
+          <select id="albums-seo-status-filter" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline:none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua</option>
             <option value="complete">Lengkap</option>
             <option value="incomplete">Tidak Lengkap</option>
@@ -180,23 +179,23 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
 
     <!-- Albums Table -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card overflow-hidden">
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-sa-border">
+          <thead class="bg-sa-surface">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status SEO</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Meta Desc</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keywords</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">OG Tags</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Judul</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Kategori</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Status SEO</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Meta Desc</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Keywords</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">OG Tags</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
-          <tbody id="albums-table-body" class="bg-white divide-y divide-gray-200">
+          <tbody id="albums-table-body" class="bg-sa-card divide-y divide-sa-border">
             <tr>
-              <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+              <td colspan="7" class="px-6 py-4 text-center text-sa-fg-tertiary">
                 <i class="fas fa-spinner fa-spin text-xl"></i>
                 <p class="mt-2">Memuat album...</p>
               </td>
@@ -208,7 +207,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
     <!-- Pagination -->
     <div class="mt-6 flex justify-between items-center">
-      <div class="text-sm text-gray-700">
+      <div class="text-sm text-sa-fg-secondary">
         Menampilkan <span id="albums-showing-start">0</span> - <span id="albums-showing-end">0</span> dari <span id="albums-total">0</span> album (20 per halaman)
       </div>
       <div class="flex space-x-2" id="albums-pagination-controls">
@@ -220,18 +219,18 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Chapters Tab -->
 <div id="chapters-tab" class="tab-content">
-  <main class="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 rounded-lg shadow-lg mb-8" role="main">
+  <main class="bg-gradient-to-br from-sa-surface to-sa-surface border border-sa-border p-6 rounded-sa-lg shadow-sa-card mb-8" role="main">
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-xl font-semibold text-gray-800">Kelola SEO Bab</h2>
+      <h2 class="text-xl font-semibold text-sa-fg">Kelola SEO Bab</h2>
       <div class="flex space-x-2">
-        <button id="run-chapters-seo-injection" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium">
+        <button id="run-chapters-seo-injection" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-sa-lg font-medium">
           <i class="fas fa-magic mr-2"></i>Jalankan SEO Injection
         </button>
-        <button id="refresh-chapters-seo" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
+        <button id="refresh-chapters-seo" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sa-lg font-medium">
           <i class="fas fa-sync-alt mr-2"></i>Segarkan
         </button>
         <div class="relative">
-          <select id="chapters-category-filter" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select id="chapters-category-filter" class="bg-sa-surface border border-sa-border text-sa-fg-secondary px-4 py-2 rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua Kategori</option>
           </select>
         </div>
@@ -239,15 +238,15 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
 
     <!-- Search and Filter -->
-    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card p-4 mb-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label for="search-chapters" class="block text-sm font-medium text-gray-700 mb-1">Cari Bab</label>
-          <input type="text" id="search-chapters" placeholder="Judul bab..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="search-chapters" class="block text-sm font-medium text-sa-fg-secondary mb-1">Cari Bab</label>
+          <input type="text" id="search-chapters" placeholder="Judul bab..." class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
         </div>
         <div>
-          <label for="chapters-status-filter" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-          <select id="chapters-status-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="chapters-status-filter" class="block text-sm font-medium text-sa-fg-secondary mb-1">Status</label>
+          <select id="chapters-status-filter" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua Status</option>
             <option value="published">Dipublikasi</option>
             <option value="draft">Draft</option>
@@ -255,8 +254,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           </select>
         </div>
         <div>
-          <label for="chapters-seo-status-filter" class="block text-sm font-medium text-gray-700 mb-1">Status SEO</label>
-          <select id="chapters-seo-status-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="chapters-seo-status-filter" class="block text-sm font-medium text-sa-fg-secondary mb-1">Status SEO</label>
+          <select id="chapters-seo-status-filter" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua</option>
             <option value="complete">Lengkap</option>
             <option value="incomplete">Tidak Lengkap</option>
@@ -267,23 +266,23 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
 
     <!-- Chapters Table -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card overflow-hidden">
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-sa-border">
+          <thead class="bg-sa-surface">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Album</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status SEO</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Meta Desc</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Keywords</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">OG Tags</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Judul</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Album</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Status SEO</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Meta Desc</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Keywords</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">OG Tags</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
-          <tbody id="chapters-table-body" class="bg-white divide-y divide-gray-200">
+          <tbody id="chapters-table-body" class="bg-sa-card divide-y divide-sa-border">
             <tr>
-              <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+              <td colspan="7" class="px-6 py-4 text-center text-sa-fg-tertiary">
                 <i class="fas fa-spinner fa-spin text-xl"></i>
                 <p class="mt-2">Memuat bab...</p>
               </td>
@@ -295,7 +294,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
     <!-- Pagination -->
     <div class="mt-6 flex justify-between items-center">
-      <div class="text-sm text-gray-700">
+      <div class="text-sm text-sa-fg-secondary">
         Menampilkan <span id="chapters-showing-start">0</span> - <span id="chapters-showing-end">0</span> dari <span id="chapters-total">0</span> bab (20 per halaman)
       </div>
       <div class="flex space-x-2" id="chapters-pagination-controls">
@@ -307,41 +306,41 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Root Pages Tab -->
 <div id="root-tab" class="tab-content">
-  <main class="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 rounded-lg shadow-lg mb-8" role="main">
+  <main class="bg-gradient-to-br from-sa-surface to-sa-surface border border-sa-border p-6 rounded-sa-lg shadow-sa-card mb-8" role="main">
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-xl font-semibold text-gray-800">Kelola SEO Halaman Root</h2>
+      <h2 class="text-xl font-semibold text-sa-fg">Kelola SEO Halaman Root</h2>
       <div class="flex space-x-2">
         <!-- Root SEO Settings button moved to settings page -->
-        <button id="run-root-seo-injection" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium">
+        <button id="run-root-seo-injection" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-sa-lg font-medium">
           <i class="fas fa-magic mr-2"></i>Jalankan SEO Injection
         </button>
-        <button id="refresh-root-seo" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
+        <button id="refresh-root-seo" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sa-lg font-medium">
           <i class="fas fa-sync-alt mr-2"></i>Segarkan
         </button>
-        <button id="create-root-seo-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
+        <button id="create-root-seo-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-sa-lg font-medium">
           <i class="fas fa-plus mr-2"></i>Buat SEO Baru
         </button>
       </div>
     </div>
 
     <!-- Search and Filter -->
-    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card p-4 mb-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label for="search-root" class="block text-sm font-medium text-gray-700 mb-1">Cari Halaman</label>
-          <input type="text" id="search-root" placeholder="Nama halaman..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="search-root" class="block text-sm font-medium text-sa-fg-secondary mb-1">Cari Halaman</label>
+          <input type="text" id="search-root" placeholder="Nama halaman..." class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
         </div>
         <div>
-          <label for="root-status-filter" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-          <select id="root-status-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="root-status-filter" class="block text-sm font-medium text-sa-fg-secondary mb-1">Status</label>
+          <select id="root-status-filter" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua Status</option>
             <option value="active">Aktif</option>
             <option value="inactive">Tidak Aktif</option>
           </select>
         </div>
         <div>
-          <label for="root-seo-status-filter" class="block text-sm font-medium text-gray-700 mb-1">Status SEO</label>
-          <select id="root-seo-status-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label for="root-seo-status-filter" class="block text-sm font-medium text-sa-fg-secondary mb-1">Status SEO</label>
+          <select id="root-seo-status-filter" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-sa-accent">
             <option value="">Semua</option>
             <option value="complete">Lengkap</option>
             <option value="incomplete">Tidak Lengkap</option>
@@ -352,23 +351,23 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
 
     <!-- Root Pages Table -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="bg-sa-card rounded-sa-lg shadow-sa-card overflow-hidden">
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-sa-border">
+          <thead class="bg-sa-surface">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Halaman</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Skor SEO</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Meta Title</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Meta Description</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Terakhir Diperbarui</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Halaman</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Skor SEO</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Meta Title</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Meta Description</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Terakhir Diperbarui</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-sa-fg-tertiary uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
-          <tbody id="root-table-body" class="bg-white divide-y divide-gray-200">
+          <tbody id="root-table-body" class="bg-sa-card divide-y divide-sa-border">
             <tr>
-              <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+              <td colspan="7" class="px-6 py-4 text-center text-sa-fg-tertiary">
                 <i class="fas fa-spinner fa-spin text-xl"></i>
                 <p class="mt-2">Memuat halaman root...</p>
               </td>
@@ -380,7 +379,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
     <!-- Pagination -->
     <div class="mt-6 flex justify-between items-center">
-      <div class="text-sm text-gray-700">
+      <div class="text-sm text-sa-fg-secondary">
         Menampilkan <span id="root-showing-start">0</span> - <span id="root-showing-end">0</span> dari <span id="root-total">0</span> halaman (20 per halaman)
       </div>
       <div class="flex space-x-2" id="root-pagination-controls">
@@ -397,16 +396,16 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 <!-- Edit SEO Modal -->
 <div id="edit-seo-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-40">
   <div class="flex items-center justify-center min-h-screen p-4">
-    <div class="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-gradient-to-br from-white to-sa-surface border border-sa-border rounded-sa-xl shadow-sa-card max-w-4xl w-full max-h-[90vh] overflow-y-auto">
       <div class="p-6">
         <div class="flex justify-between items-center mb-6">
           <div class="flex items-center space-x-2">
-            <div class="h-10 w-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+            <div class="h-10 w-10 rounded-sa-lg bg-blue-100 text-blue-600 flex items-center justify-center">
               <i class="fas fa-search"></i>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900">Edit SEO</h3>
+            <h3 class="text-xl font-semibold text-sa-fg">Edit SEO</h3>
           </div>
-          <button id="close-seo-modal" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+          <button id="close-seo-modal" class="text-sa-fg-tertiary hover:text-sa-fg transition-colors duration-200">
             <i class="fas fa-times text-xl"></i>
           </button>
         </div>
@@ -417,34 +416,34 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           <input type="hidden" id="edit-item-type">
           
           <!-- Item Info -->
-          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <h4 class="font-medium text-gray-800 mb-2">Informasi Item</h4>
-            <p class="text-sm text-gray-700" id="edit-item-title"></p>
-            <p class="text-sm text-gray-500" id="edit-item-category"></p>
+          <div class="bg-sa-surface p-4 rounded-sa-lg border border-sa-border">
+            <h4 class="font-medium text-sa-fg mb-2">Informasi Item</h4>
+            <p class="text-sm text-sa-fg-secondary" id="edit-item-title"></p>
+            <p class="text-sm text-sa-fg-tertiary" id="edit-item-category"></p>
           </div>
 
           <!-- Meta Tags -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <label for="edit-meta-title" class="block text-sm font-medium text-gray-800 mb-1">Meta Title</label>
-              <input type="text" id="edit-meta-title" name="meta_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Judul untuk search engines (maksimal 200 karakter)">
-              <div class="flex justify-between text-xs text-gray-500 mt-1">
+              <label for="edit-meta-title" class="block text-sm font-medium text-sa-fg mb-1">Meta Title</label>
+              <input type="text" id="edit-meta-title" name="meta_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="Judul untuk search engines (maksimal 200 karakter)">
+              <div class="flex justify-between text-xs text-sa-fg-tertiary mt-1">
                 <span>Maksimal 200 karakter</span>
                 <span id="meta-title-count">0/200</span>
               </div>
             </div>
 
             <div>
-              <label for="edit-meta-keywords" class="block text-sm font-medium text-gray-800 mb-1">Meta Keywords</label>
-              <input type="text" id="edit-meta-keywords" name="meta_keywords" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="keyword1, keyword2, keyword3">
-              <p class="text-xs text-gray-500 mt-1">Pisahkan dengan koma</p>
+              <label for="edit-meta-keywords" class="block text-sm font-medium text-sa-fg mb-1">Meta Keywords</label>
+              <input type="text" id="edit-meta-keywords" name="meta_keywords" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="keyword1, keyword2, keyword3">
+              <p class="text-xs text-sa-fg-tertiary mt-1">Pisahkan dengan koma</p>
             </div>
           </div>
 
           <div>
-            <label for="edit-meta-description" class="block text-sm font-medium text-gray-800 mb-1">Meta Description</label>
-            <textarea id="edit-meta-description" name="meta_description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Deskripsi untuk search engines (maksimal 500 karakter)"></textarea>
-            <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <label for="edit-meta-description" class="block text-sm font-medium text-sa-fg mb-1">Meta Description</label>
+            <textarea id="edit-meta-description" name="meta_description" rows="4" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="Deskripsi untuk search engines (maksimal 500 karakter)"></textarea>
+            <div class="flex justify-between text-xs text-sa-fg-tertiary mt-1">
               <span>Maksimal 500 karakter</span>
               <span id="meta-desc-count">0/500</span>
             </div>
@@ -453,18 +452,18 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           <!-- Open Graph Tags -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <label for="edit-og-title" class="block text-sm font-medium text-gray-800 mb-1">Open Graph Title</label>
-              <input type="text" id="edit-og-title" name="og_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Judul untuk social media sharing">
-              <div class="flex justify-between text-xs text-gray-500 mt-1">
+              <label for="edit-og-title" class="block text-sm font-medium text-sa-fg mb-1">Open Graph Title</label>
+              <input type="text" id="edit-og-title" name="og_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="Judul untuk social media sharing">
+              <div class="flex justify-between text-xs text-sa-fg-tertiary mt-1">
                 <span>Maksimal 200 karakter</span>
                 <span id="og-title-count">0/200</span>
               </div>
             </div>
 
             <div>
-              <label for="edit-og-description" class="block text-sm font-medium text-gray-800 mb-1">Open Graph Description</label>
-              <textarea id="edit-og-description" name="og_description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Deskripsi untuk social media sharing"></textarea>
-              <div class="flex justify-between text-xs text-gray-500 mt-1">
+              <label for="edit-og-description" class="block text-sm font-medium text-sa-fg mb-1">Open Graph Description</label>
+              <textarea id="edit-og-description" name="og_description" rows="4" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="Deskripsi untuk social media sharing"></textarea>
+              <div class="flex justify-between text-xs text-sa-fg-tertiary mt-1">
                 <span>Maksimal 500 karakter</span>
                 <span id="og-desc-count">0/500</span>
               </div>
@@ -474,30 +473,30 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           <!-- Additional SEO Fields -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <label for="edit-og-image" class="block text-sm font-medium text-gray-800 mb-1">Open Graph Image URL</label>
-              <input type="text" id="edit-og-image" name="og_image" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://example.com/image.jpg">
-              <p class="text-xs text-gray-500 mt-1">URL gambar untuk social media sharing</p>
+              <label for="edit-og-image" class="block text-sm font-medium text-sa-fg mb-1">Open Graph Image URL</label>
+              <input type="text" id="edit-og-image" name="og_image" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="https://example.com/image.jpg">
+              <p class="text-xs text-sa-fg-tertiary mt-1">URL gambar untuk social media sharing</p>
             </div>
 
             <div>
-              <label for="edit-canonical-url" class="block text-sm font-medium text-gray-800 mb-1">Canonical URL</label>
-              <input type="text" id="edit-canonical-url" name="canonical_url" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://example.com/article">
-              <p class="text-xs text-gray-500 mt-1">URL kanonik untuk mencegah konten duplikat</p>
+              <label for="edit-canonical-url" class="block text-sm font-medium text-sa-fg mb-1">Canonical URL</label>
+              <input type="text" id="edit-canonical-url" name="canonical_url" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="https://example.com/article">
+              <p class="text-xs text-sa-fg-tertiary mt-1">URL kanonik untuk mencegah konten duplikat</p>
             </div>
           </div>
 
           <!-- SEO Slug -->
           <div>
-            <label for="edit-seo-slug" class="block text-sm font-medium text-gray-800 mb-1">SEO Slug</label>
-            <input type="text" id="edit-seo-slug" name="seo_slug" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="judul-artikel-seo-friendly">
-            <p class="text-xs text-gray-500 mt-1">URL yang SEO-friendly (otomatis dibuat dari judul)</p>
+            <label for="edit-seo-slug" class="block text-sm font-medium text-sa-fg mb-1">SEO Slug</label>
+            <input type="text" id="edit-seo-slug" name="seo_slug" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="judul-artikel-seo-friendly">
+            <p class="text-xs text-sa-fg-tertiary mt-1">URL yang SEO-friendly (otomatis dibuat dari judul)</p>
           </div>
 
           <!-- Twitter Card Tags -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <label for="edit-twitter-card" class="block text-sm font-medium text-gray-800 mb-1">Twitter Card Type</label>
-              <select id="edit-twitter-card" name="twitter_card" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <label for="edit-twitter-card" class="block text-sm font-medium text-sa-fg mb-1">Twitter Card Type</label>
+              <select id="edit-twitter-card" name="twitter_card" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
                 <option value="">Pilih tipe card</option>
                 <option value="summary">Summary</option>
                 <option value="summary_large_image">Summary Large Image</option>
@@ -506,31 +505,31 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
               </select>
             </div>
             <div>
-              <label for="edit-twitter-title" class="block text-sm font-medium text-gray-800 mb-1">Twitter Title</label>
-              <input type="text" id="edit-twitter-title" name="twitter_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Judul untuk Twitter">
+              <label for="edit-twitter-title" class="block text-sm font-medium text-sa-fg mb-1">Twitter Title</label>
+              <input type="text" id="edit-twitter-title" name="twitter_title" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="Judul untuk Twitter">
             </div>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <label for="edit-twitter-description" class="block text-sm font-medium text-gray-800 mb-1">Twitter Description</label>
-              <textarea id="edit-twitter-description" name="twitter_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Deskripsi untuk Twitter"></textarea>
+              <label for="edit-twitter-description" class="block text-sm font-medium text-sa-fg mb-1">Twitter Description</label>
+              <textarea id="edit-twitter-description" name="twitter_description" rows="3" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="Deskripsi untuk Twitter"></textarea>
             </div>
             <div>
-              <label for="edit-twitter-image" class="block text-sm font-medium text-gray-800 mb-1">Twitter Image URL</label>
-              <input type="text" id="edit-twitter-image" name="twitter_image" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://example.com/twitter-image.jpg">
+              <label for="edit-twitter-image" class="block text-sm font-medium text-sa-fg mb-1">Twitter Image URL</label>
+              <input type="text" id="edit-twitter-image" name="twitter_image" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="https://example.com/twitter-image.jpg">
             </div>
           </div>
 
           <!-- Advanced Meta Tags -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <label for="edit-meta-author" class="block text-sm font-medium text-gray-800 mb-1">Meta Author</label>
-              <input type="text" id="edit-meta-author" name="meta_author" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Nama penulis">
+              <label for="edit-meta-author" class="block text-sm font-medium text-sa-fg mb-1">Meta Author</label>
+              <input type="text" id="edit-meta-author" name="meta_author" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent" placeholder="Nama penulis">
             </div>
             <div>
-              <label for="edit-meta-language" class="block text-sm font-medium text-gray-800 mb-1">Meta Language</label>
-              <select id="edit-meta-language" name="meta_language" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <label for="edit-meta-language" class="block text-sm font-medium text-sa-fg mb-1">Meta Language</label>
+              <select id="edit-meta-language" name="meta_language" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
                 <option value="id">Indonesia (id)</option>
                 <option value="en">English (en)</option>
                 <option value="ja">Japanese (ja)</option>
@@ -542,8 +541,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <label for="edit-meta-robots" class="block text-sm font-medium text-gray-800 mb-1">Meta Robots</label>
-              <select id="edit-meta-robots" name="meta_robots" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <label for="edit-meta-robots" class="block text-sm font-medium text-sa-fg mb-1">Meta Robots</label>
+              <select id="edit-meta-robots" name="meta_robots" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
                 <option value="index, follow">Index, Follow</option>
                 <option value="noindex, follow">No Index, Follow</option>
                 <option value="index, nofollow">Index, No Follow</option>
@@ -551,8 +550,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
               </select>
             </div>
             <div>
-              <label for="edit-structured-data-type" class="block text-sm font-medium text-gray-800 mb-1">Structured Data Type</label>
-              <select id="edit-structured-data-type" name="structured_data_type" class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <label for="edit-structured-data-type" class="block text-sm font-medium text-sa-fg mb-1">Structured Data Type</label>
+              <select id="edit-structured-data-type" name="structured_data_type" class="w-full px-3 py-2 border border-sa-border rounded-sa-lg bg-sa-surface text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
                 <option value="Article">Article</option>
                 <option value="NewsArticle">News Article</option>
                 <option value="BlogPosting">Blog Post</option>
@@ -562,31 +561,31 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           </div>
 
           <!-- SEO Score Display -->
-          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <h4 class="font-medium text-gray-800 mb-2">SEO Score</h4>
+          <div class="bg-sa-surface p-4 rounded-sa-lg border border-sa-border">
+            <h4 class="font-medium text-sa-fg mb-2">SEO Score</h4>
             <div class="flex items-center space-x-2">
               <span class="text-2xl font-bold text-blue-600" id="seo-score">-</span>
-              <span class="text-sm text-gray-500">/ 100</span>
+              <span class="text-sm text-sa-fg-tertiary">/ 100</span>
             </div>
-            <p class="text-xs text-gray-500 mt-1">Skor berdasarkan kelengkapan data SEO</p>
+            <p class="text-xs text-sa-fg-tertiary mt-1">Skor berdasarkan kelengkapan data SEO</p>
           </div>
 
           <!-- Preview -->
-          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <h4 class="font-medium text-gray-800 mb-2">Preview Google Search</h4>
-            <div class="bg-white border border-gray-200 rounded p-3">
+          <div class="bg-sa-surface p-4 rounded-sa-lg border border-sa-border">
+            <h4 class="font-medium text-sa-fg mb-2">Preview Google Search</h4>
+            <div class="bg-sa-card border border-sa-border rounded p-3">
               <div class="text-blue-600 text-sm" id="preview-url">https://example.com/article</div>
-              <div class="text-lg font-medium text-gray-900" id="preview-title">Judul Artikel</div>
-              <div class="text-sm text-gray-600" id="preview-description">Deskripsi artikel akan muncul di sini...</div>
+              <div class="text-lg font-medium text-sa-fg" id="preview-title">Judul Artikel</div>
+              <div class="text-sm text-sa-fg-tertiary" id="preview-description">Deskripsi artikel akan muncul di sini...</div>
             </div>
           </div>
 
           <!-- Action Buttons -->
           <div class="flex justify-end space-x-3">
-            <button type="button" id="cancel-seo-edit" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-300">
+            <button type="button" id="cancel-seo-edit" class="px-4 py-2 border border-sa-border text-sa-fg-secondary rounded-sa-lg hover:bg-sa-surface transition-all duration-300">
               Batal
             </button>
-            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all duration-300 shadow-md">
+            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card">
               <i class="fas fa-save mr-2"></i>Simpan SEO
             </button>
           </div>
@@ -599,23 +598,23 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 <!-- Confirmation Modal -->
 <div id="confirmation-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-[9999]">
   <div class="flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white border border-gray-200 rounded-xl shadow-2xl max-w-lg w-full">
+    <div class="bg-sa-card border border-sa-border rounded-sa-xl shadow-sa-card max-w-lg w-full">
       <div class="p-6">
         <div class="flex items-start space-x-3 mb-4">
-          <div class="h-10 w-10 rounded-lg bg-yellow-100 text-yellow-700 flex items-center justify-center">
+          <div class="h-10 w-10 rounded-sa-lg bg-yellow-100 text-yellow-700 flex items-center justify-center">
             <i class="fas fa-exclamation-triangle"></i>
           </div>
           <div>
-            <h3 class="text-lg font-semibold text-gray-900">Konfirmasi Aksi</h3>
-            <p class="text-gray-600 mt-1" id="confirmation-message">Apakah Anda yakin ingin melanjutkan aksi ini?</p>
+            <h3 class="text-lg font-semibold text-sa-fg">Konfirmasi Aksi</h3>
+            <p class="text-sa-fg-tertiary mt-1" id="confirmation-message">Apakah Anda yakin ingin melanjutkan aksi ini?</p>
           </div>
         </div>
         
         <div class="flex justify-end space-x-3">
-          <button id="cancel-confirmation" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-300">
+          <button id="cancel-confirmation" class="px-4 py-2 border border-sa-border text-sa-fg-secondary rounded-sa-lg hover:bg-sa-surface transition-all duration-300">
             Batal
           </button>
-          <button id="confirm-action" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all duration-300 shadow-md">
+          <button id="confirm-action" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card">
             Konfirmasi
           </button>
         </div>
@@ -626,11 +625,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Image Selector Modal for Global Settings -->
 <div id="image-selector-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-60" role="dialog" aria-labelledby="image-selector-title" aria-modal="true">
-  <div class="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-    <h2 id="image-selector-title" class="text-xl font-semibold mb-4 text-gray-800">Pilih Gambar</h2>
+  <div class="bg-gradient-to-br from-sa-surface to-sa-surface border border-sa-border p-6 rounded-sa-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+    <h2 id="image-selector-title" class="text-xl font-semibold mb-4 text-sa-fg">Pilih Gambar</h2>
     <div class="mb-4" role="radiogroup" aria-label="Pilih sumber gambar">
-      <label class="inline-flex items-center"><input type="radio" name="image-source-selector" value="library" checked class="form-radio text-blue-600" aria-label="Pilih dari perpustakaan"><span class="ml-2 text-gray-700">Perpustakaan</span></label>
-      <label class="inline-flex items-center ml-4"><input type="radio" name="image-source-selector" value="url" class="form-radio text-blue-600" aria-label="Gunakan URL eksternal"><span class="ml-2 text-gray-700">URL Eksternal</span></label>
+      <label class="inline-flex items-center"><input type="radio" name="image-source-selector" value="library" checked class="form-radio text-blue-600" aria-label="Pilih dari perpustakaan"><span class="ml-2 text-sa-fg-secondary">Perpustakaan</span></label>
+      <label class="inline-flex items-center ml-4"><input type="radio" name="image-source-selector" value="url" class="form-radio text-blue-600" aria-label="Gunakan URL eksternal"><span class="ml-2 text-sa-fg-secondary">URL Eksternal</span></label>
     </div>
     <div id="image-library-section-selector" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4" role="list" aria-label="Daftar gambar perpustakaan"></div>
     <!-- Pagination for Image Library -->
@@ -638,12 +637,12 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
         <!-- Image selector pagination will be generated here -->
     </div>
     <div id="image-url-section-selector" class="hidden space-y-4 mb-4">
-      <input id="image-url-input-selector" type="text" inputmode="url" class="w-full bg-white border border-gray-300 text-gray-700 p-2 rounded-lg" placeholder="https://contoh.com/gambar.jpg" aria-label="URL gambar">
-      <input id="image-alt-input-selector" type="text" class="w-full bg-white border border-gray-300 text-gray-700 p-2 rounded-lg" placeholder="Alt teks (opsional)" aria-label="Teks alternatif gambar">
+      <input id="image-url-input-selector" type="text" inputmode="url" class="w-full bg-sa-surface border border-sa-border text-sa-fg-secondary p-2 rounded-sa-lg" placeholder="https://contoh.com/gambar.jpg" aria-label="URL gambar">
+      <input id="image-alt-input-selector" type="text" class="w-full bg-sa-surface border border-sa-border text-sa-fg-secondary p-2 rounded-sa-lg" placeholder="Alt teks (opsional)" aria-label="Teks alternatif gambar">
     </div>
     <div class="flex space-x-4" role="group" aria-label="Tombol aksi gambar">
-      <button type="button" id="select-image-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300 shadow-md" aria-label="Pilih gambar">Pilih</button>
-      <button type="button" id="close-image-selector" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 shadow-md" aria-label="Tutup dialog">Tutup</button>
+      <button type="button" id="select-image-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-sa-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sa-accent transition-all duration-300 shadow-sa-card" aria-label="Pilih gambar">Pilih</button>
+      <button type="button" id="close-image-selector" class="flex-1 bg-sa-border hover:bg-gray-300 text-sa-fg py-3 rounded-sa-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300 shadow-sa-card" aria-label="Tutup dialog">Tutup</button>
     </div>
   </div>
 </div>

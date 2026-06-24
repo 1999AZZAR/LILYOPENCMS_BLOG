@@ -53,6 +53,9 @@ instance/
 *.sln
 *.swp
 *.kate-swp
+.claude/
+.opencode/
+.kilo/
 
 # OS
 .DS_Store

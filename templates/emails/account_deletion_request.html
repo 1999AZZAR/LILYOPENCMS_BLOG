@@ -1,0 +1,106 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends "_base.html" %}
+
+{% block title %}Permintaan Hapus Akun - {{ brand_name }}{% endblock %}
+
+{% block preview %}Permintaan penghapusan akun {{ brand_name }} Anda sedang ditinjau.{% endblock %}
+
+{% block status_bar %}
+<tr>
+    <td style="background-color: #f59e0b; padding: 12px 30px; text-align: center;">
+        <p style="margin: 0; font-size: 14px; color: #ffffff; font-weight: 500;">Permintaan Sedang Ditinjau</p>
+    </td>
+</tr>
+{% endblock %}
+
+{% block content %}
+<h2 style="margin: 0 0 20px 0; font-size: 24px; font-weight: 600; color: #2A2520; line-height: 1.3;">Permintaan Penghapusan Akun Diterima</h2>
+
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #4A4040; line-height: 1.6;">
+    Halo <strong style="color: #2A2520;">{{ user.first_name or user.username }}</strong>,
+</p>
+
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #4A4040; line-height: 1.6;">
+    Kami telah menerima permintaan penghapusan akun Anda dari <strong style="color: #2A2520;">{{ brand_name }}</strong>. Permintaan ini sedang dalam proses peninjauan oleh tim kami.
+</p>
+
+<!-- Warning box -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 25px 0;">
+    <tr>
+        <td style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; font-size: 14px; color: #92400e; font-weight: 500;">Status: Dalam Peninjauan</p>
+            <p style="margin: 8px 0 0 0; font-size: 14px; color: #b45309; line-height: 1.5;">
+                Permintaan Anda akan diproses sesuai dengan kebijakan platform kami. Proses ini biasanya memakan waktu 7-14 hari kerja.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<!-- Info during review -->
+<p style="margin: 25px 0 15px 0; font-size: 16px; color: #2A2520; font-weight: 600;">Selama masa peninjauan:</p>
+
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+        <td style="padding: 10px 0; border-bottom: 1px solid #D6CFC3;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td width="30" valign="top" style="padding-right: 12px;">
+                        <div style="width: 24px; height: 24px; background-color: #ecfdf5; border-radius: 50%; text-align: center; line-height: 22px; font-size: 14px; color: #10b981;">&#10003;</div>
+                    </td>
+                    <td style="font-size: 15px; color: #4A4040;">Akun Anda tetap aktif dan dapat digunakan</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px 0; border-bottom: 1px solid #D6CFC3;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td width="30" valign="top" style="padding-right: 12px;">
+                        <div style="width: 24px; height: 24px; background-color: #ecfdf5; border-radius: 50%; text-align: center; line-height: 22px; font-size: 14px; color: #10b981;">&#10003;</div>
+                    </td>
+                    <td style="font-size: 15px; color: #4A4040;">Anda masih dapat membatalkan permintaan</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px 0;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                    <td width="30" valign="top" style="padding-right: 12px;">
+                        <div style="width: 24px; height: 24px; background-color: #ecfdf5; border-radius: 50%; text-align: center; line-height: 22px; font-size: 14px; color: #10b981;">&#10003;</div>
+                    </td>
+                    <td style="font-size: 15px; color: #4A4040;">Konten Anda tetap tersedia untuk pengguna lain</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Cancel info -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 25px 0;">
+    <tr>
+        <td style="background-color: #F5EDE5; border-left: 4px solid #9C3D3B; padding: 20px; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; font-size: 14px; color: #7A2E2D; font-weight: 500;">Berubah Pikiran?</p>
+            <p style="margin: 8px 0 0 0; font-size: 14px; color: #9C3D3B; line-height: 1.5;">
+                Jika ingin membatalkan permintaan ini, silakan masuk ke akun Anda dan akses pengaturan akun, atau hubungi tim dukungan kami.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<p style="margin: 20px 0 0 0; font-size: 14px; color: #6B6060; line-height: 1.6;">
+    Terima kasih atas waktu yang telah Anda habiskan bersama kami di <strong style="color: #4A4040;">{{ brand_name }}</strong>.
+</p>
+{% endblock %}

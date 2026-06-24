@@ -1,0 +1,95 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends "_base.html" %}
+
+{% block title %}Chapter Baru - {{ brand_name }}{% endblock %}
+
+{% block preview %}Chapter baru "{{ chapter_title }}" dari album "{{ album_title }}" telah diterbitkan.{% endblock %}
+
+{% block status_bar %}
+<tr>
+    <td style="background-color: #10b981; padding: 12px 30px; text-align: center;">
+        <p style="margin: 0; font-size: 14px; color: #ffffff; font-weight: 500;">Chapter Baru</p>
+    </td>
+</tr>
+{% endblock %}
+
+{% block content %}
+<h2 style="margin: 0 0 20px 0; font-size: 24px; font-weight: 600; color: #2A2520; line-height: 1.3;">Chapter Baru Telah Diterbitkan</h2>
+
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #4A4040; line-height: 1.6;">
+    Halo <strong style="color: #2A2520;">{{ user.first_name or user.username }}</strong>,
+</p>
+
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #4A4040; line-height: 1.6;">
+    Kabar baik! Chapter baru dari album yang Anda ikuti telah diterbitkan di <strong style="color: #2A2520;">{{ brand_name }}</strong>.
+</p>
+
+<!-- Chapter details -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 25px 0;">
+    <tr>
+        <td style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 20px; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; font-size: 14px; color: #065f46; font-weight: 500;">Detail Chapter</p>
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top: 12px;">
+                <tr>
+                    <td style="padding: 6px 0; font-size: 14px; color: #047857;">
+                        <strong>Album:</strong> {{ album_title }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px 0; font-size: 14px; color: #047857;">
+                        <strong>Chapter:</strong> {{ chapter_number }} - {{ chapter_title }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px 0; font-size: 14px; color: #047857;">
+                        <strong>Penulis:</strong> {{ album_author or 'Tidak diketahui' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 6px 0; font-size: 14px; color: #047857;">
+                        <strong>Tanggal Terbit:</strong> {{ publish_date }}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<p style="margin: 0 0 20px 0; font-size: 16px; color: #4A4040; line-height: 1.6;">
+    Chapter ini sekarang tersedia untuk dibaca. Klik tombol di bawah untuk membaca chapter terbaru.
+</p>
+
+<!-- CTA Buttons -->
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 30px 0;">
+    <tr>
+        <td style="text-align: center;">
+            <a href="{{ chapter_url }}" style="display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; padding: 14px 32px; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 8px; box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2); margin-bottom: 12px;">Baca Chapter Sekarang</a>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; padding-top: 10px;">
+            <a href="{{ album_url }}" style="display: inline-block; background: transparent; color: #9C3D3B; padding: 12px 24px; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid #9C3D3B; border-radius: 8px;">Lihat Album Lengkap</a>
+        </td>
+    </tr>
+</table>
+
+<p style="margin: 20px 0 0 0; font-size: 14px; color: #6B6060; line-height: 1.6; text-align: center;">
+    Terima kasih telah menjadi bagian dari komunitas <strong style="color: #4A4040;">{{ brand_name }}</strong>.
+</p>
+{% endblock %}
+
+{% block footer_extra %}
+<p style="margin: 10px 0 0 0; font-size: 12px; color: #9A9080;">
+    Jika Anda tidak ingin menerima notifikasi ini, Anda dapat mengubah preferensi email di pengaturan akun Anda.
+</p>
+{% endblock %}

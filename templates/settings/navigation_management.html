@@ -4,39 +4,58 @@
 {% block hero_desc %}Kelola link navigasi untuk navbar dan footer{% endblock %}
 
 {% block content %}
-<!-- Toast Container -->
-<div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="status" aria-live="polite"></div>
-
 <div class="space-y-8">
+
+
  <!-- Navigation Management Section -->
- <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-100 p-6 mb-8" role="region" aria-label="Navigation Management">
+ <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6" role="region" aria-label="Navigation Management">
  <div class="flex items-center gap-3 mb-6">
- <div class="w-10 h-10 bg-admin-surfaceHover rounded-polaris-base flex items-center justify-center">
- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-admin-textMuted">
- <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
- </svg>
+ <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-md flex items-center justify-center">
+ <i class="fas fa-link text-sa-muted text-lg"></i>
  </div>
- <h2 class="text-xl font-bold tracking-tight text-admin-text">Navigation Links</h2>
+ <h2 class="text-xl font-bold tracking-tight text-sa-fg">Navigation Links</h2>
  </div>
 
- <!-- Add New Link Button -->
- <div class="mb-6">
- <button id="add-link-btn" class="flex items-center gap-2 bg-admin-primary hover:bg-admin-primaryHover text-white py-3 px-6 rounded-polaris-base font-medium transition-all duration-300 shadow-polaris-100">
- <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
- </svg>
- Tambah Link Baru
- </button>
+ <!-- Action Buttons Row -->
+ <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+  <div class="flex items-center gap-3">
+   <button id="add-link-btn" class="flex items-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-3 px-6 rounded-sa-md font-medium transition-all duration-300 shadow-sa-card">
+    <i class="fas fa-plus"></i>
+    Tambah Link Baru
+   </button>
+   <button id="copy-links-btn" class="flex items-center gap-2 bg-sa-surface-hover hover:bg-sa-sidebar text-sa-fg py-3 px-6 rounded-sa-md font-medium transition-all duration-300 shadow-sa-card border border-sa-border">
+    <i class="fas fa-copy"></i>
+    Copy Links
+   </button>
+  </div>
+  <div id="bulk-actions" class="flex items-center gap-3 hidden" style="display: none;">
+   <span id="selected-count" class="text-sm text-sa-fg font-medium">0 selected</span>
+   <button id="bulk-activate-btn" class="flex items-center gap-2 bg-sa-success text-white py-2 px-4 rounded-sa-md text-sm font-medium transition-all duration-300 shadow-sa-card">
+    <i class="fas fa-check"></i>
+    Activate
+   </button>
+   <button id="bulk-deactivate-btn" class="flex items-center gap-2 bg-gray-400 hover:bg-gray-500 text-white py-2 px-4 rounded-sa-md text-sm font-medium transition-all duration-300">
+    <i class="fas fa-pause"></i>
+    Deactivate
+   </button>
+   <button id="bulk-delete-btn" class="flex items-center gap-2 bg-sa-critical text-white py-2 px-4 rounded-sa-md text-sm font-medium transition-all duration-300 shadow-sa-card">
+    <i class="fas fa-trash"></i>
+    Delete
+   </button>
+   <button id="bulk-clear-btn" class="text-sa-muted hover:text-sa-fg py-2 px-3 rounded-sa-md text-sm font-medium transition-all duration-300">
+    Clear
+   </button>
+  </div>
  </div>
 
  <!-- Navigation Links Tabs -->
  <div class="mb-6">
- <div class="border-b border-admin-border">
+ <div class="border-b border-sa-border">
  <nav class="-mb-px flex space-x-8">
- <button id="navbar-tab" class="nav-tab active px-4 py-2 text-admin-textMuted border-b-2 border-admin-accent font-medium transition-all duration-300" data-location="navbar">
+ <button id="navbar-tab" class="nav-tab active px-4 py-2 text-sa-muted border-b-2 border-sa-accent font-medium transition-all duration-300" data-location="navbar">
  Navbar Links
  </button>
- <button id="footer-tab" class="nav-tab px-4 py-2 text-admin-textMuted border-b-2 border-transparent hover:border-admin-border font-medium transition-all duration-300" data-location="footer">
+ <button id="footer-tab" class="nav-tab px-4 py-2 text-sa-muted border-b-2 border-transparent hover:border-sa-border font-medium transition-all duration-300" data-location="footer">
  Footer Quick Links
  </button>
  </nav>
@@ -50,18 +69,18 @@
 
  <!-- Loading State -->
  <div id="loading" class="text-center py-8 hidden">
- <div class="animate-spin rounded-polaris-full h-8 w-8 border-b-2 border-admin-accent mx-auto"></div>
- <p class="text-admin-textMuted mt-2">Memuat link navigasi...</p>
+ <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-sa-accent mx-auto"></div>
+ <p class="text-sa-muted mt-2">Memuat link navigasi...</p>
  </div>
 
  <!-- Empty State -->
  <div id="empty-state" class="text-center py-12 hidden">
- <svg class="w-16 h-16 text-admin-accent mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg class="w-16 h-16 text-sa-accent mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
  </svg>
- <h3 class="text-base font-bold text-admin-text mb-2">Belum ada link navigasi</h3>
- <p class="text-admin-textMuted mb-4">Tambahkan link pertama untuk mulai mengelola navigasi</p>
- <button id="add-first-link-btn" class="flex items-center gap-2 bg-admin-primary hover:bg-admin-primaryHover text-white py-3 px-6 rounded-polaris-base font-medium transition-all duration-300 shadow-polaris-100">
+ <h3 class="text-base font-bold text-sa-fg mb-2">Belum ada link navigasi</h3>
+ <p class="text-sa-muted mb-4">Tambahkan link pertama untuk mulai mengelola navigasi</p>
+ <button id="add-first-link-btn" class="flex items-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-3 px-6 rounded-sa-md font-medium transition-all duration-300 shadow-sa-card">
  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
  </svg>
@@ -74,9 +93,9 @@
 <!-- Add/Edit Link Modal -->
 <div id="link-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
  <div class="flex items-center justify-center min-h-screen p-4">
- <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-200 max-w-md w-full">
+ <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-overlay max-w-md w-full">
  <div class="p-6">
- <h3 id="modal-title" class="text-base font-bold text-admin-text mb-4">
+ <h3 id="modal-title" class="text-base font-bold text-sa-fg mb-4">
  Tambah Link Baru
  </h3>
  
@@ -84,28 +103,28 @@
  <input type="hidden" id="link-id" name="id">
  
  <div>
- <label for="link-name" class="block text-sm font-medium text-admin-text mb-2">
+ <label for="link-name" class="block text-sm font-medium text-sa-fg mb-2">
  Nama Link *
  </label>
  <input type="text" id="link-name" name="name" required
- class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent">
+ class="w-full px-3 py-2 border border-sa-border rounded-sa-md bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
  </div>
  
  <div>
- <label for="link-url" class="block text-sm font-medium text-admin-text mb-2">
+ <label for="link-url" class="block text-sm font-medium text-sa-fg mb-2">
  URL *
  </label>
  <input type="url" id="link-url" name="url" required
- class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent"
+ class="w-full px-3 py-2 border border-sa-border rounded-sa-md bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent"
  placeholder="https://example.com atau /berita">
  </div>
  
  <!-- Internal Links Dropdown -->
  <div id="internal-link-container" class="mb-4 hidden">
- <label for="internal-link-select" class="block text-sm font-medium text-admin-text mb-2">
+ <label for="internal-link-select" class="block text-sm font-medium text-sa-fg mb-2">
  Pilih Link Internal
  </label>
- <select id="internal-link-select" class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent">
+ <select id="internal-link-select" class="w-full px-3 py-2 border border-sa-border rounded-sa-md bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
  <option value="">-- Pilih Halaman --</option>
  {% for link in internal_links %}
  <option value="{{ link.url }}">{{ link.name }}</option>
@@ -114,44 +133,44 @@
  </div>
  
  <div>
- <label for="link-location" class="block text-sm font-medium text-admin-text mb-2">
+ <label for="link-location" class="block text-sm font-medium text-sa-fg mb-2">
  Lokasi *
  </label>
  <select id="link-location" name="location" required
- class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent">
+ class="w-full px-3 py-2 border border-sa-border rounded-sa-md bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
  <option value="navbar">Navbar</option>
  <option value="footer">Footer Quick Links</option>
  </select>
  </div>
  
  <div>
- <label for="link-order" class="block text-sm font-medium text-admin-text mb-2">
+ <label for="link-order" class="block text-sm font-medium text-sa-fg mb-2">
  Urutan
  </label>
  <input type="number" id="link-order" name="order" min="0" value="0"
- class="w-full px-3 py-2 border border-admin-border rounded-polaris-base bg-white text-admin-text focus:outline-none focus:ring-2 focus:ring-admin-accent focus:border-admin-accent">
+ class="w-full px-3 py-2 border border-sa-border rounded-sa-md bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
  </div>
  
  <div class="flex items-center space-x-4">
  <label class="flex items-center">
  <input type="checkbox" id="link-active" name="is_active" checked
- class="rounded-polaris-sm border-admin-border text-admin-textMuted focus:ring-admin-accent">
- <span class="ml-2 text-sm text-admin-text">Aktif</span>
+ class="rounded-sa-sm border-sa-border text-sa-muted focus:ring-sa-accent">
+ <span class="ml-2 text-sm text-sa-fg">Aktif</span>
  </label>
  
  <label class="flex items-center">
  <input type="checkbox" id="link-external" name="is_external"
- class="rounded-polaris-sm border-admin-border text-admin-textMuted focus:ring-admin-accent">
- <span class="ml-2 text-sm text-admin-text">Link Eksternal</span>
+ class="rounded-sa-sm border-sa-border text-sa-muted focus:ring-sa-accent">
+ <span class="ml-2 text-sm text-sa-fg">Link Eksternal</span>
  </label>
  </div>
  </form>
  
  <div class="flex justify-end space-x-3 mt-6">
- <button id="cancel-btn" class="px-4 py-2 border border-admin-border text-admin-textMuted rounded-polaris-base hover:bg-admin-surface transition-all duration-300">
+ <button id="cancel-btn" class="px-4 py-2 border border-sa-border text-sa-muted rounded-sa-md hover:bg-white transition-all duration-300">
  Batal
  </button>
- <button id="save-btn" class="px-4 py-2 bg-admin-primary hover:bg-admin-primaryHover text-white rounded-polaris-base font-medium transition-all duration-300 shadow-polaris-100">
+ <button id="save-btn" class="px-4 py-2 bg-sa-fg hover:bg-sa-sidebar text-white rounded-sa-md font-medium transition-all duration-300 shadow-sa-card">
  Simpan
  </button>
  </div>
@@ -160,19 +179,67 @@
  </div>
 </div>
 
+<!-- Copy Links Modal -->
+<div id="copy-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
+ <div class="flex items-center justify-center min-h-screen p-4">
+  <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-overlay max-w-lg w-full">
+   <div class="p-6">
+    <h3 class="text-base font-bold text-sa-fg mb-4">Copy Navigation Links</h3>
+    <div class="space-y-4">
+     <div>
+      <label class="block text-sm font-medium text-sa-fg mb-2">Copy From:</label>
+      <select id="copy-from" class="w-full px-3 py-2 border border-sa-border rounded-sa-md bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
+       <option value="">-- Pilih Sumber --</option>
+       <option value="navbar">Navbar Links</option>
+       <option value="footer">Footer Quick Links</option>
+      </select>
+     </div>
+     <div>
+      <label class="block text-sm font-medium text-sa-fg mb-2">Copy To:</label>
+      <select id="copy-to" class="w-full px-3 py-2 border border-sa-border rounded-sa-md bg-white text-sa-fg focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
+       <option value="">-- Pilih Tujuan --</option>
+       <option value="navbar">Navbar Links</option>
+       <option value="footer">Footer Quick Links</option>
+      </select>
+     </div>
+     <div class="flex items-center">
+      <label class="flex items-center">
+       <input type="checkbox" id="copy-overwrite" class="rounded-sa-sm border-sa-border text-sa-muted focus:ring-sa-accent">
+       <span class="ml-2 text-sm text-sa-fg">Overwrite existing links</span>
+      </label>
+     </div>
+     <div id="copy-preview" class="hidden">
+      <label class="block text-sm font-medium text-sa-fg mb-2">Preview:</label>
+      <div id="copy-preview-content" class="max-h-40 overflow-y-auto bg-white border border-sa-border rounded-sa-md p-3 text-sm text-sa-muted">
+      </div>
+     </div>
+    </div>
+    <div class="flex justify-end space-x-3 mt-6">
+     <button id="cancel-copy-btn" class="px-4 py-2 border border-sa-border text-sa-muted rounded-sa-md hover:bg-white transition-all duration-300">
+      Batal
+     </button>
+     <button id="confirm-copy-btn" class="px-4 py-2 bg-sa-accent hover:bg-sa-fg text-white rounded-sa-md font-medium transition-all duration-300 shadow-sa-card">
+      <i class="fas fa-copy mr-1"></i> Copy Links
+     </button>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
 <!-- Delete Confirmation Modal -->
 <div id="delete-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
  <div class="flex items-center justify-center min-h-screen p-4">
- <div class="bg-admin-surface border border-admin-border rounded-polaris-base shadow-polaris-200 max-w-md w-full">
+ <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-overlay max-w-md w-full">
  <div class="p-6">
- <h3 class="text-base font-bold text-admin-text mb-4">Konfirmasi Hapus</h3>
- <p class="text-admin-textMuted mb-6">Apakah Anda yakin ingin menghapus link ini? Tindakan ini tidak dapat dibatalkan.</p>
+ <h3 class="text-base font-bold text-sa-fg mb-4">Konfirmasi Hapus</h3>
+ <p class="text-sa-muted mb-6">Apakah Anda yakin ingin menghapus link ini? Tindakan ini tidak dapat dibatalkan.</p>
  
  <div class="flex justify-end space-x-3">
- <button id="cancel-delete-btn" class="px-4 py-2 border border-admin-border text-admin-textMuted rounded-polaris-base hover:bg-admin-surface transition-all duration-300">
+ <button id="cancel-delete-btn" class="px-4 py-2 border border-sa-border text-sa-muted rounded-sa-md hover:bg-white transition-all duration-300">
  Batal
  </button>
- <button id="confirm-delete-btn" class="px-4 py-2 bg-admin-surface text-white rounded-polaris-base font-medium transition-all duration-300 shadow-polaris-100">
+ <button id="confirm-delete-btn" class="px-4 py-2 bg-sa-critical text-white rounded-sa-md font-medium transition-all duration-300 shadow-sa-card">
  Hapus
  </button>
  </div>
@@ -180,9 +247,39 @@
  </div>
  </div>
 </div>
+<!-- Bulk Delete Confirmation Modal -->
+<div id="bulk-delete-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50">
+ <div class="flex items-center justify-center min-h-screen p-4">
+  <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-overlay max-w-md w-full">
+   <div class="p-6">
+    <h3 class="text-base font-bold text-sa-fg mb-4">Konfirmasi Hapus Massal</h3>
+    <p class="text-sa-muted mb-6">Apakah Anda yakin ingin menghapus <span id="bulk-delete-count" class="font-semibold text-sa-fg">0</span> link yang dipilih? Tindakan ini tidak dapat dibatalkan.</p>
+    <div class="flex justify-end space-x-3">
+     <button id="cancel-bulk-delete-btn" class="px-4 py-2 border border-sa-border text-sa-muted rounded-sa-md hover:bg-white transition-all duration-300">
+      Batal
+     </button>
+     <button id="confirm-bulk-delete-btn" class="px-4 py-2 bg-sa-critical text-white rounded-sa-md font-medium transition-all duration-300 shadow-sa-card">
+      <i class="fas fa-trash mr-1"></i> Hapus Semua
+     </button>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
 {% endblock %}
 
 {% block extra_scripts %}
 <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
 <script src="{{ url_for('static', filename='js/navigation-management.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        const messagesData = '{{ get_flashed_messages(with_categories=true) | tojson | safe }}';
+        if (!messagesData || messagesData.trim() === '' || messagesData === 'null' || messagesData === 'undefined') return;
+        let messages;
+        try { messages = JSON.parse(messagesData); } catch (parseError) { return; }
+        if (Array.isArray(messages)) messages.forEach(([category, message]) => showToast(category, message));
+    } catch (e) { console.error('Error in flash messages handler:', e); }
+});
+</script>
 {% endblock %} 

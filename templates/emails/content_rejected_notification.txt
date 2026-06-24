@@ -1,0 +1,32 @@
+{{ brand_name }}
+================================================================================
+
+KONTEN ANDA TIDAK DAPAT DISETUJUI
+
+Halo {{ user.first_name or user.username }},
+
+Setelah peninjauan, konten yang Anda kirimkan ke {{ brand_name }} tidak dapat disetujui untuk dipublikasikan.
+
+DETAIL KONTEN
+-------------
+Jenis: {{ content_type_id|title }}
+Judul: {{ content_title }}
+Tanggal Peninjauan: {{ rejection_date }}
+
+{% if reason %}
+ALASAN PENOLAKAN
+----------------
+{{ reason }}
+{% endif %}
+
+LANGKAH SELANJUTNYA
+-------------------
+Anda dapat mengedit konten sesuai dengan pedoman kami dan mengirimkannya kembali untuk ditinjau ulang.
+
+Jika Anda memiliki pertanyaan tentang keputusan ini, silakan hubungi tim dukungan kami.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

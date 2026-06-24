@@ -1,0 +1,26 @@
+{{ brand_name }}
+================================================================================
+
+PROFIL ANDA TELAH DIPERBARUI
+
+Halo {{ user.first_name or user.username }},
+
+Kami ingin mengonfirmasi bahwa profil Anda di {{ brand_name }} telah berhasil diperbarui.
+
+BIDANG YANG DIPERBARUI
+----------------------
+{% for field in updated_fields %}
+- {{ field }}
+{% endfor %}
+
+PERINGATAN KEAMANAN
+-------------------
+Jika Anda tidak melakukan perubahan ini, segera amankan akun Anda dengan mengubah kata sandi dan hubungi tim dukungan kami.
+
+Jika Anda memiliki pertanyaan tentang perubahan profil, silakan hubungi tim dukungan kami.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

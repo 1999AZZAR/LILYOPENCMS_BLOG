@@ -1,0 +1,32 @@
+{{ brand_name }}
+================================================================================
+
+PERMINTAAN EDIT TIDAK DAPAT DISETUJUI
+
+Halo {{ user.first_name or user.username }},
+
+Setelah peninjauan, permintaan edit Anda untuk konten di {{ brand_name }} tidak dapat disetujui.
+
+DETAIL KONTEN
+-------------
+Judul: {{ content_title }}
+Jenis: {{ content_type_id|title }}
+Tanggal Peninjauan: {{ review_date }}
+
+{% if rejection_reason %}
+ALASAN PENOLAKAN
+----------------
+{{ rejection_reason }}
+{% endif %}
+
+LANGKAH SELANJUTNYA
+-------------------
+Anda dapat mengajukan permintaan edit baru dengan alasan yang lebih jelas. Pastikan permintaan sesuai dengan pedoman platform.
+
+Jika Anda memiliki pertanyaan tentang keputusan ini, silakan hubungi tim dukungan kami.
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.

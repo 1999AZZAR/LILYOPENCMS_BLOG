@@ -1,0 +1,29 @@
+{{ brand_name }}
+================================================================================
+
+PERMINTAAN EDIT ALBUM BARU
+
+Halo Admin,
+
+Pengguna {{ requester_username }} telah mengajukan permintaan untuk mengedit album di {{ brand_name }}.
+
+DETAIL PERMINTAAN
+-----------------
+Pemohon: {{ requester_username }}
+Album: {{ album_title }}
+
+ALASAN PERMINTAAN
+-----------------
+{{ reason }}
+
+TINDAKAN DIPERLUKAN
+-------------------
+Silakan tinjau permintaan ini dan ambil keputusan untuk menyetujui atau menolak.
+
+Tinjau permintaan: {{ admin_url }}
+
+--------------------------------------------------------------------------------
+Salam,
+Tim {{ brand_name }}
+
+Email ini dikirim secara otomatis. Mohon tidak membalas email ini.
