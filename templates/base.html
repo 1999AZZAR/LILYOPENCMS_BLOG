@@ -109,6 +109,19 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     }
   </style>
 
+  {% if brand_info and brand_info.google_adsense_publisher_id %}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ brand_info.google_adsense_publisher_id }}" crossorigin="anonymous"></script>
+  {% endif %}
+
+  {% if brand_info and brand_info.google_tag_manager_id %}
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ brand_info.google_tag_manager_id }}');</script>
+  {% endif %}
+
+  {% if brand_info and brand_info.google_analytics_measurement_id %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ brand_info.google_analytics_measurement_id }}"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ brand_info.google_analytics_measurement_id }}');</script>
+  {% endif %}
+
   <!-- Lazy Loading -->
   <script src="{{ url_for('static', filename='js/lazy-loading.js') }}" defer></script>
 
@@ -116,6 +129,10 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 </head>
 
 <body class="bg-background text-foreground antialiased min-h-screen flex flex-col">
+
+  {% if brand_info and brand_info.google_tag_manager_id %}
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ brand_info.google_tag_manager_id }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  {% endif %}
 
   <!-- Loading Spinner -->
   <div id="loading-spinner" class="hidden"><div class="spinner"></div></div>

@@ -5,24 +5,29 @@
 
 ---
 
-## DONE
+## PHASE 0 — Multi-Design System Engine
 
-- [x] Card design system (dispatcher + 4 variants, `index`/`utama`/`news`/`articles`/`hypes` updated)
-- [x] Brand color inline `<style>` block in `base.html` reads from DB
-- [x] SEO blueprints registered (`seo_enhanced_bp`, `seo_settings_bp`)
-- [x] Dynamic `/robots.txt`
-- [x] Navigation management (bulk actions, copy, visibility)
-- [x] Brand management (4 sub-pages, 20 color presets, form handlers)
-- [x] Custom email template + route
-- [x] All 19 email templates redesigned with SA warm palette
-- [x] Contract/wallet system removed
-- [x] Admin sidebar search
-- [x] Route-level guards for `enable_videos`, `enable_gallery`, `enable_about`, `enable_premium`
-- [x] Categories display location: `none` option added
+**Goal:** `brand_info.homepage_design` becomes the design system selector. Custom Jinja2 loader resolves templates from `templates/designs/{design}/` first. Adding a new design = drop a directory.
+
+### Infrastructure
+
+- [ ] Create `DesignFileSystemLoader` — subclass of Jinja2 `FileSystemLoader` that checks `g.design` and tries `templates/designs/{design}/{path}` before falling back to default
+- [ ] Wire loader in `main.py` + `before_request` to set `g.design` from `BrandIdentity.homepage_design`
+- [ ] Move all current public templates into `templates/designs/news/` (current `homepage_design = "news"` becomes the Swiss-Archival design)
+- [ ] Update card dispatcher to resolve per-design: `designs/{design}/components/cards/_card_dispatcher.html`
+- [ ] Update admin brand UI: relabel "Homepage Design" → "Design System", update description/options
+- [ ] Verify admin/settings/email templates are excluded from design resolution (always use default path)
+
+### Adding Future Designs
+
+To add a new design (e.g. `"minimal"`, `"editorial"`, `"magazine"`):
+- Create `templates/designs/{name}/` with only the templates that differ
+- Everything else falls through to default templates
+- Add its name to the admin selection dropdown
 
 ---
 
-## HIGH PRIORITY — Public UI Refinement
+## HIGH PRIORITY
 
 ### 1. Fix Broken Public Site Elements
 
@@ -45,10 +50,11 @@
 
 ### 4. Implement or Remove Stale Feature Toggles
 
-8 toggles exist in model/admin but have zero public UI. Decision needed:
-- `enable_comments`, `enable_ratings` — no comment/rating UI exists. Add stub or remove.
-- `enable_ads`, `enable_campaigns` — no ad/campaign system in open-source. Remove.
-- `enable_bookmarks`, `enable_reading_history`, `enable_community`, `enable_user_stats` — no UI. Remove.
+8 toggles exist in model/admin but have zero public UI:
+- `enable_comments`, `enable_ratings` — no comment/rating UI exists.
+- `enable_ads`, `enable_campaigns` — no ad/campaign system.
+- `enable_bookmarks`, `enable_reading_history`, `enable_community`, `enable_user_stats` — no UI.
+- [ ] Decide: remove from model + admin, or implement stubs.
 
 ### 5. Premium Page Integration
 
@@ -62,11 +68,7 @@
 
 ### 6. Categories Display Location Rendering
 
-`brand_info.categories_display_location` exists in DB + admin UI but zero public templates check it:
-- `body`: render categories as a section on homepage
-- `navbar`: render category dropdown in navbar
-- `none`: current behavior (nothing)
-Either implement body/navbar rendering or remove feature entirely.
+`brand_info.categories_display_location` exists in DB + admin UI but zero public templates check it. Either implement body/navbar rendering or remove the setting entirely.
 
 ### 7. Album Route Guard
 
@@ -77,7 +79,7 @@ Either implement body/navbar rendering or remove feature entirely.
 ## LOW PRIORITY / NICE-TO-HAVE
 
 - [ ] Email analytics dashboard (enterprise has it)
-- [ ] `enhanced-navigation.js` for admin sidebar (mobile menu, focus trap)
+- [ ] `enhanced-navigation.js` for admin (mobile menu, focus trap)
 - [ ] Lazy-load social icons in footer with IntersectionObserver
 
 ---
@@ -85,6 +87,13 @@ Either implement body/navbar rendering or remove feature entirely.
 ## Implementation Order
 
 ```
+Phase 0 — Design System Engine (FOUNDATION)
+├── Custom Jinja2 loader (DesignFileSystemLoader)
+├── Move templates into designs/news/
+├── Wire before_request + g.design
+├── Card dispatcher per-design
+├── Update admin homepage_design → design_system selector
+
 Phase 1 — Fix Broken Public Elements
 ├── Social media links in footer
 ├── Brand asset paths (logo, favicon, footer logo)

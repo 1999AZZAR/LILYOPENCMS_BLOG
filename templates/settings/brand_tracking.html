@@ -1,0 +1,196 @@
+{% extends "admin_base.html" %}
+{% block title %}Pelacakan & Skrip Pihak Ketiga{% endblock %}
+{% block hero_title %}Pelacakan & Skrip Pihak Ketiga{% endblock %}
+{% block hero_desc %}Kelola Google AdSense, Google Tag Manager, dan Google Analytics{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+  <div class="flex items-center gap-2 text-sm text-sa-muted mb-2">
+    <a href="{{ url_for('main.settings_dashboard') }}" class="hover:text-sa-accent transition-colors">Dasbor</a>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+    <span class="text-sa-fg font-medium">Pelacakan & Skrip</span>
+  </div>
+
+  <!-- Google AdSense -->
+  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="Google AdSense Settings">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-sa-fg">Google AdSense</h2>
+        <p class="text-sm text-sa-muted">Monetisasi dengan iklan otomatis. Masukkan Publisher ID Anda.</p>
+      </div>
+    </div>
+
+    <form id="form-adsense" class="space-y-4">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div>
+        <label for="google_adsense_publisher_id" class="block text-sm font-medium text-sa-fg mb-1.5">Publisher ID</label>
+        <input type="text" id="google_adsense_publisher_id" name="google_adsense_publisher_id"
+               value="{{ brand_info.google_adsense_publisher_id or '' }}"
+               placeholder="ca-pub-XXXXXXXXXXXXXXXX"
+               class="w-full bg-sa-surface-hover border border-sa-border text-sa-fg rounded-sa-md px-4 py-2.5 text-sm focus:outline-none focus:border-sa-accent focus:ring-1 focus:ring-sa-accent font-mono">
+        <p class="text-xs text-sa-muted mt-1.5">Contoh: <code class="text-sa-accent bg-sa-surface-hover px-1 rounded">ca-pub-1234567890123456</code></p>
+      </div>
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-5 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card text-sm">
+          Simpan AdSense
+        </button>
+        {% if brand_info.google_adsense_publisher_id %}
+        <span class="flex items-center gap-1.5 text-xs text-green-600 font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          Aktif
+        </span>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Google Tag Manager -->
+  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="Google Tag Manager Settings">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.401.604-.401.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.959.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" /></svg>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-sa-fg">Google Tag Manager</h2>
+        <p class="text-sm text-sa-muted">Kelola tag pelacakan, konversi, dan Google Search Console.</p>
+      </div>
+    </div>
+
+    <form id="form-gtm" class="space-y-4">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div>
+        <label for="google_tag_manager_id" class="block text-sm font-medium text-sa-fg mb-1.5">Container ID</label>
+        <input type="text" id="google_tag_manager_id" name="google_tag_manager_id"
+               value="{{ brand_info.google_tag_manager_id or '' }}"
+               placeholder="GTM-XXXXXXX"
+               class="w-full bg-sa-surface-hover border border-sa-border text-sa-fg rounded-sa-md px-4 py-2.5 text-sm focus:outline-none focus:border-sa-accent focus:ring-1 focus:ring-sa-accent font-mono">
+        <p class="text-xs text-sa-muted mt-1.5">Contoh: <code class="text-sa-accent bg-sa-surface-hover px-1 rounded">GTM-ABC1234</code></p>
+      </div>
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-5 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card text-sm">
+          Simpan GTM
+        </button>
+        {% if brand_info.google_tag_manager_id %}
+        <span class="flex items-center gap-1.5 text-xs text-green-600 font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          Aktif
+        </span>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Google Analytics -->
+  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="Google Analytics Settings">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-sa-fg">Google Analytics</h2>
+        <p class="text-sm text-sa-muted">Pantau lalu lintas dan perilaku pengunjung situs.</p>
+      </div>
+    </div>
+
+    <form id="form-ga" class="space-y-4">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div>
+        <label for="google_analytics_measurement_id" class="block text-sm font-medium text-sa-fg mb-1.5">Measurement ID</label>
+        <input type="text" id="google_analytics_measurement_id" name="google_analytics_measurement_id"
+               value="{{ brand_info.google_analytics_measurement_id or '' }}"
+               placeholder="G-XXXXXXXXXX"
+               class="w-full bg-sa-surface-hover border border-sa-border text-sa-fg rounded-sa-md px-4 py-2.5 text-sm focus:outline-none focus:border-sa-accent focus:ring-1 focus:ring-sa-accent font-mono">
+        <p class="text-xs text-sa-muted mt-1.5">Contoh: <code class="text-sa-accent bg-sa-surface-hover px-1 rounded">G-ABCDEF1234</code></p>
+      </div>
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-5 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card text-sm">
+          Simpan Analytics
+        </button>
+        {% if brand_info.google_analytics_measurement_id %}
+        <span class="flex items-center gap-1.5 text-xs text-green-600 font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          Aktif
+        </span>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Injection Preview -->
+  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="Script Preview">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-sa-fg">Pratinjau Injeksi</h2>
+        <p class="text-sm text-sa-muted">Skrip berikut akan disisipkan secara otomatis ke halaman publik.</p>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      {% if brand_info.google_adsense_publisher_id %}
+      <div class="bg-sa-surface-hover border border-sa-border rounded-sa-md p-4 font-mono text-xs text-sa-fg">
+        <span class="text-sa-accent font-semibold">&lt;head&gt;</span> &lt;script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ brand_info.google_adsense_publisher_id }}" crossorigin="anonymous"&gt;&lt;/script&gt;
+      </div>
+      {% endif %}
+      {% if brand_info.google_tag_manager_id %}
+      <div class="bg-sa-surface-hover border border-sa-border rounded-sa-md p-4 font-mono text-xs text-sa-fg">
+        <span class="text-sa-accent font-semibold">&lt;head&gt;</span> &lt;script&gt;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ brand_info.google_tag_manager_id }}');&lt;/script&gt;
+      </div>
+      <div class="bg-sa-surface-hover border border-sa-border rounded-sa-md p-4 font-mono text-xs text-sa-fg">
+        <span class="text-amber-600 font-semibold">&lt;body&gt;</span> &lt;noscript&gt;&lt;iframe src="https://www.googletagmanager.com/ns.html?id={{ brand_info.google_tag_manager_id }}" height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;&lt;/noscript&gt;
+      </div>
+      {% endif %}
+      {% if brand_info.google_analytics_measurement_id %}
+      <div class="bg-sa-surface-hover border border-sa-border rounded-sa-md p-4 font-mono text-xs text-sa-fg">
+        <span class="text-sa-accent font-semibold">&lt;head&gt;</span> &lt;script async src="https://www.googletagmanager.com/gtag/js?id={{ brand_info.google_analytics_measurement_id }}"&gt;&lt;/script&gt;<br>
+        &lt;script&gt;window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '{{ brand_info.google_analytics_measurement_id }}');&lt;/script&gt;
+      </div>
+      {% endif %}
+      {% if not brand_info.google_adsense_publisher_id and not brand_info.google_tag_manager_id and not brand_info.google_analytics_measurement_id %}
+      <p class="text-sm text-sa-muted italic">Belum ada skrip yang dikonfigurasi. Isi salah satu formulir di atas untuk melihat pratinjau.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+  function initTrackingForms() {
+    const forms = ['form-adsense', 'form-gtm', 'form-ga'];
+    forms.forEach(function(formId) {
+      const form = document.getElementById(formId);
+      if (!form) return;
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const field = this.querySelector('input[type="text"], input[type="hidden"]:not([name="csrf_token"])');
+        if (!field) return;
+        const value = field.value.trim();
+        try {
+          const response = await fetch('/api/brand-identity/text', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': document.querySelector('[name="csrf_token"]').value },
+            body: JSON.stringify({ field: field.name, value: value || '' })
+          });
+          if (response.ok) {
+            location.reload();
+          } else {
+            const data = await response.json();
+            alert('Gagal menyimpan: ' + (data.error || 'Unknown error'));
+          }
+        } catch (err) {
+          alert('Network error: ' + err.message);
+        }
+      });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initTrackingForms);
+})();
+</script>
+{% endblock %}

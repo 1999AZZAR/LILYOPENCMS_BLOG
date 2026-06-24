@@ -105,6 +105,20 @@ def settings_brand_colors():
     return render_template("settings/brand_colors.html", brand_info=brand_info)
 
 
+@main_blueprint.route("/settings/tracking")
+@login_required
+def settings_brand_tracking():
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        abort(403)
+    from models import BrandIdentity
+    brand_info = BrandIdentity.query.first()
+    if not brand_info:
+        brand_info = BrandIdentity()
+        db.session.add(brand_info)
+        db.session.commit()
+    return render_template("settings/brand_tracking.html", brand_info=brand_info)
+
+
 @main_blueprint.route("/api/brand-identity", methods=["GET"])
 @login_required
 def get_brand_identity():
@@ -205,7 +219,9 @@ def update_brand_identity_text():
         "enable_videos", "enable_gallery", "enable_albums", "enable_news",
         "enable_premium", "enable_about", "enable_bookmarks",
         "enable_reading_history", "enable_community", "enable_user_stats",
-        "min_story_word_count", "min_chapter_word_count"
+        "min_story_word_count", "min_chapter_word_count",
+        "google_adsense_publisher_id", "google_tag_manager_id",
+        "google_analytics_measurement_id"
     ]
     if field not in allowed:
         return jsonify({"error": "Invalid field"}), 400

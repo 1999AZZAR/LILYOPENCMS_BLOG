@@ -1504,6 +1504,11 @@ class BrandIdentity(db.Model):
     enable_community = db.Column(db.Boolean, nullable=False, default=True)
     enable_user_stats = db.Column(db.Boolean, nullable=False, default=True)
 
+    # Third-party tracking & scripts
+    google_adsense_publisher_id = db.Column(db.String(100), nullable=True)
+    google_tag_manager_id = db.Column(db.String(50), nullable=True)
+    google_analytics_measurement_id = db.Column(db.String(50), nullable=True)
+
     # SEO & quality settings
     seo_settings = db.Column(db.JSON, nullable=True)
     min_story_word_count = db.Column(db.Integer, nullable=False, default=1000)
@@ -1547,6 +1552,9 @@ class BrandIdentity(db.Model):
             "enable_reading_history": self.enable_reading_history,
             "enable_community": self.enable_community,
             "enable_user_stats": self.enable_user_stats,
+            "google_adsense_publisher_id": self.google_adsense_publisher_id,
+            "google_tag_manager_id": self.google_tag_manager_id,
+            "google_analytics_measurement_id": self.google_analytics_measurement_id,
             "seo_settings": self.seo_settings,
             "min_story_word_count": self.min_story_word_count,
             "min_chapter_word_count": self.min_chapter_word_count,
