@@ -1,4 +1,16 @@
 #!/usr/bin/env python3
+
+"""
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+"""
+
 """
 Redis Connection Test Script
 Tests Redis availability and provides fallback options
@@ -128,4 +140,4 @@ if __name__ == "__main__":
     else:
         print("\n⚠️  Redis is not available")
         print("The application will use simple in-memory caching as fallback.")
-        provide_solutions() 
+        provide_solutions()

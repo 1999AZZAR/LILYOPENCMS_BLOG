@@ -1,4 +1,15 @@
 """
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+"""
+
+"""
 Advanced Query Result Caching Module
 Provides intelligent caching for database queries with automatic invalidation
 """
@@ -295,4 +306,4 @@ def cache_user_queries(timeout: int = 300):
 
 def cache_analytics_queries(timeout: int = 600):
     """Decorator specifically for analytics queries"""
-    return cache_query_result(timeout=timeout, key_prefix='analytics') 
+    return cache_query_result(timeout=timeout, key_prefix='analytics')

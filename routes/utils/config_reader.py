@@ -153,4 +153,4 @@ if __name__ == "__main__":
     # Test the configuration reader
     reader = ConfigReader()
     reader.print_config()
-    print(f"Validation: {validate_redis_config()}") 
+    print(f"Validation: {validate_redis_config()}")

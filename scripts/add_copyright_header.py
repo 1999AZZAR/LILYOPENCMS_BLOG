@@ -31,46 +31,60 @@ Contact: {EMAIL_ADDR} for inquiries."""
 
 # Define comment wrappers for each extension
 HEADERS = {
-    '.py': f'"""\n{COPYRIGHT_TEXT}\n"""',
-    '.js': f'/*\n{COPYRIGHT_TEXT}\n*/',
-    '.go': f'/*\n{COPYRIGHT_TEXT}\n*/',
-    '.css': f'/*\n{COPYRIGHT_TEXT}\n*/',
-    '.sql': f'/*\n{COPYRIGHT_TEXT}\n*/',
-    '.sh': f": <<'OFF'\n{COPYRIGHT_TEXT}\nOFF",
-    '.html': f'<!--\n{COPYRIGHT_TEXT}\n-->'
+    ".py": f'"""\n{COPYRIGHT_TEXT}\n"""',
+    ".js": f"/*\n{COPYRIGHT_TEXT}\n*/",
+    ".go": f"/*\n{COPYRIGHT_TEXT}\n*/",
+    ".css": f"/*\n{COPYRIGHT_TEXT}\n*/",
+    ".sql": f"/*\n{COPYRIGHT_TEXT}\n*/",
+    ".sh": f": <<'OFF'\n{COPYRIGHT_TEXT}\nOFF",
+    ".html": f"<!--\n{COPYRIGHT_TEXT}\n-->",
 }
 
 # Regex to match blocks that might contain the copyright
 BLOCK_PATTERNS = {
-    '.py': [
+    ".py": [
         re.compile(r'"{3}.*?"{3}', re.DOTALL),
-        re.compile(r"'{3}.*?'{3}", re.DOTALL)
+        re.compile(r"'{3}.*?'{3}", re.DOTALL),
     ],
-    '.js': [re.compile(r'/\*.*?\*/', re.DOTALL)],
-    '.go': [re.compile(r'/\*.*?\*/', re.DOTALL)],
-    '.css': [re.compile(r'/\*.*?\*/', re.DOTALL)],
-    '.sql': [re.compile(r'/\*.*?\*/', re.DOTALL)],
-    '.sh': [
+    ".js": [re.compile(r"/\*.*?\*/", re.DOTALL)],
+    ".go": [re.compile(r"/\*.*?\*/", re.DOTALL)],
+    ".css": [re.compile(r"/\*.*?\*/", re.DOTALL)],
+    ".sql": [re.compile(r"/\*.*?\*/", re.DOTALL)],
+    ".sh": [
         re.compile(r":\s*<<\s*['\"]?OFF['\"]?.*?OFF", re.DOTALL),
-        re.compile(r":\s*<<\s*['\"]?EOF['\"]?.*?EOF", re.DOTALL)
+        re.compile(r":\s*<<\s*['\"]?EOF['\"]?.*?EOF", re.DOTALL),
     ],
-    '.html': [re.compile(r'<!--.*?-->', re.DOTALL)]
+    ".html": [re.compile(r"<!--.*?-->", re.DOTALL)],
 }
 
 # Directories and file patterns to ignore
-IGNORE_DIRS = {'.git', '.github', 'node_modules', 'venv', '.venv', '__pycache__', 'instance', 'backups', 'LICENSE', 'vendor'}
-IGNORE_FILES = {'jquery-3.6.0.min.js', 'add_copyright_header.py'}
+IGNORE_DIRS = {
+    ".git",
+    ".github",
+    "node_modules",
+    "venv",
+    ".venv",
+    "__pycache__",
+    "instance",
+    "backups",
+    "LICENSE",
+    "vendor",
+}
+IGNORE_FILES = {"jquery-3.6.0.min.js", "add_copyright_header.py"}
+
 
 def should_process_dir(name):
     return name not in IGNORE_DIRS
+
 
 def should_process_file(filename):
     ext = os.path.splitext(filename)[1].lower()
     if ext not in HEADERS:
         return False
-    if filename in IGNORE_FILES or '.min.' in filename:
+    if filename in IGNORE_FILES or ".min." in filename:
         return False
     return True
+
 
 def remove_existing_copyright(content, ext):
     """
@@ -85,14 +99,15 @@ def remove_existing_copyright(content, ext):
         for match in matches:
             if EMAIL_ADDR in match:
                 content = content.replace(match, "")
-    
+
     return content
+
 
 def process_file(filepath, dry_run=False):
     ext = os.path.splitext(filepath)[1].lower()
-    
+
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             original_content = f.read()
     except Exception as e:
         print(f"⚠️ Error reading {filepath}: {e}")
@@ -104,7 +119,7 @@ def process_file(filepath, dry_run=False):
     # 2. Check if shebang exists
     shebang = ""
     rest_of_content = cleaned_content
-    
+
     if cleaned_content.startswith("#!"):
         lines = cleaned_content.split("\n", 1)
         shebang = lines[0] + "\n"
@@ -130,18 +145,19 @@ def process_file(filepath, dry_run=False):
         print(f"✏️ [DRY RUN] Would update: {filepath}")
     else:
         try:
-            with open(filepath, 'w', encoding='utf-8') as f:
+            with open(filepath, "w", encoding="utf-8") as f:
                 f.write(new_content)
             print(f"✅ Updated: {filepath}")
         except Exception as e:
             print(f"❌ Error writing {filepath}: {e}")
             return False
-            
+
     return True
+
 
 def main():
     dry_run = "--dry-run" in sys.argv
-    target_dir = "/home/ubuntu/projects/lilyopencms"
+    target_dir = "/home/azzar/project/LILYcms_based/LILYOPENCMS_BLOG"
 
     if len(sys.argv) > 1 and not sys.argv[1].startswith("-"):
         target_dir = sys.argv[1]
@@ -167,6 +183,7 @@ def main():
     print(f"\n📊 Summary:")
     print(f"   Processed files: {total_processed}")
     print(f"   Updated files  : {updated_count}")
+
 
 if __name__ == "__main__":
     main()

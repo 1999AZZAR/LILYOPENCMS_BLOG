@@ -1,3 +1,14 @@
+"""
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+"""
+
 from routes import main_blueprint
 from .common_imports import *
 from datetime import datetime, timezone, timedelta
@@ -246,4 +257,4 @@ def admin_update_subscription(subscription_id):
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(f"Error updating subscription: {e}")
-        return jsonify({"error": "Failed to update subscription"}), 500 
+        return jsonify({"error": "Failed to update subscription"}), 500

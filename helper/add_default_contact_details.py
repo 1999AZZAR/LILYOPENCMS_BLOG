@@ -1,4 +1,16 @@
 #!/usr/bin/env python3
+
+"""
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+"""
+
 """
 Add default contact details to the database
 """
@@ -102,4 +114,4 @@ if __name__ == "__main__":
         print("💡 You can now manage contact details from the admin panel:")
         print("   Settings > Detail Kontak")
     else:
-        print("\n❌ Failed to add contact details") 
+        print("\n❌ Failed to add contact details")

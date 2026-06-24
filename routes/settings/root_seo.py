@@ -417,4 +417,4 @@ def get_current_root_seo():
             })
             
     except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500 
+        return jsonify({'success': False, 'message': str(e)}), 500

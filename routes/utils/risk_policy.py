@@ -55,5 +55,3 @@ def should_auto_approve(user: User) -> bool:
     """
     score = evaluate_risk_score(user)
     return score <= 2
-
-

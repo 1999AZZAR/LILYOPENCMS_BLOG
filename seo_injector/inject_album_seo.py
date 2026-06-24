@@ -1368,4 +1368,4 @@ def main():
             inject_album_seo()
 
 if __name__ == "__main__":
-    main() 
+    main()

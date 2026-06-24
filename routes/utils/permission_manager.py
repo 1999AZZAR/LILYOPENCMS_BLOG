@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
 All rights reserved.

@@ -2004,4 +2004,4 @@ def get_seo_recommendations():
             "success": False,
             "error": "Failed to get SEO recommendations",
             "details": str(e)
-        }), 500 
+        }), 500

@@ -1,4 +1,15 @@
 """
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+"""
+
+"""
 Brand Routes
 
 This module handles brand identity and social media management routes.
@@ -122,7 +133,7 @@ def get_public_brand_info():
             "brand_name": "LilyOpenCMS",
             "card_design": "classic",
             "homepage_design": "news",
-            "categories_display_location": "body"
+            "categories_display_location": "none"
         }), 200
     return jsonify(brand.to_dict()), 200
 
@@ -231,6 +242,18 @@ def update_brand_identity_text():
     return jsonify(brand.to_dict()), 200
 
 
+CSS_VAR_TO_DB = {
+    "--primary": "color_primary",
+    "--primary-foreground": "color_primary_foreground",
+    "--secondary": "color_secondary",
+    "--secondary-foreground": "color_secondary_foreground",
+    "--accent": "color_accent",
+    "--accent-foreground": "color_accent_foreground",
+    "--background": "color_background",
+    "--foreground": "color_foreground",
+}
+
+
 @main_blueprint.route("/api/brand-colors", methods=["POST"])
 @login_required
 def update_brand_colors():
@@ -241,6 +264,15 @@ def update_brand_colors():
     value = data.get("value")
     if not variable or not value:
         return jsonify({"error": "Missing variable or value"}), 400
+
+    # Save to BrandIdentity DB columns so inline style in base.html stays in sync
+    from models import BrandIdentity
+    brand = BrandIdentity.query.first()
+    if brand and variable in CSS_VAR_TO_DB:
+        setattr(brand, CSS_VAR_TO_DB[variable], value)
+        db.session.commit()
+
+    # Also write to CSS file for fallback
     css_path = os.path.join(current_app.root_path, "static/css/base_css.css")
     try:
         import fcntl
@@ -278,6 +310,19 @@ def update_brand_colors():
 def get_brand_colors():
     if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
         abort(403)
+    # Prefer BrandIdentity DB values over CSS file (inline style wins)
+    from models import BrandIdentity
+    brand = BrandIdentity.query.first()
+    if brand:
+        color_vars = []
+        for css_var, db_col in CSS_VAR_TO_DB.items():
+            val = getattr(brand, db_col, None)
+            if val:
+                color_vars.append({"name": css_var, "value": val})
+        if color_vars:
+            return jsonify(color_vars), 200
+
+    # Fallback: read from CSS file
     css_path = os.path.join(current_app.root_path, "static/css/base_css.css")
     try:
         with open(css_path, "r") as f:

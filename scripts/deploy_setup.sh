@@ -1,5 +1,16 @@
 #!/bin/bash
 
+: <<'OFF'
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+OFF
+
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$SCRIPT_DIR"
@@ -162,4 +173,4 @@ echo "Next steps:"
 echo "1. Configure your brand identity in the admin panel"
 echo "2. Add your content (news, images, videos, albums)"
 echo "3. Customize navigation links as needed"
-echo "4. Set up your domain and deployment configuration" 
+echo "4. Set up your domain and deployment configuration"

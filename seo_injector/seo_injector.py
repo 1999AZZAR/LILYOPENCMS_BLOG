@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
 All rights reserved.
@@ -427,4 +428,4 @@ if __name__ == "__main__":
         print(json.dumps(result, indent=2))
     else:
         result = run_seo_injection(args.type)
-        print(json.dumps(result, indent=2)) 
+        print(json.dumps(result, indent=2))

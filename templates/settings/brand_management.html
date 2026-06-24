@@ -1,3 +1,14 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
 {% extends "admin_base.html" %}
 {% block title %}Brand Identity Management{% endblock %}
 {% block hero_title %}Brand Identity Management{% endblock %}
@@ -137,7 +148,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-sm font-medium text-sa-muted">Categories Display</p>
-            <p class="text-lg font-semibold text-sa-fg">{{ brand_info.categories_display_location|default('body')|title }}</p>
+            <p class="text-lg font-semibold text-sa-fg">{{ brand_info.categories_display_location|default('none')|title }}</p>
           </div>
           <div class="w-8 h-8 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M4.25 2A2.25 2.25 0 0 0 2 4.25v11.5A2.25 2.25 0 0 0 4.25 18h11.5A2.25 2.25 0 0 0 18 15.75V4.25A2.25 2.25 0 0 0 15.75 2H4.25ZM2.5 7.75v5.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-5.5H2.5Zm11-3H2.5V4.75c0-.138.112-.25.25-.25h10.5a.25.25 0 0 1 .25.25V5Z" clip-rule="evenodd" /></svg>
@@ -491,4 +502,4 @@ document.addEventListener('DOMContentLoaded', () => {
  messages.forEach(([category, message]) => showToast(category, message));
 });
 </script>
-{% endblock %} 
+{% endblock %}

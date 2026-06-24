@@ -1,3 +1,14 @@
+"""
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+"""
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime, timezone
@@ -1453,7 +1464,7 @@ class BrandIdentity(db.Model):
     homepage_design = db.Column(db.String(50), nullable=True, default="news")  # 'news' or 'albums'
 
     # Categories Display Location
-    categories_display_location = db.Column(db.String(50), nullable=True, default="body")  # 'body' or 'navbar'
+    categories_display_location = db.Column(db.String(50), nullable=True, default="body")  # 'body', 'navbar', or 'none'
 
     # News Card Design Preference
     card_design = db.Column(db.String(50), nullable=True, default="classic")  # 'classic', 'modern', 'minimal', 'featured'
@@ -1506,7 +1517,7 @@ class BrandIdentity(db.Model):
             "tagline": self.tagline,
             "brand_description": self.brand_description,
             "homepage_design": self.homepage_design,
-            "categories_display_location": self.categories_display_location or "body",
+            "categories_display_location": self.categories_display_location or "none",
             "card_design": self.card_design or "classic",
             "website_url": self.website_url,
             "logo_header": self.logo_header,

@@ -692,4 +692,4 @@ def main():
         inject_chapter_seo()
 
 if __name__ == "__main__":
-    main() 
+    main()

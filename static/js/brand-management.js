@@ -1,3 +1,14 @@
+/*
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+*/
+
 // Brand Management JavaScript
 let COLOR_VARIABLES = [];
 
@@ -954,6 +965,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Categories display form handlers
   handleCategoriesDisplayForm('form-categories-body');
   handleCategoriesDisplayForm('form-categories-navbar');
+  handleCategoriesDisplayForm('form-categories-none');
   
   // Card design form handlers
   handleCardDesignForm('form-card-classic');
@@ -1090,4 +1102,4 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   });
-}); 
+});

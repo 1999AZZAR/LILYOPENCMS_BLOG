@@ -1,3 +1,14 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
 {% extends 'base.html' %}
 
 {% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }} - Populer{% endblock %}
@@ -17,70 +28,10 @@
     {# Filters are in the header via base.html #}
 
     <!-- News Grid (Using standard card layout like news.html) -->
-    {% if hypes and hypes.items %} {# Check pagination object and items #}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-        {% for news_item in hypes.items %} {# Loop through hypes items #}
-        <article
-            class="bg-card rounded-lg shadow-sm border border-border overflow-hidden hover:border-primary/30 hover:shadow-lg transition-all duration-300 flex flex-col group">
-            <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
-                class="block">
-                <div class="aspect-video bg-secondary overflow-hidden">
-                    <img src="{{ news_item.image.filepath if news_item.image and news_item.image.filepath else url_for('static', filename='pic/placeholder.png') }}"
-                         alt="{{ news_item.title | e }}"
-                         class="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                         loading="lazy"
-                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='pic/placeholder.png') }}'; this.classList.add('loaded');">
-                </div>
-            </a>
-            <div class="p-5 flex flex-col flex-grow">
-                <div class="flex-grow">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3
-                            class="text-lg font-semibold text-card-foreground group-hover:text-primary transition-colors leading-snug line-clamp-2">
-                            {# Link wraps title text #}
-                            <a
-                                href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}">
-                                {{ news_item.title }}
-                            </a>
-                        </h3>
-                        <div class="flex gap-1 ml-2 mt-0.5 flex-shrink-0">
-                            {% if news_item.is_news %}
-                            <span class="bg-primary text-primary-foreground px-2 py-0.5 rounded text-xs font-semibold">Berita</span>
-                            {% else %}
-                            <span class="bg-secondary text-secondary-foreground px-2 py-0.5 rounded text-xs font-semibold">Artikel</span>
-                            {% endif %}
-                            {% if news_item.is_premium %}
-                            <span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded text-xs font-semibold">Premium</span>
-                            {% endif %}
-                            {% if news_item.is_main_news %}
-                            <span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs font-semibold">Utama</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {# Category Link #}
-                    <a href="{{ url_for('main.search', category=news_item.category.name) if news_item.category else '#' }}"
-                        class="text-xs font-semibold text-primary uppercase tracking-wide hover:underline mb-2 inline-block">
-                        {{ news_item.category.name if news_item.category else 'Tanpa Kategori' }}
-                    </a>
-                    {# Excerpt (Optional for Hypes, uncomment if needed) #}
-                    {# <p class="text-sm text-muted-foreground mb-4 line-clamp-3">
-                        {{ news_item.content | striptags | truncate(130) }}
-                    </p> #}
-                </div>
-                {# Meta Info (Reads, Shares, Author, Date) #}
-                <div class="mt-auto pt-3 border-t border-border text-xs text-muted-foreground space-y-1">
-                    <div class="flex items-center gap-x-3 flex-wrap">
-                        <span><i class="fas fa-share-alt fa-fw mr-1 opacity-70"></i>{{ news_item.total_share | default(0) }} shares</span>
-                    </div>
-                    <div class="flex items-center gap-x-3 flex-wrap">
-                        <span><i class="fas fa-user fa-fw mr-1 opacity-70"></i>{{ news_item.author.username if news_item.author else 'Unknown' }}</span>
-                        {% if news_item.date
-                        %}<span><i class="fas fa-calendar-alt fa-fw mr-1 opacity-70"></i>{{ news_item.date.strftime('%d %b %Y') }}</span>{%
-                        endif %}
-                    </div>
-                </div>
-            </div>
-        </article>
+    {% if hypes and hypes.items %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-0">
+        {% for item in hypes.items %}
+        {% include 'public/components/_card_dispatcher.html' %}
         {% endfor %}
     </div>
     {% else %}
