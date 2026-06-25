@@ -1,0 +1,55 @@
+<a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+   class="relative flex flex-col group overflow-hidden transition-all duration-150"
+   style="border: 3px solid #000; box-shadow: 8px 8px 0 0 #000;
+          background-color: hsl(var(--surface));
+          min-height: 280px;"
+   onmouseover="this.style.boxShadow='5px 5px 0 0 #000';this.style.transform='translate(3px,3px)'"
+   onmouseout="this.style.boxShadow='8px 8px 0 0 #000';this.style.transform='none'">
+
+  {% set image_obj = item.image %}
+  {% set placeholder_img = url_for('static', filename='pic/placeholder.png') %}
+  {% set img_url = placeholder_img %}
+  {% if image_obj and image_obj.filepath %}
+    {% set fp = image_obj.filepath.replace('static/', '', 1) %}
+  {% endif %}
+  <div class="absolute inset-0">
+    {% if image_obj and image_obj.filepath %}
+    <img src="{{ url_for('static', filename=fp) }}" loading="lazy" alt="{{ item.title | e }}"
+         class="w-full h-full object-cover transition-all duration-300"
+         style="filter: grayscale(0.2);"
+         onmouseover="this.style.transform='scale(1.03)';this.style.filter='grayscale(0)'"
+         onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(0.2)'">
+    {% else %}
+    <div class="w-full h-full" style="background-color: hsl(var(--surface-tonal));"></div>
+    {% endif %}
+  </div>
+  <div class="absolute inset-0"
+       style="background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);"></div>
+
+  <div class="relative mt-auto p-6 w-full">
+    <div class="flex flex-wrap gap-2 items-center mb-3">
+      <span class="inline-block text-[9px] font-black uppercase tracking-wider px-3 py-1"
+            style="background-color: hsl(var(--accent)); color: #000; border: 2px solid #000;">
+        {{ item.category.name if item.category else 'Unggulan' }}
+      </span>
+      {% if item.is_premium %}
+      <span class="inline-block text-[9px] font-black uppercase tracking-wider px-3 py-1"
+            style="background-color: #000; color: #fff; border: 2px solid #fff;">Premium</span>
+      {% endif %}
+    </div>
+    <h3 class="text-2xl sm:text-3xl font-black text-white leading-tight line-clamp-2"
+        style="letter-spacing: -0.02em;">
+      {{ item.title }}
+    </h3>
+    {% if item.content %}
+    <p class="text-sm mt-2 line-clamp-1" style="color: hsla(0,0%,100%,0.6);">
+      {{ item.content|striptags|truncate(140) }}
+    </p>
+    {% endif %}
+    <div class="flex items-center gap-4 mt-4 text-[9px] font-bold uppercase tracking-wider"
+         style="color: hsla(0,0%,100%,0.4);">
+      {% if item.writer %}<span>{{ item.writer }}</span>{% endif %}
+      {% if item.date %}<span>{{ item.date.strftime('%d %b %Y') }}</span>{% endif %}
+    </div>
+  </div>
+</a>

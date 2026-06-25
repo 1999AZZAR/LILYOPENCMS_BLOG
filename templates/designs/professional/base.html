@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
+  <meta name="description" content="{% if root_seo and root_seo.meta_description %}{{ root_seo.meta_description }}{% else %}{{ brand_info.tagline|default('Modern content management for the digital age') }}{% endif %}">
+  <meta name="keywords"    content="{% if root_seo and root_seo.meta_keywords %}{{ root_seo.meta_keywords }}{% else %}{{ brand_info.brand_name|default('LilyOpenCMS') }}, berita, cerita, portal berita{% endif %}">
+  <meta name="author"      content="{% if root_seo and root_seo.meta_author %}{{ root_seo.meta_author }}{% else %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endif %}">
+  <meta name="language"    content="{% if root_seo and root_seo.meta_language %}{{ root_seo.meta_language }}{% else %}id{% endif %}">
+  <meta name="robots"      content="{% if root_seo and root_seo.meta_robots %}{{ root_seo.meta_robots }}{% else %}index, follow{% endif %}">
+  <link rel="canonical"    href="{% if root_seo and root_seo.canonical_url %}{{ root_seo.canonical_url }}{% else %}{{ request.url_root[:-1] }}{{ request.path }}{% endif %}">
+  <link rel="icon" type="image/png" href="{{ brand_info.favicon if brand_info and brand_info.favicon else url_for('static', filename='pic/favicon.png') }}">
+
+  <meta property="og:title"       content="{% block og_title %}{% if root_seo and root_seo.og_title %}{{ root_seo.og_title }}{% else %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endif %}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{% if root_seo and root_seo.og_description %}{{ root_seo.og_description }}{% else %}{{ brand_info.tagline|default('') }}{% endif %}{% endblock %}">
+  <meta property="og:image"       content="{% block og_image %}{% if root_seo and root_seo.og_image %}{{ root_seo.og_image }}{% else %}{{ url_for('static', filename='pic/dark.png', _external=True) }}{% endif %}{% endblock %}">
+  <meta property="og:url"         content="{{ request.url }}">
+  <meta property="og:type"        content="{% if root_seo and root_seo.og_type %}{{ root_seo.og_type }}{% else %}website{% endif %}">
+  <meta property="og:site_name"   content="{{ brand_info.brand_name|default('LilyOpenCMS') }}">
+  <meta property="og:locale"      content="id_ID">
+
+  <meta name="twitter:card"        content="{% if root_seo and root_seo.twitter_card %}{{ root_seo.twitter_card }}{% else %}summary_large_image{% endif %}">
+  <meta name="twitter:title"       content="{% block twitter_title %}{% if root_seo and root_seo.twitter_title %}{{ root_seo.twitter_title }}{% else %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endif %}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}{% if root_seo and root_seo.twitter_description %}{{ root_seo.twitter_description }}{% else %}{{ brand_info.tagline|default('') }}{% endif %}{% endblock %}">
+  <meta name="twitter:image"       content="{% block twitter_image %}{% if root_seo and root_seo.twitter_image %}{{ root_seo.twitter_image }}{% else %}{{ url_for('static', filename='pic/dark.png', _external=True) }}{% endif %}{% endblock %}">
+
+  <meta name="theme-color" content="#1677FF">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="{{ brand_info.brand_name|default('LilyOpenCMS') }}">
+
+  {% if root_seo and root_seo.schema_markup %}
+  <script type="application/ld+json">{{ root_seo.schema_markup|safe }}</script>
+  {% else %}
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"{{ brand_info.brand_name|default('LilyOpenCMS') }}","description":"{{ brand_info.tagline|default('') }}","url":"{{ request.url_root[:-1] }}{{ request.path }}","inLanguage":"id"}
+  </script>
+  {% endif %}
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v={{ brand_info.updated_at.timestamp()|int if brand_info and brand_info.updated_at else '1' }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base_css.css') }}?v=2">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+  {%- set cp  = (brand_info.color_primary              if brand_info and brand_info.color_primary)              or '214 100% 55%' -%}
+  {%- set cpf = (brand_info.color_primary_foreground   if brand_info and brand_info.color_primary_foreground)   or '0 0% 100%' -%}
+  {%- set cs  = (brand_info.color_secondary            if brand_info and brand_info.color_secondary)            or '214 60% 97%' -%}
+  {%- set csf = (brand_info.color_secondary_foreground if brand_info and brand_info.color_secondary_foreground) or '214 40% 20%' -%}
+  {%- set ca  = (brand_info.color_accent               if brand_info and brand_info.color_accent)               or '262 60% 55%' -%}
+  {%- set caf = (brand_info.color_accent_foreground    if brand_info and brand_info.color_accent_foreground)    or '0 0% 100%' -%}
+  {%- set cbg = (brand_info.color_background           if brand_info and brand_info.color_background)           or '0 0% 100%' -%}
+  {%- set cfg = (brand_info.color_foreground           if brand_info and brand_info.color_foreground)           or '214 30% 12%' -%}
+  <style>
+    :root {
+      --primary:             {{ cp }};
+      --primary-foreground:  {{ cpf }};
+      --secondary:           {{ cs }};
+      --secondary-foreground:{{ csf }};
+      --accent:              {{ ca }};
+      --accent-foreground:   {{ caf }};
+      --background:          {{ cbg }};
+      --foreground:          {{ cfg }};
+      --surface:         0 0% 100%;
+      --surface-tonal:   214 40% 96%;
+      --border:          214 15% 90%;
+      --border-strong:   214 10% 70%;
+      --input:           0 0% 100%;
+      --ring:            var(--primary);
+      --muted:           214 15% 95%;
+      --muted-foreground:214 10% 50%;
+      --radius: 6px;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+  </style>
+
+  {% if brand_info and brand_info.google_adsense_publisher_id %}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ brand_info.google_adsense_publisher_id }}" crossorigin="anonymous"></script>
+  {% endif %}
+  {% if brand_info and brand_info.google_tag_manager_id %}
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ brand_info.google_tag_manager_id }}');</script>
+  {% endif %}
+  {% if brand_info and brand_info.google_analytics_measurement_id %}
+  <script async src="https://www.googletagmanager.com/gtg/js?id={{ brand_info.google_analytics_measurement_id }}"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ brand_info.google_analytics_measurement_id }}');</script>
+  {% endif %}
+
+  <script src="{{ url_for('static', filename='js/lazy-loading.js') }}" defer></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-background text-foreground antialiased min-h-screen flex flex-col"
+      style="font-family: var(--font-sans); font-size: 14px; line-height: 1.6;">
+
+  {% if brand_info and brand_info.google_tag_manager_id %}
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ brand_info.google_tag_manager_id }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  {% endif %}
+
+  {% set nav_items = navbar_links if navbar_links else [
+    {'name': 'Utama',   'url': url_for('main.utama'),    'is_external': false},
+    {'name': 'Berita',  'url': url_for('main.news'),     'is_external': false},
+    {'name': 'Artikel', 'url': url_for('main.articles'), 'is_external': false}
+  ] %}
+
+  <header class="sticky top-0 z-50"
+          style="background-color: hsla(0, 0%, 100%, 0.96);
+                 backdrop-filter: blur(8px);
+                 border-bottom: 1px solid hsl(var(--border));
+                 box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14"
+         aria-label="Main navigation">
+
+      <a href="{{ url_for('main.home') }}"
+         class="flex-shrink-0 transition-opacity hover:opacity-80"
+         aria-label="Home">
+        <img src="{{ brand_info.logo_header if brand_info and brand_info.logo_header else url_for('static', filename='pic/logo.png') }}"
+             alt="{{ brand_info.brand_name|default('LilyOpenCMS') }}"
+             class="h-8 w-auto">
+      </a>
+
+      <div class="hidden md:flex items-center gap-1">
+        {% for link in nav_items %}
+        <a href="{{ link.url }}"
+           class="px-3 py-1.5 text-sm font-medium transition-all rounded-md"
+           style="color: hsl(var(--secondary-foreground));"
+           onmouseover="this.style.backgroundColor='hsl(var(--surface-tonal))';this.style.color='hsl(var(--primary))'"
+           onmouseout="this.style.backgroundColor='transparent';this.style.color='hsl(var(--secondary-foreground))'"
+           {% if link.is_external %}target="_blank" rel="noopener noreferrer"{% endif %}>
+          {{ link.name }}
+        </a>
+        {% endfor %}
+      </div>
+
+      <div class="flex items-center gap-2">
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('main.settings_dashboard') }}"
+           class="px-3 py-1.5 text-sm font-medium transition-all rounded-md"
+           style="color: hsl(var(--muted-foreground));"
+           onmouseover="this.style.backgroundColor='hsl(var(--surface-tonal))';this.style.color='hsl(var(--foreground))'"
+           onmouseout="this.style.backgroundColor='transparent';this.style.color='hsl(var(--muted-foreground))'">
+          <i class="fa-solid fa-user-gear mr-1.5" aria-hidden="true"></i>Dashboard
+        </a>
+        {% else %}
+        <a href="{{ url_for('main.login') }}"
+           class="px-4 py-1.5 text-sm font-medium transition-all rounded-md"
+           style="background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground));
+                  box-shadow: 0 2px 0 rgba(5,145,255,0.1);"
+           onmouseover="this.style.filter='brightness(1.08)'"
+           onmouseout="this.style.filter='none'">
+          Masuk
+        </a>
+        {% endif %}
+        <button id="mobile-menu-button"
+                aria-label="Menu"
+                aria-expanded="false"
+                aria-controls="mobile-menu"
+                class="md:hidden p-2 -mr-2 rounded-md transition-colors"
+                style="color: hsl(var(--muted-foreground));"
+                onmouseover="this.style.backgroundColor='hsl(var(--surface-tonal))'"
+                onmouseout="this.style.backgroundColor='transparent'">
+          <i class="fa-solid fa-bars text-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="space-y-2 mb-8" role="alert" aria-live="polite">
+      {% for category, message in messages %}
+      <div class="px-4 py-3 text-sm rounded-md flex items-center gap-3"
+           style="border: 1px solid hsl(var(--border));
+                  background-color: hsl(var(--surface));
+                  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+                  {% if category == 'error' %}border-left: 3px solid #ff4d4f;
+                  {% elif category == 'success' %}border-left: 3px solid #52c41a;
+                  {% else %}border-left: 3px solid hsl(var(--primary));{% endif %}">
+        {% if category == 'error' %}
+        <i class="fa-solid fa-circle-exclamation" style="color: #ff4d4f;" aria-hidden="true"></i>
+        {% elif category == 'success' %}
+        <i class="fa-solid fa-circle-check" style="color: #52c41a;" aria-hidden="true"></i>
+        {% else %}
+        <i class="fa-solid fa-circle-info" style="color: hsl(var(--primary));" aria-hidden="true"></i>
+        {% endif %}
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'footer.html' %}
+  <script src="{{ url_for('static', filename='js/footer-social.js') }}" defer></script>
+
+  <div id="mobile-menu"
+       class="fixed inset-0 z-[60] hidden overflow-hidden"
+       role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <div class="absolute inset-0" style="background-color: rgba(0,0,0,0.3);"></div>
+    <div class="absolute right-0 top-0 h-full w-[80%] max-w-xs animate-in slide-in-from-right duration-200"
+         style="background-color: hsl(var(--background));
+                border-left: 1px solid hsl(var(--border));
+                box-shadow: -4px 0 12px rgba(0,0,0,0.06);">
+      <div class="p-6 h-full flex flex-col">
+        <div class="flex items-center justify-between mb-6 pb-4"
+             style="border-bottom: 1px solid hsl(var(--border));">
+          <img src="{{ brand_info.logo_header if brand_info and brand_info.logo_header else url_for('static', filename='pic/logo.png') }}" alt="Logo" class="h-8 w-auto">
+          <button id="mobile-menu-close-button"
+                  aria-label="Tutup menu"
+                  class="p-2 -mr-2 rounded-md transition-colors"
+                  style="color: hsl(var(--muted-foreground));"
+                  onmouseover="this.style.backgroundColor='hsl(var(--surface-tonal))'"
+                  onmouseout="this.style.backgroundColor='transparent'">
+            <i class="fa-solid fa-xmark text-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+        <nav class="flex-grow" aria-label="Mobile navigation">
+          <ul class="space-y-1">
+            <li>
+              <a href="{{ url_for('main.home') }}"
+                 class="block py-2.5 px-3 text-sm font-medium rounded-md transition-colors"
+                 style="color: hsl(var(--primary)); background-color: hsl(var(--surface-tonal));">
+                Beranda
+              </a>
+            </li>
+            {% for link in nav_items %}
+            <li>
+              <a href="{{ link.url }}"
+                 class="block py-2.5 px-3 text-sm font-medium rounded-md transition-colors"
+                 style="color: hsl(var(--secondary-foreground));"
+                 onmouseover="this.style.backgroundColor='hsl(var(--surface-tonal))';this.style.color='hsl(var(--primary))'"
+                 onmouseout="this.style.backgroundColor='transparent';this.style.color='hsl(var(--secondary-foreground))'"
+                 {% if link.is_external %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                {{ link.name }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </nav>
+        <div class="pt-4" style="border-top: 1px solid hsl(var(--border));">
+          {% if current_user.is_authenticated %}
+          <p class="text-sm font-medium" style="color: hsl(var(--foreground));">{{ current_user.username }}</p>
+          {% else %}
+          <a href="{{ url_for('main.login') }}"
+             class="block text-center py-2.5 text-sm font-medium rounded-md transition-opacity"
+             style="background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground));"
+             onmouseover="this.style.filter='brightness(1.08)'"
+             onmouseout="this.style.filter='none'">
+            Masuk
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/csrf-utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/mobile-toggler.js') }}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

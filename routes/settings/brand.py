@@ -182,12 +182,6 @@ def update_brand_identity():
     for field, url in fixed_urls.items():
         setattr(brand, field, url)
 
-    for toggle in ["enable_comments", "enable_ratings"]:
-        val = request.form.get(toggle)
-        if val is not None:
-            setattr(brand, toggle, val.lower() in ['true', '1', 'on', 'yes'])
-            updated = True
-
     if updated:
         db.session.commit()
         try:
@@ -215,10 +209,8 @@ def update_brand_identity_text():
     allowed = [
         "brand_name", "tagline", "brand_description",
         "homepage_design", "categories_display_location", "card_design",
-        "enable_comments", "enable_ratings", "enable_ads", "enable_campaigns",
         "enable_videos", "enable_gallery", "enable_albums", "enable_news",
-        "enable_premium", "enable_about", "enable_bookmarks",
-        "enable_reading_history", "enable_community", "enable_user_stats",
+        "enable_premium", "enable_about",
         "min_story_word_count", "min_chapter_word_count",
         "google_adsense_publisher_id", "google_tag_manager_id",
         "google_analytics_measurement_id"
@@ -232,10 +224,8 @@ def update_brand_identity_text():
         db.session.add(brand)
 
     toggle_fields = [
-        "enable_comments", "enable_ratings", "enable_ads", "enable_campaigns",
         "enable_videos", "enable_gallery", "enable_albums", "enable_news",
-        "enable_premium", "enable_about", "enable_bookmarks",
-        "enable_reading_history", "enable_community", "enable_user_stats"
+        "enable_premium", "enable_about"
     ]
     if field in toggle_fields:
         setattr(brand, field, str(value).lower() in ['true', '1', 'on', 'yes'])

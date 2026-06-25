@@ -19,7 +19,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
       <div class="col-span-12 md:col-span-5">
         <a href="{{ url_for('main.home') }}"
            class="inline-block mb-7 transition-opacity hover:opacity-70">
-          <img src="{{ url_for('static', filename='pic/logo.png') }}"
+          <img src="{{ brand_info.logo_footer if brand_info and brand_info.logo_footer else url_for('static', filename='pic/logo.png') }}"
                alt="{{ brand_info.brand_name|default('LilyOpenCMS') }}"
                class="h-9 w-auto">
         </a>
@@ -83,10 +83,30 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           {% endfor %}
         </ul>
         {% endif %}
-        <a href="mailto:hello@example.com"
-           class="m3-button-tonal !py-2 !px-4 text-[10px] inline-flex">
-          Kirim Email
-        </a>
+        {% set footer_email = namespace(found=false) %}
+        {% for c in contact_details if not footer_email.found %}
+          {% if c.link and c.link.startswith('mailto:') %}
+            {% set footer_email.found = true %}
+            <a href="{{ c.link }}"
+               class="m3-button-tonal !py-2 !px-4 text-[10px] inline-flex">
+              Kirim Email
+            </a>
+          {% endif %}
+        {% endfor %}
+        {% if not footer_email.found %}
+          {% for c in contact_details if not footer_email.found %}
+            {% if '@' in c.content %}
+              {% set footer_email.found = true %}
+              <a href="mailto:{{ c.content }}"
+                 class="m3-button-tonal !py-2 !px-4 text-[10px] inline-flex">
+                Kirim Email
+              </a>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        {% if not footer_email.found %}
+          <span class="text-[10px] font-medium" style="color: hsl(var(--muted-foreground));">Kontak tersedia di halaman Tentang</span>
+        {% endif %}
       </div>
     </div>
 

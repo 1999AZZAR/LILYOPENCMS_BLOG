@@ -1,14 +1,3 @@
-<!--
-Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
-All rights reserved.
-
-This software is dual-licensed:
-1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
-2. For commercial use: Subject to a separate Commercial License Agreement.
-
-Contact: azzar.mr.zs@gmail.com for inquiries.
--->
-
 {% set _show_img = show_image|default(True) %}
 {% set _show_exc = show_excerpt|default(True) %}
 {% set _show_dt  = show_date|default(True) %}
@@ -31,29 +20,31 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
      class="block w-full h-full relative">
     <img src="{{ _img_ph }}" data-src="{{ _img_url }}"
          alt="{{ item.title | e }}"
-         class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]">
+         class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]">
 
     <div class="absolute inset-0"
-         style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.30) 50%, transparent 100%);"></div>
+         style="background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.10) 70%, transparent 100%);"></div>
 
-    <div class="absolute bottom-0 p-5 w-full">
-      {% if item.is_premium %}
-      <span class="m3-chip bg-amber-400 text-amber-950 border-transparent text-[9px] mb-2 inline-block">Premium</span>
-      {% endif %}
-      <p class="text-[9px] font-black uppercase tracking-[0.16em] mb-1.5"
-         style="color: hsl(var(--primary));">
-        {{ item.category.name if item.category else 'Umum' }}
-      </p>
-      <h3 class="text-lg font-black leading-tight line-clamp-2"
-          style="color: #fff; letter-spacing: -0.02em;">
-        {{ item.title }}
-      </h3>
-      {% if _show_dt and item.date %}
-      <p class="text-[9px] font-black uppercase tracking-[0.12em] mt-2"
-         style="color: rgba(255,255,255,0.55);">
-        {{ item.date.strftime('%d %b %Y') }}
-      </p>
-      {% endif %}
+    <div class="absolute inset-0 flex flex-col justify-end p-5">
+      <div class="space-y-2">
+        {% if item.is_premium %}
+        <span class="inline-block px-2.5 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] bg-amber-400 text-amber-950 rounded-full">Premium</span>
+        {% endif %}
+
+        <div class="flex flex-wrap gap-2 items-center text-[9px] font-black uppercase tracking-[0.16em]"
+             style="color: hsla(0,0%,100%,0.55);">
+          <span>{{ item.category.name if item.category else 'Umum' }}</span>
+          {% if _show_dt and item.date %}
+          <span class="w-1 h-1 rounded-full" style="background-color: hsla(0,0%,100%,0.3);"></span>
+          <span>{{ item.date.strftime('%d %b %Y') }}</span>
+          {% endif %}
+        </div>
+
+        <h3 class="text-lg font-black leading-tight line-clamp-2 text-white"
+            style="letter-spacing: -0.02em;">
+          {{ item.title }}
+        </h3>
+      </div>
     </div>
   </a>
 </article>

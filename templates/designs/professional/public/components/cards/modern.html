@@ -1,0 +1,54 @@
+<a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+   class="flex flex-col group rounded-lg overflow-hidden transition-all"
+   style="border: 1px solid hsl(var(--border));
+          background-color: hsl(var(--surface));
+          box-shadow: 0 1px 2px rgba(0,0,0,0.03);"
+   onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)';this.style.borderColor='hsl(var(--primary))'"
+   onmouseout="this.style.boxShadow='0 1px 2px rgba(0,0,0,0.03)';this.style.borderColor='hsl(var(--border))'">
+
+  {% set image_obj = item.image %}
+  {% set placeholder_img = url_for('static', filename='pic/placeholder.png') %}
+  {% set img_url = placeholder_img %}
+  {% if image_obj and image_obj.filepath %}
+    {% set fp = image_obj.filepath.replace('static/', '', 1) %}
+    {% set di = fp.rfind('.') %}
+    {% if di != -1 %}
+      {% set img_url = url_for('static', filename=fp[:di] ~ '_thumb_landscape' ~ fp[di:]) %}
+    {% endif %}
+  {% endif %}
+  <div class="w-full aspect-[4/3] overflow-hidden" style="background-color: hsl(var(--surface-tonal));">
+    <img src="{{ img_url }}" loading="lazy" alt="{{ item.title | e }}"
+         class="w-full h-full object-cover transition-all duration-500"
+         onmouseover="this.style.transform='scale(1.05)'"
+         onmouseout="this.style.transform='scale(1)'">
+  </div>
+
+  <div class="p-4 flex flex-col flex-1">
+    <div class="flex flex-wrap gap-2 items-center mb-1.5">
+      <span class="text-[10px] font-semibold rounded px-1.5 py-0.5"
+            style="background-color: hsl(var(--surface-tonal)); color: hsl(var(--primary));">
+        {{ item.category.name if item.category else 'Article' }}
+      </span>
+      {% if item.is_premium %}
+      <span class="text-[10px] font-semibold rounded px-1.5 py-0.5"
+            style="background-color: #fff7e6; color: #d48806;">Premium</span>
+      {% endif %}
+    </div>
+    <h3 class="text-base font-semibold leading-snug line-clamp-2 transition-colors"
+        style="color: hsl(var(--foreground));"
+        onmouseover="this.style.color='hsl(var(--primary))'"
+        onmouseout="this.style.color='hsl(var(--foreground))'">
+      {{ item.title }}
+    </h3>
+    {% if item.content %}
+    <p class="text-sm mt-1.5 line-clamp-2" style="color: hsl(var(--muted-foreground));">
+      {{ item.content|striptags|truncate(100) }}
+    </p>
+    {% endif %}
+    <div class="flex items-center gap-3 mt-auto pt-3 text-xs"
+         style="color: hsl(var(--muted-foreground)); border-top: 1px solid hsl(var(--border));">
+      {% if item.writer %}<span>{{ item.writer }}</span>{% endif %}
+      {% if item.date %}<span>{{ item.date.strftime('%d %b %Y') }}</span>{% endif %}
+    </div>
+  </div>
+</a>

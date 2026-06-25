@@ -190,6 +190,8 @@ def videos():
 @cache_with_args(timeout=CACHE_TIMEOUTS['news_list'], key_prefix='news_list')
 @monitor_ssr_render("news_list")
 def news():
+    if not _feature_enabled('enable_news'):
+        abort(404)
     page = request.args.get("page", 1, type=int)
     per_page = 9
     # Fetch all visible news articles (is_news=True)
@@ -217,6 +219,8 @@ def news():
 @main_blueprint.route("/hypes")
 @monitor_ssr_render("hypes")
 def hypes():
+    if not _feature_enabled('enable_news'):
+        abort(404)
     page = request.args.get("page", 1, type=int)
     per_page = 9
 
@@ -266,6 +270,8 @@ def hypes():
 @main_blueprint.route("/articles")
 @monitor_ssr_render("articles")
 def articles():
+    if not _feature_enabled('enable_news'):
+        abort(404)
     page = request.args.get("page", 1, type=int)
     per_page = 9
     
@@ -293,6 +299,8 @@ def articles():
 
 @main_blueprint.route("/utama")
 def utama():
+    if not _feature_enabled('enable_news'):
+        abort(404)
     page = request.args.get("page", 1, type=int)
     per_page = 9
     # Get all featured content (both articles and news)
@@ -451,6 +459,8 @@ def search():
 @main_blueprint.route("/news/<int:news_id>/<path:news_title>")
 @monitor_ssr_render("news_detail")
 def news_detail(news_id, news_title):
+    if not _feature_enabled('enable_news'):
+        abort(404)
     news_item = News.query.get_or_404(news_id)
 
     # Check visibility *before* doing anything else
@@ -553,6 +563,8 @@ def news_detail(news_id, news_title):
 
 @main_blueprint.route("/news/<int:news_id>")
 def news_detail_legacy(news_id):
+    if not _feature_enabled('enable_news'):
+        abort(404)
     """
     Legacy route that redirects old URLs to new SEO-friendly URLs
     """

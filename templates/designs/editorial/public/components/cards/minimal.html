@@ -1,0 +1,37 @@
+<a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+   class="block p-6 group transition-all duration-150"
+   style="border: 3px solid #000; box-shadow: 7px 7px 0 0 #000;
+          background-color: hsl(var(--surface));"
+   onmouseover="this.style.boxShadow='4px 4px 0 0 #000';this.style.transform='translate(3px,3px)'"
+   onmouseout="this.style.boxShadow='7px 7px 0 0 #000';this.style.transform='none'">
+
+  <div class="flex flex-wrap gap-2 items-center mb-3">
+    <span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5"
+          style="background-color: hsl(var(--accent)); color: #000; border: 1.5px solid #000;">
+      {{ item.category.name if item.category else 'Article' }}
+    </span>
+    {% if item.is_premium %}
+    <span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5"
+          style="background-color: #000; color: #fff;">Premium</span>
+    {% endif %}
+  </div>
+
+  <h3 class="text-xl font-black leading-tight line-clamp-2 transition-colors duration-150"
+      style="color: hsl(var(--foreground)); letter-spacing: -0.02em;"
+      onmouseover="this.style.color='hsl(var(--primary))'"
+      onmouseout="this.style.color='hsl(var(--foreground))'">
+    {{ item.title }}
+  </h3>
+
+  {% if item.content %}
+  <p class="text-sm mt-3 line-clamp-2" style="color: hsl(var(--muted-foreground));">
+    {{ item.content|striptags|truncate(180) }}
+  </p>
+  {% endif %}
+
+  <div class="flex items-center gap-4 mt-5 pt-4 text-[9px] font-bold uppercase tracking-wider"
+       style="border-top: 2px solid #000; color: hsl(var(--muted-foreground));">
+    {% if item.writer %}<span>{{ item.writer }}</span>{% endif %}
+    {% if item.date %}<span>{{ item.date.strftime('%d %b %Y') }}</span>{% endif %}
+  </div>
+</a>

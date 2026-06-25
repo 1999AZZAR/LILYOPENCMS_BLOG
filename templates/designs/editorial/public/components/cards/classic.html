@@ -1,33 +1,54 @@
-<article class="flex flex-col sm:flex-row gap-6 py-6" style="border-bottom: 1px solid hsl(var(--border));">
+<a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+   class="flex flex-col sm:flex-row gap-5 p-5 group transition-all duration-150"
+   style="border: 3px solid #000; box-shadow: 7px 7px 0 0 #000;
+          background-color: hsl(var(--surface));"
+   onmouseover="this.style.boxShadow='4px 4px 0 0 #000';this.style.transform='translate(3px,3px)'"
+   onmouseout="this.style.boxShadow='7px 7px 0 0 #000';this.style.transform='none'">
+
   {% set image_obj = item.image %}
   {% set placeholder_img = url_for('static', filename='pic/placeholder.png') %}
-  {% set thumb_url = placeholder_img %}
+  {% set img_url = placeholder_img %}
   {% if image_obj and image_obj.filepath %}
-    {% set p = image_obj.filepath.replace('static/', '', 1) %}
-    {% set di = p.rfind('.') %}
+    {% set fp = image_obj.filepath.replace('static/', '', 1) %}
+    {% set di = fp.rfind('.') %}
     {% if di != -1 %}
-      {% set thumb_url = url_for('static', filename=p[:di] ~ '_thumb_square' ~ p[di:]) %}
+      {% set img_url = url_for('static', filename=fp[:di] ~ '_thumb_landscape' ~ fp[di:]) %}
     {% endif %}
   {% endif %}
-  <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}" class="block w-full sm:w-44 h-28 flex-shrink-0 overflow-hidden" style="background-color: hsl(var(--surface-tonal));">
-    <img src="{{ placeholder_img }}" data-src="{{ thumb_url }}" alt="{{ item.title | e }}" class="lazy w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-  </a>
-  <div class="min-w-0 flex-1">
-    <div class="flex flex-wrap gap-2 mb-2">
-      {% if item.category %}<span class="text-[10px] font-semibold uppercase tracking-widest" style="color: hsl(var(--accent));">{{ item.category.name }}</span>{% endif %}
-      {% if item.is_premium %}<span class="text-[10px] font-semibold uppercase tracking-widest" style="color: hsl(var(--foreground));">Premium</span>{% endif %}
+  <div class="w-full sm:w-44 h-32 sm:h-28 flex-shrink-0 overflow-hidden"
+       style="border: 2px solid #000;">
+    <img src="{{ img_url }}" loading="lazy" alt="{{ item.title | e }}"
+         class="w-full h-full object-cover transition-all duration-300"
+         onmouseover="this.style.transform='scale(1.05)'"
+         onmouseout="this.style.transform='scale(1)'">
+  </div>
+
+  <div class="flex flex-col min-w-0 flex-1">
+    <div class="flex flex-wrap gap-2 items-center mb-2">
+      <span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5"
+            style="background-color: hsl(var(--accent)); color: #000; border: 1.5px solid #000;">
+        {{ item.category.name if item.category else 'Article' }}
+      </span>
+      {% if item.is_premium %}
+      <span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5"
+            style="background-color: #000; color: #fff;">Premium</span>
+      {% endif %}
     </div>
-    <h3 class="text-lg font-bold leading-snug mb-2 transition-colors" style="color: hsl(var(--foreground)); letter-spacing: -0.01em;">
-      <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}" class="hover:text-[color:hsl(var(--primary))] transition-colors">{{ item.title }}</a>
+    <h3 class="text-base font-black leading-snug line-clamp-2 transition-colors duration-150"
+        style="color: hsl(var(--foreground)); letter-spacing: -0.01em;"
+        onmouseover="this.style.color='hsl(var(--primary))'"
+        onmouseout="this.style.color='hsl(var(--foreground))'">
+      {{ item.title }}
     </h3>
     {% if item.content %}
-    <p class="text-sm leading-relaxed mb-3 line-clamp-2" style="color: hsl(var(--muted-foreground));">
-      {{ item.content|striptags|truncate(150) }}
+    <p class="text-sm mt-1.5 line-clamp-2" style="color: hsl(var(--muted-foreground));">
+      {{ item.content|striptags|truncate(140) }}
     </p>
     {% endif %}
-    <div class="flex items-center gap-4 text-xs" style="color: hsl(var(--muted-foreground));">
+    <div class="flex items-center gap-4 mt-auto pt-3 text-[9px] font-bold uppercase tracking-wider"
+         style="border-top: 2px solid #000; color: hsl(var(--muted-foreground));">
       {% if item.writer %}<span>{{ item.writer }}</span>{% endif %}
       {% if item.date %}<span>{{ item.date.strftime('%d %b %Y') }}</span>{% endif %}
     </div>
   </div>
-</article>
+</a>

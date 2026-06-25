@@ -104,7 +104,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.png') }}">
+  <link rel="icon" type="image/x-icon" href="{{ brand_info.favicon if brand_info and brand_info.favicon else url_for('static', filename='pic/favicon.png') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>

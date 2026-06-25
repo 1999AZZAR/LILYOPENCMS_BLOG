@@ -1,79 +1,59 @@
-<!--
-Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
-All rights reserved.
-
-This software is dual-licensed:
-1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
-2. For commercial use: Subject to a separate Commercial License Agreement.
-
-Contact: azzar.mr.zs@gmail.com for inquiries.
--->
-
 {% extends 'base.html' %}
-
 {% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}
 
 {% block content %}
 
-  <!-- ─── Hero Swiper ────────────────────────────────────────── -->
   {% if main_news %}
-  <section class="mb-20 -mx-4 sm:-mx-6 lg:-mx-0">
-    <div class="swiper featured-swiper overflow-hidden relative"
-         style="border-radius: 4px; aspect-ratio: 21/9; min-height: 300px;">
-      <div class="swiper-wrapper">
-        {% for news_item in main_news %}
-        <div class="swiper-slide group">
-          <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
-             class="block w-full h-full relative">
-            {% set image_obj = news_item.image %}
-            {% set img_url = url_for('static', filename='pic/placeholder.png') %}
-            {% if image_obj and image_obj.filepath %}
-              {% set img_url = url_for('static', filename=image_obj.filepath.replace('static/', '', 1)) %}
+  <section class="mb-20 -mx-4 sm:-mx-6 lg:mx-0">
+    <div class="grid grid-cols-1 sm:grid-cols-12 gap-px"
+         style="background-color: hsl(var(--foreground));">
+      {% for news_item in main_news[:3] %}
+      {% set image_obj = news_item.image %}
+      {% set img_url = url_for('static', filename='pic/placeholder.png') %}
+      {% if image_obj and image_obj.filepath %}
+        {% set img_url = url_for('static', filename=image_obj.filepath.replace('static/', '', 1)) %}
+      {% endif %}
+      <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
+         class="group relative overflow-hidden
+                {% if loop.first %}sm:col-span-8 sm:row-span-2{% else %}sm:col-span-4{% endif %}"
+         style="background-color: hsl(var(--foreground)); min-height: {% if loop.first %}420px{% else %}200px{% endif %};">
+        <img src="{{ img_url }}" alt="{{ news_item.title | e }}"
+             class="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-90">
+        <div class="absolute inset-0"
+             style="background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.25) 50%, transparent 100%);"></div>
+        <div class="absolute bottom-0 p-6 {% if loop.first %}p-8{% endif %} w-full">
+          <div class="flex flex-wrap gap-2 items-center mb-3">
+            <span class="text-[9px] font-black uppercase tracking-[0.18em]"
+                  style="color: hsla(0,0%,100%,0.55);">
+              {{ news_item.category.name if news_item.category else 'Unggulan' }}
+            </span>
+            {% if news_item.is_premium %}
+            <span class="text-[9px] font-black uppercase tracking-[0.12em] px-2 py-0.5"
+                  style="background-color: hsl(var(--accent)); color: hsl(var(--accent-foreground));">Premium</span>
             {% endif %}
-            <img src="{{ img_url }}" alt="{{ news_item.title | e }}"
-                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.03]">
-            <div class="absolute inset-0"
-                 style="background: linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.28) 55%, transparent 100%);"></div>
-            <div class="absolute bottom-0 p-8 md:p-12 w-full max-w-3xl">
-              <div class="flex gap-2 mb-4 flex-wrap">
-                <span class="text-[9px] font-black uppercase tracking-[0.18em] text-white/70">
-                  {% if news_item.category %}{{ news_item.category.name }}{% else %}Unggulan{% endif %}
-                </span>
-                {% if news_item.is_premium %}
-                <span class="m3-chip bg-amber-400 text-amber-950 border-transparent text-[9px]">Premium</span>
-                {% endif %}
-              </div>
-              <h3 class="text-2xl md:text-4xl lg:text-5xl font-black text-white leading-[1.05] mb-5"
-                  style="letter-spacing: -0.03em;">
-                {{ news_item.title }}
-              </h3>
-              <div class="flex items-center gap-6 text-[10px] font-black text-white/50 uppercase tracking-[0.14em]">
-                {% if news_item.writer %}
-                <span>{{ news_item.writer }}</span>
-                {% endif %}
-                {% if news_item.date %}
-                <span>{{ news_item.date.strftime('%d %b %Y') }}</span>
-                {% endif %}
-              </div>
-            </div>
-          </a>
+          </div>
+          <h3 class="font-black text-white leading-[1.08]
+                     {% if loop.first %}text-2xl sm:text-3xl lg:text-4xl{% else %}text-base sm:text-lg{% endif %}"
+              style="letter-spacing: -0.02em;">
+            {{ news_item.title }}
+          </h3>
+          {% if news_item.date and loop.first %}
+          <p class="text-[10px] font-black uppercase tracking-[0.14em] mt-4"
+             style="color: hsla(0,0%,100%,0.4);">
+            {{ news_item.date.strftime('%d %b %Y') }}
+          </p>
+          {% endif %}
         </div>
-        {% endfor %}
-      </div>
-      <div class="swiper-button-next !right-6" aria-label="Selanjutnya"></div>
-      <div class="swiper-button-prev !left-6"  aria-label="Sebelumnya"></div>
-      <div class="swiper-pagination !bottom-5"></div>
+      </a>
+      {% endfor %}
     </div>
   </section>
   {% endif %}
 
-  <!-- ─── Main Feed + Sidebar ───────────────────────────────── -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
 
-    <!-- Latest (8 cols) -->
     <div class="lg:col-span-8">
 
-      <!-- Swiss section header -->
       <div class="section-heading">
         <p class="section-heading-label">Terbaru</p>
         <div class="flex items-end justify-between">
@@ -85,7 +65,6 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
         </div>
       </div>
 
-      <!-- Article list — Swiss style: stacked rows with rule dividers -->
       {% if latest_news %}
       <div class="divide-y" style="border-color: hsl(var(--border));">
         {% for item in latest_news %}
@@ -95,7 +74,6 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
       {% endif %}
     </div>
 
-    <!-- Sidebar Populer (4 cols) -->
     <aside class="lg:col-span-4 sticky-sidebar">
       <div class="section-heading">
         <p class="section-heading-label">Populer</p>
@@ -110,7 +88,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           <span class="sw-index w-7 flex-shrink-0 pt-0.5">{{ '%02d' % loop.index }}</span>
 
           <div class="w-16 h-16 flex-shrink-0 overflow-hidden"
-               style="background-color: var(--m3-container); border-radius: 4px;">
+               style="background-color: var(--m3-container);">
             {% set image_obj = news_item.image %}
             {% set placeholder_img = url_for('static', filename='pic/placeholder.png') %}
             {% set thumb_url = placeholder_img %}
@@ -151,17 +129,6 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 {% block extra_scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  if (document.querySelector('.featured-swiper')) {
-    new Swiper('.featured-swiper', {
-      loop: true,
-      autoplay: { delay: 5500, disableOnInteraction: false },
-      pagination: { el: '.swiper-pagination', clickable: true },
-      navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-      effect: 'fade',
-      fadeEffect: { crossFade: true },
-      speed: 900,
-    });
-  }
   const obs = new IntersectionObserver((entries, o) => {
     entries.forEach(({ isIntersecting, target }) => {
       if (!isIntersecting) return;

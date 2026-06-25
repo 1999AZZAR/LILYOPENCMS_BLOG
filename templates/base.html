@@ -24,7 +24,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
   <meta name="language"    content="{% if root_seo and root_seo.meta_language %}{{ root_seo.meta_language }}{% else %}id{% endif %}">
   <meta name="robots"      content="{% if root_seo and root_seo.meta_robots %}{{ root_seo.meta_robots }}{% else %}index, follow{% endif %}">
   <link rel="canonical"    href="{% if root_seo and root_seo.canonical_url %}{{ root_seo.canonical_url }}{% else %}{{ request.url_root[:-1] }}{{ request.path }}{% endif %}">
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='pic/favicon.png') }}">
+  <link rel="icon" type="image/png" href="{{ brand_info.favicon if brand_info and brand_info.favicon else url_for('static', filename='pic/favicon.png') }}">
 
   <!-- Open Graph -->
   <meta property="og:title"       content="{% block og_title %}{% if root_seo and root_seo.og_title %}{{ root_seo.og_title }}{% else %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endif %}{% endblock %}">
@@ -153,7 +153,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
         <a href="{{ url_for('main.home') }}"
            class="flex-shrink-0 transition-opacity duration-200 hover:opacity-75"
            aria-label="{{ brand_info.brand_name|default('LilyOpenCMS') }} Homepage">
-          <img src="{{ url_for('static', filename='pic/logo.png') }}"
+          <img src="{{ brand_info.logo_header if brand_info and brand_info.logo_header else url_for('static', filename='pic/logo.png') }}"
                alt="{{ brand_info.brand_name|default('LilyOpenCMS') }}"
                class="h-9 w-auto">
         </a>
@@ -290,6 +290,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
   <!-- ─── Footer ────────────────────────────────────────────────── -->
   {% include 'footer.html' %}
+  <script src="{{ url_for('static', filename='js/footer-social.js') }}" defer></script>
 
   <!-- ─── Mobile Menu ───────────────────────────────────────────── -->
   <div id="mobile-menu"
@@ -310,7 +311,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
         <!-- Panel header -->
         <div class="flex items-center justify-between mb-10 pb-6"
              style="border-bottom: 1px solid hsl(var(--border));">
-          <img src="{{ url_for('static', filename='pic/logo.png') }}" alt="Logo" class="h-8 w-auto">
+          <img src="{{ brand_info.logo_header if brand_info and brand_info.logo_header else url_for('static', filename='pic/logo.png') }}" alt="Logo" class="h-8 w-auto">
           <button id="mobile-menu-close-button"
                   aria-label="Tutup menu"
                   class="nav-icon-btn nav-icon-btn-danger">

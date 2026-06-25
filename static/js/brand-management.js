@@ -962,6 +962,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Design system form handlers
   handleHomepageDesignForm('form-homepage-news');
   handleHomepageDesignForm('form-homepage-editorial');
+  handleHomepageDesignForm('form-homepage-professional');
   
   // Categories display form handlers
   handleCategoriesDisplayForm('form-categories-body');

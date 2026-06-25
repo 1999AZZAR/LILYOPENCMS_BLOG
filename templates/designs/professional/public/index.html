@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}
+
+{% block content %}
+
+  {% if main_news %}
+  <section class="mb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      {% for news_item in main_news[:3] %}
+      {% set image_obj = news_item.image %}
+      {% set img_url = url_for('static', filename='pic/placeholder.png') %}
+      {% if image_obj and image_obj.filepath %}
+        {% set img_url = url_for('static', filename=image_obj.filepath.replace('static/', '', 1)) %}
+      {% endif %}
+      <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
+         class="group relative overflow-hidden rounded-lg
+                {% if loop.first %}lg:col-span-8 lg:row-span-2{% else %}lg:col-span-4{% endif %}"
+         style="background-color: hsl(var(--surface-tonal));
+                min-height: {% if loop.first %}420px{% else %}200px{% endif %};
+                border: 1px solid hsl(var(--border));
+                box-shadow: 0 1px 2px rgba(0,0,0,0.04);">
+        <img src="{{ img_url }}" alt="{{ news_item.title | e }}"
+             class="absolute inset-0 w-full h-full object-cover transition-all duration-500"
+             onmouseover="this.style.transform='scale(1.03)'"
+             onmouseout="this.style.transform='scale(1)'">
+        <div class="absolute inset-0"
+             style="background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.15) 50%, transparent 100%);"></div>
+        <div class="absolute bottom-0 p-5 {{ 'p-7' if loop.first }}">
+          <span class="inline-block text-[11px] font-semibold mb-2 rounded px-2 py-0.5"
+                style="background-color: hsla(0,0%,100%,0.15); color: #fff; backdrop-filter: blur(4px);">
+            {{ news_item.category.name if news_item.category else 'Featured' }}
+          </span>
+          <h2 class="leading-tight text-white
+                     {% if loop.first %}text-xl sm:text-2xl lg:text-3xl font-bold{% else %}text-sm font-semibold{% endif %}">
+            {{ news_item.title }}
+          </h2>
+          {% if news_item.date and loop.first %}
+          <p class="text-xs mt-2" style="color: hsla(0,0%,100%,0.55);">{{ news_item.date.strftime('%d %B %Y') }}</p>
+          {% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+    <div class="lg:col-span-8">
+
+      <div class="flex items-center justify-between mb-6 pb-3"
+           style="border-bottom: 1px solid hsl(var(--border));">
+        <h2 class="text-base font-semibold" style="color: hsl(var(--foreground));">Berita Terbaru</h2>
+        <a href="{{ url_for('main.utama') }}" class="text-sm font-medium transition-colors"
+           style="color: hsl(var(--primary));"
+           onmouseover="this.style.color='#4096FF'"
+           onmouseout="this.style.color='hsl(var(--primary))'">
+          Lihat Semua <i class="fa-solid fa-arrow-right ml-1 text-xs" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      {% if latest_news %}
+      <div class="space-y-4">
+        {% for item in latest_news %}
+        {% include 'public/components/_card_dispatcher.html' %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <aside class="lg:col-span-4">
+
+      <div class="mb-4 pb-3" style="border-bottom: 1px solid hsl(var(--border));">
+        <h3 class="text-sm font-semibold" style="color: hsl(var(--foreground));">Populer</h3>
+      </div>
+
+      {% if popular_news %}
+      <div class="space-y-3">
+        {% for news_item in popular_news %}
+        <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
+           class="flex gap-3 p-3 group rounded-lg transition-all"
+           style="border: 1px solid hsl(var(--border));
+                  background-color: hsl(var(--surface));
+                  box-shadow: 0 1px 2px rgba(0,0,0,0.03);"
+           onmouseover="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)';this.style.borderColor='hsl(var(--primary))'"
+           onmouseout="this.style.boxShadow='0 1px 2px rgba(0,0,0,0.03)';this.style.borderColor='hsl(var(--border))'">
+          <span class="text-lg font-semibold flex-shrink-0"
+                style="color: hsl(var(--primary)); width: 1.5rem;">{{ '%02d' % loop.index }}</span>
+          <div class="min-w-0">
+            <h4 class="text-sm leading-snug line-clamp-2 transition-colors"
+                style="color: hsl(var(--foreground));"
+                onmouseover="this.style.color='hsl(var(--primary))'"
+                onmouseout="this.style.color='hsl(var(--foreground))'">
+              {{ news_item.title }}
+            </h4>
+            {% if news_item.date %}
+            <p class="text-xs mt-1" style="color: hsl(var(--muted-foreground));">{{ news_item.date.strftime('%d %b %Y') }}</p>
+            {% endif %}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
+  </div>
+
+{% endblock %}

@@ -1485,13 +1485,6 @@ class BrandIdentity(db.Model):
     color_background = db.Column(db.String(50), nullable=True, default="220 20% 98%")
     color_foreground = db.Column(db.String(50), nullable=True, default="220 15% 15%")
 
-    # Feature toggles
-    enable_comments = db.Column(db.Boolean, nullable=False, default=True)
-    enable_ratings = db.Column(db.Boolean, nullable=False, default=True)
-    enable_ads = db.Column(db.Boolean, nullable=False, default=True)
-    enable_campaigns = db.Column(db.Boolean, nullable=False, default=True)
-
-
     # UI Page visibility
     enable_videos = db.Column(db.Boolean, nullable=False, default=True)
     enable_gallery = db.Column(db.Boolean, nullable=False, default=True)
@@ -1499,10 +1492,6 @@ class BrandIdentity(db.Model):
     enable_news = db.Column(db.Boolean, nullable=False, default=True)
     enable_premium = db.Column(db.Boolean, nullable=False, default=True)
     enable_about = db.Column(db.Boolean, nullable=False, default=True)
-    enable_bookmarks = db.Column(db.Boolean, nullable=False, default=True)
-    enable_reading_history = db.Column(db.Boolean, nullable=False, default=True)
-    enable_community = db.Column(db.Boolean, nullable=False, default=True)
-    enable_user_stats = db.Column(db.Boolean, nullable=False, default=True)
 
     # Third-party tracking & scripts
     google_adsense_publisher_id = db.Column(db.String(100), nullable=True)
@@ -1537,21 +1526,12 @@ class BrandIdentity(db.Model):
             "color_accent_foreground": self.color_accent_foreground,
             "color_background": self.color_background,
             "color_foreground": self.color_foreground,
-            "enable_comments": self.enable_comments,
-            "enable_ratings": self.enable_ratings,
-            "enable_ads": self.enable_ads,
-            "enable_campaigns": self.enable_campaigns,
-
             "enable_videos": self.enable_videos,
             "enable_gallery": self.enable_gallery,
             "enable_albums": self.enable_albums,
             "enable_news": self.enable_news,
             "enable_premium": self.enable_premium,
             "enable_about": self.enable_about,
-            "enable_bookmarks": self.enable_bookmarks,
-            "enable_reading_history": self.enable_reading_history,
-            "enable_community": self.enable_community,
-            "enable_user_stats": self.enable_user_stats,
             "google_adsense_publisher_id": self.google_adsense_publisher_id,
             "google_tag_manager_id": self.google_tag_manager_id,
             "google_analytics_measurement_id": self.google_analytics_measurement_id,
