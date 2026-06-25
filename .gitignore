@@ -61,6 +61,9 @@ instance/
 .DS_Store
 Thumbs.db
 
+# Node
+node_modules/
+
 # Project specific
 tailwindcss-linux-x64
 static/uploads/
