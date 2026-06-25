@@ -15,8 +15,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 {% set _cc = card_class|default('') %}
 {% set _content = item.content|default('') %}
 
-<article class="py-6 group {{ _cc }}"
-         style="border-bottom: 1px solid hsl(var(--border));">
+{% if card_context == 'homepage' %}
+<article class="py-6 group {{ _cc }}">
   <p class="text-[10px] font-black uppercase tracking-[0.16em] mb-2"
      style="color: hsl(var(--primary));">
     {{ item.category.name if item.category else 'Umum' }}
@@ -51,3 +51,42 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <span>{{ (item.read_time or ((_content|striptags|wordcount / 200)|round|int))|default(1) }} min</span>
   </div>
 </article>
+{% else %}
+<article class="sw-card-listing group {{ _cc }}">
+  <div class="p-5">
+    <p class="text-[10px] font-black uppercase tracking-[0.16em] mb-2"
+       style="color: hsl(var(--primary));">
+      {{ item.category.name if item.category else 'Umum' }}
+      {% if item.is_premium %}
+      <span class="m3-chip ml-2 bg-amber-400 text-amber-950 border-transparent">Premium</span>
+      {% endif %}
+    </p>
+
+    <h3 class="text-xl font-black leading-tight mb-2 transition-colors duration-200"
+        style="letter-spacing: -0.025em; color: hsl(var(--foreground));">
+      <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+         class="group-hover:text-[color:hsl(var(--primary))]">
+        {{ item.title }}
+      </a>
+    </h3>
+
+    {% if _show_exc and _content %}
+    <p class="text-sm leading-relaxed line-clamp-2 mb-3"
+       style="color: hsl(var(--muted-foreground));">
+      {{ _content | striptags | truncate(120) }}
+    </p>
+    {% endif %}
+
+    <div class="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.12em]"
+         style="color: hsl(var(--muted-foreground));">
+      {% if _show_aut %}
+      <span>{{ item.writer or (item.author.username if item.author else 'Anonim') }}</span>
+      {% endif %}
+      {% if _show_dt and item.date %}
+      <span>{{ item.date.strftime('%d %b %Y') }}</span>
+      {% endif %}
+      <span>{{ (item.read_time or ((_content|striptags|wordcount / 200)|round|int))|default(1) }} min</span>
+    </div>
+  </div>
+</article>
+{% endif %}

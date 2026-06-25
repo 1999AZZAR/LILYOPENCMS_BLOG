@@ -66,6 +66,7 @@
       </div>
 
       {% if latest_news %}
+      {% set card_context = 'homepage' %}
       <div class="divide-y" style="border-color: hsl(var(--border));">
         {% for item in latest_news %}
         {% include 'public/components/_card_dispatcher.html' %}

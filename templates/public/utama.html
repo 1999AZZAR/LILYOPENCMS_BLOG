@@ -27,7 +27,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
   </div>
 
   {% if news and news.items %}
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-0">
+  {% set card_context = 'listing' %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
     {% for item in news.items %}
     {% include 'public/components/_card_dispatcher.html' %}
     {% endfor %}

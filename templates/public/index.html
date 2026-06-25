@@ -67,6 +67,37 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
   </section>
   {% endif %}
 
+  <!-- ─── Categories (body mode) ──────────────────────────── -->
+  {% if brand_info.categories_display_location == 'body' and categories_with_counts %}
+  <section class="mb-20">
+    <div class="section-heading">
+      <p class="section-heading-label">Jelajahi</p>
+      <h2>Kategori</h2>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+      {% for cat in categories_with_counts %}
+      <a href="{{ url_for('main.search', category=cat.name) }}"
+         class="group flex flex-col items-center justify-center gap-2 p-6 text-center
+                transition-all duration-200"
+         style="border: 1px solid hsl(var(--border));
+                border-radius: 4px;
+                background-color: hsl(var(--surface));"
+         onmouseover="this.style.borderColor='hsl(var(--primary))'; this.style.backgroundColor='color-mix(in srgb, hsl(var(--primary)) 4%, hsl(var(--surface)))';"
+         onmouseout="this.style.borderColor=''; this.style.backgroundColor='';">
+        <span class="text-xs font-black uppercase tracking-[0.12em]"
+              style="color: hsl(var(--foreground));">
+          {{ cat.name }}
+        </span>
+        <span class="text-[9px] font-black uppercase tracking-[0.14em]"
+              style="color: hsl(var(--muted-foreground));">
+          {{ cat.count }} {{ 'Berita' if cat.count > 0 else 'Kosong' }}
+        </span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
   <!-- ─── Main Feed + Sidebar ───────────────────────────────── -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
 
@@ -87,6 +118,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
       <!-- Article list — Swiss style: stacked rows with rule dividers -->
       {% if latest_news %}
+      {% set card_context = 'homepage' %}
       <div class="divide-y" style="border-color: hsl(var(--border));">
         {% for item in latest_news %}
         {% include 'public/components/_card_dispatcher.html' %}

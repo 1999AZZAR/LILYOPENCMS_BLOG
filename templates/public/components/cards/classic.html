@@ -17,7 +17,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 {% set _img_ph = url_for('static', filename='pic/placeholder.png') %}
 {% set _content = item.content|default('') %}
 
-<article class="py-8 group {{ _cc }}" style="border-bottom: 1px solid hsl(var(--border));">
+{% if card_context == 'homepage' %}
+<article class="py-8 group {{ _cc }}">
   {% if _show_img %}
   <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
      class="block aspect-video overflow-hidden mb-5"
@@ -70,3 +71,60 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <span>{{ (item.read_time or ((_content|striptags|wordcount / 200)|round|int))|default(1) }} min</span>
   </div>
 </article>
+{% else %}
+<article class="sw-card-listing group {{ _cc }}">
+  {% if _show_img %}
+  <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+     class="block aspect-video overflow-hidden"
+     style="background-color: var(--m3-container);">
+    {% set _img_url = _img_ph %}
+    {% if item.image and item.image.filepath %}
+      {% set _p = item.image.filepath.replace('static/', '', 1) %}
+      {% set _di = _p.rfind('.') %}
+      {% if _di != -1 %}
+        {% set _img_url = url_for('static', filename=_p[:_di] ~ '_thumb_landscape' ~ _p[_di:]) %}
+      {% endif %}
+    {% endif %}
+    <img src="{{ _img_ph }}" data-src="{{ _img_url }}"
+         alt="{{ item.title | e }}"
+         class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]">
+  </a>
+  {% endif %}
+
+  <div class="p-5">
+    <p class="text-[10px] font-black uppercase tracking-[0.16em] mb-2"
+       style="color: hsl(var(--primary));">
+      {{ item.category.name if item.category else 'Umum' }}
+      {% if item.is_premium %}
+      <span class="m3-chip ml-2 bg-amber-400 text-amber-950 border-transparent">Premium</span>
+      {% endif %}
+    </p>
+
+    <h3 class="text-lg font-black leading-tight line-clamp-2 mb-3"
+        style="letter-spacing: -0.025em; color: hsl(var(--foreground));">
+      <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+         class="transition-colors duration-200 group-hover:text-[color:hsl(var(--primary))]">
+        {{ item.title }}
+      </a>
+    </h3>
+
+    {% if _show_exc and _content %}
+    <p class="text-sm leading-relaxed line-clamp-2 mb-4"
+       style="color: hsl(var(--muted-foreground));">
+      {{ _content | striptags | truncate(110) }}
+    </p>
+    {% endif %}
+
+    <div class="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.12em]"
+         style="color: hsl(var(--muted-foreground));">
+      {% if _show_aut %}
+      <span>{{ item.writer or (item.author.username if item.author else 'Anonim') }}</span>
+      {% endif %}
+      {% if _show_dt and item.date %}
+      <span>{{ item.date.strftime('%d %b %Y') }}</span>
+      {% endif %}
+      <span>{{ (item.read_time or ((_content|striptags|wordcount / 200)|round|int))|default(1) }} min</span>
+    </div>
+  </div>
+</article>
+{% endif %}

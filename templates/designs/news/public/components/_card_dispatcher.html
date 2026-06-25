@@ -9,7 +9,12 @@ This software is dual-licensed:
 Contact: azzar.mr.zs@gmail.com for inquiries.
 -->
 
-{% set card_style = brand_info.card_design|default('classic') if brand_info else 'classic' %}
+{% set card_context = card_context|default('listing') %}
+{% if card_context == 'homepage' %}
+  {% set card_style = brand_info.card_design_homepage if brand_info and brand_info.card_design_homepage else (brand_info.card_design|default('classic') if brand_info else 'classic') %}
+{% else %}
+  {% set card_style = brand_info.card_design_listing if brand_info and brand_info.card_design_listing else (brand_info.card_design|default('classic') if brand_info else 'classic') %}
+{% endif %}
 {% if card_style == 'modern' %}
   {% include 'public/components/cards/modern.html' %}
 {% elif card_style == 'minimal' %}

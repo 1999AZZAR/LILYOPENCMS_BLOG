@@ -155,116 +155,91 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
   </div>
 
-  <!-- News Card Design Section -->
-  <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="News Card Design Management">
-    <div class="flex items-center gap-3 mb-6">
-      <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
-      </div>
-      <h2 class="text-xl font-bold tracking-tight text-sa-fg">News Card Design</h2>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Classic Card Design">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
-            Classic
-          </h3>
+  <!-- Card Design Section -->
+  <div class="space-y-6">
+    <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="region" aria-label="Card Design Management">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 bg-sa-surface-hover rounded-sa-lg flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
         </div>
-        <div class="bg-sa-surface-hover rounded-sa-lg p-3 mb-4 h-32 flex items-center justify-center">
-          <div class="text-center">
-            <div class="w-16 h-12 bg-sa-border rounded mb-2 mx-auto"></div>
-            <div class="w-20 h-2 bg-sa-border rounded mb-1 mx-auto"></div>
-            <div class="w-16 h-2 bg-sa-border rounded mx-auto"></div>
-          </div>
+        <div>
+          <h2 class="text-xl font-bold tracking-tight text-sa-fg">News Card Design</h2>
+          <p class="text-sm text-sa-muted mt-1">Set different card styles for each page context. Falls back to the global default if not set.</p>
         </div>
-        <p class="text-sa-muted mb-4 text-sm">Traditional card layout with image on top, title, excerpt, and metadata below.</p>
-        <form id="form-card-classic" class="space-y-3">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-          <input type="hidden" name="card_design" value="classic">
-          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set classic card design">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            {% if brand_info.card_design == 'classic' %}Active{% else %}Set as Active{% endif %}
-          </button>
-        </form>
       </div>
 
-      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Modern Card Design">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" /></svg>
-            Modern
-          </h3>
+      <div class="border-b border-sa-border pb-6 mb-6">
+        <h3 class="text-base font-bold text-sa-fg flex items-center gap-2 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+          Global Default
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {% for opt in [('classic', 'Classic', 'Traditional card with image, title, excerpt.', 'w-16 h-12 bg-sa-border rounded mb-2 mx-auto'), ('modern', 'Modern', 'Gradient overlay, rounded corners, visual hierarchy.', 'w-16 h-12 bg-gradient-to-r from-sa-accent to-sa-sidebar rounded-lg mb-2 mx-auto'), ('minimal', 'Minimal', 'Text-focused, clean, content-first readability.', 'w-16 h-12 bg-sa-card rounded mb-2 mx-auto border border-sa-border'), ('featured', 'Featured', 'Premium visuals, prominent featured indicators.', 'w-16 h-12 bg-gradient-to-r from-sa-warning to-sa-accent rounded-lg mb-2 mx-auto')] %}
+          <form id="form-card-{{ opt[0] }}" class="space-y-2">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="card_design" value="{{ opt[0] }}">
+            <button type="submit" class="w-full text-left bg-sa-card border border-sa-border rounded-sa-lg p-4 hover:bg-sa-surface-hover transition-all duration-200 {% if brand_info.card_design == opt[0] %}ring-2 ring-sa-accent{% endif %}">
+              <div class="bg-sa-surface-hover rounded-sa-lg p-3 mb-3 h-24 flex items-center justify-center">
+                <div class="text-center"><div class="{{ opt[2] }}"></div><div class="w-20 h-2 bg-sa-border rounded mb-1 mx-auto"></div><div class="w-16 h-2 bg-sa-border rounded mx-auto"></div></div>
+              </div>
+              <h4 class="font-bold text-sa-fg text-sm">{{ opt[1] }}</h4>
+              <p class="text-xs text-sa-muted mt-1 line-clamp-2">{{ opt[2] }}</p>
+            </button>
+          </form>
+          {% endfor %}
         </div>
-        <div class="bg-sa-surface-hover rounded-sa-lg p-3 mb-4 h-32 flex items-center justify-center">
-          <div class="text-center">
-            <div class="w-16 h-12 bg-gradient-to-r from-sa-accent to-sa-sidebar rounded-lg mb-2 mx-auto"></div>
-            <div class="w-20 h-2 bg-sa-border rounded mb-1 mx-auto"></div>
-            <div class="w-16 h-2 bg-sa-border rounded mx-auto"></div>
-          </div>
-        </div>
-        <p class="text-sa-muted mb-4 text-sm">Contemporary design with gradient overlays, rounded corners, and enhanced visual hierarchy.</p>
-        <form id="form-card-modern" class="space-y-3">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-          <input type="hidden" name="card_design" value="modern">
-          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set modern card design">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            {% if brand_info.card_design == 'modern' %}Active{% else %}Set as Active{% endif %}
-          </button>
-        </form>
       </div>
 
-      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Minimal Card Design">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 018.25 20.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
-            Minimal
-          </h3>
+      <div class="border-b border-sa-border pb-6 mb-6">
+        <h3 class="text-base font-bold text-sa-fg flex items-center gap-2 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+          Homepage
+        </h3>
+        <p class="text-xs text-sa-muted mb-4">Overrides the global card style on the homepage only.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {% for opt in [('classic', 'Classic'), ('modern', 'Modern'), ('minimal', 'Minimal'), ('featured', 'Featured')] %}
+          <form id="form-card-homepage-{{ opt[0] }}" class="space-y-2">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="card_design_homepage" value="{{ opt[0] }}">
+            <button type="submit" class="w-full text-center bg-sa-card border border-sa-border rounded-sa-lg py-3 px-4 hover:bg-sa-surface-hover transition-all duration-200 text-sm font-medium {% if brand_info.card_design_homepage == opt[0] %}ring-2 ring-sa-accent bg-sa-surface-hover{% endif %}">
+              {% if brand_info.card_design_homepage == opt[0] %}Active{% else %}{{ opt[1] }}{% endif %}
+            </button>
+          </form>
+          {% endfor %}
+          <form id="form-card-homepage-none" class="space-y-2">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="card_design_homepage" value="">
+            <button type="submit" class="w-full text-center bg-sa-card border border-dashed border-sa-border rounded-sa-lg py-3 px-4 hover:bg-sa-surface-hover transition-all duration-200 text-sm font-medium text-sa-muted {% if not brand_info.card_design_homepage %}ring-2 ring-sa-muted{% endif %}">
+              {% if not brand_info.card_design_homepage %}Active — Use Global{% else %}Use Global{% endif %}
+            </button>
+          </form>
         </div>
-        <div class="bg-sa-surface-hover rounded-sa-lg p-3 mb-4 h-32 flex items-center justify-center">
-          <div class="text-center">
-            <div class="w-16 h-12 bg-sa-card rounded mb-2 mx-auto border border-sa-border"></div>
-            <div class="w-20 h-2 bg-sa-border rounded mb-1 mx-auto"></div>
-            <div class="w-16 h-2 bg-sa-border rounded mx-auto"></div>
-          </div>
-        </div>
-        <p class="text-sa-muted mb-4 text-sm">Clean and simple design with minimal visual elements. Focuses on content readability.</p>
-        <form id="form-card-minimal" class="space-y-3">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-          <input type="hidden" name="card_design" value="minimal">
-          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set minimal card design">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            {% if brand_info.card_design == 'minimal' %}Active{% else %}Set as Active{% endif %}
-          </button>
-        </form>
       </div>
 
-      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Featured Card Design">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
-            Featured
-          </h3>
+      <div>
+        <h3 class="text-base font-bold text-sa-fg flex items-center gap-2 mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+          Listing / Search / Result Pages
+        </h3>
+        <p class="text-xs text-sa-muted mb-4">Overrides the global card style on news, search, utama, articles, and hypes pages.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {% for opt in [('classic', 'Classic'), ('modern', 'Modern'), ('minimal', 'Minimal'), ('featured', 'Featured')] %}
+          <form id="form-card-listing-{{ opt[0] }}" class="space-y-2">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="card_design_listing" value="{{ opt[0] }}">
+            <button type="submit" class="w-full text-center bg-sa-card border border-sa-border rounded-sa-lg py-3 px-4 hover:bg-sa-surface-hover transition-all duration-200 text-sm font-medium {% if brand_info.card_design_listing == opt[0] %}ring-2 ring-sa-accent bg-sa-surface-hover{% endif %}">
+              {% if brand_info.card_design_listing == opt[0] %}Active{% else %}{{ opt[1] }}{% endif %}
+            </button>
+          </form>
+          {% endfor %}
+          <form id="form-card-listing-none" class="space-y-2">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="card_design_listing" value="">
+            <button type="submit" class="w-full text-center bg-sa-card border border-dashed border-sa-border rounded-sa-lg py-3 px-4 hover:bg-sa-surface-hover transition-all duration-200 text-sm font-medium text-sa-muted {% if not brand_info.card_design_listing %}ring-2 ring-sa-muted{% endif %}">
+              {% if not brand_info.card_design_listing %}Active — Use Global{% else %}Use Global{% endif %}
+            </button>
+          </form>
         </div>
-        <div class="bg-sa-surface-hover rounded-sa-lg p-3 mb-4 h-32 flex items-center justify-center">
-          <div class="text-center">
-            <div class="w-16 h-12 bg-gradient-to-r from-sa-warning to-sa-accent rounded-lg mb-2 mx-auto relative">
-              <div class="absolute -top-1 -right-1 w-4 h-4 bg-sa-error rounded-full"></div>
-            </div>
-            <div class="w-20 h-2 bg-sa-border rounded mb-1 mx-auto"></div>
-            <div class="w-16 h-2 bg-sa-border rounded mx-auto"></div>
-          </div>
-        </div>
-        <p class="text-sa-muted mb-4 text-sm">Premium design with enhanced visual elements, larger images, and prominent featured indicators.</p>
-        <form id="form-card-featured" class="space-y-3">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-          <input type="hidden" name="card_design" value="featured">
-          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set featured card design">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            {% if brand_info.card_design == 'featured' %}Active{% else %}Set as Active{% endif %}
-          </button>
-        </form>
       </div>
     </div>
   </div>

@@ -172,6 +172,29 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             {{ link.name }}
           </a>
           {% endfor %}
+
+          {% if brand_info.categories_display_location == 'navbar' and all_categories %}
+          <div class="nav-link-item relative group cursor-pointer select-none">
+            <span class="flex items-center gap-1.5">
+              Kategori
+              <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-150 group-hover:rotate-180" aria-hidden="true"></i>
+            </span>
+            <div class="absolute top-full left-0 mt-0.5 min-w-[180px] hidden group-hover:block z-50"
+                 style="background-color: hsl(var(--background));
+                        border: 1px solid hsl(var(--border));
+                        box-shadow: 0 8px 24px rgba(0,0,0,0.10);">
+              {% for cat in all_categories %}
+              <a href="{{ url_for('main.search', category=cat.name) }}"
+                 class="block px-4 py-2.5 text-xs font-semibold transition-colors duration-100"
+                 style="color: hsl(var(--foreground));"
+                 onmouseover="this.style.backgroundColor='hsl(var(--surface-tonal))';"
+                 onmouseout="this.style.backgroundColor='';">
+                {{ cat.name }}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
 
@@ -237,6 +260,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
                        style="border-radius: 2px; height: 2.75rem;">
               </div>
             </div>
+            {% if brand_info.categories_display_location != 'navbar' %}
             <div class="w-full md:w-48">
               <select name="category" class="header-filter-select"
                       style="border-radius: 2px; height: 2.75rem;">
@@ -246,6 +270,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
                 {% endfor %}
               </select>
             </div>
+            {% endif %}
             <button type="submit" class="m3-button-filled whitespace-nowrap">Cari</button>
           </form>
         </div>
@@ -350,6 +375,25 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
               </a>
             </li>
             {% endfor %}
+            {% if brand_info.categories_display_location == 'navbar' and all_categories %}
+            <li style="border-top: 1px solid hsl(var(--border));">
+              <p class="py-3 text-[9px] font-black uppercase tracking-[0.18em]"
+                 style="color: hsl(var(--muted-foreground));">Kategori</p>
+            </li>
+            {% for cat in all_categories %}
+            <li>
+              <a href="{{ url_for('main.search', category=cat.name) }}"
+                 class="flex items-center justify-between py-3 font-semibold text-sm transition-colors duration-150"
+                 style="color: hsl(var(--foreground));"
+                 onmouseover="this.style.color='hsl(var(--primary))';"
+                 onmouseout="this.style.color='hsl(var(--foreground))';">
+                <span>{{ cat.name }}</span>
+                <i class="fa-solid fa-chevron-right text-xs"
+                   style="color: hsl(var(--muted-foreground));" aria-hidden="true"></i>
+              </a>
+            </li>
+            {% endfor %}
+            {% endif %}
           </ul>
         </nav>
 

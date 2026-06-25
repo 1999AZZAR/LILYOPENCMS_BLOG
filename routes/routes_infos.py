@@ -197,10 +197,44 @@ def settings_stats():
     if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
         abort(403)
 
+    from datetime import datetime, timedelta, timezone
+
     total_users = User.query.count()
     total_news = News.query.count()
     total_images = Image.query.count()
     total_videos = YouTubeVideo.query.count()
+
+    now = datetime.now(timezone.utc)
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    week_start = today_start - timedelta(days=today_start.weekday())
+    month_start = today_start.replace(day=1)
+
+    today_news = News.query.filter(News.date >= today_start).count()
+    week_news = News.query.filter(News.date >= week_start).count()
+    month_news = News.query.filter(News.date >= month_start).count()
+
+    total_reads = db.session.query(db.func.sum(News.read_count)).scalar() or 0
+
+    total_shares = (
+        db.session.query(
+            db.func.coalesce(db.func.sum(ShareLog.whatsapp_count), 0)
+            + db.func.coalesce(db.func.sum(ShareLog.facebook_count), 0)
+            + db.func.coalesce(db.func.sum(ShareLog.twitter_count), 0)
+            + db.func.coalesce(db.func.sum(ShareLog.instagram_count), 0)
+            + db.func.coalesce(db.func.sum(ShareLog.bluesky_count), 0)
+            + db.func.coalesce(db.func.sum(ShareLog.clipboard_count), 0)
+        ).scalar()
+        or 0
+    )
+
+    avg_views = round(total_reads / total_news, 1) if total_news else 0
+
+    popular_news = (
+        News.query.filter(News.is_visible == True)
+        .order_by(News.read_count.desc())
+        .limit(5)
+        .all()
+    )
 
     return jsonify(
         {
@@ -208,6 +242,20 @@ def settings_stats():
             "total_news": total_news,
             "total_images": total_images,
             "total_videos": total_videos,
+            "today_news": today_news,
+            "week_news": week_news,
+            "month_news": month_news,
+            "total_reads": total_reads,
+            "total_shares": total_shares,
+            "avg_views": avg_views,
+            "popular_news": [
+                {
+                    "id": n.id,
+                    "title": n.title,
+                    "read_count": n.read_count,
+                }
+                for n in popular_news
+            ],
         }
     )
 

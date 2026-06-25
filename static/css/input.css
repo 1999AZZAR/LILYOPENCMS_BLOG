@@ -356,6 +356,20 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     background-color: hsl(var(--surface-tonal));
   }
 
+  /* ── Listing card (grid pages — news, search, utama) ─────
+     Self-contained box with border, subtle shadow, hover lift.  */
+  .sw-card-listing {
+    background-color: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-swiss-sm);
+    transition: all var(--duration-std) var(--ease-m3);
+  }
+  .sw-card-listing:hover {
+    border-color: color-mix(in srgb, hsl(var(--primary)) 30%, hsl(var(--border)));
+    box-shadow: 0 8px 24px -8px rgba(0,0,0,0.10);
+    transform: translateY(-2px);
+  }
+
   /* ── Card meta strip ─────────────────────────────────────── */
   .card-meta {
     @apply flex items-center justify-between gap-4

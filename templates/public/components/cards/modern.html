@@ -25,6 +25,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
   {% endif %}
 {% endif %}
 
+{% if card_context == 'homepage' %}
 <article class="group relative overflow-hidden {{ _cc }}"
          style="border-radius: 4px; aspect-ratio: 4/3; background-color: var(--m3-container);">
   <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
@@ -32,10 +33,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <img src="{{ _img_ph }}" data-src="{{ _img_url }}"
          alt="{{ item.title | e }}"
          class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]">
-
     <div class="absolute inset-0"
          style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.30) 50%, transparent 100%);"></div>
-
     <div class="absolute bottom-0 p-5 w-full">
       {% if item.is_premium %}
       <span class="m3-chip bg-amber-400 text-amber-950 border-transparent text-[9px] mb-2 inline-block">Premium</span>
@@ -57,3 +56,35 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
   </a>
 </article>
+{% else %}
+<article class="group overflow-hidden sw-card-listing {{ _cc }}">
+  <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+     class="block w-full relative">
+    <div class="aspect-[16/9] overflow-hidden"
+         style="background-color: var(--m3-container);">
+      <img src="{{ _img_ph }}" data-src="{{ _img_url }}"
+           alt="{{ item.title | e }}"
+           class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]">
+    </div>
+    <div class="p-5">
+      {% if item.is_premium %}
+      <span class="m3-chip bg-amber-400 text-amber-950 border-transparent text-[9px] mb-2 inline-block">Premium</span>
+      {% endif %}
+      <p class="text-[10px] font-black uppercase tracking-[0.16em] mb-1.5"
+         style="color: hsl(var(--primary));">
+        {{ item.category.name if item.category else 'Umum' }}
+      </p>
+      <h3 class="text-lg font-black leading-tight line-clamp-2"
+          style="letter-spacing: -0.02em; color: hsl(var(--foreground));">
+        {{ item.title }}
+      </h3>
+      {% if _show_dt and item.date %}
+      <p class="text-[9px] font-black uppercase tracking-[0.12em] mt-2"
+         style="color: hsl(var(--muted-foreground));">
+        {{ item.date.strftime('%d %b %Y') }}
+      </p>
+      {% endif %}
+    </div>
+  </a>
+</article>
+{% endif %}

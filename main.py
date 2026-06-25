@@ -237,8 +237,20 @@ def inject_global_search_filters():
     current_category = request.args.get("category", "")
     current_tag = request.args.get("tag", "")
 
+    categories_with_counts = [
+        {
+            "id": c.id,
+            "name": c.name,
+            "count": News.query.filter(
+                and_(News.category_id == c.id, News.is_visible == True)
+            ).count(),
+        }
+        for c in all_categories
+    ]
+
     return dict(
         all_categories=all_categories,
+        categories_with_counts=categories_with_counts,
         all_tags=unique_sorted_tags,
         current_query=current_query,
         current_category=current_category,

@@ -887,20 +887,27 @@ function handleCardDesignForm(formId) {
     const originalText = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg> Updating...';
-    const cardDesign = new FormData(newForm).get('card_design');
+    const fd = new FormData(newForm);
+    let field, value;
+    if (fd.has('card_design')) { field = 'card_design'; value = fd.get('card_design'); }
+    else if (fd.has('card_design_homepage')) { field = 'card_design_homepage'; value = fd.get('card_design_homepage'); }
+    else if (fd.has('card_design_listing')) { field = 'card_design_listing'; value = fd.get('card_design_listing'); }
+    else return;
     try {
       const resp = await fetchWithCSRF('/api/brand-identity/text', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ field: 'card_design', value: cardDesign })
+        body: JSON.stringify({ field, value })
       });
       if (!resp.ok) throw new Error(await resp.json().then(d => d.error).catch(() => `HTTP ${resp.status}`));
       showToast('success', 'Card design updated!');
-      document.querySelectorAll('[name="card_design"]').forEach(el => {
-        const btn = el.closest('form').querySelector('button[type="submit"]');
-        if (btn) btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (btn.closest('form').id === formId ? 'Active' : 'Set as Active');
+      document.querySelectorAll(`[name="${field}"]`).forEach(el => {
+        const f = el.closest('form');
+        if (!f) return;
+        const b = f.querySelector('button[type="submit"]');
+        if (b) b.innerHTML = f.id === formId ? 'Active' : (el.value === '' ? 'Use Global' : el.value.charAt(0).toUpperCase() + el.value.slice(1));
       });
-      window.dispatchEvent(new CustomEvent('cardDesignChanged', { detail: { cardDesign } }));
+      window.dispatchEvent(new CustomEvent('cardDesignChanged', { detail: { [field]: value } }));
     } catch (err) {
       showToast('error', 'Failed: ' + err.message);
     } finally {
@@ -974,6 +981,11 @@ document.addEventListener('DOMContentLoaded', function() {
   handleCardDesignForm('form-card-modern');
   handleCardDesignForm('form-card-minimal');
   handleCardDesignForm('form-card-featured');
+  ['homepage', 'listing'].forEach(ctx => {
+    ['classic', 'modern', 'minimal', 'featured', 'none'].forEach(v => {
+      handleCardDesignForm(`form-card-${ctx}-${v}`);
+    });
+  });
   
   // Feature toggle handlers
   document.querySelectorAll('[data-feature-toggle]').forEach(el => {

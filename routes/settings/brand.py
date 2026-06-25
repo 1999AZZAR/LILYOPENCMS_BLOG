@@ -146,6 +146,8 @@ def get_public_brand_info():
         return jsonify({
             "brand_name": "LilyOpenCMS",
             "card_design": "classic",
+            "card_design_homepage": None,
+            "card_design_listing": None,
             "homepage_design": "news",
             "categories_display_location": "none"
         }), 200
@@ -209,6 +211,7 @@ def update_brand_identity_text():
     allowed = [
         "brand_name", "tagline", "brand_description",
         "homepage_design", "categories_display_location", "card_design",
+        "card_design_homepage", "card_design_listing",
         "enable_videos", "enable_gallery", "enable_albums", "enable_news",
         "enable_premium", "enable_about",
         "min_story_word_count", "min_chapter_word_count",

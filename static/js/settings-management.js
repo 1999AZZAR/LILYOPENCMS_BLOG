@@ -148,7 +148,7 @@ async function loadStats() {
             const data = await response.json();
             console.log('Stats data:', data);
             
-            // Update stats display
+            // Update quick stats
             const usersElement = document.getElementById('total-users');
             const newsElement = document.getElementById('total-news');
             const imagesElement = document.getElementById('total-images');
@@ -158,6 +158,35 @@ async function loadStats() {
             if (newsElement) newsElement.textContent = data.total_news || '0';
             if (imagesElement) imagesElement.textContent = data.total_images || '0';
             if (videosElement) videosElement.textContent = data.total_videos || '0';
+            
+            // Advanced stats
+            const todayNews = document.getElementById('today-news-count');
+            const weekNews = document.getElementById('week-news-count');
+            const monthNews = document.getElementById('month-news-count');
+            const totalViews = document.getElementById('total-views');
+            const totalShares = document.getElementById('total-shares');
+            const avgViews = document.getElementById('avg-views');
+            
+            if (todayNews) todayNews.textContent = data.today_news ?? '-';
+            if (weekNews) weekNews.textContent = data.week_news ?? '-';
+            if (monthNews) monthNews.textContent = data.month_news ?? '-';
+            if (totalViews) totalViews.textContent = (data.total_reads ?? 0).toLocaleString();
+            if (totalShares) totalShares.textContent = (data.total_shares ?? 0).toLocaleString();
+            if (avgViews) avgViews.textContent = data.avg_views ?? '-';
+            
+            // Popular content
+            const popularContainer = document.getElementById('popular-content');
+            if (popularContainer && data.popular_news && data.popular_news.length > 0) {
+                popularContainer.innerHTML = data.popular_news.map(function(item) {
+                    var title = item.title.length > 40 ? item.title.slice(0, 40) + '…' : item.title;
+                    return '<div class="flex justify-between items-center py-1.5 text-sm">' +
+                        '<span class="text-sa-fg truncate mr-2" title="' + item.title.replace(/"/g, '&quot;') + '">' + title + '</span>' +
+                        '<span class="text-sa-muted flex-shrink-0 font-semibold">' + (item.read_count || 0).toLocaleString() + ' views</span>' +
+                        '</div>';
+                }).join('');
+            } else if (popularContainer) {
+                popularContainer.innerHTML = '<div class="text-sm text-sa-muted">Belum ada data.</div>';
+            }
             
             console.log('Stats updated successfully');
         } else {
@@ -177,7 +206,13 @@ function setDefaultStats() {
         'total-users': '0',
         'total-news': '0', 
         'total-images': '0',
-        'total-videos': '0'
+        'total-videos': '0',
+        'today-news-count': '-',
+        'week-news-count': '-',
+        'month-news-count': '-',
+        'total-views': '-',
+        'total-shares': '-',
+        'avg-views': '-'
     };
     
     Object.entries(elements).forEach(([id, value]) => {
@@ -189,6 +224,11 @@ function setDefaultStats() {
             console.warn(`Element with id '${id}' not found`);
         }
     });
+
+    const popularContainer = document.getElementById('popular-content');
+    if (popularContainer) {
+        popularContainer.innerHTML = '<div class="text-sm text-sa-muted">Error memuat data.</div>';
+    }
 }
 
 // Add loading state management

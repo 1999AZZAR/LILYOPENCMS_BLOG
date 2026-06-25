@@ -25,6 +25,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
   {% endif %}
 {% endif %}
 
+{% if card_context == 'homepage' %}
 <article class="group relative overflow-hidden {{ _cc }}"
          style="border-radius: 4px; background-color: var(--m3-container);">
   <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
@@ -34,40 +35,62 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
            alt="{{ item.title | e }}"
            class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]">
     </div>
-
     <div class="absolute inset-x-0 bottom-0"
          style="background: linear-gradient(to top, rgba(0,0,0,0.80) 0%, transparent 100%); height: 60%;"></div>
-
     <div class="absolute bottom-0 p-6 sm:p-8 w-full max-w-3xl">
       <div class="flex gap-2 mb-3 flex-wrap">
         <span class="text-[9px] font-black uppercase tracking-[0.16em]"
-              style="color: hsl(var(--primary));">
-          {{ item.category.name if item.category else 'Umum' }}
-        </span>
+              style="color: hsl(var(--primary));">{{ item.category.name if item.category else 'Umum' }}</span>
         {% if item.is_premium %}
         <span class="m3-chip bg-amber-400 text-amber-950 border-transparent text-[9px]">Premium</span>
         {% endif %}
       </div>
       <h3 class="text-xl sm:text-2xl md:text-3xl font-black leading-tight line-clamp-2"
-          style="color: #fff; letter-spacing: -0.025em;">
-        {{ item.title }}
-      </h3>
+          style="color: #fff; letter-spacing: -0.025em;">{{ item.title }}</h3>
       {% if _show_exc and _content %}
       <p class="text-sm leading-relaxed line-clamp-2 mt-3 max-w-2xl"
-         style="color: rgba(255,255,255,0.7);">
-        {{ _content | striptags | truncate(150) }}
-      </p>
+         style="color: rgba(255,255,255,0.7);">{{ _content | striptags | truncate(150) }}</p>
       {% endif %}
       <div class="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.12em] mt-4"
            style="color: rgba(255,255,255,0.5);">
-        {% if _show_aut %}
-        <span>{{ item.writer or (item.author.username if item.author else 'Anonim') }}</span>
-        {% endif %}
-        {% if _show_dt and item.date %}
-        <span>{{ item.date.strftime('%d %b %Y') }}</span>
-        {% endif %}
+        {% if _show_aut %}<span>{{ item.writer or (item.author.username if item.author else 'Anonim') }}</span>{% endif %}
+        {% if _show_dt and item.date %}<span>{{ item.date.strftime('%d %b %Y') }}</span>{% endif %}
         <span>{{ (item.read_time or ((_content|striptags|wordcount / 200)|round|int))|default(1) }} min</span>
       </div>
     </div>
   </a>
 </article>
+{% else %}
+<article class="group overflow-hidden sw-card-listing {{ _cc }}">
+  <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
+     class="block">
+    <div class="aspect-[16/9] overflow-hidden"
+         style="background-color: var(--m3-container);">
+      <img src="{{ _img_ph }}" data-src="{{ _img_url }}"
+           alt="{{ item.title | e }}"
+           class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]">
+    </div>
+    <div class="p-5">
+      <div class="flex gap-2 mb-3 flex-wrap">
+        <span class="text-[10px] font-black uppercase tracking-[0.16em]"
+              style="color: hsl(var(--primary));">{{ item.category.name if item.category else 'Umum' }}</span>
+        {% if item.is_premium %}
+        <span class="m3-chip bg-amber-400 text-amber-950 border-transparent text-[9px]">Premium</span>
+        {% endif %}
+      </div>
+      <h3 class="text-lg font-black leading-tight line-clamp-2"
+          style="letter-spacing: -0.025em; color: hsl(var(--foreground));">{{ item.title }}</h3>
+      {% if _show_exc and _content %}
+      <p class="text-sm leading-relaxed line-clamp-2 mt-2"
+         style="color: hsl(var(--muted-foreground));">{{ _content | striptags | truncate(150) }}</p>
+      {% endif %}
+      <div class="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.12em] mt-3"
+           style="color: hsl(var(--muted-foreground));">
+        {% if _show_aut %}<span>{{ item.writer or (item.author.username if item.author else 'Anonim') }}</span>{% endif %}
+        {% if _show_dt and item.date %}<span>{{ item.date.strftime('%d %b %Y') }}</span>{% endif %}
+        <span>{{ (item.read_time or ((_content|striptags|wordcount / 200)|round|int))|default(1) }} min</span>
+      </div>
+    </div>
+  </a>
+</article>
+{% endif %}

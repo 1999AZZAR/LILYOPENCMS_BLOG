@@ -1469,6 +1469,10 @@ class BrandIdentity(db.Model):
     # News Card Design Preference
     card_design = db.Column(db.String(50), nullable=True, default="classic")  # 'classic', 'modern', 'minimal', 'featured'
 
+    # Per-context card design overrides
+    card_design_homepage = db.Column(db.String(50), nullable=True)  # fallback to card_design if null
+    card_design_listing = db.Column(db.String(50), nullable=True)   # fallback to card_design if null
+
     # Brand Assets
     logo_header = db.Column(db.String(255), nullable=True)  # /static/pic/logo.png
     logo_footer = db.Column(db.String(255), nullable=True)
@@ -1513,6 +1517,8 @@ class BrandIdentity(db.Model):
             "homepage_design": self.homepage_design,
             "categories_display_location": self.categories_display_location or "none",
             "card_design": self.card_design or "classic",
+            "card_design_homepage": self.card_design_homepage,
+            "card_design_listing": self.card_design_listing,
             "website_url": self.website_url,
             "logo_header": self.logo_header,
             "logo_footer": self.logo_footer,
