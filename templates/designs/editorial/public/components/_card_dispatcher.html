@@ -1,0 +1,10 @@
+{% set card_style = brand_info.card_design|default('classic') if brand_info else 'classic' %}
+{% if card_style == 'modern' %}
+  {% include 'public/components/cards/modern.html' %}
+{% elif card_style == 'minimal' %}
+  {% include 'public/components/cards/minimal.html' %}
+{% elif card_style == 'featured' %}
+  {% include 'public/components/cards/featured.html' %}
+{% else %}
+  {% include 'public/components/cards/classic.html' %}
+{% endif %}

@@ -1,0 +1,23 @@
+<footer class="mt-24 border-t" style="border-color: hsl(var(--border)); background-color: hsl(var(--background));">
+  <div class="container mx-auto px-4 sm:px-6 py-12">
+
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 pb-8" style="border-bottom: 1px solid hsl(var(--border));">
+      <a href="{{ url_for('main.home') }}" class="transition-opacity hover:opacity-70">
+        <img src="{{ url_for('static', filename='pic/logo.png') }}" alt="{{ brand_info.brand_name|default('LilyOpenCMS') }}" class="h-8 w-auto">
+      </a>
+      <div class="flex gap-6 text-sm">
+        {% for link in navbar_links or [] %}
+        <a href="{{ link.url }}" class="font-medium transition-colors" style="color: hsl(var(--muted-foreground));" onmouseover="this.style.color='hsl(var(--foreground))';" onmouseout="this.style.color='hsl(var(--muted-foreground))';">{{ link.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs" style="color: hsl(var(--muted-foreground));">
+      <p>&copy; {{ current_year or '2024' }} {{ brand_info.brand_name|default('LilyOpenCMS') }}</p>
+      <div class="flex gap-6">
+        <a href="{{ url_for('main.about') }}" class="transition-colors hover:text-[color:hsl(var(--foreground))]">Tentang</a>
+        <a href="#" class="transition-colors hover:text-[color:hsl(var(--foreground))]">Privasi</a>
+      </div>
+    </div>
+  </div>
+</footer>

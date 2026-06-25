@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}
+
+{% block content %}
+
+  {% if main_news %}
+  <section class="mb-16">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      {% for news_item in main_news[:3] %}
+      {% set image_obj = news_item.image %}
+      {% set img_url = url_for('static', filename='pic/placeholder.png') %}
+      {% if image_obj and image_obj.filepath %}
+        {% set img_url = url_for('static', filename=image_obj.filepath.replace('static/', '', 1)) %}
+      {% endif %}
+      <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
+         class="group {% if loop.first %}lg:col-span-8 lg:row-span-2{% else %}lg:col-span-4{% endif %} relative overflow-hidden"
+         style="background-color: hsl(var(--surface-tonal)); min-height: {% if loop.first %}420px{% else %}200px{% endif %};">
+        <img src="{{ img_url }}" alt="{{ news_item.title | e }}"
+             class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+        <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);"></div>
+        <div class="absolute bottom-0 p-6 {{ 'p-8' if loop.first }}">
+          <span class="inline-block text-[10px] font-semibold uppercase tracking-widest mb-2" style="color: hsla(0,0%,100%,0.6);">
+            {{ news_item.category.name if news_item.category else 'Featured' }}
+          </span>
+          <h3 class="font-bold leading-tight text-white {{ 'text-2xl lg:text-3xl' if loop.first else 'text-base' }}">
+            {{ news_item.title }}
+          </h3>
+          {% if news_item.date and loop.first %}
+          <p class="text-xs mt-2" style="color: hsla(0,0%,100%,0.5);">{{ news_item.date.strftime('%d %B %Y') }}</p>
+          {% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+
+    <div class="lg:col-span-8">
+
+      <div class="mb-8 pb-3" style="border-bottom: 2px solid hsl(var(--foreground));">
+        <h2 class="text-lg font-bold uppercase tracking-widest" style="color: hsl(var(--foreground));">Berita Terbaru</h2>
+      </div>
+
+      {% if latest_news %}
+      <div class="space-y-8">
+        {% for item in latest_news %}
+        {% include 'public/components/_card_dispatcher.html' %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <aside class="lg:col-span-4">
+
+      <div class="mb-6 pb-3" style="border-bottom: 2px solid hsl(var(--foreground));">
+        <h2 class="text-sm font-bold uppercase tracking-widest" style="color: hsl(var(--foreground));">Populer</h2>
+      </div>
+
+      {% if popular_news %}
+      <div class="space-y-4">
+        {% for news_item in popular_news %}
+        <a href="{{ url_for('main.news_detail', news_id=news_item.id, news_title=safe_title(news_item.title)) }}"
+           class="flex gap-4 py-3 group" style="border-bottom: 1px solid hsl(var(--border));">
+          <span class="text-2xl font-bold flex-shrink-0" style="color: hsl(var(--muted-foreground)); width: 1.5rem;">{{ '%02d' % loop.index }}</span>
+          <div class="min-w-0">
+            <h4 class="text-sm font-semibold leading-snug line-clamp-2 transition-colors group-hover:text-[color:hsl(var(--primary))]" style="color: hsl(var(--foreground));">
+              {{ news_item.title }}
+            </h4>
+            {% if news_item.date %}
+            <p class="text-xs mt-1" style="color: hsl(var(--muted-foreground));">{{ news_item.date.strftime('%d %b %Y') }}</p>
+            {% endif %}
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </aside>
+  </div>
+
+{% endblock %}

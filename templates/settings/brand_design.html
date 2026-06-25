@@ -49,6 +49,24 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           </button>
         </form>
       </div>
+
+      <div class="bg-sa-card border border-sa-border rounded-sa-lg shadow-sa-card p-6" role="article" aria-label="Editorial Design System">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-sa-fg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-sa-muted"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+            Editorial <span class="text-xs text-sa-muted font-normal">(Swiss x Minimal)</span>
+          </h3>
+        </div>
+        <p class="text-sa-muted mb-4 text-sm">Magazine-style design with Inter + Literata fonts, cool slate palette, generous whitespace, and borderless editorial cards. Clean content-first reading experience.</p>
+        <form id="form-homepage-editorial" class="space-y-3">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="homepage_design" value="editorial">
+          <button type="submit" class="w-full flex items-center justify-center gap-2 bg-sa-fg hover:bg-sa-sidebar text-white py-2 px-4 rounded-sa-lg font-medium transition-all duration-300 shadow-sa-card" aria-label="Set Editorial design system">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            {% if brand_info.homepage_design == 'editorial' %}Active{% else %}Set as Active{% endif %}
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 

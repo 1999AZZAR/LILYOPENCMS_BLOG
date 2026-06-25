@@ -1,0 +1,33 @@
+<article class="flex flex-col sm:flex-row gap-6 py-6" style="border-bottom: 1px solid hsl(var(--border));">
+  {% set image_obj = item.image %}
+  {% set placeholder_img = url_for('static', filename='pic/placeholder.png') %}
+  {% set thumb_url = placeholder_img %}
+  {% if image_obj and image_obj.filepath %}
+    {% set p = image_obj.filepath.replace('static/', '', 1) %}
+    {% set di = p.rfind('.') %}
+    {% if di != -1 %}
+      {% set thumb_url = url_for('static', filename=p[:di] ~ '_thumb_square' ~ p[di:]) %}
+    {% endif %}
+  {% endif %}
+  <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}" class="block w-full sm:w-44 h-28 flex-shrink-0 overflow-hidden" style="background-color: hsl(var(--surface-tonal));">
+    <img src="{{ placeholder_img }}" data-src="{{ thumb_url }}" alt="{{ item.title | e }}" class="lazy w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+  </a>
+  <div class="min-w-0 flex-1">
+    <div class="flex flex-wrap gap-2 mb-2">
+      {% if item.category %}<span class="text-[10px] font-semibold uppercase tracking-widest" style="color: hsl(var(--accent));">{{ item.category.name }}</span>{% endif %}
+      {% if item.is_premium %}<span class="text-[10px] font-semibold uppercase tracking-widest" style="color: hsl(var(--foreground));">Premium</span>{% endif %}
+    </div>
+    <h3 class="text-lg font-bold leading-snug mb-2 transition-colors" style="color: hsl(var(--foreground)); letter-spacing: -0.01em;">
+      <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}" class="hover:text-[color:hsl(var(--primary))] transition-colors">{{ item.title }}</a>
+    </h3>
+    {% if item.content %}
+    <p class="text-sm leading-relaxed mb-3 line-clamp-2" style="color: hsl(var(--muted-foreground));">
+      {{ item.content|striptags|truncate(150) }}
+    </p>
+    {% endif %}
+    <div class="flex items-center gap-4 text-xs" style="color: hsl(var(--muted-foreground));">
+      {% if item.writer %}<span>{{ item.writer }}</span>{% endif %}
+      {% if item.date %}<span>{{ item.date.strftime('%d %b %Y') }}</span>{% endif %}
+    </div>
+  </div>
+</article>
