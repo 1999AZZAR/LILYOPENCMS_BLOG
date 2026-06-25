@@ -1,7 +1,8 @@
 <a href="{{ url_for('main.news_detail', news_id=item.id, news_title=safe_title(item.title)) }}"
    class="block p-6 group transition-all duration-150"
    style="border: 3px solid #000; box-shadow: 7px 7px 0 0 #000;
-          background-color: hsl(var(--surface));"
+          background-color: hsl(var(--surface));
+          margin-bottom: 0.5rem;"
    onmouseover="this.style.boxShadow='4px 4px 0 0 #000';this.style.transform='translate(3px,3px)'"
    onmouseout="this.style.boxShadow='7px 7px 0 0 #000';this.style.transform='none'">
 
