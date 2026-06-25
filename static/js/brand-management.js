@@ -829,8 +829,8 @@ function handleHomepageDesignForm(formId) {
       if (!resp.ok) throw new Error(await resp.json().then(d => d.error).catch(() => `HTTP ${resp.status}`));
       showToast('success', 'Homepage design updated!');
       document.querySelectorAll('[name="homepage_design"]').forEach(el => {
-        const f = el.closest('form');
-        el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (f.id === formId ? 'Active' : 'Set as Active');
+        const btn = el.closest('form').querySelector('button[type="submit"]');
+        if (btn) btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (btn.closest('form').id === formId ? 'Active' : 'Set as Active');
       });
     } catch (err) {
       showToast('error', 'Failed: ' + err.message);
@@ -863,8 +863,8 @@ function handleCategoriesDisplayForm(formId) {
       if (!resp.ok) throw new Error(await resp.json().then(d => d.error).catch(() => `HTTP ${resp.status}`));
       showToast('success', 'Categories display updated!');
       document.querySelectorAll('[name="categories_display_location"]').forEach(el => {
-        const f = el.closest('form');
-        el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (f.id === formId ? 'Active' : 'Set as Active');
+        const btn = el.closest('form').querySelector('button[type="submit"]');
+        if (btn) btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (btn.closest('form').id === formId ? 'Active' : 'Set as Active');
       });
     } catch (err) {
       showToast('error', 'Failed: ' + err.message);
@@ -897,8 +897,8 @@ function handleCardDesignForm(formId) {
       if (!resp.ok) throw new Error(await resp.json().then(d => d.error).catch(() => `HTTP ${resp.status}`));
       showToast('success', 'Card design updated!');
       document.querySelectorAll('[name="card_design"]').forEach(el => {
-        const f = el.closest('form');
-        el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (f.id === formId ? 'Active' : 'Set as Active');
+        const btn = el.closest('form').querySelector('button[type="submit"]');
+        if (btn) btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ' + (btn.closest('form').id === formId ? 'Active' : 'Set as Active');
       });
       window.dispatchEvent(new CustomEvent('cardDesignChanged', { detail: { cardDesign } }));
     } catch (err) {
@@ -959,8 +959,9 @@ document.addEventListener('DOMContentLoaded', function() {
   handleBrandTextForm('form-tagline', 'tagline');
   handleBrandTextForm('form-brand-description', 'brand_description');
   
-  // Homepage design form handlers
+  // Design system form handlers
   handleHomepageDesignForm('form-homepage-news');
+  handleHomepageDesignForm('form-homepage-editorial');
   
   // Categories display form handlers
   handleCategoriesDisplayForm('form-categories-body');
