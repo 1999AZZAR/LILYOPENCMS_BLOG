@@ -9,14 +9,14 @@
 
 **Goal:** `brand_info.homepage_design` becomes the design system selector. Custom Jinja2 loader resolves templates from `templates/designs/{design}/` first. Adding a new design = drop a directory.
 
-### Infrastructure
+### Infrastructure (Done)
 
-- [ ] Create `DesignFileSystemLoader` — subclass of Jinja2 `FileSystemLoader` that checks `g.design` and tries `templates/designs/{design}/{path}` before falling back to default
-- [ ] Wire loader in `main.py` + `before_request` to set `g.design` from `BrandIdentity.homepage_design`
-- [ ] Move all current public templates into `templates/designs/news/` (current `homepage_design = "news"` becomes the Swiss-Archival design)
-- [ ] Update card dispatcher to resolve per-design: `designs/{design}/components/cards/_card_dispatcher.html`
-- [ ] Update admin brand UI: relabel "Homepage Design" → "Design System", update description/options
-- [ ] Verify admin/settings/email templates are excluded from design resolution (always use default path)
+- [x] Create `DesignFileSystemLoader` — subclass of Jinja2 `FileSystemLoader` that checks `g.design` and tries `templates/designs/{design}/{path}` before falling back to default
+- [x] Wire loader in `main.py` + `before_request` to set `g.design` from `BrandIdentity.homepage_design`
+- [x] Move all current public templates into `templates/designs/news/` (current `homepage_design = "news"` becomes the Swiss-Archival design)
+- [x] Update card dispatcher to resolve per-design: `designs/{design}/components/cards/_card_dispatcher.html`
+- [x] Update admin brand UI: relabel "Homepage Design" → "Design System", update description/options
+- [x] Verify admin/settings/email templates are excluded from design resolution (always use default path)
 
 ### Adding Future Designs
 
@@ -87,7 +87,7 @@ To add a new design (e.g. `"minimal"`, `"editorial"`, `"magazine"`):
 ## Implementation Order
 
 ```
-Phase 0 — Design System Engine (FOUNDATION)
+Phase 0 — Design System Engine (FOUNDATION) ✅
 ├── Custom Jinja2 loader (DesignFileSystemLoader)
 ├── Move templates into designs/news/
 ├── Wire before_request + g.design

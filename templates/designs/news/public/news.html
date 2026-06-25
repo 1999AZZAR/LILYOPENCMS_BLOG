@@ -1,0 +1,63 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends 'base.html' %}
+{% block title %}
+{{ brand_info.brand_name|default('LilyOpenCMS') }} —
+{% if query %}{{ query }}{% elif category %}{{ category }}{% elif tag %}#{{ tag }}{% else %}Arsip Berita{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="py-10 lg:py-14">
+
+  <!-- Swiss section header -->
+  <div class="section-heading">
+    <p class="section-heading-label">
+      {% if query %}Pencarian
+      {% elif category %}Kategori
+      {% elif tag %}Tag
+      {% else %}Arsip{% endif %}
+    </p>
+    <h2>
+      {% if query %}"{{ query }}"
+      {% elif category %}{{ category }}
+      {% elif tag %}#{{ tag }}
+      {% else %}Arsip Berita{% endif %}
+    </h2>
+  </div>
+  <p class="text-base font-medium mb-16 -mt-6" style="color: hsl(var(--muted-foreground));">
+    Kumpulan konten terkini dan arsip berita.
+  </p>
+
+  {% if news.items %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-0">
+    {% for item in news.items %}
+    {% include 'public/components/_card_dispatcher.html' %}
+    {% endfor %}
+  </div>
+
+  {% with pagination_obj=news, pagination_route='main.search' if (query or category or tag) else 'main.news' %}
+    {% include 'pagination.html' %}
+  {% endwith %}
+
+  {% else %}
+  <div class="py-24 text-center" style="border: 1px solid hsl(var(--border));">
+    <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-3"
+       style="color: hsl(var(--muted-foreground));">Tidak Ditemukan</p>
+    <p class="text-xl font-black" style="color: hsl(var(--foreground));">Tidak ada konten ditemukan.</p>
+    {% if query or category or tag %}
+    <p class="text-sm mt-2" style="color: hsl(var(--muted-foreground));">Coba kata kunci atau filter lain.</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+</section>
+{% endblock %}

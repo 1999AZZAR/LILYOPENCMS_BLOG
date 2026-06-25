@@ -52,6 +52,10 @@ load_dotenv()
 # ----------------------
 app = Flask(__name__)
 
+# Custom design-aware Jinja2 loader
+from jinja2_loader import DesignFileSystemLoader
+app.jinja_loader = DesignFileSystemLoader(app.template_folder)
+
 # ✅ Apply CORS ONLY for /api/* routes
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
@@ -125,6 +129,16 @@ ssr_optimizer = get_ssr_optimizer()
 def start_ssr_monitoring():
     from flask import g
     g.ssr_start_time = time.time()
+
+@app.before_request
+def inject_design():
+    from flask import g
+    try:
+        from models import BrandIdentity
+        brand = BrandIdentity.query.first()
+        g.design = brand.homepage_design if brand and brand.homepage_design else 'default'
+    except Exception:
+        g.design = 'default'
 
 @app.after_request
 def end_ssr_monitoring(response):
