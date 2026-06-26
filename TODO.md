@@ -111,4 +111,42 @@ Phase 3 — Toggle Cleanup
 Phase 4 — Premium Integration
 ├── Admin-editable pricing / plans
 ├── Wire to subscription flow
+
+---
+
+## DEPENDENCY VULNERABILITIES & UPGRADES
+
+**34 Dependabot alerts + 7 bump PRs open** — all packages severely outdated. Pin versions in `requirements.txt` cause cascading CVEs. Strategy: upgrade each package to latest compatible, verify zero breaking changes.
+
+### P0 — Framework (High/Critical CVEs)
+
+- [ ] **Werkzeug** `2.3.7 → ~3.1.6` — 6 alerts. **HIGH**: RCE via debugger (7.5, GHSA-2g68-c3qc-8985), DoS resource exhaustion (7.5), decompression bomb bypass (7.5), DoS high-resource multipart (5.7), Windows device name (2 alerts)
+- [ ] **Flask** `2.3.3 → ~3.1.3` — 1 alert (missing `Vary: Cookie` header). PR #7
+- [ ] **Jinja2** `3.1.2 → latest` — 4 alerts. **HIGH**: sandbox breakout via filenames (8.8), via indirect format ref (7.8), HTML attr injection x2 (5.4)
+- [ ] **Gunicorn** `21.2.0 → latest` — 2 alerts. **HIGH**: request smuggling → endpoint bypass (8.2), decompression bomb (7.5)
+
+### P1 — HTTP & Networking
+
+- [ ] **urllib3** `2.1.0 → ~2.7.0` — 5 alerts (header leak 5.3, redirect bypass 5.3, temp file 4.4, proxy leak 4.4, compressed data DoS). PR #2
+- [ ] **requests** `2.31.0 → ~2.33.0` — 2 alerts (.netrc leak 5.3, verify=False bypass 5.6). PR #5
+- [ ] **idna** `3.6 → ~3.15` — 2 alerts (DoS 6.2, unicode bypass). PR #4
+
+### P2 — Security & Auth
+
+- [ ] **Flask-CORS** `4.0.0 → latest` — 5 alerts (private network header 7.5, regex bypass 5.3, case sensitivity 5.3, log injection 5.3, inconsistent matching 5.3)
+- [ ] **python-dotenv** `1.0.0 → ~1.2.2` — 1 alert (symlink file overwrite 6.6). PR #1
+
+### P3 — Dev / Low Severity
+
+- [ ] **pytest** `7.4.3 → ~9.0.3` — 1 alert (tmpdir 6.8). PR #3
+- [ ] **certifi** `2023.11.17 → latest` — GLOBALTRUST removal (informational)
+
+### P4 — Repo Housekeeping
+
+- [ ] Enable GitHub **Code Scanning** in repo settings
+- [ ] Enable GitHub **Secret Scanning** in repo settings
+- [ ] Review & update remaining pinned packages to latest compatible
+- [ ] Uncomment PostgreSQL (`psycopg2-binary`) and MySQL (`PyMySQL`) drivers for prod
+- [ ] Migrate from `python-memcached` → `redis` as primary cache (memcached unmaintained)
+- [ ] Evaluate `APScheduler` → `celery` for async task queue
 ```
