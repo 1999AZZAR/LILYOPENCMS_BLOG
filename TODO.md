@@ -84,6 +84,59 @@ To add a new design (e.g. `"minimal"`, `"editorial"`, `"magazine"`):
 
 ---
 
+## PHASE 1.5 — RBAC / ABAC Refinement
+
+**Goal:** Fix the fragmented access control system, consolidate the permission infrastructure, seed default roles/permissions, and enforce consistent authorization across all routes with both role-based and attribute-based rules.
+
+### Infrastructure Consolidation
+
+- [ ] **Fix duplicate `unified_auth_required`** — Two definitions exist: `auth_helpers.py:227` and `unified_auth.py:330`. Consolidate to one, delete the other.
+- [ ] **Consolidate `User.has_permission()` vs `PermissionManager.has_permission()`** — `models.py:269` hardcodes GENERAL rules; `permission_manager.py:129` delegates to custom_role permissions. Merge into a single source of truth in `PermissionManager`, make `User.has_permission()` delegate to it.
+- [ ] **Create unified `@permission_required(resource, action)` decorator** — Wraps `PermissionManager.has_permission()` so routes can do `@permission_required("news", "create")` instead of inline `current_user.role` checks.
+- [ ] **Create `@owner_or_permission_required(resource, action, owner_field="user_id")` decorator** — ABAC: allows access if user is the resource owner OR has the permission. E.g., a GENERAL writer can edit their own news, ADMIN can edit any.
+
+### Seeding
+
+- [ ] **Run `helper/init_permissions.py`** — Seeds 35 granular permissions (users CRUD+suspend, roles CRUD, permissions CRUD, news CRUD+publish, images CRUD, videos CRUD, settings read/update, categories CRUD) and 5 custom roles (Content Editor, Content Moderator, Media Manager, User Manager, System Administrator).
+- [ ] **Verify seed idempotency** — Script already checks for existing records before inserting. Confirm it handles re-runs cleanly.
+- [ ] **Add seed script to `main.py` CLI** — Expose `flask seed permissions` command via `click` group in `main.py` so it runs inside app context without manual `PYTHONPATH` hacks.
+
+### Route Migration
+
+- [ ] **Replace inline `current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]`** patterns (100+ occurrences) with `@permission_required()` decorator:
+  - `routes/settings/brand.py` — All brand routes
+  - `routes/settings/seo.py` — All SEO routes
+  - `routes/settings/account.py` — User management routes
+  - `routes/settings/contact.py` — Contact & team routes
+  - `routes/settings/content.py` — Content management routes
+  - `routes/settings/media.py` — Media management routes
+  - `routes/settings/policies.py` — Legal/policy routes
+  - `routes/settings/performance.py` — Performance routes
+  - `routes/settings/dashboard.py` — Analytics dashboard
+  - `routes/routes_images.py` — Image management
+  - `routes/routes_public.py` — Album, navigation routes
+  - `routes/routes_users.py` — User management API
+  - `routes/routes_roles.py` — Permission/role API (already uses `has_permission()`)
+  - `routes/routes_subscriptions.py` — Subscription management
+  - `routes/routes_infos.py` — Stats & info endpoints
+  - `routes/routes_analytics.py` — Performance dashboard
+  - `routes/routes_auth.py` — Auth settings pages
+  - `routes/routes_albums.py` — Album management
+- [ ] **Add ABAC `@owner_or_permission_required` to content routes** — Writers (GENERAL) can edit/delete only their own news/albums/images; admins/superusers can edit any.
+
+### Admin UI for Permissions
+
+- [ ] **Create admin page for managing custom roles** — `/settings/roles` with CRUD for custom roles + permission assignment (API exists in `routes/routes_roles.py`, no UI).
+- [ ] **Add permission management card** — Card on settings dashboard linking to `/settings/roles`.
+- [ ] **Add user permission summary** — Show assigned custom_role + effective permissions on user management page.
+
+### Template Enforcement
+
+- [ ] **Audit all admin templates** for hardcoded role checks (`{% if current_user.role.value == 'su' %}`) and replace with `can_*()` template helpers from `permission_manager.py`.
+- [ ] **Hide UI elements based on permissions** — E.g., hide "Delete" buttons from users without `news:delete`, hide "Users" nav from non-admin.
+
+---
+
 ## Implementation Order
 
 ```
@@ -99,6 +152,16 @@ Phase 1 — Fix Broken Public Elements
 ├── Brand asset paths (logo, favicon, footer logo)
 ├── Footer email + links
 ├── Remove unused homepage DB queries
+
+Phase 1.5 — RBAC / ABAC Refinement
+├── Consolidate duplicate permission logic (User.has_permission vs PermissionManager)
+├── Fix duplicate unified_auth_required
+├── Create @permission_required() + @owner_or_permission_required() decorators
+├── Seed default permissions + custom roles (init_permissions.py)
+├── Expose flask seed permissions CLI command
+├── Migrate 100+ inline role checks to decorators
+├── Admin UI for custom role management + assignment
+├── Template enforcement: replace raw role checks with can_*() helpers
 
 Phase 2 — Route Guards & Nav Fixes
 ├── Missing guards: /news, /articles, /utama, /hypes
