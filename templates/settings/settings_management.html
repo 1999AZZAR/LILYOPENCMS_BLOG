@@ -244,16 +244,34 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
  <p class="text-sa-muted">Kelola pengguna dan akses.</p>
  </a>
 
- <!-- Analytics Dashboard Card (Only for Admin and Superuser) -->
- <a href="{{ url_for('main.settings_analytics') }}" class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-4 text-center hover:shadow-sa-overlay transition-all duration-300 {% if current_user.role.value not in ['admin','su'] %}hidden{% endif %}" role="article" aria-label="Dashboard Analitik">
- <div class="w-16 h-16 mx-auto mb-6 bg-sa-fg rounded-full flex items-center justify-center" aria-hidden="true">
- <i class="fas fa-chart-line text-2xl text-white"></i>
- </div>
- <h3 class="text-xl font-bold mb-2 text-sa-fg">Dashboard Analitik</h3>
- <p class="text-sa-muted">Lihat statistik dan performa.</p>
- </a>
- </div>
- </div>
+  <!-- Analytics Dashboard Card (Only for Admin and Superuser) -->
+  <a href="{{ url_for('main.settings_analytics') }}" class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-4 text-center hover:shadow-sa-overlay transition-all duration-300 {% if current_user.role.value not in ['admin','su'] %}hidden{% endif %}" role="article" aria-label="Dashboard Analitik">
+  <div class="w-16 h-16 mx-auto mb-6 bg-sa-fg rounded-full flex items-center justify-center" aria-hidden="true">
+  <i class="fas fa-chart-line text-2xl text-white"></i>
+  </div>
+  <h3 class="text-xl font-bold mb-2 text-sa-fg">Dashboard Analitik</h3>
+  <p class="text-sa-muted">Lihat statistik dan performa.</p>
+  </a>
+
+  <!-- Pending Registrations Card (Only for Admin and Superuser) -->
+  <a href="{{ url_for('main.pending_registrations') }}" class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-4 text-center hover:shadow-sa-overlay transition-all duration-300 {% if current_user.role.value not in ['admin','su'] %}hidden{% endif %}" role="article" aria-label="Registrasi Tertunda">
+  <div class="w-16 h-16 mx-auto mb-6 bg-sa-fg rounded-full flex items-center justify-center" aria-hidden="true">
+  <i class="fas fa-clock text-2xl text-white"></i>
+  </div>
+  <h3 class="text-xl font-bold mb-2 text-sa-fg">Registrasi Tertunda</h3>
+  <p class="text-sa-muted">Tinjau dan setujui pendaftaran pengguna baru.</p>
+  </a>
+
+  <!-- Firebase Auth Settings Card (Only for Superuser) -->
+  <a href="{{ url_for('main.firebase_auth_settings') }}" class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-4 text-center hover:shadow-sa-overlay transition-all duration-300 {% if current_user.role.value != 'su' %}hidden{% endif %}" role="article" aria-label="Firebase Auth">
+  <div class="w-16 h-16 mx-auto mb-6 bg-sa-fg rounded-full flex items-center justify-center" aria-hidden="true">
+  <i class="fas fa-fire text-2xl text-white"></i>
+  </div>
+  <h3 class="text-xl font-bold mb-2 text-sa-fg">Firebase Auth</h3>
+  <p class="text-sa-muted">Pengaturan autentikasi Firebase.</p>
+  </a>
+  </div>
+  </div>
 
   <!-- Brand & Identity Tab -->
   <div class="tab-content" id="brand-identity-tab">
