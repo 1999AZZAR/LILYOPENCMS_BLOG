@@ -1,0 +1,51 @@
+# Version control
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.eggs
+dist
+build
+*.egg
+
+# Virtual environments
+.venv
+venv
+ENV
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Test / CI
+.pytest_cache
+htmlcov
+.coverage
+coverage.xml
+
+# Docker (don't send Docker files into the image)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Docs / misc
+*.md
+LICENSE
+robots.txt
+TODO.md
+
+# Temporary files
+tmp/
+logs/
+instance/*.db
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db

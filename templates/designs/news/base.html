@@ -377,6 +377,7 @@
       window.addEventListener('scroll', function () { btn.classList.toggle('visible', window.scrollY > 400); }, { passive: true });
     })();
   </script>
+  <script src="{{ url_for('static', filename='js/footer-social.js') }}"></script>
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>

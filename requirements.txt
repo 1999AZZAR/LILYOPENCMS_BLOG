@@ -45,6 +45,9 @@ itsdangerous==2.1.2
 click==8.1.7
 blinker==1.7.0
 
+# Schema Validation
+marshmallow>=3.21.0
+
 # Additional Utilities
 python-dateutil==2.8.2
 six==1.16.0
@@ -56,8 +59,8 @@ markdown==3.8.2
 Flask-Mail==0.10.0
 PyJWT==2.13.0
 
-# Optional: PostgreSQL support (uncomment if using PostgreSQL)
-# psycopg2-binary==2.9.9
+# PostgreSQL support (used in Docker / production)
+psycopg2-binary>=2.9.9
 
 # Optional: MySQL support (uncomment if using MySQL)
 # PyMySQL==1.1.0

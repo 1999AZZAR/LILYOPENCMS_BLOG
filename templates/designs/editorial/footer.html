@@ -19,7 +19,22 @@
 
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs" style="color: hsl(var(--muted-foreground));">
       <p>&copy; {{ current_year or '2024' }} {{ brand_info.brand_name|default('LilyOpenCMS') }}</p>
-      <div class="flex gap-6">
+      <div class="flex gap-6 items-center">
+        {% set footer_email = namespace(found=false) %}
+        {% for c in contact_details if not footer_email.found %}
+          {% if c.link and c.link.startswith('mailto:') %}
+            {% set footer_email.found = true %}
+            <a href="{{ c.link }}" class="transition-colors hover:text-[color:hsl(var(--foreground))]">Kirim Email</a>
+          {% endif %}
+        {% endfor %}
+        {% if not footer_email.found %}
+          {% for c in contact_details if not footer_email.found %}
+            {% if '@' in c.content %}
+              {% set footer_email.found = true %}
+              <a href="mailto:{{ c.content }}" class="transition-colors hover:text-[color:hsl(var(--foreground))]">Kirim Email</a>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
         <a href="{{ url_for('main.about') }}" class="transition-colors hover:text-[color:hsl(var(--foreground))]">Tentang</a>
       </div>
     </div>

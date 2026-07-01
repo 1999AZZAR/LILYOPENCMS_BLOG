@@ -1,0 +1,65 @@
+# docker-compose.yml — LilyOpenCMS
+# Usage:
+#   Development:  docker compose up
+#   Production:   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-lilycms}
+      POSTGRES_USER: ${POSTGRES_USER:-lily}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lily_secret}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lily}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis (caching / sessions) ─────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redisdata:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── LilyOpenCMS ─────────────────────────────────────────────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      FLASK_ENV: ${FLASK_ENV:-production}
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
+      DATABASE_URI: postgresql+psycopg2://${POSTGRES_USER:-lily}:${POSTGRES_PASSWORD:-lily_secret}@db:5432/${POSTGRES_DB:-lilycms}
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "${APP_PORT:-5000}:5000"
+    volumes:
+      - ./logs:/app/logs
+      - app_data:/app/instance
+
+volumes:
+  pgdata:
+  redisdata:
+  app_data:

@@ -12,7 +12,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 from routes import main_blueprint
 from .common_imports import *
 from optimizations import cache_with_args, CACHE_TIMEOUTS
-from optimizations import optimize_news_query, optimize_image_query, monitor_ssr_render
+from optimizations import optimize_news_query, monitor_ssr_render
 from optimizations.cache_config import safe_cache_get, safe_cache_set
 from sqlalchemy import text
 import time
@@ -100,22 +100,6 @@ def home():
         .limit(7)
     )
     popular_news = optimize_news_query(popular_news_query).all()
-    
-    # Get latest YouTube videos
-    latest_videos = (
-        YouTubeVideo.query.filter_by(is_visible=True)
-        .order_by(YouTubeVideo.created_at.desc())
-        .limit(4)  # Fetching 4 videos to display in 4 columns
-        .all()
-    )
-
-    # ---  QUERY for Latest Images ---
-    latest_images_query = (
-        Image.query.filter_by(is_visible=True)
-        .order_by(Image.created_at.desc())
-        .limit(5)  # Fetch the latest 5 images
-    )
-    latest_images = optimize_image_query(latest_images_query).all()
 
     # SSR monitoring
     print("DEBUG: Starting SSR monitoring for home route")
@@ -127,8 +111,6 @@ def home():
             latest_articles=latest_articles,
             latest_news=latest_news,
             popular_news=popular_news,
-            latest_videos=latest_videos,
-            latest_images=latest_images,
         )
         render_time = time.time() - start_time
         print(f"DEBUG: Home route rendered in {render_time:.3f}s")
