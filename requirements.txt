@@ -62,6 +62,10 @@ PyJWT==2.13.0
 # PostgreSQL support (used in Docker / production)
 psycopg2-binary>=2.9.9
 
+# gRPC (for sidecar communication)
+grpcio>=1.60.0
+protobuf>=4.25.0
+
 # Optional: MySQL support (uncomment if using MySQL)
 # PyMySQL==1.1.0
 # cryptography==41.0.8

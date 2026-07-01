@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package argus;
+
+option go_package = "github.com/1999AZZAR/lilyopencms/sidecars/argus/pb";
+
+import "google/protobuf/timestamp.proto";
+
+// The Argus service definition
+service Argus {
+    // Submit a log entry
+    rpc Log(LogRequest) returns (LogResponse) {}
+    
+    // Submit an analytics event
+    rpc TrackEvent(AnalyticsRequest) returns (AnalyticsResponse) {}
+    
+    // Submit system metrics
+    rpc SubmitMetrics(MetricsRequest) returns (MetricsResponse) {}
+}
+
+// Logging
+message LogRequest {
+    string level = 1;      // INFO, WARN, ERROR, etc.
+    string message = 2;
+    string service = 3;    // Which service sent this (e.g., monolith, worker)
+    string trace_id = 4;
+    map<string, string> metadata = 5;
+    google.protobuf.Timestamp timestamp = 6;
+}
+
+message LogResponse {
+    bool success = 1;
+}
+
+// Analytics
+message AnalyticsRequest {
+    string event_type = 1; // page_view, purchase, signup, etc.
+    string user_id = 2;
+    string session_id = 3;
+    map<string, string> properties = 4;
+    google.protobuf.Timestamp timestamp = 5;
+}
+
+message AnalyticsResponse {
+    bool success = 1;
+}
+
+// Metrics
+message MetricsRequest {
+    string name = 1;       // cpu_usage, memory_usage, request_latency
+    double value = 2;
+    map<string, string> tags = 3;
+    google.protobuf.Timestamp timestamp = 4;
+}
+
+message MetricsResponse {
+    bool success = 1;
+}

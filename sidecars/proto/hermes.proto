@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package hermes;
+
+option go_package = "github.com/1999AZZAR/lilyopencms/sidecars/hermes/pb";
+
+// The Hermes service definition for image and media processing.
+service HermesMedia {
+  // Processes an image (resize, compress, format conversion)
+  rpc ProcessImage (ImageProcessRequest) returns (ImageProcessResponse) {}
+}
+
+message ImageProcessRequest {
+  bytes image_data = 1;
+  string target_format = 2; // e.g., "webp", "jpeg"
+  int32 target_width = 3;
+  int32 target_height = 4;
+  int32 quality = 5; // e.g., 80
+}
+
+message ImageProcessResponse {
+  bool success = 1;
+  bytes processed_image = 2;
+  string error_message = 3;
+}
