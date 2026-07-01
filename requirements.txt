@@ -66,6 +66,9 @@ psycopg2-binary>=2.9.9
 grpcio>=1.60.0
 protobuf>=4.25.0
 
+# Async task queue
+celery[redis]>=5.3.0
+
 # Optional: MySQL support (uncomment if using MySQL)
 # PyMySQL==1.1.0
 # cryptography==41.0.8

@@ -13,9 +13,9 @@ Phase 1 — Foundation (App Factory + Docker + Shared Layer)    ✅ DONE
 Phase 2 — Fix Broken Public Elements                          ✅ DONE
 Phase 3 — RBAC / ABAC Refinement                              ✅ DONE
 Phase 4 — Module Extraction (Vertical Slice Migration)        ✅ DONE (auth module scaffolded)
-Phase 5 — Sidecars (Argus, Hermes, Cerebro)                   🔲
-Phase 6 — Celery Async Workers                                🔲
-Phase 7 — Toggle Cleanup + Premium Integration                🔲
+Phase 5 — Sidecars (Argus, Hermes, Cerebro)                   ✅ DONE
+Phase 6 — Celery Async Workers                                ✅ DONE
+Phase 7 — Toggle Cleanup + Premium Integration                ✅ DONE (toggles already correct)
 ```
 
 ---

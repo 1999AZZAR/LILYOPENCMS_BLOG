@@ -65,6 +65,45 @@ services:
       - ./logs:/app/logs
       - app_data:/app/instance
 
+  # ── Celery Worker (async task processing) ──────────────────────────────────
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A app.tasks.celery_app worker --loglevel=info --concurrency=2
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      FLASK_ENV: ${FLASK_ENV:-production}
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
+      DATABASE_URI: postgresql+psycopg2://${POSTGRES_USER:-lily}:${POSTGRES_PASSWORD:-lily_secret}@db:5432/${POSTGRES_DB:-lilycms}
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./logs:/app/logs
+      - app_data:/app/instance
+
+  # ── Celery Beat (periodic task scheduler) ──────────────────────────────────
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: celery -A app.tasks.celery_app beat --loglevel=info
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      FLASK_ENV: ${FLASK_ENV:-production}
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
+      DATABASE_URI: postgresql+psycopg2://${POSTGRES_USER:-lily}:${POSTGRES_PASSWORD:-lily_secret}@db:5432/${POSTGRES_DB:-lilycms}
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./logs:/app/logs
+
   # ── Elasticsearch (for Argus + Cerebro search) ─────────────────────────────
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
