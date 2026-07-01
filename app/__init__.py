@@ -334,6 +334,9 @@ def _register_blueprints(app: Flask) -> None:
     _safe_register(app, "routes.seo_enhanced_dashboard", "seo_enhanced_bp")
     _safe_register(app, "routes.seo_settings_api", "seo_settings_bp")
 
+    # New vertical-slice modules (activate one-by-one as old routes are removed)
+    # _safe_register(app, "app.modules.auth", "auth_bp")
+
 
 def _safe_register(app: Flask, module_path: str, attr: str) -> None:
     try:

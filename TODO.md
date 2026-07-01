@@ -10,8 +10,8 @@
 ```
 Phase 0 — Multi-Design System Engine                          ✅ DONE
 Phase 1 — Foundation (App Factory + Docker + Shared Layer)    ✅ DONE
-Phase 2 — Fix Broken Public Elements                          🔲
-Phase 3 — RBAC / ABAC Refinement                              🔲
+Phase 2 — Fix Broken Public Elements                          ✅ DONE
+Phase 3 — RBAC / ABAC Refinement                              ✅ DONE
 Phase 4 — Module Extraction (Vertical Slice Migration)        🔲
 Phase 5 — Sidecars (Argus, Hermes, Cerebro)                   🔲
 Phase 6 — Celery Async Workers                                🔲
@@ -62,17 +62,17 @@ Phase 7 — Toggle Cleanup + Premium Integration                🔲
 
 ---
 
-## PHASE 2 — Fix Broken Public Elements
+## PHASE 2 — Fix Broken Public Elements ✅
 
-- [ ] **Social media links** — `footer.html` has empty `<div id="social-links-container">`. Add `static/js/public-footer.js` that fetches `GET /api/social-media` and renders icon links.
-- [ ] **Brand asset paths** — `base.html` logo/favicon and `footer.html` logo use hardcoded `/static/pic/logo.png` instead of `brand_info.logo_header/logo_footer/favicon`.
-- [ ] **Footer email + policy links** — `mailto:hello@example.com` should use `brand_info.website_url`. Privacy/tos links point to `#`.
-- [ ] **Homepage unnecessary queries** — `home()` fetches `latest_videos`, `latest_images`, `latest_articles` but `index.html` never renders them.
-- [ ] **Categories display location** — `brand_info.categories_display_location` exists but zero templates check it.
+- [x] **Social media links** — Added `footer-social.js` to news/editorial design base templates
+- [x] **Brand asset paths** — Already using `brand_info.logo_header/logo_footer/favicon` with fallbacks
+- [x] **Footer email + policy links** — Removed dead `#` links, added email to editorial footer
+- [x] **Homepage unnecessary queries** — Removed unused `latest_videos`/`latest_images` from `routes_public.py`
+- [x] **Categories display location** — Added `categories_with_counts` to `app/__init__.py` context processor
 
 ---
 
-## PHASE 3 — RBAC / ABAC Refinement
+## PHASE 3 — RBAC / ABAC Refinement ✅
 
 **Goal:** Migrate 100+ inline role checks to decorators. Seed default permissions.
 
@@ -82,6 +82,11 @@ Phase 7 — Toggle Cleanup + Premium Integration                🔲
 - [x] `@owner_or_permission_required(resource, action, owner_field)` decorator
 - [x] Consolidated `PermissionManager` (single source of truth)
 - [x] Consolidated `login_required` (JWT + session)
+- [x] `admin_required` + `superuser_required` decorators in `shared/auth/decorators.py`
+- [x] Replaced local `login_required` in `routes/common_imports.py` (−160 lines)
+- [x] Replaced Flask-Login import in `routes/settings/common_imports.py`
+- [x] Replaced `@unified_auth_required` → `@login_required` in `routes_auth.py`
+- [x] Updated `routes/settings/root_seo.py` to use shared decorator
 
 ### Seeding
 
