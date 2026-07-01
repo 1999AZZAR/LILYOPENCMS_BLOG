@@ -114,6 +114,32 @@ def owner_or_permission_required(resource: str, action: str, owner_field: str = 
     return decorator
 
 
+def admin_required(f):
+    """Decorator that requires admin privileges (admin tier or above)."""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        user = getattr(g, "api_user", None) or (current_user if current_user.is_authenticated else None)
+        if not user:
+            return _auth_response("Authentication required", 401, "AUTH_REQUIRED")
+        if not user.is_admin_tier():
+            return _auth_response("Admin privileges required", 403, "AUTH_INSUFFICIENT_PRIVILEGES")
+        return f(*args, **kwargs)
+    return decorated
+
+
+def superuser_required(f):
+    """Decorator that requires superuser/owner privileges."""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        user = getattr(g, "api_user", None) or (current_user if current_user.is_authenticated else None)
+        if not user:
+            return _auth_response("Authentication required", 401, "AUTH_REQUIRED")
+        if not user.is_owner():
+            return _auth_response("Superuser privileges required", 403, "AUTH_INSUFFICIENT_PRIVILEGES")
+        return f(*args, **kwargs)
+    return decorated
+
+
 def _auth_response(message: str, code: int, error_code: str):
     """Return appropriate auth error response based on client type."""
     if request.is_json or request.path.startswith("/api/"):

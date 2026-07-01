@@ -10,7 +10,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 """
 
 from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user
+from shared.auth.decorators import login_required
 from datetime import datetime
 import json
 

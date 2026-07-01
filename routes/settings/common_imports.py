@@ -13,7 +13,8 @@ import time
 import logging
 from functools import wraps
 from flask import render_template, request, redirect, url_for, abort, current_app, jsonify, flash
-from flask_login import login_required, current_user
+from flask_login import current_user
+from shared.auth.decorators import login_required
 from datetime import datetime
 from sqlalchemy.exc import OperationalError, PendingRollbackError
 from models import (

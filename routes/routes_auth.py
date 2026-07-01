@@ -13,10 +13,11 @@ from routes import main_blueprint
 from .common_imports import *
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 from routes.utils.email_service import email_service
+from shared.auth.decorators import login_required, admin_required, superuser_required
 from routes.utils.auth_helpers import (
-    get_auth_helper, unified_auth_required, admin_required, superuser_required,
-    find_user_by_username_or_email, get_firebase_config, handle_password_change,
-    send_verification_email, send_password_reset_email, clear_session_cookies
+    get_auth_helper, find_user_by_username_or_email, get_firebase_config,
+    handle_password_change, send_verification_email, send_password_reset_email,
+    clear_session_cookies
 )
 
 def _init_email_service():
@@ -611,7 +612,7 @@ def force_logout():
 
 
 @main_blueprint.route("/api/account/change-password", methods=["POST"])
-@unified_auth_required
+@login_required
 def change_password():
     data = request.get_json()
     current_password = data["current_password"]
@@ -631,7 +632,7 @@ def change_password():
 
 
 @main_blueprint.route("/api/account/delete", methods=["DELETE"])
-@unified_auth_required
+@login_required
 def delete_account():
     """Delete the current user's account completely."""
     try:
@@ -656,7 +657,7 @@ def delete_account():
 
 
 @main_blueprint.route("/api/account/stats", methods=["GET"])
-@unified_auth_required
+@login_required
 def account_stats():
     """Get comprehensive account statistics for the current user."""
     try:
@@ -692,7 +693,7 @@ def account_stats():
 
 
 @main_blueprint.route("/api/account/albums", methods=["GET"])
-@unified_auth_required
+@login_required
 def account_albums():
     """Get user's albums with pagination and filtering."""
     try:
@@ -760,7 +761,7 @@ def account_albums():
 
 
 @main_blueprint.route("/api/account/comments", methods=["GET"])
-@unified_auth_required
+@login_required
 def account_comments():
     """Get user's recent comments."""
     try:
@@ -797,7 +798,7 @@ def account_comments():
 
 
 @main_blueprint.route("/api/account/activity", methods=["GET"])
-@unified_auth_required
+@login_required
 def account_activity():
     """Get user's recent activity."""
     try:
@@ -853,7 +854,7 @@ def get_user_dashboard_url(user):
     return url_for("user_profile.user_profile", username=user.username)
 
 @main_blueprint.route("/api/account/profile", methods=["GET"])
-@unified_auth_required
+@login_required
 def account_profile():
     """Get current user's profile data. Works with both Firebase and username/email+password auth."""
     try:
@@ -935,7 +936,7 @@ def get_user_profile_by_username(username):
         return jsonify({"error": str(e)}), 500
 
 @main_blueprint.route("/api/account/profile", methods=["PUT", "PATCH"])
-@unified_auth_required
+@login_required
 def update_account_profile():
     """Update current user's profile data."""
     try:
