@@ -9,7 +9,6 @@ This software is dual-licensed:
 Contact: azzar.mr.zs@gmail.com for inquiries.
 """
 
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -22,7 +21,7 @@ import json
 import re
 import unicodedata
 
-db = SQLAlchemy()
+from app.extensions import db
 
 
 # Helper function for timezone-aware default timestamp

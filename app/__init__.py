@@ -28,7 +28,11 @@ def create_app(config_name: str | None = None) -> Flask:
     from dotenv import load_dotenv
     load_dotenv()
 
-    app = Flask(__name__)
+    root_dir = os.path.dirname(os.path.dirname(__file__))
+    app = Flask(__name__, template_folder=os.path.join(root_dir, "templates"), static_folder=os.path.join(root_dir, "static"))
+
+    from jinja2_loader import DesignFileSystemLoader
+    app.jinja_loader = DesignFileSystemLoader(app.template_folder)
 
     _configure_app(app, config_name)
     _init_extensions(app)
@@ -188,6 +192,18 @@ def _register_hooks(app: Flask) -> None:
     @app.context_processor
     def _inject_current_year():
         return {"current_year": datetime.now(JAKARTA).year}
+
+    @app.context_processor
+    def _utility_processor():
+        import re
+        def safe_title(title):
+            filtered_title = re.sub(r'\s+', '_', title)
+            filtered_title = re.sub(r'[\W]', '', filtered_title)
+            max_length = 50
+            if len(filtered_title) > max_length:
+                filtered_title = filtered_title[:max_length]
+            return filtered_title
+        return dict(safe_title=safe_title)
 
     @app.context_processor
     def _inject_search_filters():
