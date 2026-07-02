@@ -1,4 +1,4 @@
-{% extends "designs/" + g.design + "/base.html" %}
+{% extends "designs/" + (g.design if g.design != 'default' else 'news') + "/base.html" %}
 {% block title %}{{ page.meta_title or page.title }} — {{ brand_info.site_name }}{% endblock %}
 {% block og_title %}{{ page.og_title or page.meta_title or page.title }}{% endblock %}
 {% block og_description %}{{ page.og_description or page.meta_description or page.excerpt or '' }}{% endblock %}
