@@ -163,6 +163,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
  <button class="tab-btn px-4 py-2 text-sm font-medium text-sa-muted border-b-2 border-transparent hover:text-sa-fg hover:border-sa-border transition-all duration-300" data-tab="performance">
  <i class="fas fa-tachometer-alt mr-2"></i>Performa & Optimasi
  </button>
+ <button class="tab-btn px-4 py-2 text-sm font-medium text-sa-muted border-b-2 border-transparent hover:text-sa-fg hover:border-sa-border transition-all duration-300" data-tab="email">
+ <i class="fas fa-envelope mr-2"></i>Email
+ </button>
  </div>
 
  <!-- Tab Content -->
@@ -469,6 +472,47 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
  </div>
  <h3 class="text-xl font-bold mb-2 text-sa-fg">Optimasi SSR</h3>
  <p class="text-sa-muted">Server-side rendering dan caching.</p>
+ </a>
+ </div>
+ </div>
+
+ <!-- Email Tab -->
+ <div class="tab-content" id="email-tab">
+ <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+ <!-- Email Settings Card -->
+ <a href="{{ url_for('main.settings_email') }}" class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-4 text-center hover:shadow-sa-overlay transition-all duration-300 {% if current_user.role.value != 'su' %}hidden{% endif %}" role="article" aria-label="Pengaturan Email">
+ <div class="w-16 h-16 mx-auto mb-6 bg-sa-fg rounded-full flex items-center justify-center" aria-hidden="true">
+ <i class="fas fa-cog text-2xl text-white"></i>
+ </div>
+ <h3 class="text-xl font-bold mb-2 text-sa-fg">Pengaturan Email</h3>
+ <p class="text-sa-muted">Konfigurasi SMTP dan pengiriman email.</p>
+ </a>
+
+ <!-- Compose Email Card -->
+ <a href="{{ url_for('main.settings_email_compose') }}" class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-4 text-center hover:shadow-sa-overlay transition-all duration-300 {% if current_user.role.value != 'su' %}hidden{% endif %}" role="article" aria-label="Kirim Email">
+ <div class="w-16 h-16 mx-auto mb-6 bg-sa-fg rounded-full flex items-center justify-center" aria-hidden="true">
+ <i class="fas fa-pen-to-square text-2xl text-white"></i>
+ </div>
+ <h3 class="text-xl font-bold mb-2 text-sa-fg">Kirim Email</h3>
+ <p class="text-sa-muted">Buat dan kirim email ke pengguna.</p>
+ </a>
+
+ <!-- Email Outbox Card -->
+ <a href="{{ url_for('main.settings_email_outbox') }}" class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-4 text-center hover:shadow-sa-overlay transition-all duration-300 {% if current_user.role.value != 'su' %}hidden{% endif %}" role="article" aria-label="Outbox">
+ <div class="w-16 h-16 mx-auto mb-6 bg-sa-fg rounded-full flex items-center justify-center" aria-hidden="true">
+ <i class="fas fa-inbox text-2xl text-white"></i>
+ </div>
+ <h3 class="text-xl font-bold mb-2 text-sa-fg">Outbox</h3>
+ <p class="text-sa-muted">Lihat email yang belum terkirim.</p>
+ </a>
+
+ <!-- Email Log Card -->
+ <a href="{{ url_for('main.settings_email_log') }}" class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-4 text-center hover:shadow-sa-overlay transition-all duration-300 {% if current_user.role.value != 'su' %}hidden{% endif %}" role="article" aria-label="Log Email">
+ <div class="w-16 h-16 mx-auto mb-6 bg-sa-fg rounded-full flex items-center justify-center" aria-hidden="true">
+ <i class="fas fa-clock-rotate-left text-2xl text-white"></i>
+ </div>
+ <h3 class="text-xl font-bold mb-2 text-sa-fg">Log Email</h3>
+ <p class="text-sa-muted">Riwayat pengiriman email.</p>
  </a>
  </div>
  </div>

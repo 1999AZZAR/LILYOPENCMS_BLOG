@@ -219,6 +219,17 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
       ]
       },
       {
+      'id': 'email',
+      'title': 'Email & Notifikasi',
+      'icon': 'fas fa-envelope',
+      'links': [
+      {'url': url_for('main.settings_email'), 'icon': 'fas fa-cog', 'label': 'Pengaturan Email', 'roles': ['su']},
+      {'url': url_for('main.settings_email_compose'), 'icon': 'fas fa-pen-to-square', 'label': 'Kirim Email', 'roles': ['su']},
+      {'url': url_for('main.settings_email_outbox'), 'icon': 'fas fa-inbox', 'label': 'Outbox', 'roles': ['su']},
+      {'url': url_for('main.settings_email_log'), 'icon': 'fas fa-clock-rotate-left', 'label': 'Log Email', 'roles': ['su']}
+      ]
+      },
+      {
       'id': 'legal',
       'title': 'Legal & Kebijakan',
       'icon': 'fas fa-shield-alt',
