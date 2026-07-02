@@ -1,6 +1,6 @@
 # LilyOpenCMS Roadmap — Multi-Use Case Architecture
 
-## Current State (Phases 0–7 ✓)
+## Current State (Phases 0–8 ✓)
 
 | Layer | Status |
 |---|---|
@@ -15,6 +15,10 @@
 | Celery tasks (publish, popularity, backup, optimization) | ✅ Done |
 | Go sidecars (Argus=search, Hermes=images, Cerebro=caching) | ✅ Done |
 | Docker deployment (PostgreSQL, Redis, Gunicorn) | ✅ Done |
+| Static Pages system | ✅ Done |
+| Tags system (M2M) | ✅ Done |
+| Comments system (nested, moderation) | ✅ Done |
+| News enhancements (slug, reading_time, tags) | ✅ Done |
 
 ---
 
@@ -34,27 +38,27 @@
 > Everything below depends on this phase completing first.
 
 ### 8.1 Static Pages System
-- [ ] `Page` model (title, slug, content, template, is_published, seo_id)
-- [ ] CRUD routes + admin UI
-- [ ] Template selection per page (default, landing, full-width, sidebar)
+- [x] `Page` model (title, slug, content, template, is_published, seo_id)
+- [x] CRUD routes + admin UI
+- [x] Template selection per page (default, landing, full-width, sidebar)
 - [ ] Reusable blocks / components (hero, CTA, FAQ, testimonials)
 - [ ] Pages: About, Services, Terms, Privacy (seed defaults)
 
 ### 8.2 Tag System (replace string field)
-- [ ] `Tag` model (name, slug)
-- [ ] `NewsTag` junction table
-- [ ] Tag CRUD in admin
-- [ ] Tag pages on frontend (`/tag/{slug}`)
+- [x] `Tag` model (name, slug)
+- [x] `NewsTag` junction table
+- [x] Tag CRUD in admin
+- [x] Tag pages on frontend (`/tag/{slug}`)
 - [ ] Tag cloud widget
-- [ ] Auto-suggest from existing tags
+- [x] Auto-suggest from existing tags
 
 ### 8.3 Comment System
-- [ ] `Comment` model (user_id, news_id, parent_id, content, status)
-- [ ] Moderation queue (pending/approved/rejected)
-- [ ] Nested replies (1 level)
+- [x] `Comment` model (user_id, news_id, parent_id, content, status)
+- [x] Moderation queue (pending/approved/rejected)
+- [x] Nested replies (1 level)
 - [ ] Spam detection (basic: link count, length)
 - [ ] Email notification on reply
-- [ ] Admin moderation UI
+- [x] Admin moderation UI
 
 ### 8.4 Author System
 - [ ] Extend `User` model (bio, avatar, social links)
@@ -64,7 +68,7 @@
 - [ ] "Written by" card on articles
 
 ### 8.5 Content Enhancements
-- [ ] Reading time estimate (auto-calc from content)
+- [x] Reading time estimate (auto-calc from content)
 - [ ] Related articles (same category or tags)
 - [ ] Table of contents (auto-generate from headings)
 - [ ] Social sharing buttons (Twitter, Facebook, WhatsApp, Telegram)
