@@ -1908,6 +1908,168 @@ class EmailLog(db.Model):
             self.error_message = error_message
         db.session.commit()
 
+    def increment_retry(self):
+        """Increment retry count"""
+        self.retry_count += 1
+        db.session.commit()
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "message_id": self.message_id,
+            "celery_task_id": self.celery_task_id,
+            "recipient": self.recipient,
+            "sender": self.sender,
+            "subject": self.subject,
+            "email_type": self.email_type.value if self.email_type else None,
+            "status": self.status.value if self.status else None,
+            "queued_at": self.queued_at.isoformat() if self.queued_at else None,
+            "sent_at": self.sent_at.isoformat() if self.sent_at else None,
+            "delivered_at": self.delivered_at.isoformat() if self.delivered_at else None,
+            "failed_at": self.failed_at.isoformat() if self.failed_at else None,
+            "error_message": self.error_message,
+            "retry_count": self.retry_count,
+            "max_retries": self.max_retries,
+            "rate_limit_hit": self.rate_limit_hit,
+            "rate_limit_reason": self.rate_limit_reason,
+            "user_id": self.user_id,
+            "extra_data": self.extra_data,
+            "ip_address": self.ip_address,
+            "user_agent": self.user_agent,
+            "template_name": self.template_name,
+        }
+
+
+class EmailAnalytics(db.Model):
+    """Daily aggregated email analytics"""
+    __tablename__ = 'email_analytics'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, unique=True, nullable=False, index=True)
+
+    # Volume metrics
+    emails_sent = db.Column(db.Integer, default=0, nullable=False)
+    emails_delivered = db.Column(db.Integer, default=0, nullable=False)
+    emails_failed = db.Column(db.Integer, default=0, nullable=False)
+    emails_bounced = db.Column(db.Integer, default=0, nullable=False)
+    emails_complained = db.Column(db.Integer, default=0, nullable=False)
+
+    # Rate metrics
+    delivery_rate = db.Column(db.Float, default=0.0)
+    bounce_rate = db.Column(db.Float, default=0.0)
+    complaint_rate = db.Column(db.Float, default=0.0)
+
+    # Performance metrics
+    avg_send_time = db.Column(db.Float, default=0.0)  # seconds
+    avg_delivery_time = db.Column(db.Float, default=0.0)  # seconds
+
+    # Type breakdown (JSON: {"verification": 5, "password_reset": 2, ...})
+    type_breakdown = db.Column(db.JSON, nullable=True)
+
+    # Rate limiting
+    rate_limit_hits = db.Column(db.Integer, default=0)
+
+    created_at = db.Column(db.DateTime(timezone=True), default=default_utcnow)
+    updated_at = db.Column(db.DateTime(timezone=True), default=default_utcnow, onupdate=default_utcnow)
+
+    def update_metrics(self):
+        """Recalculate metrics from EmailLog for this date"""
+        from sqlalchemy import and_, func
+        day_start = datetime.combine(self.date, datetime.min.time())
+        day_end = datetime.combine(self.date, datetime.max.time())
+
+        logs = EmailLog.query.filter(
+            and_(EmailLog.queued_at >= day_start, EmailLog.queued_at <= day_end)
+        ).all()
+
+        self.emails_sent = len([l for l in logs if l.status in (EmailStatus.SENT, EmailStatus.DELIVERED)])
+        self.emails_delivered = len([l for l in logs if l.status == EmailStatus.DELIVERED])
+        self.emails_failed = len([l for l in logs if l.status == EmailStatus.FAILED])
+        self.emails_bounced = len([l for l in logs if l.status == EmailStatus.BOUNCED])
+        self.emails_complained = len([l for l in logs if l.status == EmailStatus.COMPLAINT])
+        self.rate_limit_hits = len([l for l in logs if l.rate_limit_hit])
+
+        total = self.emails_sent or 1
+        self.delivery_rate = (self.emails_delivered / total) * 100
+        self.bounce_rate = (self.emails_bounced / total) * 100
+        self.complaint_rate = (self.emails_complained / total) * 100
+
+        # Type breakdown
+        breakdown = {}
+        for log in logs:
+            t = log.email_type.value if log.email_type else "unknown"
+            breakdown[t] = breakdown.get(t, 0) + 1
+        self.type_breakdown = breakdown
+
+        # Average send time
+        send_times = []
+        for log in logs:
+            if log.sent_at and log.queued_at:
+                send_times.append((log.sent_at - log.queued_at).total_seconds())
+        self.avg_send_time = sum(send_times) / len(send_times) if send_times else 0
+
+        # Average delivery time
+        delivery_times = []
+        for log in logs:
+            if log.delivered_at and log.queued_at:
+                delivery_times.append((log.delivered_at - log.queued_at).total_seconds())
+        self.avg_delivery_time = sum(delivery_times) / len(delivery_times) if delivery_times else 0
+
+        db.session.commit()
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "date": self.date.isoformat(),
+            "emails_sent": self.emails_sent,
+            "emails_delivered": self.emails_delivered,
+            "emails_failed": self.emails_failed,
+            "emails_bounced": self.emails_bounced,
+            "emails_complained": self.emails_complained,
+            "delivery_rate": self.delivery_rate,
+            "bounce_rate": self.bounce_rate,
+            "complaint_rate": self.complaint_rate,
+            "avg_send_time": self.avg_send_time,
+            "avg_delivery_time": self.avg_delivery_time,
+            "type_breakdown": self.type_breakdown,
+            "rate_limit_hits": self.rate_limit_hits,
+        }
+
+
+class EmailTemplate(db.Model):
+    """Versioned email template storage"""
+    __tablename__ = 'email_templates'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    subject_template = db.Column(db.String(500), nullable=False)
+    html_template = db.Column(db.Text, nullable=False)
+    text_template = db.Column(db.Text, nullable=True)
+    description = db.Column(db.Text, nullable=True)
+    email_type = db.Column(db.Enum(EmailType), nullable=True)
+    version = db.Column(db.Integer, default=1, nullable=False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
+
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    created_at = db.Column(db.DateTime(timezone=True), default=default_utcnow)
+    updated_at = db.Column(db.DateTime(timezone=True), default=default_utcnow, onupdate=default_utcnow)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "subject_template": self.subject_template,
+            "html_template": self.html_template,
+            "text_template": self.text_template,
+            "description": self.description,
+            "email_type": self.email_type.value if self.email_type else None,
+            "version": self.version,
+            "is_active": self.is_active,
+            "created_by": self.created_by,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+        }
+
 
 # Event listeners
 @event.listens_for(Image, "after_delete")

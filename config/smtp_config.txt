@@ -1,0 +1,29 @@
+# SMTP Configuration for LilyOpenCMS
+# This file contains SMTP settings for email delivery
+
+# SMTP Server Configuration
+smtp_server=smtp.gmail.com
+smtp_port=587
+smtp_use_tls=true
+smtp_use_ssl=false
+
+# Authentication
+smtp_username=your_email@gmail.com
+smtp_password=your_app_password
+
+# Email Settings
+mail_default_sender=noreply@lilyopencms.com
+mail_sender_name=LilyOpenCMS
+mail_reply_to=noreply@lilyopencms.com
+
+# Rate Limiting
+email_rate_limit_per_hour=100
+email_rate_limit_per_day=1000
+
+# Security
+smtp_verify_ssl=true
+smtp_timeout=30
+
+# Development/Testing
+smtp_debug=false
+smtp_suppress_send=false

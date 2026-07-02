@@ -1,0 +1,395 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Email Settings — Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base_css.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_base_css.css') }}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='pic/favicon.png') }}">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    #main-content { flex: 1; min-height: 0; }
+  </style>
+</head>
+<body class="bg-surface text-main font-sans flex flex-col min-h-screen">
+
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:bg-card focus:px-4 focus:py-2 focus:z-50">Skip to main content</a>
+  <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- Hero Section -->
+  <section style="background:var(--ps-surface-card);padding:24px 32px;border-bottom:1px solid var(--ps-border)" role="banner">
+    <h1 style="font-size:1.5rem;font-weight:700;color:var(--ps-text);letter-spacing:-0.02em">Email Management</h1>
+    <p style="font-size:0.875rem;color:var(--ps-text-secondary);margin-top:4px">Konfigurasi SMTP, monitor outbox, dan kirim email</p>
+  </section>
+
+  <!-- Main Content -->
+  <main id="main-content" style="width:100%;padding:24px 32px" role="main" tabindex="-1">
+    <div style="background:var(--ps-surface-card);border:1px solid var(--ps-border);padding:24px;border-radius:12px" role="region" aria-label="Content">
+
+      {# ── Sub-nav ──────────────────────────────────────────────────────── #}
+      <nav class="flex gap-1 mb-6 p-1 rounded-lg" style="background:var(--ps-surface);border:1px solid var(--ps-border)" role="tablist" aria-label="Email management sections">
+        <a href="{{ url_for('main.settings_email') }}"         class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="background:var(--ps-surface-card);color:var(--ps-text);border:1px solid var(--ps-border);text-decoration:none"><i class="fas fa-cog" style="color:var(--ps-primary)"></i>Pengaturan</a>
+        <a href="{{ url_for('main.settings_email_outbox') }}"  class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="color:var(--ps-text-secondary);text-decoration:none" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background=''"><i class="fas fa-inbox"></i>Outbox</a>
+        <a href="{{ url_for('main.settings_email_log') }}"     class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="color:var(--ps-text-secondary);text-decoration:none" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background=''"><i class="fas fa-list-alt"></i>Mail Log</a>
+        <a href="{{ url_for('main.settings_email_compose') }}" class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="color:var(--ps-text-secondary);text-decoration:none" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background=''"><i class="fas fa-pen-alt"></i>Kirim Email</a>
+      </nav>
+
+      {# ── Stat strip ───────────────────────────────────────────────────── #}
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" id="email-stats-strip">
+        {% set strips = [
+          ('stat-total',    'fa-paper-plane',  'Total',    '#667EEA'),
+          ('stat-sent',     'fa-check-circle', 'Terkirim', '#48BB78'),
+          ('stat-queued',   'fa-clock',        'Antrian',  '#ED8936'),
+          ('stat-failed',   'fa-times-circle', 'Gagal',    '#F56565'),
+        ] %}
+        {% for id, icon, label, color in strips %}
+        <div class="flex items-center gap-3 p-4 rounded-lg" style="background:var(--ps-surface-card);border:1px solid var(--ps-border)">
+          <div class="flex items-center justify-center w-9 h-9 rounded-lg flex-shrink-0" style="background:{{ color }}18">
+            <i class="fas {{ icon }}" style="color:{{ color }};font-size:.875rem"></i>
+          </div>
+          <div>
+            <div class="text-xl font-bold" style="color:var(--ps-text);line-height:1.2" id="{{ id }}">—</div>
+            <div class="text-xs" style="color:var(--ps-text-muted)">{{ label }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {# ── Main config card ─────────────────────────────────────────────── #}
+      <div class="rounded-lg overflow-hidden" style="border:1px solid var(--ps-border)">
+
+        {# Card header — Swiss rule #}
+        <div class="flex items-center justify-between px-5 py-4" style="background:var(--ps-surface-card);border-bottom:2px solid var(--ps-primary)">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-md" style="background:var(--ps-primary-subtle)">
+              <i class="fas fa-envelope-open-text" style="color:var(--ps-primary);font-size:.8125rem"></i>
+            </div>
+            <div>
+              <div class="text-sm font-semibold" style="color:var(--ps-text)">Konfigurasi SMTP</div>
+              <div class="text-xs" style="color:var(--ps-text-muted)">Provider, kredensial, dan rate limiting</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="openSendTestModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all" style="border:1px solid var(--ps-border);background:var(--ps-surface-card);color:var(--ps-text-secondary);cursor:pointer" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background='var(--ps-surface-card)'">
+              <i class="fas fa-paper-plane"></i>Test Kirim
+            </button>
+            <button type="button" onclick="openTestModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all" style="border:1px solid var(--ps-border);background:var(--ps-surface-card);color:var(--ps-text-secondary);cursor:pointer" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background='var(--ps-surface-card)'">
+              <i class="fas fa-plug"></i>Test Koneksi
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6" style="background:var(--ps-surface-card)">
+          <form id="smtp-form">
+
+            {# Provider presets — pill row #}
+            <div class="mb-6">
+              <div class="text-xs font-semibold uppercase tracking-wide mb-3" style="color:var(--ps-text-muted);letter-spacing:.06em">Provider Preset</div>
+              <div class="flex flex-wrap gap-2">
+                {% set presets = [
+                  ('gmail',     'fab fa-google',    'Gmail'),
+                  ('sendgrid',  'fas fa-paper-plane','SendGrid'),
+                  ('mailgun',   'fas fa-envelope',   'Mailgun'),
+                  ('ses',       'fab fa-aws',        'Amazon SES'),
+                  ('office365', 'fab fa-microsoft',  'Office 365'),
+                  ('custom',    'fas fa-server',     'Custom SMTP'),
+                ] %}
+                {% for key, icon, name in presets %}
+                <button type="button" onclick="applyPreset('{{ key }}')"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all"
+                  style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text-secondary);cursor:pointer"
+                  onmouseover="this.style.background='var(--ps-primary-subtle)';this.style.borderColor='var(--ps-primary)';this.style.color='var(--ps-primary)'"
+                  onmouseout="this.style.background='var(--ps-surface)';this.style.borderColor='var(--ps-border)';this.style.color='var(--ps-text-secondary)'">
+                  <i class="{{ icon }}"></i>{{ name }}
+                </button>
+                {% endfor %}
+              </div>
+            </div>
+
+            {# ── Swiss grid — 2 col ── #}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+              {# Swiss field helper macro (inline) #}
+              {% macro field(fid, label, type, val, placeholder='') %}
+              <div>
+                <label for="{{ fid }}" class="block text-xs font-semibold mb-1.5" style="color:var(--ps-text-secondary);text-transform:uppercase;letter-spacing:.04em">{{ label }}</label>
+                <input id="{{ fid }}" type="{{ type }}" value="{{ val }}" placeholder="{{ placeholder }}"
+                  class="block w-full px-3 py-2 rounded-md text-sm transition-all"
+                  style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none"
+                  onfocus="this.style.borderColor='var(--ps-primary)';this.style.boxShadow='0 0 0 3px var(--ps-primary-subtle)'"
+                  onblur="this.style.borderColor='var(--ps-border)';this.style.boxShadow='none'">
+              </div>
+              {% endmacro %}
+
+              {{ field('smtp-server',    'SMTP Server',          'text',   smtp_config.get('smtp_server','localhost'),    'smtp.gmail.com') }}
+              {{ field('smtp-port',      'Port',                 'number', smtp_config.get('smtp_port',587)) }}
+              {{ field('smtp-username',  'Username / Email',     'text',   smtp_config.get('smtp_username','') or '') }}
+
+              {# Password with show/hide #}
+              <div>
+                <label for="smtp-password" class="block text-xs font-semibold mb-1.5" style="color:var(--ps-text-secondary);text-transform:uppercase;letter-spacing:.04em">Password / API Key</label>
+                <div style="position:relative">
+                  <input id="smtp-password" type="password" value="{{ smtp_config.get('smtp_password','') or '' }}" autocomplete="new-password"
+                    class="block w-full px-3 py-2 rounded-md text-sm pr-10 transition-all"
+                    style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none"
+                    onfocus="this.style.borderColor='var(--ps-primary)';this.style.boxShadow='0 0 0 3px var(--ps-primary-subtle)'"
+                    onblur="this.style.borderColor='var(--ps-border)';this.style.boxShadow='none'">
+                  <button type="button" onclick="togglePwd()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ps-text-muted)"><i class="fas fa-eye" id="pwd-icon"></i></button>
+                </div>
+              </div>
+
+              {{ field('mail-sender',      'Default Sender Email', 'email',  smtp_config.get('mail_default_sender','') or '', 'noreply@example.com') }}
+              {{ field('mail-sender-name', 'Sender Name',          'text',   smtp_config.get('mail_sender_name','') or '',   'LilyOpenCMS') }}
+              {{ field('mail-reply-to',    'Reply-To',             'email',  smtp_config.get('mail_reply_to','') or '',       'support@example.com') }}
+              {{ field('smtp-timeout',     'Timeout (detik)',       'number', smtp_config.get('smtp_timeout',30)) }}
+              {{ field('rate-hour',        'Rate Limit / Jam',      'number', smtp_config.get('email_rate_limit_per_hour',10)) }}
+              {{ field('rate-day',         'Rate Limit / Hari',     'number', smtp_config.get('email_rate_limit_per_day',50)) }}
+
+            </div>{# /grid #}
+
+            {# ── Toggle block — Swiss divider style ── #}
+            <div class="rounded-md overflow-hidden mb-6" style="border:1px solid var(--ps-border)">
+              <div class="px-4 py-3 flex items-center gap-2" style="background:var(--ps-surface);border-bottom:1px solid var(--ps-border)">
+                <i class="fas fa-sliders-h text-xs" style="color:var(--ps-text-muted)"></i>
+                <span class="text-xs font-semibold uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.06em">Opsi Koneksi</span>
+              </div>
+              {% set toggles = [
+                ('smtp-tls',        'Gunakan TLS (STARTTLS)',         smtp_config.get('smtp_use_tls', True)),
+                ('smtp-ssl',        'Gunakan SSL (port 465)',         smtp_config.get('smtp_use_ssl', False)),
+                ('smtp-verify-ssl', 'Verifikasi SSL Certificate',     smtp_config.get('smtp_verify_ssl', True)),
+                ('smtp-debug',      'Mode Debug (log detail SMTP)',   smtp_config.get('smtp_debug', False)),
+                ('smtp-suppress',   'Suppress Send (dry-run / test)', smtp_config.get('smtp_suppress_send', False)),
+              ] %}
+              {% for tid, tlabel, tval in toggles %}
+              <label class="flex items-center justify-between px-4 py-3 cursor-pointer transition-all" style="{% if not loop.last %}border-bottom:1px solid var(--ps-border-light);{% endif %}background:var(--ps-surface-card)" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background='var(--ps-surface-card)'">
+                <span class="text-sm" style="color:var(--ps-text)">{{ tlabel }}</span>
+                <input id="{{ tid }}" type="checkbox" class="polaris-toggle" {% if tval %}checked{% endif %}>
+              </label>
+              {% endfor %}
+            </div>
+
+            {# ── Action bar — Swiss bottom rule ── #}
+            <div class="flex items-center gap-3 pt-4" style="border-top:1px solid var(--ps-border)">
+              <button type="submit" id="save-btn"
+                class="flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold transition-all"
+                style="background:var(--ps-primary);color:#fff;border:none;cursor:pointer"
+                onmouseover="this.style.background='var(--ps-primary-hover)'"
+                onmouseout="this.style.background='var(--ps-primary)'">
+                <i class="fas fa-save"></i>Simpan Konfigurasi
+              </button>
+              <span id="save-status" class="text-xs" style="color:var(--ps-text-muted)"></span>
+            </div>
+
+          </form>
+        </div>
+      </div>{# /config card #}
+
+      {# ══ SMTP Test Modal ══════════════════════════════════════════════════ #}
+      <div id="test-modal" role="dialog" aria-modal="true" aria-labelledby="test-modal-title"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-4"
+        style="background:rgba(0,0,0,.45);backdrop-filter:blur(2px)">
+        <div class="w-full max-w-sm rounded-xl overflow-hidden" style="background:var(--ps-surface-card);border:1px solid var(--ps-border);box-shadow:0 20px 60px rgba(0,0,0,.15)">
+          <div class="flex items-center justify-between px-5 py-4" style="border-bottom:2px solid var(--ps-primary)">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-plug" style="color:var(--ps-primary)"></i>
+              <span class="font-semibold text-sm" id="test-modal-title" style="color:var(--ps-text)">Test Koneksi SMTP</span>
+            </div>
+            <button onclick="closeModal('test-modal')" style="background:none;border:none;cursor:pointer;color:var(--ps-text-muted);font-size:1.125rem">&times;</button>
+          </div>
+          <div class="p-5">
+            <p class="text-sm mb-4" style="color:var(--ps-text-secondary)">Uji koneksi ke server SMTP yang dikonfigurasi saat ini.</p>
+            <div id="test-result" class="hidden rounded-md px-4 py-3 text-sm mb-4"></div>
+            <div class="flex gap-2">
+              <button onclick="runSmtpTest()" id="run-test-btn"
+                class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all"
+                style="background:var(--ps-primary);color:#fff;border:none;cursor:pointer"
+                onmouseover="this.style.background='var(--ps-primary-hover)'"
+                onmouseout="this.style.background='var(--ps-primary)'">
+                <i class="fas fa-plug"></i>Test Sekarang
+              </button>
+              <button onclick="closeModal('test-modal')"
+                class="px-4 py-2 rounded-md text-sm font-medium transition-all"
+                style="border:1px solid var(--ps-border);background:var(--ps-surface-card);color:var(--ps-text-secondary);cursor:pointer"
+                onmouseover="this.style.background='var(--ps-surface-hover)'"
+                onmouseout="this.style.background='var(--ps-surface-card)'">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# ══ Send Test Modal ══════════════════════════════════════════════════ #}
+      <div id="send-test-modal" role="dialog" aria-modal="true" aria-labelledby="send-test-modal-title"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-4"
+        style="background:rgba(0,0,0,.45);backdrop-filter:blur(2px)">
+        <div class="w-full max-w-sm rounded-xl overflow-hidden" style="background:var(--ps-surface-card);border:1px solid var(--ps-border);box-shadow:0 20px 60px rgba(0,0,0,.15)">
+          <div class="flex items-center justify-between px-5 py-4" style="border-bottom:2px solid var(--ps-primary)">
+            <div class="flex items-center gap-2">
+              <i class="fas fa-paper-plane" style="color:var(--ps-primary)"></i>
+              <span class="font-semibold text-sm" id="send-test-modal-title" style="color:var(--ps-text)">Kirim Email Test</span>
+            </div>
+            <button onclick="closeModal('send-test-modal')" style="background:none;border:none;cursor:pointer;color:var(--ps-text-muted);font-size:1.125rem">&times;</button>
+          </div>
+          <div class="p-5">
+            <div class="mb-4">
+              <label for="test-recipient" class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.04em">Kirim ke Email</label>
+              <input id="test-recipient" type="email" placeholder="your@email.com"
+                class="block w-full px-3 py-2 rounded-md text-sm"
+                style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none"
+                onfocus="this.style.borderColor='var(--ps-primary)';this.style.boxShadow='0 0 0 3px var(--ps-primary-subtle)'"
+                onblur="this.style.borderColor='var(--ps-border)';this.style.boxShadow='none'">
+            </div>
+            <div id="send-test-result" class="hidden rounded-md px-4 py-3 text-sm mb-4"></div>
+            <div class="flex gap-2">
+              <button onclick="runSendTest()" id="run-send-btn"
+                class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all"
+                style="background:var(--ps-primary);color:#fff;border:none;cursor:pointer"
+                onmouseover="this.style.background='var(--ps-primary-hover)'"
+                onmouseout="this.style.background='var(--ps-primary)'">
+                <i class="fas fa-paper-plane"></i>Kirim
+              </button>
+              <button onclick="closeModal('send-test-modal')"
+                class="px-4 py-2 rounded-md text-sm font-medium transition-all"
+                style="border:1px solid var(--ps-border);background:var(--ps-surface-card);color:var(--ps-text-secondary);cursor:pointer"
+                onmouseover="this.style.background='var(--ps-surface-hover)'"
+                onmouseout="this.style.background='var(--ps-surface-card)'">Batal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/csrf-utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+  const PRESETS = {
+    gmail:     {smtp_server:'smtp.gmail.com',                              smtp_port:587, smtp_use_tls:true,  smtp_use_ssl:false},
+    sendgrid:  {smtp_server:'smtp.sendgrid.net',                           smtp_port:587, smtp_use_tls:true,  smtp_use_ssl:false},
+    mailgun:   {smtp_server:'smtp.mailgun.org',                            smtp_port:587, smtp_use_tls:true,  smtp_use_ssl:false},
+    ses:       {smtp_server:'email-smtp.us-east-1.amazonaws.com',          smtp_port:587, smtp_use_tls:true,  smtp_use_ssl:false},
+    office365: {smtp_server:'smtp.office365.com',                          smtp_port:587, smtp_use_tls:true,  smtp_use_ssl:false},
+    custom:    {},
+  };
+
+  function applyPreset(k) {
+    const p = PRESETS[k]||{};
+    if(p.smtp_server!==undefined) document.getElementById('smtp-server').value=p.smtp_server;
+    if(p.smtp_port!==undefined)   document.getElementById('smtp-port').value=p.smtp_port;
+    if(p.smtp_use_tls!==undefined) document.getElementById('smtp-tls').checked=p.smtp_use_tls;
+    if(p.smtp_use_ssl!==undefined) document.getElementById('smtp-ssl').checked=p.smtp_use_ssl;
+  }
+
+  function togglePwd() {
+    const el=document.getElementById('smtp-password'),ic=document.getElementById('pwd-icon');
+    el.type=el.type==='password'?'text':'password';
+    ic.className=el.type==='text'?'fas fa-eye-slash':'fas fa-eye';
+  }
+
+  function collectConfig() {
+    return {
+      smtp_server:               document.getElementById('smtp-server').value.trim(),
+      smtp_port:                 parseInt(document.getElementById('smtp-port').value,10),
+      smtp_username:             document.getElementById('smtp-username').value.trim(),
+      smtp_password:             document.getElementById('smtp-password').value,
+      mail_default_sender:       document.getElementById('mail-sender').value.trim(),
+      mail_sender_name:          document.getElementById('mail-sender-name').value.trim(),
+      mail_reply_to:             document.getElementById('mail-reply-to').value.trim(),
+      smtp_timeout:              parseInt(document.getElementById('smtp-timeout').value,10),
+      email_rate_limit_per_hour: parseInt(document.getElementById('rate-hour').value,10),
+      email_rate_limit_per_day:  parseInt(document.getElementById('rate-day').value,10),
+      smtp_use_tls:    document.getElementById('smtp-tls').checked,
+      smtp_use_ssl:    document.getElementById('smtp-ssl').checked,
+      smtp_verify_ssl: document.getElementById('smtp-verify-ssl').checked,
+      smtp_debug:      document.getElementById('smtp-debug').checked,
+      smtp_suppress_send: document.getElementById('smtp-suppress').checked,
+    };
+  }
+
+  document.getElementById('smtp-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn=document.getElementById('save-btn'), st=document.getElementById('save-status');
+    btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+    st.textContent='';
+    const res=await fetchWithCSRF('/api/settings/email/config',{method:'POST',body:JSON.stringify(collectConfig())});
+    const data=await res.json();
+    btn.disabled=false; btn.innerHTML='<i class="fas fa-save"></i> Simpan Konfigurasi';
+    st.textContent=data.message;
+    st.style.color=data.success?'var(--ps-success)':'var(--ps-danger)';
+    showToast(data.success?'success':'error', data.message);
+  });
+
+  function openTestModal()     { document.getElementById('test-modal').classList.replace('hidden','flex'); }
+  function openSendTestModal() { document.getElementById('send-test-modal').classList.replace('hidden','flex'); }
+  function closeModal(id)      { document.getElementById(id).classList.replace('flex','hidden'); }
+
+  function setResult(elId, data) {
+    const el=document.getElementById(elId);
+    el.className='rounded-md px-4 py-3 text-sm mb-4';
+    el.style.cssText=data.success
+      ?'background:#F0FFF4;border:1px solid #48BB78;color:#276749'
+      :'background:#FFF5F5;border:1px solid #F56565;color:#9B2C2C';
+    el.textContent=data.message;
+  }
+
+  async function runSmtpTest() {
+    const btn=document.getElementById('run-test-btn');
+    btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Testing...';
+    const res=await fetchWithCSRF('/api/settings/email/smtp-test',{method:'POST'});
+    const data=await res.json();
+    btn.disabled=false; btn.innerHTML='<i class="fas fa-plug"></i> Test Sekarang';
+    setResult('test-result',data);
+  }
+
+  async function runSendTest() {
+    const recipient=document.getElementById('test-recipient').value.trim();
+    if(!recipient){showToast('error','Masukkan email penerima');return;}
+    const btn=document.getElementById('run-send-btn');
+    btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+    const res=await fetchWithCSRF('/api/settings/email/test',{method:'POST',body:JSON.stringify({recipient})});
+    const data=await res.json();
+    btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Kirim';
+    setResult('send-test-result',data);
+  }
+
+  // Close modals on backdrop click
+  ['test-modal','send-test-modal'].forEach(id=>{
+    document.getElementById(id).addEventListener('click',e=>{if(e.target===document.getElementById(id))closeModal(id);});
+  });
+
+  async function loadStats() {
+    try {
+      const {stats}=await (await fetch('/api/settings/email/stats')).json();
+      document.getElementById('stat-total').textContent  = stats.total;
+      document.getElementById('stat-sent').textContent   = stats.sent+stats.delivered;
+      document.getElementById('stat-queued').textContent = stats.queued;
+      document.getElementById('stat-failed').textContent = stats.failed+stats.bounced;
+    } catch{}
+  }
+  loadStats();
+  </script>
+</body>
+</html>

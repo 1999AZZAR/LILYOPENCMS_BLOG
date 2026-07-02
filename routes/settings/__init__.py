@@ -28,5 +28,6 @@ from . import brand
 from . import seo
 from . import api
 from . import root_seo
+from . import email
 
 # This ensures all routes are registered when the settings module is imported
