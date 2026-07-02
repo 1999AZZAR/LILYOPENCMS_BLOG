@@ -167,8 +167,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
       'links': [
       {'url': url_for('main.create_news'), 'icon': 'fas fa-plus-circle', 'label': 'Buat Cerita', 'roles': ['su','admin','general']},
       {'url': url_for('main.manage_news'), 'icon': 'fas fa-pen-', 'label': 'Kelola Cerita', 'roles': ['su','admin','general']},
+      {'url': url_for('main.settings_pages'), 'icon': 'fas fa-file-lines', 'label': 'Halaman Statis', 'roles': ['su','admin']},
+      {'url': url_for('main.settings_tags'), 'icon': 'fas fa-tags', 'label': 'Manajemen Tag', 'roles': ['su','admin']},
+      {'url': url_for('main.settings_comments'), 'icon': 'fas fa-comments', 'label': 'Komentar', 'roles': ['su','admin']},
       {'url': url_for('main.albums_management'), 'icon': 'fas fa-book-open', 'label': 'Manajemen Album', 'roles': ['su','admin','general']},
-      {'url': url_for('main.settings_categories'), 'icon': 'fas fa-tags', 'label': 'Manajemen Kategori', 'roles': ['admin','su']},
+      {'url': url_for('main.settings_categories'), 'icon': 'fas fa-folder', 'label': 'Manajemen Kategori', 'roles': ['admin','su']},
       {'url': url_for('main.settingsimage'), 'icon': 'fas fa-image', 'label': 'Manajemen Gambar', 'roles': ['su','admin','general']},
       {'url': url_for('main.settings_youtube'), 'icon': 'fab fa-youtube', 'label': 'Manajemen Video', 'roles': ['admin','su']}
       ]

@@ -29,6 +29,9 @@ from .routes_albums import *
 from .routes_seo import *
 from .seo_enhanced_dashboard import *
 from .seo_settings_api import *
+from .routes_pages import *
+from .routes_tags import *
+from .routes_comments import *
 
 __all__ = [
     "main_blueprint",
@@ -49,4 +52,7 @@ __all__ = [
     "routes_seo",
     "seo_enhanced_dashboard",
     "seo_settings_api",
+    "routes_pages",
+    "routes_tags",
+    "routes_comments",
 ]

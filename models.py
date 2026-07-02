@@ -29,6 +29,13 @@ def default_utcnow():
     return datetime.now(timezone.utc)
 
 
+def slugify(text):
+    """Generate URL-friendly slug from text."""
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    text = re.sub(r"[^\w\s-]", "", text).strip().lower()
+    return re.sub(r"[-\s]+", "-", text)
+
+
 # Enums for consistent role and category values
 class UserRole(Enum):
     SUPERUSER = "su"
@@ -611,6 +618,123 @@ class Category(db.Model):
         }
 
 
+# ═══════════════════════════════════════════════════════════════════════
+# Phase 8: Core CMS Models
+# ═══════════════════════════════════════════════════════════════════════
+
+
+# ── Tags ──────────────────────────────────────────────────────────────
+class Tag(db.Model):
+    __tablename__ = "tag"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False, index=True)
+    slug = db.Column(db.String(120), unique=True, nullable=False, index=True)
+    created_at = db.Column(db.DateTime, default=default_utcnow, nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "slug": self.slug,
+            "created_at": self.created_at.isoformat(),
+        }
+
+
+news_tags = db.Table(
+    "news_tags",
+    db.Column("news_id", db.Integer, db.ForeignKey("news.id", ondelete="CASCADE"), primary_key=True),
+    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id", ondelete="CASCADE"), primary_key=True),
+)
+
+
+# ── Static Pages ──────────────────────────────────────────────────────
+class Page(db.Model):
+    __tablename__ = "page"
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    slug = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    content = db.Column(db.Text, nullable=True)
+    excerpt = db.Column(db.Text, nullable=True)
+    template = db.Column(db.String(50), default="default", nullable=False)
+    is_published = db.Column(db.Boolean, default=False, nullable=False, index=True)
+    show_in_menu = db.Column(db.Boolean, default=False, nullable=False)
+    menu_order = db.Column(db.Integer, default=0, nullable=False)
+    meta_title = db.Column(db.String(200), nullable=True)
+    meta_description = db.Column(db.String(500), nullable=True)
+    og_title = db.Column(db.String(200), nullable=True)
+    og_description = db.Column(db.String(500), nullable=True)
+    og_image = db.Column(db.String(255), nullable=True)
+    created_at = db.Column(db.DateTime, default=default_utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=default_utcnow, onupdate=default_utcnow, nullable=False)
+
+    author_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True)
+    author = db.relationship("User", backref="pages", lazy=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "slug": self.slug,
+            "content": self.content,
+            "excerpt": self.excerpt,
+            "template": self.template,
+            "is_published": self.is_published,
+            "show_in_menu": self.show_in_menu,
+            "menu_order": self.menu_order,
+            "meta_title": self.meta_title,
+            "meta_description": self.meta_description,
+            "author_id": self.author_id,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
+
+
+# ── Comments ──────────────────────────────────────────────────────────
+class CommentStatus(Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    SPAM = "spam"
+
+
+class Comment(db.Model):
+    __tablename__ = "comment"
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    status = db.Column(db.Enum(CommentStatus), default=CommentStatus.PENDING, nullable=False, index=True)
+    author_name = db.Column(db.String(100), nullable=True)
+    author_email = db.Column(db.String(255), nullable=True)
+    author_ip = db.Column(db.String(45), nullable=True)
+    created_at = db.Column(db.DateTime, default=default_utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=default_utcnow, onupdate=default_utcnow, nullable=False)
+
+    news_id = db.Column(db.Integer, db.ForeignKey("news.id", ondelete="CASCADE"), nullable=False, index=True)
+    news = db.relationship("News", backref=db.backref("comments", lazy="dynamic", cascade="all, delete-orphan"))
+
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True)
+    user = db.relationship("User", backref="comments", lazy=True)
+
+    parent_id = db.Column(db.Integer, db.ForeignKey("comment.id", ondelete="CASCADE"), nullable=True)
+    replies = db.relationship("Comment", backref=db.backref("parent", remote_side=[id]), lazy="dynamic")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "content": self.content,
+            "status": self.status.value,
+            "author_name": self.author_name,
+            "author_email": self.author_email,
+            "news_id": self.news_id,
+            "user_id": self.user_id,
+            "parent_id": self.parent_id,
+            "created_at": self.created_at.isoformat(),
+            "updated_at": self.updated_at.isoformat(),
+        }
+
+
 class News(db.Model):
     __tablename__ = "news"
 
@@ -683,6 +807,21 @@ class News(db.Model):
     )
     # Keep simple backref if Image doesn't link back explicitly
     image = db.relationship("Image", backref="news")
+
+    # Tags (many-to-many)
+    tags = db.relationship("Tag", secondary=news_tags, backref=db.backref("news", lazy="dynamic"))
+
+    @property
+    def reading_time(self):
+        """Estimate reading time in minutes (avg 200 words/min)."""
+        import re as _re
+        text = _re.sub(r"<[^>]+>", "", self.content or "")
+        words = len(text.split())
+        return max(1, round(words / 200))
+
+    @property
+    def slug(self):
+        return slugify(self.title)
 
     def __init__(self, **kwargs):
         super(News, self).__init__(**kwargs)

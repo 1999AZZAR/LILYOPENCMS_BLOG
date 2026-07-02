@@ -2,11 +2,13 @@ FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
-# Copy the rest of the source code including vendor
-COPY sidecars/ ./
+COPY go.mod go.sum ./
+RUN go mod download
 
-# Build the application
-RUN go build -mod=vendor -o argus-service ./argus/main.go
+COPY argus/ ./argus/
+COPY proto/ ./proto/
+
+RUN go build -o argus-service ./argus/main.go
 
 # Use a minimal runtime image
 FROM alpine:latest

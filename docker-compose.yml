@@ -126,8 +126,8 @@ services:
   # ── Argus Sidecar (gRPC :50051 — logging, analytics, metrics) ─────────────
   argus-sidecar:
     build:
-      context: ./sidecars/argus
-      dockerfile: Dockerfile
+      context: ./sidecars
+      dockerfile: argus/Dockerfile
     restart: unless-stopped
     environment:
       PORT: "50051"
@@ -141,8 +141,8 @@ services:
   # ── Hermes Sidecar (gRPC :50052 — image processing via libvips) ───────────
   hermes-sidecar:
     build:
-      context: ./sidecars/hermes
-      dockerfile: Dockerfile
+      context: ./sidecars
+      dockerfile: hermes/Dockerfile
     restart: unless-stopped
     environment:
       PORT: "50052"
@@ -152,8 +152,8 @@ services:
   # ── Cerebro Sidecar (HTTP :8080 — cached read path, search gateway) ────────
   cerebro-sidecar:
     build:
-      context: ./sidecars/cerebro
-      dockerfile: Dockerfile
+      context: ./sidecars
+      dockerfile: cerebro/Dockerfile
     restart: unless-stopped
     environment:
       PORT: "8080"

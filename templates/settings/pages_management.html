@@ -1,0 +1,82 @@
+{% extends "admin_base.html" %}
+{% block title %}Halaman Statis — Admin{% endblock %}
+{% block hero_title %}Halaman Statis{% endblock %}
+{% block hero_desc %}Kelola halaman statis website{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <p class="text-sm text-sa-muted">{{ pages|length }} halaman</p>
+  <a href="{{ url_for('main.settings_page_create') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold bg-sa-accent text-white no-underline hover:bg-sa-accent-hover transition-all">
+    <i class="fas fa-plus"></i>Buat Halaman
+  </a>
+</div>
+
+{% if pages %}
+<div class="rounded-lg overflow-hidden border border-sa-border">
+  <table class="w-full border-collapse">
+    <thead>
+      <tr class="bg-sa-bg">
+        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-sa-muted-strong" style="letter-spacing:.06em">Judul</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-sa-muted-strong" style="letter-spacing:.06em">Slug</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-sa-muted-strong" style="letter-spacing:.06em">Template</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-sa-muted-strong" style="letter-spacing:.06em">Status</th>
+        <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-sa-muted-strong" style="letter-spacing:.06em">Menu</th>
+        <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-sa-muted-strong" style="letter-spacing:.06em">Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for page in pages %}
+      <tr class="border-b border-sa-border-light hover:bg-sa-surface-hover">
+        <td class="px-4 py-3 text-sm font-medium text-sa-fg">{{ page.title }}</td>
+        <td class="px-4 py-3 text-xs font-mono text-sa-muted">/{{ page.slug }}</td>
+        <td class="px-4 py-3 text-xs text-sa-muted">{{ page.template }}</td>
+        <td class="px-4 py-3">
+          {% if page.is_published %}
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success"><i class="fas fa-check text-[0.6rem]"></i>Published</span>
+          {% else %}
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sa-bg text-sa-muted border border-sa-border">Draft</span>
+          {% endif %}
+        </td>
+        <td class="px-4 py-3 text-xs text-sa-muted">{{ 'Ya' if page.show_in_menu else '—' }}</td>
+        <td class="px-4 py-3">
+          <div class="flex items-center justify-end gap-1">
+            <a href="{{ url_for('main.settings_page_edit', page_id=page.id) }}"
+              class="flex items-center justify-center w-7 h-7 rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-accent/10 hover:border-sa-accent hover:text-sa-accent transition-all">
+              <i class="fas fa-pen"></i>
+            </a>
+            <form method="POST" action="{{ url_for('main.settings_page_toggle', page_id=page.id) }}" class="inline">
+              <button type="submit"
+                class="flex items-center justify-center w-7 h-7 rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-warning-bg hover:border-sa-warning hover:text-sa-warning transition-all cursor-pointer"
+                title="{{ 'Unpublish' if page.is_published else 'Publish' }}">
+                <i class="fas fa-{{ 'eye-slash' if page.is_published else 'eye' }}"></i>
+              </button>
+            </form>
+            <form method="POST" action="{{ url_for('main.settings_page_delete', page_id=page.id) }}" class="inline"
+              onsubmit="return confirm('Hapus halaman ini?')">
+              <button type="submit"
+                class="flex items-center justify-center w-7 h-7 rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-critical-bg hover:border-sa-critical hover:text-sa-critical transition-all cursor-pointer">
+                <i class="fas fa-trash"></i>
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="flex flex-col items-center justify-center py-16 bg-white rounded-lg border border-sa-border">
+  <div class="flex items-center justify-center w-14 h-14 rounded-full mb-4 bg-sa-accent/10">
+    <i class="fas fa-file-lines text-sa-accent text-[1.5rem]"></i>
+  </div>
+  <div class="text-sm font-medium mb-1 text-sa-fg">Belum ada halaman</div>
+  <div class="text-xs mb-5 text-sa-muted">Buat halaman statis pertama.</div>
+  <a href="{{ url_for('main.settings_page_create') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold bg-sa-accent text-white no-underline hover:bg-sa-accent-hover transition-all">
+    <i class="fas fa-plus"></i>Buat Halaman
+  </a>
+</div>
+{% endif %}
+{% endblock %}

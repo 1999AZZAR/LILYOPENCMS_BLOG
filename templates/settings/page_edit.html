@@ -1,0 +1,118 @@
+{% extends "admin_base.html" %}
+{% block title %}{{ 'Edit' if page else 'Buat' }} Halaman — Admin{% endblock %}
+{% block hero_title %}{{ 'Edit Halaman' if page else 'Buat Halaman Baru' }}{% endblock %}
+{% block hero_desc %}{{ page.title if page else 'Halaman statis baru' }}{% endblock %}
+
+{% block content %}
+<nav class="flex gap-1 mb-6 p-1 rounded-lg bg-white border border-sa-border" role="tablist">
+  <a href="{{ url_for('main.settings_pages') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-arrow-left"></i>Kembali
+  </a>
+</nav>
+
+<form method="POST" class="space-y-6">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    {# Main content #}
+    <div class="lg:col-span-2 space-y-6">
+      <div class="bg-white border border-sa-border rounded-lg p-6">
+        <div class="mb-4">
+          <label for="title" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Judul</label>
+          <input id="title" name="title" type="text" required value="{{ page.title if page else '' }}"
+            class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20"
+            placeholder="Judul halaman">
+        </div>
+        <div class="mb-4">
+          <label for="excerpt" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Excerpt</label>
+          <textarea id="excerpt" name="excerpt" rows="2"
+            class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20"
+            placeholder="Ringkasan singkat">{{ page.excerpt if page else '' }}</textarea>
+        </div>
+        <div>
+          <label for="content" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Konten</label>
+          <textarea id="content" name="content" rows="20"
+            class="block w-full px-3 py-2 rounded-md text-sm font-mono border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20"
+            style="line-height:1.6" placeholder="Konten halaman (HTML/Markdown)">{{ page.content if page else '' }}</textarea>
+        </div>
+      </div>
+
+      {# SEO #}
+      <div class="bg-white border border-sa-border rounded-lg p-6">
+        <h3 class="text-sm font-semibold text-sa-fg mb-4"><i class="fas fa-search text-sa-muted mr-2"></i>SEO</h3>
+        <div class="space-y-4">
+          <div>
+            <label for="meta_title" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Meta Title</label>
+            <input id="meta_title" name="meta_title" type="text" value="{{ page.meta_title if page else '' }}"
+              class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20"
+              placeholder="Judul untuk SEO">
+          </div>
+          <div>
+            <label for="meta_description" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Meta Description</label>
+            <textarea id="meta_description" name="meta_description" rows="2"
+              class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20"
+              placeholder="Deskripsi untuk mesin pencari">{{ page.meta_description if page else '' }}</textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="og_title" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">OG Title</label>
+              <input id="og_title" name="og_title" type="text" value="{{ page.og_title if page else '' }}"
+                class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20">
+            </div>
+            <div>
+              <label for="og_image" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">OG Image URL</label>
+              <input id="og_image" name="og_image" type="text" value="{{ page.og_image if page else '' }}"
+                class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20">
+            </div>
+          </div>
+          <div>
+            <label for="og_description" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">OG Description</label>
+            <textarea id="og_description" name="og_description" rows="2"
+              class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20">{{ page.og_description if page else '' }}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Sidebar #}
+    <div class="space-y-6">
+      {# Publish #}
+      <div class="bg-white border border-sa-border rounded-lg p-6">
+        <h3 class="text-sm font-semibold text-sa-fg mb-4"><i class="fas fa-send text-sa-muted mr-2"></i>Publikasi</h3>
+        <div class="space-y-4">
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="text-sm text-sa-fg">Published</span>
+            <input type="checkbox" name="is_published" class="polaris-toggle" {% if page and page.is_published %}checked{% endif %}>
+          </label>
+          <label class="flex items-center justify-between cursor-pointer">
+            <span class="text-sm text-sa-fg">Tampilkan di Menu</span>
+            <input type="checkbox" name="show_in_menu" class="polaris-toggle" {% if page and page.show_in_menu %}checked{% endif %}>
+          </label>
+          <div>
+            <label for="menu_order" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Urutan Menu</label>
+            <input id="menu_order" name="menu_order" type="number" value="{{ page.menu_order if page else 0 }}"
+              class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20">
+          </div>
+          <div>
+            <label for="template" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Template</label>
+            <select id="template" name="template"
+              class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none">
+              <option value="default" {% if page and page.template == 'default' %}selected{% endif %}>Default</option>
+              <option value="landing" {% if page and page.template == 'landing' %}selected{% endif %}>Landing</option>
+              <option value="full-width" {% if page and page.template == 'full-width' %}selected{% endif %}>Full Width</option>
+              <option value="sidebar" {% if page and page.template == 'sidebar' %}selected{% endif %}>With Sidebar</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {# Actions #}
+      <div class="bg-white border border-sa-border rounded-lg p-6">
+        <button type="submit"
+          class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-semibold bg-sa-accent text-white border-none cursor-pointer hover:bg-sa-accent-hover transition-all">
+          <i class="fas fa-save"></i>{{ 'Simpan Perubahan' if page else 'Buat Halaman' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

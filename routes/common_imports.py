@@ -71,6 +71,10 @@ from models import (
     UserActivity,
     NavigationLink,
     BrandIdentity,
+    Tag,
+    Page,
+    Comment,
+    CommentStatus,
 )
 
 # Import permission management functions

@@ -1,0 +1,22 @@
+{% extends "designs/" + g.design + "/base.html" %}
+{% block title %}{{ page.meta_title or page.title }} — {{ brand_info.site_name }}{% endblock %}
+{% block og_title %}{{ page.og_title or page.meta_title or page.title }}{% endblock %}
+{% block og_description %}{{ page.og_description or page.meta_description or page.excerpt or '' }}{% endblock %}
+{% block og_image %}{{ page.og_image or '' }}{% endblock %}
+
+{% block content %}
+<main class="min-h-screen bg-white text-gray-900 pt-20">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-3xl font-bold mb-4">{{ page.title }}</h1>
+    {% if page.excerpt %}
+    <p class="text-lg text-gray-500 mb-8">{{ page.excerpt }}</p>
+    {% endif %}
+    <div class="prose prose-lg max-w-none">
+      {{ page.content|safe }}
+    </div>
+    <div class="mt-12 pt-8 border-t border-gray-200 text-sm text-gray-500">
+      Terakhir diperbarui: {{ page.updated_at.strftime('%d %B %Y') }}
+    </div>
+  </div>
+</main>
+{% endblock %}
