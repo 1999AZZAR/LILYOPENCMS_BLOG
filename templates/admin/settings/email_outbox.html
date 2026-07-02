@@ -1,231 +1,119 @@
-<!--
-Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
-All rights reserved.
+{% extends "admin_base.html" %}
+{% block title %}Outbox — Email Admin{% endblock %}
+{% block hero_title %}Email Outbox{% endblock %}
+{% block hero_desc %}Email antrian dan yang sudah dikirim{% endblock %}
 
-This software is dual-licensed:
-1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
-2. For commercial use: Subject to a separate Commercial License Agreement.
+{% block content %}
+{# ── Sub-nav ── #}
+<nav class="flex gap-1 mb-6 p-1 rounded-lg bg-white border border-sa-border" role="tablist">
+  <a href="{{ url_for('main.settings_email') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-cog"></i>Pengaturan
+  </a>
+  <a href="{{ url_for('main.settings_email_outbox') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all bg-sa-surface text-sa-fg border border-sa-border no-underline">
+    <i class="fas fa-inbox text-sa-accent"></i>Outbox
+  </a>
+  <a href="{{ url_for('main.settings_email_log') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-list-alt"></i>Mail Log
+  </a>
+  <a href="{{ url_for('main.settings_email_compose') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-pen-alt"></i>Kirim Email
+  </a>
+</nav>
 
-Contact: azzar.mr.zs@gmail.com for inquiries.
--->
-
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-  <script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: {
-          sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
-          mono: ['JetBrains Mono', 'monospace']
-        },
-        colors: {
-          sa: {
-            bg: '#EFE9DC',
-            'bg-alt': '#F5F1E8',
-            surface: '#FFFFFF',
-            'surface-hover': '#FAF8F4',
-            fg: '#2A2520',
-            muted: '#A49C92',
-            'muted-strong': '#6F675D',
-            border: '#D6CFC3',
-            'border-light': '#E5DFD3',
-            accent: '#9C3D3B',
-            'accent-hover': '#943A38',
-            'accent-active': '#6F2B2A',
-            success: '#3A6B3A',
-            'success-hover': '#2E562E',
-            'success-bg': '#EEF5EE',
-            warning: '#8B6B1A',
-            'warning-hover': '#7A5E16',
-            'warning-bg': '#F8F4EB',
-            critical: '#B33A3A',
-            'critical-hover': '#9A2F2F',
-            'critical-bg': '#F8EEEE',
-            sidebar: '#1F1B18',
-            'sidebar-hover': '#2A2520',
-            'sidebar-border': '#3A3430',
-            'sidebar-text': '#C4BEB4',
-            'sidebar-accent': '#B85C5A'
-          }
-        },
-        borderRadius: {
-          'sa-sm': '4px',
-          'sa-md': '6px',
-          'sa-lg': '12px'
-        },
-        boxShadow: {
-          'sa-card': '0 1px 3px rgba(42,37,32,0.06)',
-          'sa-overlay': '0 4px 12px rgba(42,37,32,0.12)'
-        }
-      }
-    }
-  }
-  </script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="{{ brand_info.favicon if brand_info and brand_info.favicon else url_for('static', filename='pic/favicon.png') }}">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_base_css.css') }}">
-  <title>Outbox — Email Admin</title>
-</head>
-<body class="bg-sa-bg text-sa-fg font-sans antialiased">
-
-  <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="alert" aria-live="assertive" aria-atomic="true"></div>
-
-  <header class="bg-white border-b border-sa-border">
-    <div class="pl-16 pr-8 py-4 flex items-center justify-between">
+{# ── Table card ── #}
+<div class="rounded-lg overflow-hidden border border-sa-border">
+  <div class="flex items-center justify-between px-5 py-4 bg-white border-b-2 border-sa-accent">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center justify-center w-8 h-8 rounded-md bg-sa-accent/10">
+        <i class="fas fa-inbox text-sa-accent text-[0.8125rem]"></i>
+      </div>
       <div>
-        <h1 class="text-xl font-bold text-sa-fg tracking-tight">Email Outbox</h1>
-        <p class="text-sm text-sa-muted mt-0.5 font-[500]">Email antrian dan yang sudah dikirim</p>
+        <div class="text-sm font-semibold text-sa-fg">Outbox</div>
+        <div class="text-xs text-sa-muted">{{ outbox.total }} email antrian &amp; terkirim</div>
       </div>
-      <a href="{{ url_for('main.home') }}" class="flex items-center gap-2 text-sm font-medium text-sa-fg-secondary hover:text-sa-fg transition-colors duration-150 border border-sa-border rounded-sa-md px-4 py-2 hover:bg-sa-surface-hover">
-        <i class="fas fa-external-link-alt text-xs"></i>
-        <span>Kembali ke Situs</span>
+    </div>
+    <a href="{{ url_for('main.settings_email_compose') }}"
+      class="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold transition-all bg-sa-accent text-white no-underline hover:bg-sa-accent-hover">
+      <i class="fas fa-pen-alt"></i>Tulis Baru
+    </a>
+  </div>
+
+  {% if outbox.items %}
+  <div class="overflow-x-auto">
+    <table class="w-full border-collapse">
+      <thead>
+        <tr class="bg-sa-bg">
+          {% for col in ['ID','Penerima','Subjek','Tipe','Status','Waktu'] %}
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-sa-muted-strong whitespace-nowrap" style="letter-spacing:.06em;border-bottom:1px solid sa-border">
+            {{ col }}
+          </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in outbox.items %}
+        <tr class="border-b border-sa-border-light hover:bg-sa-surface-hover">
+          <td class="px-4 py-3 text-xs font-mono text-sa-muted">{{ log.id }}</td>
+          <td class="px-4 py-3 text-sm font-medium text-sa-fg">{{ log.recipient }}</td>
+          <td class="px-4 py-3 text-sm text-sa-muted-strong" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ log.subject }}</td>
+          <td class="px-4 py-3">
+            {% if log.email_type %}
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sa-accent/10 text-sa-accent">{{ log.email_type.value }}</span>
+            {% else %}<span class="text-sa-muted">—</span>{% endif %}
+          </td>
+          <td class="px-4 py-3">
+            {% set s = log.status.value if log.status else '' %}
+            {% if s in ('sent','delivered') %}
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success"><i class="fas fa-check text-[0.6rem]"></i>{{ s }}</span>
+            {% elif s == 'queued' %}
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-sa-warning-bg text-sa-warning"><i class="fas fa-clock text-[0.6rem]"></i>{{ s }}</span>
+            {% else %}
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sa-bg text-sa-muted border border-sa-border">{{ s or '—' }}</span>
+            {% endif %}
+          </td>
+          <td class="px-4 py-3 text-xs text-sa-muted whitespace-nowrap">
+            {{ log.queued_at.strftime('%d %b %Y %H:%M') if log.queued_at else '—' }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if outbox.pages > 1 %}
+  <div class="flex items-center justify-between px-5 py-3 border-t border-sa-border bg-white">
+    {% if outbox.has_prev %}
+      <a href="{{ url_for('main.settings_email_outbox', page=outbox.prev_num) }}"
+        class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all border border-sa-border text-sa-muted-strong no-underline hover:bg-sa-surface-hover">
+        <i class="fas fa-chevron-left"></i>Sebelumnya
       </a>
+    {% else %}<span></span>{% endif %}
+    <span class="text-xs text-sa-muted">Halaman {{ outbox.page }} dari {{ outbox.pages }}</span>
+    {% if outbox.has_next %}
+      <a href="{{ url_for('main.settings_email_outbox', page=outbox.next_num) }}"
+        class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all border border-sa-border text-sa-muted-strong no-underline hover:bg-sa-surface-hover">
+        Berikutnya<i class="fas fa-chevron-right"></i>
+      </a>
+    {% else %}<span></span>{% endif %}
+  </div>
+  {% endif %}
+
+  {% else %}
+  <div class="flex flex-col items-center justify-center py-16 bg-white">
+    <div class="flex items-center justify-center w-14 h-14 rounded-full mb-4 bg-sa-accent/10">
+      <i class="fas fa-inbox text-sa-accent text-[1.5rem]"></i>
     </div>
-  </header>
-
-  <main class="min-h-screen" role="main" tabindex="-1">
-    <div class="max-w-[80rem] mx-auto px-8 py-8">
-
-      {# ── Sub-nav ── #}
-      <nav class="flex gap-1 mb-6 p-1 rounded-lg bg-white border border-sa-border" role="tablist">
-        <a href="{{ url_for('main.settings_email') }}"
-          class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
-          <i class="fas fa-cog"></i>Pengaturan
-        </a>
-        <a href="{{ url_for('main.settings_email_outbox') }}"
-          class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all bg-sa-surface text-sa-fg border border-sa-border no-underline">
-          <i class="fas fa-inbox text-sa-accent"></i>Outbox
-        </a>
-        <a href="{{ url_for('main.settings_email_log') }}"
-          class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
-          <i class="fas fa-list-alt"></i>Mail Log
-        </a>
-        <a href="{{ url_for('main.settings_email_compose') }}"
-          class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
-          <i class="fas fa-pen-alt"></i>Kirim Email
-        </a>
-      </nav>
-
-      {# ── Table card ── #}
-      <div class="rounded-lg overflow-hidden border border-sa-border">
-
-        <div class="flex items-center justify-between px-5 py-4 bg-white border-b-2 border-sa-accent">
-          <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center w-8 h-8 rounded-md bg-sa-accent/10">
-              <i class="fas fa-inbox text-sa-accent text-[0.8125rem]"></i>
-            </div>
-            <div>
-              <div class="text-sm font-semibold text-sa-fg">Outbox</div>
-              <div class="text-xs text-sa-muted">{{ outbox.total }} email antrian &amp; terkirim</div>
-            </div>
-          </div>
-          <a href="{{ url_for('main.settings_email_compose') }}"
-            class="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold transition-all bg-sa-accent text-white no-underline hover:bg-sa-accent-hover">
-            <i class="fas fa-pen-alt"></i>Tulis Baru
-          </a>
-        </div>
-
-        {% if outbox.items %}
-        <div class="overflow-x-auto">
-          <table class="w-full border-collapse">
-            <thead>
-              <tr class="bg-sa-bg">
-                {% for col in ['ID','Penerima','Subjek','Tipe','Status','Waktu'] %}
-                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-sa-muted-strong {% if not loop.last %}whitespace-nowrap{% endif %}"
-                  style="letter-spacing:.06em;border-bottom:1px solid var(--sa-border)">
-                  {{ col }}
-                </th>
-                {% endfor %}
-              </tr>
-            </thead>
-            <tbody>
-              {% for log in outbox.items %}
-              <tr class="border-b border-sa-border-light hover:bg-sa-surface-hover">
-                <td class="px-4 py-3 text-xs font-mono text-sa-muted">{{ log.id }}</td>
-                <td class="px-4 py-3 text-sm font-medium text-sa-fg">{{ log.recipient }}</td>
-                <td class="px-4 py-3 text-sm text-sa-muted-strong" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ log.subject }}</td>
-                <td class="px-4 py-3">
-                  {% if log.email_type %}
-                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sa-accent/10 text-sa-accent">{{ log.email_type.value }}</span>
-                  {% else %}<span class="text-sa-muted">—</span>{% endif %}
-                </td>
-                <td class="px-4 py-3">
-                  {% set s = log.status.value if log.status else '' %}
-                  {% if s in ('sent','delivered') %}
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success"><i class="fas fa-check text-[0.6rem]"></i>{{ s }}</span>
-                  {% elif s == 'queued' %}
-                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-sa-warning-bg text-sa-warning"><i class="fas fa-clock text-[0.6rem]"></i>{{ s }}</span>
-                  {% else %}
-                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sa-bg text-sa-muted border border-sa-border">{{ s or '—' }}</span>
-                  {% endif %}
-                </td>
-                <td class="px-4 py-3 text-xs text-sa-muted whitespace-nowrap">
-                  {{ log.queued_at.strftime('%d %b %Y %H:%M') if log.queued_at else '—' }}
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-
-        {# Pagination #}
-        {% if outbox.pages > 1 %}
-        <div class="flex items-center justify-between px-5 py-3 border-t border-sa-border bg-white">
-          {% if outbox.has_prev %}
-            <a href="{{ url_for('main.settings_email_outbox', page=outbox.prev_num) }}"
-              class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all border border-sa-border text-sa-muted-strong no-underline hover:bg-sa-surface-hover">
-              <i class="fas fa-chevron-left"></i>Sebelumnya
-            </a>
-          {% else %}<span></span>{% endif %}
-          <span class="text-xs text-sa-muted">Halaman {{ outbox.page }} dari {{ outbox.pages }}</span>
-          {% if outbox.has_next %}
-            <a href="{{ url_for('main.settings_email_outbox', page=outbox.next_num) }}"
-              class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all border border-sa-border text-sa-muted-strong no-underline hover:bg-sa-surface-hover">
-              Berikutnya<i class="fas fa-chevron-right"></i>
-            </a>
-          {% else %}<span></span>{% endif %}
-        </div>
-        {% endif %}
-
-        {% else %}
-        {# Empty state #}
-        <div class="flex flex-col items-center justify-center py-16 bg-white">
-          <div class="flex items-center justify-center w-14 h-14 rounded-full mb-4 bg-sa-accent/10">
-            <i class="fas fa-inbox text-sa-accent text-[1.5rem]"></i>
-          </div>
-          <div class="text-sm font-medium mb-1 text-sa-fg">Outbox kosong</div>
-          <div class="text-xs mb-5 text-sa-muted">Belum ada email yang diantrekan atau dikirim.</div>
-          <a href="{{ url_for('main.settings_email_compose') }}"
-            class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all bg-sa-accent text-white no-underline hover:bg-sa-accent-hover">
-            <i class="fas fa-pen-alt"></i>Kirim Email Pertama
-          </a>
-        </div>
-        {% endif %}
-
-      </div>
-
-    </div>
-  </main>
-
-  <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/sidebar-toggle.js') }}"></script>
-  <script>
-  {% with messages = get_flashed_messages(with_categories=true) %}
-  document.addEventListener('DOMContentLoaded', function() {
-    {% for category, message in messages %}
-    showToast("{{ category }}", {{ message|tojson }});
-    {% endfor %}
-  });
-  {% endwith %}
-  </script>
-</body>
-</html>
+    <div class="text-sm font-medium mb-1 text-sa-fg">Outbox kosong</div>
+    <div class="text-xs mb-5 text-sa-muted">Belum ada email yang diantrekan atau dikirim.</div>
+    <a href="{{ url_for('main.settings_email_compose') }}"
+      class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all bg-sa-accent text-white no-underline hover:bg-sa-accent-hover">
+      <i class="fas fa-pen-alt"></i>Kirim Email Pertama
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

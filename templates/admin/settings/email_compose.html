@@ -1,357 +1,226 @@
-<!--
-Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
-All rights reserved.
+{% extends "admin_base.html" %}
+{% block title %}Kirim Email — Admin{% endblock %}
+{% block hero_title %}Kirim Email{% endblock %}
+{% block hero_desc %}Tulis dan kirim email langsung dari dashboard{% endblock %}
 
-This software is dual-licensed:
-1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
-2. For commercial use: Subject to a separate Commercial License Agreement.
+{% block content %}
+{# ── Sub-nav ── #}
+<nav class="flex gap-1 mb-6 p-1 rounded-lg bg-white border border-sa-border" role="tablist">
+  <a href="{{ url_for('main.settings_email') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-cog"></i>Pengaturan
+  </a>
+  <a href="{{ url_for('main.settings_email_outbox') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-inbox"></i>Outbox
+  </a>
+  <a href="{{ url_for('main.settings_email_log') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-list-alt"></i>Mail Log
+  </a>
+  <a href="{{ url_for('main.settings_email_compose') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all bg-sa-surface text-sa-fg border border-sa-border no-underline">
+    <i class="fas fa-pen-alt text-sa-accent"></i>Kirim Email
+  </a>
+</nav>
 
-Contact: azzar.mr.zs@gmail.com for inquiries.
--->
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kirim Email — Admin</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-  <script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: {
-          sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
-          mono: ['JetBrains Mono', 'monospace']
-        }
-      }
-    }
-  }
-  </script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ps-surface: #FFFFFF;
-      --ps-surface-card: #FFFFFF;
-      --ps-surface-hover: #F6F6F6;
-      --ps-border: #E1E1E1;
-      --ps-border-light: #EBEBEB;
-      --ps-text: #202223;
-      --ps-text-secondary: #6D7175;
-      --ps-text-muted: #8C9196;
-      --ps-primary: #008060;
-      --ps-primary-hover: #006E52;
-      --ps-primary-subtle: #E3F1E8;
-      --ps-danger: #D72C0D;
-      --ps-warning: #B98900;
-    }
-    body { background: #F4F6F8; }
-    .spinner {
-      width: 40px; height: 40px;
-      border: 3px solid #E1E1E1;
-      border-top-color: #008060;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
-</head>
-<body class="font-sans antialiased" style="color:var(--ps-text)">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-  <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="alert" aria-live="assertive" aria-atomic="true"></div>
-
-  <header style="background:var(--ps-surface);border-bottom:1px solid var(--ps-border)">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-bold" style="color:var(--ps-text)">Compose Email</h1>
-        <p class="text-sm mt-0.5" style="color:var(--ps-text-muted)">Tulis dan kirim email langsung dari dashboard</p>
+  {# ── Compose form ── #}
+  <div class="lg:col-span-2 rounded-lg overflow-hidden border border-sa-border">
+    <div class="flex items-center justify-between px-5 py-4 bg-white border-b-2 border-sa-accent">
+      <div class="flex items-center gap-3">
+        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-sa-accent/10">
+          <i class="fas fa-pen-alt text-sa-accent text-[0.8125rem]"></i>
+        </div>
+        <div>
+          <div class="text-sm font-semibold text-sa-fg">Tulis Pesan</div>
+          <div class="text-xs text-sa-muted">Plain text atau HTML</div>
+        </div>
       </div>
-      <a href="/" class="flex items-center gap-2 text-sm font-medium transition-colors duration-150 rounded-md px-4 py-2"
-         style="color:var(--ps-text-secondary);border:1px solid var(--ps-border);text-decoration:none"
-         onmouseover="this.style.background='var(--ps-surface-hover)'"
-         onmouseout="this.style.background=''">
-        <i class="fas fa-external-link-alt text-xs"></i>
-        <span>Kembali ke Situs</span>
+      <div class="flex items-center p-0.5 rounded-md bg-sa-bg border border-sa-border">
+        <button id="btn-plain" type="button" onclick="setMode('plain')"
+          class="px-3 py-1 rounded-md text-xs font-semibold transition-all bg-sa-accent text-white border-none cursor-pointer">Plain</button>
+        <button id="btn-html" type="button" onclick="setMode('html')"
+          class="px-3 py-1 rounded-md text-xs font-medium transition-all bg-transparent text-sa-muted-strong border-none cursor-pointer">HTML</button>
+      </div>
+    </div>
+
+    <div class="p-6 bg-white">
+      <form id="compose-form">
+        <div class="mb-4">
+          <label for="comp-to" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">
+            Kepada <span class="text-sa-critical">*</span>
+          </label>
+          <input id="comp-to" type="email" required placeholder="penerima@example.com"
+            class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20">
+        </div>
+
+        <div class="mb-4">
+          <label for="comp-subject" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">
+            Subjek <span class="text-sa-critical">*</span>
+          </label>
+          <input id="comp-subject" type="text" required placeholder="Subjek email..."
+            class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20">
+        </div>
+
+        <div class="mb-1">
+          <div class="text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">
+            Isi Pesan <span class="text-sa-critical">*</span>
+          </div>
+        </div>
+
+        <div id="plain-editor">
+          <textarea id="comp-body" rows="12" required placeholder="Tulis pesan di sini..."
+            class="block w-full px-3 py-2 rounded-md text-sm font-mono border border-sa-border bg-white text-sa-fg outline-none resize-y transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20" style="line-height:1.6"></textarea>
+        </div>
+
+        <div id="html-editor" class="hidden">
+          <textarea id="comp-html" rows="14" placeholder="<p>HTML email content...</p>"
+            class="block w-full px-3 py-2 rounded-md text-sm font-mono border border-sa-border bg-white text-sa-fg outline-none resize-y transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20" style="line-height:1.6"></textarea>
+          <div class="flex items-center justify-between mt-2">
+            <span class="text-xs text-sa-muted">HTML akan digunakan sebagai body email.</span>
+            <button type="button" onclick="togglePreview()"
+              class="flex items-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-all border border-sa-border text-sa-muted-strong bg-white cursor-pointer hover:bg-sa-surface-hover">
+              <i class="fas fa-eye"></i>Preview
+            </button>
+          </div>
+          <div id="html-preview" class="hidden border border-sa-border rounded-lg p-4 bg-sa-bg mt-3 min-h-[120px]">
+            <div class="text-xs mb-2 uppercase tracking-wide text-sa-muted" style="letter-spacing:.04em">HTML Preview</div>
+            <div id="preview-content" class="text-sm"></div>
+          </div>
+        </div>
+
+        <div id="send-result" class="hidden mt-4 px-4 py-3 rounded-lg text-sm"></div>
+
+        <div class="flex items-center gap-3 pt-5 mt-4 border-t border-sa-border">
+          <button type="submit" id="send-btn"
+            class="flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold transition-all bg-sa-accent text-white border-none cursor-pointer hover:bg-sa-accent-hover">
+            <i class="fas fa-paper-plane"></i>Kirim Sekarang
+          </button>
+          <button type="button" onclick="clearForm()"
+            class="flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all border border-sa-border bg-white text-sa-muted-strong cursor-pointer hover:bg-sa-surface-hover">
+            <i class="fas fa-times"></i>Bersihkan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {# ── Sidebar tips ── #}
+  <div class="flex flex-col gap-4">
+    <div class="rounded-lg overflow-hidden border border-sa-border">
+      <div class="px-4 py-3 flex items-center gap-2 bg-sa-bg border-b border-sa-border">
+        <i class="fas fa-lightbulb text-xs text-sa-warning"></i>
+        <span class="text-xs font-semibold uppercase tracking-wide text-sa-muted-strong" style="letter-spacing:.06em">Tips</span>
+      </div>
+      <div class="p-4 bg-white">
+        <div class="flex gap-2 mb-3">
+          <i class="fas fa-at mt-0.5 flex-shrink-0 text-sa-accent text-xs"></i>
+          <span class="text-xs leading-relaxed text-sa-muted-strong">Gunakan mode HTML untuk email yang lebih kaya format.</span>
+        </div>
+        <div class="flex gap-2 mb-3">
+          <i class="fas fa-lock mt-0.5 flex-shrink-0 text-sa-accent text-xs"></i>
+          <span class="text-xs leading-relaxed text-sa-muted-strong">Email dikirim menggunakan SMTP yang dikonfigurasi di Email Settings.</span>
+        </div>
+        <div class="flex gap-2 mb-3">
+          <i class="fas fa-chart-bar mt-0.5 flex-shrink-0 text-sa-accent text-xs"></i>
+          <span class="text-xs leading-relaxed text-sa-muted-strong">Semua pengiriman tercatat di Mail Log secara otomatis.</span>
+        </div>
+        <div class="flex gap-2 mb-0">
+          <i class="fas fa-redo mt-0.5 flex-shrink-0 text-sa-accent text-xs"></i>
+          <span class="text-xs leading-relaxed text-sa-muted-strong">Email gagal dapat di-retry dari Mail Log.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rounded-lg overflow-hidden border border-sa-border">
+      <div class="px-4 py-3 flex items-center gap-2 bg-sa-bg border-b border-sa-border">
+        <i class="fas fa-link text-xs text-sa-muted"></i>
+        <span class="text-xs font-semibold uppercase tracking-wide text-sa-muted-strong" style="letter-spacing:.06em">Navigasi Cepat</span>
+      </div>
+      <a href="{{ url_for('main.settings_email') }}" class="flex items-center gap-2.5 px-4 py-2.5 border-b border-sa-border-light text-sa-muted-strong no-underline hover:bg-sa-surface-hover transition-all">
+        <i class="fas fa-cog text-sa-muted text-xs w-3.5 text-center"></i>
+        <span class="text-sm">Email Settings</span>
+        <i class="fas fa-chevron-right ml-auto text-sa-muted text-[0.625rem]"></i>
+      </a>
+      <a href="{{ url_for('main.settings_email_outbox') }}" class="flex items-center gap-2.5 px-4 py-2.5 border-b border-sa-border-light text-sa-muted-strong no-underline hover:bg-sa-surface-hover transition-all">
+        <i class="fas fa-inbox text-sa-muted text-xs w-3.5 text-center"></i>
+        <span class="text-sm">Outbox</span>
+        <i class="fas fa-chevron-right ml-auto text-sa-muted text-[0.625rem]"></i>
+      </a>
+      <a href="{{ url_for('main.settings_email_log') }}" class="flex items-center gap-2.5 px-4 py-2.5 text-sa-muted-strong no-underline hover:bg-sa-surface-hover transition-all">
+        <i class="fas fa-list-alt text-sa-muted text-xs w-3.5 text-center"></i>
+        <span class="text-sm">Mail Log</span>
+        <i class="fas fa-chevron-right ml-auto text-sa-muted text-[0.625rem]"></i>
       </a>
     </div>
-  </header>
+  </div>
 
-  <main class="max-w-7xl mx-auto px-6 py-8">
+</div>
+{% endblock %}
 
-    <nav class="flex gap-1 mb-6 p-1 rounded-lg" style="background:var(--ps-surface);border:1px solid var(--ps-border)" role="tablist">
-      <a href="/admin/settings/email"         class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="color:var(--ps-text-secondary);text-decoration:none" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background=''"><i class="fas fa-cog"></i>Pengaturan</a>
-      <a href="/admin/settings/email/outbox"  class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="color:var(--ps-text-secondary);text-decoration:none" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background=''"><i class="fas fa-inbox"></i>Outbox</a>
-      <a href="/admin/settings/email/log"     class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="color:var(--ps-text-secondary);text-decoration:none" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background=''"><i class="fas fa-list-alt"></i>Mail Log</a>
-      <a href="/admin/settings/email/compose" class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="background:var(--ps-surface-card);color:var(--ps-text);border:1px solid var(--ps-border);text-decoration:none"><i class="fas fa-pen-alt" style="color:var(--ps-primary)"></i>Kirim Email</a>
-    </nav>
+{% block extra_scripts %}
+<script>
+let currentMode='plain', previewVisible=false;
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+function setMode(mode){
+  currentMode=mode;
+  document.getElementById('plain-editor').classList.toggle('hidden',mode!=='plain');
+  document.getElementById('html-editor').classList.toggle('hidden',mode!=='html');
+  document.getElementById('btn-plain').className='px-3 py-1 rounded-md text-xs font-semibold transition-all '+(mode==='plain'?'bg-sa-accent text-white':'bg-transparent text-sa-muted-strong')+' border-none cursor-pointer';
+  document.getElementById('btn-html').className='px-3 py-1 rounded-md text-xs font-medium transition-all '+(mode==='html'?'bg-sa-accent text-white':'bg-transparent text-sa-muted-strong')+' border-none cursor-pointer';
+  if(mode==='plain'){document.getElementById('html-preview').classList.add('hidden');previewVisible=false;}
+}
 
-      <div class="lg:col-span-2 rounded-lg overflow-hidden" style="border:1px solid var(--ps-border)">
+function togglePreview(){
+  previewVisible=!previewVisible;
+  document.getElementById('html-preview').classList.toggle('hidden',!previewVisible);
+  if(previewVisible) document.getElementById('preview-content').innerHTML=document.getElementById('comp-html').value;
+}
 
-        <div class="flex items-center justify-between px-5 py-4" style="background:var(--ps-surface-card);border-bottom:2px solid var(--ps-primary)">
-          <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center w-8 h-8 rounded-md" style="background:var(--ps-primary-subtle)">
-              <i class="fas fa-pen-alt" style="color:var(--ps-primary);font-size:.8125rem"></i>
-            </div>
-            <div>
-              <div class="text-sm font-semibold" style="color:var(--ps-text)">Tulis Pesan</div>
-              <div class="text-xs" style="color:var(--ps-text-muted)">Plain text atau HTML</div>
-            </div>
-          </div>
-          <div class="flex items-center p-0.5 rounded-md" style="background:var(--ps-surface);border:1px solid var(--ps-border)">
-            <button id="btn-plain" type="button" onclick="setMode('plain')"
-              class="px-3 py-1 rounded-md text-xs font-semibold transition-all"
-              style="background:var(--ps-primary);color:#fff;border:none;cursor:pointer">Plain</button>
-            <button id="btn-html" type="button" onclick="setMode('html')"
-              class="px-3 py-1 rounded-md text-xs font-medium transition-all"
-              style="background:none;color:var(--ps-text-secondary);border:none;cursor:pointer">HTML</button>
-          </div>
-        </div>
+function clearForm(){
+  document.getElementById('comp-to').value='';
+  document.getElementById('comp-subject').value='';
+  document.getElementById('comp-body').value='';
+  document.getElementById('comp-html').value='';
+  document.getElementById('send-result').classList.add('hidden');
+}
 
-        <div class="p-6" style="background:var(--ps-surface-card)">
-          <form id="compose-form">
+document.getElementById('compose-form').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const btn=document.getElementById('send-btn');
+  btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+  document.getElementById('send-result').classList.add('hidden');
 
-            <div class="mb-4">
-              <label for="comp-to" class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.04em">
-                Kepada <span style="color:var(--ps-danger)">*</span>
-              </label>
-              <input id="comp-to" type="email" required placeholder="penerima@example.com"
-                class="block w-full px-3 py-2 rounded-md text-sm"
-                style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none"
-                onfocus="this.style.borderColor='var(--ps-primary)';this.style.boxShadow='0 0 0 3px var(--ps-primary-subtle)'"
-                onblur="this.style.borderColor='var(--ps-border)';this.style.boxShadow='none'">
-            </div>
+  const body=currentMode==='plain'
+    ? document.getElementById('comp-body').value.trim()
+    : document.getElementById('comp-html').value.replace(/<[^>]+>/g,' ').trim();
+  const html_body=currentMode==='html'?document.getElementById('comp-html').value:null;
 
-            <div class="mb-4">
-              <label for="comp-subject" class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.04em">
-                Subjek <span style="color:var(--ps-danger)">*</span>
-              </label>
-              <input id="comp-subject" type="text" required placeholder="Subjek email..."
-                class="block w-full px-3 py-2 rounded-md text-sm"
-                style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none"
-                onfocus="this.style.borderColor='var(--ps-primary)';this.style.boxShadow='0 0 0 3px var(--ps-primary-subtle)'"
-                onblur="this.style.borderColor='var(--ps-border)';this.style.boxShadow='none'">
-            </div>
-
-            <div class="mb-1">
-              <div class="text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.04em">
-                Isi Pesan <span style="color:var(--ps-danger)">*</span>
-              </div>
-            </div>
-
-            <div id="plain-editor">
-              <textarea id="comp-body" rows="12" required placeholder="Tulis pesan di sini..."
-                class="block w-full px-3 py-2 rounded-md text-sm font-mono"
-                style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none;resize:vertical;line-height:1.6"
-                onfocus="this.style.borderColor='var(--ps-primary)';this.style.boxShadow='0 0 0 3px var(--ps-primary-subtle)'"
-                onblur="this.style.borderColor='var(--ps-border)';this.style.boxShadow='none'"></textarea>
-            </div>
-
-            <div id="html-editor" style="display:none">
-              <textarea id="comp-html" rows="14" placeholder="<p>HTML email content...</p>"
-                class="block w-full px-3 py-2 rounded-md text-sm font-mono"
-                style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none;resize:vertical;line-height:1.6"
-                onfocus="this.style.borderColor='var(--ps-primary)';this.style.boxShadow='0 0 0 3px var(--ps-primary-subtle)'"
-                onblur="this.style.borderColor='var(--ps-border)';this.style.boxShadow='none'"></textarea>
-              <div class="flex items-center justify-between mt-2">
-                <span class="text-xs" style="color:var(--ps-text-muted)">HTML akan digunakan sebagai body email.</span>
-                <button type="button" onclick="togglePreview()"
-                  class="flex items-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-all"
-                  style="border:1px solid var(--ps-border);color:var(--ps-text-secondary);background:var(--ps-surface-card);cursor:pointer"
-                  onmouseover="this.style.background='var(--ps-surface-hover)'"
-                  onmouseout="this.style.background='var(--ps-surface-card)'">
-                  <i class="fas fa-eye"></i>Preview
-                </button>
-              </div>
-              <div id="html-preview" style="display:none;border:1px solid var(--ps-border);border-radius:8px;padding:1rem;background:var(--ps-surface);margin-top:.75rem;min-height:120px">
-                <div class="text-xs mb-2 uppercase tracking-wide" style="color:var(--ps-text-muted);letter-spacing:.04em">HTML Preview</div>
-                <div id="preview-content" style="font-size:.875rem"></div>
-              </div>
-            </div>
-
-            <div id="send-result" style="display:none;margin-top:1rem;padding:.75rem 1rem;border-radius:8px;font-size:.875rem"></div>
-
-            <div class="flex items-center gap-3 pt-5 mt-4" style="border-top:1px solid var(--ps-border)">
-              <button type="submit" id="send-btn"
-                class="flex items-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold transition-all"
-                style="background:var(--ps-primary);color:#fff;border:none;cursor:pointer"
-                onmouseover="this.style.background='var(--ps-primary-hover)'"
-                onmouseout="this.style.background='var(--ps-primary)'">
-                <i class="fas fa-paper-plane"></i>Kirim Sekarang
-              </button>
-              <button type="button" onclick="clearForm()"
-                class="flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all"
-                style="border:1px solid var(--ps-border);background:var(--ps-surface-card);color:var(--ps-text-secondary);cursor:pointer"
-                onmouseover="this.style.background='var(--ps-surface-hover)'"
-                onmouseout="this.style.background='var(--ps-surface-card)'">
-                <i class="fas fa-times"></i>Bersihkan
-              </button>
-            </div>
-
-          </form>
-        </div>
-      </div>
-
-      <div class="flex flex-col gap-4">
-
-        <div class="rounded-lg overflow-hidden" style="border:1px solid var(--ps-border)">
-          <div class="px-4 py-3 flex items-center gap-2" style="background:var(--ps-surface);border-bottom:1px solid var(--ps-border)">
-            <i class="fas fa-lightbulb text-xs" style="color:var(--ps-warning)"></i>
-            <span class="text-xs font-semibold uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.06em">Tips</span>
-          </div>
-          <div class="p-4" style="background:var(--ps-surface-card)">
-            <div class="flex gap-2 mb-3">
-              <i class="fas fa-at mt-0.5 flex-shrink-0" style="color:var(--ps-primary);font-size:.75rem"></i>
-              <span class="text-xs leading-relaxed" style="color:var(--ps-text-secondary)">Gunakan mode HTML untuk email yang lebih kaya format.</span>
-            </div>
-            <div class="flex gap-2 mb-3">
-              <i class="fas fa-lock mt-0.5 flex-shrink-0" style="color:var(--ps-primary);font-size:.75rem"></i>
-              <span class="text-xs leading-relaxed" style="color:var(--ps-text-secondary)">Email dikirim menggunakan SMTP yang dikonfigurasi di Email Settings.</span>
-            </div>
-            <div class="flex gap-2 mb-3">
-              <i class="fas fa-chart-bar mt-0.5 flex-shrink-0" style="color:var(--ps-primary);font-size:.75rem"></i>
-              <span class="text-xs leading-relaxed" style="color:var(--ps-text-secondary)">Semua pengiriman tercatat di Mail Log secara otomatis.</span>
-            </div>
-            <div class="flex gap-2 mb-0">
-              <i class="fas fa-redo mt-0.5 flex-shrink-0" style="color:var(--ps-primary);font-size:.75rem"></i>
-              <span class="text-xs leading-relaxed" style="color:var(--ps-text-secondary)">Email gagal dapat di-retry dari Mail Log.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="rounded-lg overflow-hidden" style="border:1px solid var(--ps-border)">
-          <div class="px-4 py-3 flex items-center gap-2" style="background:var(--ps-surface);border-bottom:1px solid var(--ps-border)">
-            <i class="fas fa-link text-xs" style="color:var(--ps-text-muted)"></i>
-            <span class="text-xs font-semibold uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.06em">Navigasi Cepat</span>
-          </div>
-          <a href="/admin/settings/email" style="display:flex;align-items:center;gap:10px;padding:.625rem 1rem;border-bottom:1px solid var(--ps-border-light);text-decoration:none"
-            onmouseover="this.style.background='var(--ps-surface-hover)'"
-            onmouseout="this.style.background=''">
-            <i class="fas fa-cog" style="color:var(--ps-text-muted);font-size:.75rem;width:14px;text-align:center"></i>
-            <span class="text-sm" style="color:var(--ps-text-secondary)">Email Settings</span>
-            <i class="fas fa-chevron-right ml-auto" style="color:var(--ps-text-muted);font-size:.625rem"></i>
-          </a>
-          <a href="/admin/settings/email/outbox" style="display:flex;align-items:center;gap:10px;padding:.625rem 1rem;border-bottom:1px solid var(--ps-border-light);text-decoration:none"
-            onmouseover="this.style.background='var(--ps-surface-hover)'"
-            onmouseout="this.style.background=''">
-            <i class="fas fa-inbox" style="color:var(--ps-text-muted);font-size:.75rem;width:14px;text-align:center"></i>
-            <span class="text-sm" style="color:var(--ps-text-secondary)">Outbox</span>
-            <i class="fas fa-chevron-right ml-auto" style="color:var(--ps-text-muted);font-size:.625rem"></i>
-          </a>
-          <a href="/admin/settings/email/log" style="display:flex;align-items:center;gap:10px;padding:.625rem 1rem;border-bottom:none;text-decoration:none"
-            onmouseover="this.style.background='var(--ps-surface-hover)'"
-            onmouseout="this.style.background=''">
-            <i class="fas fa-list-alt" style="color:var(--ps-text-muted);font-size:.75rem;width:14px;text-align:center"></i>
-            <span class="text-sm" style="color:var(--ps-text-secondary)">Mail Log</span>
-            <i class="fas fa-chevron-right ml-auto" style="color:var(--ps-text-muted);font-size:.625rem"></i>
-          </a>
-        </div>
-
-      </div>
-    </div>
-
-  </main>
-
-  <script>
-  function showToast(type, message) {
-    const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
-    const bg = type === 'success' ? '#F0FFF4' : type === 'error' ? '#FFF5F5' : '#FFFFF0';
-    const border = type === 'success' ? '#48BB78' : type === 'error' ? '#F56565' : '#ECC94B';
-    const color = type === 'success' ? '#276749' : type === 'error' ? '#9B2C2C' : '#975A16';
-    const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
-    toast.style.cssText = 'padding:.75rem 1rem;border-radius:8px;font-size:.875rem;background:' + bg + ';border:1px solid ' + border + ';color:' + color + ';display:flex;align-items:center;gap:.5rem;box-shadow:0 2px 8px rgba(0,0,0,.1);animation:slideIn .3s ease';
-    toast.innerHTML = '<i class="fas ' + icon + '"></i>' + message;
-    container.appendChild(toast);
-    setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity .3s'; setTimeout(() => toast.remove(), 300); }, 4000);
-  }
-
-  async function fetchWithCSRF(url, options = {}) {
-    const meta = document.querySelector('meta[name="csrf-token"]');
-    const token = meta ? meta.content : '';
-    const defaults = {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': token
-      }
-    };
-    return fetch(url, { ...defaults, ...options, headers: { ...defaults.headers, ...(options.headers || {}) } });
-  }
-
-  let currentMode='plain', previewVisible=false;
-
-  function setMode(mode){
-    currentMode=mode;
-    document.getElementById('plain-editor').style.display=mode==='plain'?'':'none';
-    document.getElementById('html-editor').style.display=mode==='html'?'':'none';
-    document.getElementById('btn-plain').style.cssText=mode==='plain'
-      ?'background:var(--ps-primary);color:#fff;border:none;cursor:pointer;border-radius:6px;padding:4px 12px'
-      :'background:none;color:var(--ps-text-secondary);border:none;cursor:pointer;border-radius:6px;padding:4px 12px';
-    document.getElementById('btn-html').style.cssText=mode==='html'
-      ?'background:var(--ps-primary);color:#fff;border:none;cursor:pointer;border-radius:6px;padding:4px 12px'
-      :'background:none;color:var(--ps-text-secondary);border:none;cursor:pointer;border-radius:6px;padding:4px 12px';
-    if(mode==='plain'){document.getElementById('html-preview').style.display='none';previewVisible=false;}
-  }
-
-  function togglePreview(){
-    previewVisible=!previewVisible;
-    const prev=document.getElementById('html-preview');
-    prev.style.display=previewVisible?'':'none';
-    if(previewVisible) document.getElementById('preview-content').innerHTML=document.getElementById('comp-html').value;
-  }
-
-  function clearForm(){
-    document.getElementById('comp-to').value='';
-    document.getElementById('comp-subject').value='';
-    document.getElementById('comp-body').value='';
-    document.getElementById('comp-html').value='';
-    hideSendResult();
-  }
-
-  function hideSendResult(){
-    const el=document.getElementById('send-result');
-    el.style.display='none'; el.textContent='';
-  }
-
-  document.getElementById('compose-form').addEventListener('submit', async e=>{
-    e.preventDefault();
-    const btn=document.getElementById('send-btn');
-    btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-    hideSendResult();
-
-    const body=currentMode==='plain'
-      ? document.getElementById('comp-body').value.trim()
-      : document.getElementById('comp-html').value.replace(/<[^>]+>/g,' ').trim();
-    const html_body=currentMode==='html'?document.getElementById('comp-html').value:null;
-
-    const res=await fetchWithCSRF('/api/settings/email/send',{
-      method:'POST',
-      body:JSON.stringify({
-        to:document.getElementById('comp-to').value.trim(),
-        subject:document.getElementById('comp-subject').value.trim(),
-        body, html_body
-      })
-    });
-    const data=await res.json();
-    btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Kirim Sekarang';
-
-    const el=document.getElementById('send-result');
-    el.style.display='block';
-    if(data.success){
-      el.style.cssText='display:block;margin-top:1rem;padding:.75rem 1rem;border-radius:8px;font-size:.875rem;background:#F0FFF4;border:1px solid #48BB78;color:#276749';
-      el.innerHTML='<i class="fas fa-check-circle mr-2"></i>'+data.message;
-      clearForm(); hideSendResult();
-      showToast('success',data.message);
-    } else {
-      el.style.cssText='display:block;margin-top:1rem;padding:.75rem 1rem;border-radius:8px;font-size:.875rem;background:#FFF5F5;border:1px solid #F56565;color:#9B2C2C';
-      el.innerHTML='<i class="fas fa-exclamation-circle mr-2"></i>'+data.message;
-      showToast('error',data.message);
-    }
+  const res=await fetchWithCSRF('/api/settings/email/send',{
+    method:'POST',
+    body:JSON.stringify({
+      to:document.getElementById('comp-to').value.trim(),
+      subject:document.getElementById('comp-subject').value.trim(),
+      body, html_body
+    })
   });
-  </script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-</body>
-</html>
+  const data=await res.json();
+  btn.disabled=false; btn.innerHTML='<i class="fas fa-paper-plane"></i> Kirim Sekarang';
+
+  const el=document.getElementById('send-result');
+  el.classList.remove('hidden');
+  if(data.success){
+    el.style.cssText='background:#EEF5EE;border:1px solid #3A6B3A;color:#3A6B3A';
+    el.innerHTML='<i class="fas fa-check-circle mr-2"></i>'+data.message;
+    clearForm();
+    showToast('success',data.message);
+  } else {
+    el.style.cssText='background:#F8EEEE;border:1px solid #B33A3A;color:#B33A3A';
+    el.innerHTML='<i class="fas fa-exclamation-circle mr-2"></i>'+data.message;
+    showToast('error',data.message);
+  }
+});
+</script>
+{% endblock %}

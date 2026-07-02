@@ -1,413 +1,238 @@
-<!--
-Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
-All rights reserved.
+{% extends "admin_base.html" %}
+{% block title %}Mail Log — Email Admin{% endblock %}
+{% block hero_title %}Mail Log{% endblock %}
+{% block hero_desc %}Riwayat lengkap pengiriman email{% endblock %}
 
-This software is dual-licensed:
-1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
-2. For commercial use: Subject to a separate Commercial License Agreement.
+{% block content %}
+{# ── Sub-nav ── #}
+<nav class="flex gap-1 mb-6 p-1 rounded-lg bg-white border border-sa-border" role="tablist">
+  <a href="{{ url_for('main.settings_email') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-cog"></i>Pengaturan
+  </a>
+  <a href="{{ url_for('main.settings_email_outbox') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-inbox"></i>Outbox
+  </a>
+  <a href="{{ url_for('main.settings_email_log') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all bg-sa-surface text-sa-fg border border-sa-border no-underline">
+    <i class="fas fa-list-alt text-sa-accent"></i>Mail Log
+  </a>
+  <a href="{{ url_for('main.settings_email_compose') }}"
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover no-underline">
+    <i class="fas fa-pen-alt"></i>Kirim Email
+  </a>
+</nav>
 
-Contact: azzar.mr.zs@gmail.com for inquiries.
--->
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Mail Log — Email Admin</title>
+{# ── Filter bar ── #}
+<form method="GET" action="{{ url_for('main.settings_email_log') }}"
+  class="flex flex-wrap gap-3 items-end mb-5 p-4 rounded-lg bg-white border border-sa-border">
+  <div class="flex-1 min-w-[180px]">
+    <label for="q" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Cari</label>
+    <input id="q" name="q" type="text" value="{{ q }}" placeholder="Penerima / Subjek..."
+      class="block w-full px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none transition-all focus:border-sa-accent focus:ring-2 focus:ring-sa-accent/20">
+  </div>
+  <div>
+    <label for="status-filter" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Status</label>
+    <select id="status-filter" name="status"
+      class="px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none">
+      <option value="">Semua Status</option>
+      {% for s in statuses %}<option value="{{ s }}" {% if status_filter==s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="type-filter" class="block text-xs font-semibold mb-1.5 text-sa-muted-strong uppercase" style="letter-spacing:.04em">Tipe</label>
+    <select id="type-filter" name="type"
+      class="px-3 py-2 rounded-md text-sm border border-sa-border bg-white text-sa-fg outline-none">
+      <option value="">Semua Tipe</option>
+      {% for t in types %}<option value="{{ t }}" {% if type_filter==t %}selected{% endif %}>{{ t }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="flex gap-2">
+    <button type="submit"
+      class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all bg-sa-accent text-white border-none cursor-pointer hover:bg-sa-accent-hover">
+      <i class="fas fa-filter"></i>Filter
+    </button>
+    <a href="{{ url_for('main.settings_email_log') }}"
+      class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all border border-sa-border text-sa-muted-strong no-underline hover:bg-sa-surface-hover">
+      <i class="fas fa-times"></i>Reset
+    </a>
+  </div>
+</form>
 
-  <link rel="preconnect" href="https://cdn.tailwindcss.com">
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --ps-surface: #F3F4F6;
-      --ps-surface-card: #FFFFFF;
-      --ps-surface-sidebar: #FFFFFF;
-      --ps-surface-hover: #F9FAFB;
-      --ps-surface-active: #F0F4FF;
-      --ps-primary: #667EEA;
-      --ps-primary-hover: #5A67D8;
-      --ps-primary-light: #EBF4FF;
-      --ps-primary-subtle: #F0F4FF;
-      --ps-text: #1F2937;
-      --ps-text-secondary: #6B7280;
-      --ps-text-muted: #9CA3AF;
-      --ps-text-on-primary: #FFFFFF;
-      --ps-border: #E5E7EB;
-      --ps-border-light: #F3F4F6;
-      --ps-success: #48BB78;
-      --ps-warning: #ED8936;
-      --ps-danger: #F56565;
-      --ps-danger-light: #FEF2F2;
-      --ps-font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-    body {
-      min-height: 100vh;
-      font-family: var(--ps-font-sans);
-      background-color: var(--ps-surface);
-      color: var(--ps-text);
-      margin: 0;
-      padding: 24px 32px;
-    }
-    .toast {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      min-width: 280px;
-      max-width: 360px;
-      display: flex;
-      align-items: flex-start;
-      background: var(--ps-surface-card);
-      border: 1px solid var(--ps-border);
-      border-radius: 8px;
-      padding: 14px 16px;
-      gap: 10px;
-      opacity: 1;
-      transition: opacity 0.5s;
-      z-index: 9999;
-      font-family: var(--ps-font-sans);
-      font-size: 0.8125rem;
-      line-height: 1.5;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    }
-    .toast-success { border-left: 3px solid var(--ps-success); }
-    .toast-error { border-left: 3px solid var(--ps-danger); }
-    .toast-warning { border-left: 3px solid var(--ps-warning); }
-    .toast-info { border-left: 3px solid var(--ps-primary); }
-  </style>
-</head>
-<body>
-
-  <!-- Toast Container -->
-  <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50" role="alert" aria-live="assertive" aria-atomic="true"></div>
-
-  <!-- Hero Section -->
-  <section style="background:var(--ps-surface-card);padding:24px 32px;border-bottom:1px solid var(--ps-border);margin:-24px -32px 24px -32px">
-    <h1 style="font-size:1.5rem;font-weight:700;color:var(--ps-text);letter-spacing:-0.02em">Mail Log</h1>
-    <p style="font-size:0.875rem;color:var(--ps-text-secondary);margin-top:4px">Riwayat lengkap pengiriman email</p>
-  </section>
-
-  <!-- Content -->
-  <div style="background:var(--ps-surface-card);border:1px solid var(--ps-border);border-radius:8px;padding:24px">
-
-    {# ── Sub-nav ── #}
-    <nav class="flex gap-1 mb-6 p-1 rounded-lg" style="background:var(--ps-surface);border:1px solid var(--ps-border)" role="tablist">
-      <a href="{{ url_for('main.settings_email') }}"         class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="color:var(--ps-text-secondary);text-decoration:none" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background=''"><i class="fas fa-cog"></i>Pengaturan</a>
-      <a href="{{ url_for('main.settings_email_outbox') }}"  class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="color:var(--ps-text-secondary);text-decoration:none" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background=''"><i class="fas fa-inbox"></i>Outbox</a>
-      <a href="{{ url_for('main.settings_email_log') }}"     class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="background:var(--ps-surface-card);color:var(--ps-text);border:1px solid var(--ps-border);text-decoration:none"><i class="fas fa-list-alt" style="color:var(--ps-primary)"></i>Mail Log</a>
-      <a href="{{ url_for('main.settings_email_compose') }}" class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all" style="color:var(--ps-text-secondary);text-decoration:none" onmouseover="this.style.background='var(--ps-surface-hover)'" onmouseout="this.style.background=''"><i class="fas fa-pen-alt"></i>Kirim Email</a>
-    </nav>
-
-    {# ── Filter bar ── #}
-    <form method="GET" action="{{ url_for('main.settings_email_log') }}"
-      class="flex flex-wrap gap-3 items-end mb-5 p-4 rounded-lg"
-      style="background:var(--ps-surface-card);border:1px solid var(--ps-border)">
-
-      <div class="flex-1 min-w-48">
-        <label for="q" class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.04em">Cari</label>
-        <input id="q" name="q" type="text" value="{{ q }}" placeholder="Penerima / Subjek..."
-          class="block w-full px-3 py-2 rounded-md text-sm"
-          style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none"
-          onfocus="this.style.borderColor='var(--ps-primary)';this.style.boxShadow='0 0 0 3px var(--ps-primary-subtle)'"
-          onblur="this.style.borderColor='var(--ps-border)';this.style.boxShadow='none'">
+{# ── Log table ── #}
+<div class="rounded-lg overflow-hidden border border-sa-border">
+  <div class="flex items-center justify-between px-5 py-4 bg-white border-b-2 border-sa-accent">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center justify-center w-8 h-8 rounded-md bg-sa-accent/10">
+        <i class="fas fa-list-alt text-sa-accent text-[0.8125rem]"></i>
       </div>
-
       <div>
-        <label for="status-filter" class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.04em">Status</label>
-        <select id="status-filter" name="status"
-          class="px-3 py-2 rounded-md text-sm"
-          style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none">
-          <option value="">Semua Status</option>
-          {% for s in statuses %}<option value="{{ s }}" {% if status_filter==s %}selected{% endif %}>{{ s }}</option>{% endfor %}
-        </select>
-      </div>
-
-      <div>
-        <label for="type-filter" class="block text-xs font-semibold mb-1.5 uppercase tracking-wide" style="color:var(--ps-text-secondary);letter-spacing:.04em">Tipe</label>
-        <select id="type-filter" name="type"
-          class="px-3 py-2 rounded-md text-sm"
-          style="border:1px solid var(--ps-border);background:var(--ps-surface);color:var(--ps-text);outline:none">
-          <option value="">Semua Tipe</option>
-          {% for t in types %}<option value="{{ t }}" {% if type_filter==t %}selected{% endif %}>{{ t }}</option>{% endfor %}
-        </select>
-      </div>
-
-      <div class="flex gap-2">
-        <button type="submit"
-          class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all"
-          style="background:var(--ps-primary);color:#fff;border:none;cursor:pointer"
-          onmouseover="this.style.background='var(--ps-primary-hover)'"
-          onmouseout="this.style.background='var(--ps-primary)'">
-          <i class="fas fa-filter"></i>Filter
-        </button>
-        <a href="{{ url_for('main.settings_email_log') }}"
-          class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all"
-          style="border:1px solid var(--ps-border);color:var(--ps-text-secondary);text-decoration:none"
-          onmouseover="this.style.background='var(--ps-surface-hover)'"
-          onmouseout="this.style.background=''">
-          <i class="fas fa-times"></i>Reset
-        </a>
-      </div>
-    </form>
-
-    {# ── Log table ── #}
-    <div class="rounded-lg overflow-hidden" style="border:1px solid var(--ps-border)">
-      <div class="flex items-center justify-between px-5 py-4" style="background:var(--ps-surface-card);border-bottom:2px solid var(--ps-primary)">
-        <div class="flex items-center gap-3">
-          <div class="flex items-center justify-center w-8 h-8 rounded-md" style="background:var(--ps-primary-subtle)">
-            <i class="fas fa-list-alt" style="color:var(--ps-primary);font-size:.8125rem"></i>
-          </div>
-          <div>
-            <div class="text-sm font-semibold" style="color:var(--ps-text)">Riwayat Email</div>
-            <div class="text-xs" style="color:var(--ps-text-muted)">{{ logs.total }} entri ditemukan</div>
-          </div>
-        </div>
-      </div>
-
-      {% if logs.items %}
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse">
-          <thead>
-            <tr style="background:var(--ps-surface)">
-              {% for col in ['ID','Penerima','Subjek','Tipe','Status','Antrian','Aksi'] %}
-              <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide"
-                style="color:var(--ps-text-secondary);letter-spacing:.06em;border-bottom:1px solid var(--ps-border);white-space:nowrap">{{ col }}</th>
-              {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            {% for log in logs.items %}
-            <tr style="border-bottom:1px solid var(--ps-border-light)"
-              onmouseover="this.style.background='var(--ps-surface-hover)'"
-              onmouseout="this.style.background=''">
-              <td class="px-4 py-3 text-xs font-mono" style="color:var(--ps-text-muted)">{{ log.id }}</td>
-              <td class="px-4 py-3 text-sm font-medium" style="color:var(--ps-text)">{{ log.recipient }}</td>
-              <td class="px-4 py-3 text-sm" style="color:var(--ps-text-secondary);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ log.subject }}">{{ log.subject }}</td>
-              <td class="px-4 py-3">
-                {% if log.email_type %}
-                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium" style="background:var(--ps-primary-subtle);color:var(--ps-primary)">{{ log.email_type.value }}</span>
-                {% else %}<span style="color:var(--ps-text-muted)">—</span>{% endif %}
-              </td>
-              <td class="px-4 py-3">
-                {% set s = log.status.value if log.status else '' %}
-                {% if s in ('sent','delivered') %}
-                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium" style="background:#F0FFF4;color:#276749"><i class="fas fa-check" style="font-size:.6rem"></i>{{ s }}</span>
-                {% elif s == 'queued' %}
-                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium" style="background:#FFFAF0;color:#C05621"><i class="fas fa-clock" style="font-size:.6rem"></i>{{ s }}</span>
-                {% elif s in ('failed','bounced','complaint') %}
-                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium" style="background:#FFF5F5;color:#9B2C2C"><i class="fas fa-times" style="font-size:.6rem"></i>{{ s }}</span>
-                {% else %}
-                  <span class="inline-flex px-2 py-0.5 rounded-full text-xs" style="background:var(--ps-surface);color:var(--ps-text-muted);border:1px solid var(--ps-border)">{{ s or '—' }}</span>
-                {% endif %}
-              </td>
-              <td class="px-4 py-3 text-xs" style="color:var(--ps-text-muted);white-space:nowrap">
-                {{ log.queued_at.strftime('%d %b %y %H:%M') if log.queued_at else '—' }}
-              </td>
-              <td class="px-4 py-3">
-                <div class="flex items-center gap-1">
-                  <button title="Detail"
-                    onclick="viewLog({{ log.id }})"
-                    class="flex items-center justify-center w-7 h-7 rounded-md transition-all"
-                    style="border:1px solid var(--ps-border);background:var(--ps-surface-card);color:var(--ps-text-secondary);cursor:pointer;font-size:.75rem"
-                    onmouseover="this.style.background='var(--ps-primary-subtle)';this.style.borderColor='var(--ps-primary)';this.style.color='var(--ps-primary)'"
-                    onmouseout="this.style.background='var(--ps-surface-card)';this.style.borderColor='var(--ps-border)';this.style.color='var(--ps-text-secondary)'">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                  {% if log.status and log.status.value in ('failed','bounced') %}
-                  <button title="Retry"
-                    onclick="retryLog({{ log.id }}, this)"
-                    class="flex items-center justify-center w-7 h-7 rounded-md transition-all"
-                    style="border:1px solid var(--ps-border);background:var(--ps-surface-card);color:var(--ps-text-secondary);cursor:pointer;font-size:.75rem"
-                    onmouseover="this.style.background='#FFFAF0';this.style.borderColor='#ED8936';this.style.color='#C05621'"
-                    onmouseout="this.style.background='var(--ps-surface-card)';this.style.borderColor='var(--ps-border)';this.style.color='var(--ps-text-secondary)'">
-                    <i class="fas fa-redo"></i>
-                  </button>
-                  {% endif %}
-                </div>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-
-      {% if logs.pages > 1 %}
-      <div class="flex items-center justify-between px-5 py-3" style="border-top:1px solid var(--ps-border);background:var(--ps-surface-card)">
-        {% if logs.has_prev %}
-          <a href="{{ url_for('main.settings_email_log', page=logs.prev_num, status=status_filter, type=type_filter, q=q) }}"
-            class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium"
-            style="border:1px solid var(--ps-border);color:var(--ps-text-secondary);text-decoration:none"
-            onmouseover="this.style.background='var(--ps-surface-hover)'"
-            onmouseout="this.style.background=''">
-            <i class="fas fa-chevron-left"></i>Sebelumnya
-          </a>
-        {% else %}<span></span>{% endif %}
-        <span class="text-xs" style="color:var(--ps-text-muted)">{{ logs.page }} / {{ logs.pages }}</span>
-        {% if logs.has_next %}
-          <a href="{{ url_for('main.settings_email_log', page=logs.next_num, status=status_filter, type=type_filter, q=q) }}"
-            class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium"
-            style="border:1px solid var(--ps-border);color:var(--ps-text-secondary);text-decoration:none"
-            onmouseover="this.style.background='var(--ps-surface-hover)'"
-            onmouseout="this.style.background=''">
-            Berikutnya<i class="fas fa-chevron-right"></i>
-          </a>
-        {% else %}<span></span>{% endif %}
-      </div>
-      {% endif %}
-
-      {% else %}
-      <div class="flex flex-col items-center justify-center py-16" style="background:var(--ps-surface-card)">
-        <div class="flex items-center justify-center w-14 h-14 rounded-full mb-4" style="background:var(--ps-primary-subtle)">
-          <i class="fas fa-inbox" style="color:var(--ps-primary);font-size:1.5rem"></i>
-        </div>
-        <div class="text-sm font-medium mb-1" style="color:var(--ps-text)">Tidak ada data</div>
-        <div class="text-xs" style="color:var(--ps-text-muted)">Tidak ditemukan email yang sesuai dengan filter.</div>
-      </div>
-      {% endif %}
-
-    </div>
-
-    {# ══ Detail Modal ═════════════════════════════════════════════════════ #}
-    <div id="log-detail-modal" role="dialog" aria-modal="true" aria-labelledby="log-detail-title"
-      class="fixed inset-0 z-50 hidden flex items-center justify-center p-4"
-      style="background:rgba(0,0,0,.45);backdrop-filter:blur(2px)">
-      <div class="w-full max-w-lg rounded-xl overflow-hidden" style="background:var(--ps-surface-card);border:1px solid var(--ps-border);box-shadow:0 20px 60px rgba(0,0,0,.15);max-height:90vh;display:flex;flex-direction:column">
-        <div class="flex items-center justify-between px-5 py-4 flex-shrink-0" style="border-bottom:2px solid var(--ps-primary)">
-          <div class="flex items-center gap-2">
-            <i class="fas fa-envelope-open" style="color:var(--ps-primary)"></i>
-            <span class="font-semibold text-sm" id="log-detail-title" style="color:var(--ps-text)">Detail Email</span>
-          </div>
-          <button onclick="document.getElementById('log-detail-modal').classList.replace('flex','hidden')"
-            style="background:none;border:none;cursor:pointer;color:var(--ps-text-muted);font-size:1.125rem">&times;</button>
-        </div>
-        <div class="p-5 overflow-y-auto" id="log-detail-body">
-          <div class="flex items-center justify-center py-8"><i class="fas fa-spinner fa-spin" style="color:var(--ps-primary);font-size:1.5rem"></i></div>
-        </div>
-        <div class="px-5 py-4 flex-shrink-0" style="border-top:1px solid var(--ps-border)">
-          <button onclick="document.getElementById('log-detail-modal').classList.replace('flex','hidden')"
-            class="px-4 py-2 rounded-md text-sm font-medium transition-all"
-            style="border:1px solid var(--ps-border);background:var(--ps-surface-card);color:var(--ps-text-secondary);cursor:pointer"
-            onmouseover="this.style.background='var(--ps-surface-hover)'"
-            onmouseout="this.style.background='var(--ps-surface-card)'">Tutup</button>
-        </div>
+        <div class="text-sm font-semibold text-sa-fg">Riwayat Email</div>
+        <div class="text-xs text-sa-muted">{{ logs.total }} entri ditemukan</div>
       </div>
     </div>
-
   </div>
 
-  <script>
-  function showToast(type, message) {
-    const container = document.getElementById('toast-container');
-    if (!container) return;
-    const toast = document.createElement('div');
-    toast.className = 'toast toast-' + type;
-    const iconClassMap = {
-      success: 'fas fa-check-circle text-green-500',
-      error: 'fas fa-times-circle text-red-500',
-      warning: 'fas fa-exclamation-triangle text-blue-400',
-      info: 'fas fa-info-circle text-blue-400'
-    };
-    const iconClass = iconClassMap[type] || iconClassMap.info;
-    toast.innerHTML =
-      '<div class="flex-shrink-0 mt-1"><i class="' + iconClass + '"></i></div>' +
-      '<div class="flex-1 text-gray-700 ml-2">' + message + '</div>';
-    container.appendChild(toast);
-    setTimeout(function() {
-      toast.style.opacity = '0';
-      toast.addEventListener('transitionend', function() { toast.remove(); });
-    }, 3000);
-  }
+  {% if logs.items %}
+  <div class="overflow-x-auto">
+    <table class="w-full border-collapse">
+      <thead>
+        <tr class="bg-sa-bg">
+          {% for col in ['ID','Penerima','Subjek','Tipe','Status','Antrian','Aksi'] %}
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-sa-muted-strong whitespace-nowrap" style="letter-spacing:.06em;border-bottom:1px solid sa-border">{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs.items %}
+        <tr class="border-b border-sa-border-light hover:bg-sa-surface-hover">
+          <td class="px-4 py-3 text-xs font-mono text-sa-muted">{{ log.id }}</td>
+          <td class="px-4 py-3 text-sm font-medium text-sa-fg">{{ log.recipient }}</td>
+          <td class="px-4 py-3 text-sm text-sa-muted-strong" style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ log.subject }}">{{ log.subject }}</td>
+          <td class="px-4 py-3">
+            {% if log.email_type %}
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sa-accent/10 text-sa-accent">{{ log.email_type.value }}</span>
+            {% else %}<span class="text-sa-muted">—</span>{% endif %}
+          </td>
+          <td class="px-4 py-3">
+            {% set s = log.status.value if log.status else '' %}
+            {% if s in ('sent','delivered') %}
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-sa-success-bg text-sa-success"><i class="fas fa-check text-[0.6rem]"></i>{{ s }}</span>
+            {% elif s == 'queued' %}
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-sa-warning-bg text-sa-warning"><i class="fas fa-clock text-[0.6rem]"></i>{{ s }}</span>
+            {% elif s in ('failed','bounced','complaint') %}
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-sa-critical-bg text-sa-critical"><i class="fas fa-times text-[0.6rem]"></i>{{ s }}</span>
+            {% else %}
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sa-bg text-sa-muted border border-sa-border">{{ s or '—' }}</span>
+            {% endif %}
+          </td>
+          <td class="px-4 py-3 text-xs text-sa-muted whitespace-nowrap">
+            {{ log.queued_at.strftime('%d %b %y %H:%M') if log.queued_at else '—' }}
+          </td>
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-1">
+              <button title="Detail" onclick="viewLog({{ log.id }})"
+                class="flex items-center justify-center w-7 h-7 rounded-md transition-all border border-sa-border bg-white text-sa-muted-strong cursor-pointer text-xs hover:bg-sa-accent/10 hover:border-sa-accent hover:text-sa-accent">
+                <i class="fas fa-eye"></i>
+              </button>
+              {% if log.status and log.status.value in ('failed','bounced') %}
+              <button title="Retry" onclick="retryLog({{ log.id }}, this)"
+                class="flex items-center justify-center w-7 h-7 rounded-md transition-all border border-sa-border bg-white text-sa-muted-strong cursor-pointer text-xs hover:bg-sa-warning-bg hover:border-sa-warning hover:text-sa-warning">
+                <i class="fas fa-redo"></i>
+              </button>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-  function getCSRFToken() {
-    var metaTag = document.querySelector('meta[name="csrf-token"]');
-    return metaTag ? metaTag.getAttribute('content') : null;
-  }
+  {% if logs.pages > 1 %}
+  <div class="flex items-center justify-between px-5 py-3 border-t border-sa-border bg-white">
+    {% if logs.has_prev %}
+      <a href="{{ url_for('main.settings_email_log', page=logs.prev_num, status=status_filter, type=type_filter, q=q) }}"
+        class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all border border-sa-border text-sa-muted-strong no-underline hover:bg-sa-surface-hover">
+        <i class="fas fa-chevron-left"></i>Sebelumnya
+      </a>
+    {% else %}<span></span>{% endif %}
+    <span class="text-xs text-sa-muted">{{ logs.page }} / {{ logs.pages }}</span>
+    {% if logs.has_next %}
+      <a href="{{ url_for('main.settings_email_log', page=logs.next_num, status=status_filter, type=type_filter, q=q) }}"
+        class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-all border border-sa-border text-sa-muted-strong no-underline hover:bg-sa-surface-hover">
+        Berikutnya<i class="fas fa-chevron-right"></i>
+      </a>
+    {% else %}<span></span>{% endif %}
+  </div>
+  {% endif %}
 
-  function fetchWithCSRF(url, options) {
-    options = options || {};
-    var token = getCSRFToken();
-    var headers = { 'X-Requested-With': 'XMLHttpRequest' };
-    if (options.headers) {
-      Object.keys(options.headers).forEach(function(k) { headers[k] = options.headers[k]; });
-    }
-    if (!(options.body instanceof FormData)) {
-      headers['Content-Type'] = 'application/json';
-    }
-    if (token) {
-      headers['X-CSRFToken'] = token;
-    }
-    if (options.body) {
-      if (options.body instanceof FormData) {
-        options.body.append('csrf_token', token);
-      } else if (typeof options.body === 'string') {
-        try {
-          var data = JSON.parse(options.body);
-          data.csrf_token = token;
-          options.body = JSON.stringify(data);
-        } catch (e) {}
-      }
-    }
-    return fetch(url, { method: options.method, headers: headers, body: options.body });
-  }
+  {% else %}
+  <div class="flex flex-col items-center justify-center py-16 bg-white">
+    <div class="flex items-center justify-center w-14 h-14 rounded-full mb-4 bg-sa-accent/10">
+      <i class="fas fa-inbox text-sa-accent text-[1.5rem]"></i>
+    </div>
+    <div class="text-sm font-medium mb-1 text-sa-fg">Tidak ada data</div>
+    <div class="text-xs text-sa-muted">Tidak ditemukan email yang sesuai dengan filter.</div>
+  </div>
+  {% endif %}
+</div>
 
-  function escapeHtml(unsafe) {
-    return (unsafe||'').toString()
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
+{# ══ Detail Modal ═════════════════════════════════════════════════════ #}
+<div id="log-detail-modal" role="dialog" aria-modal="true" aria-labelledby="log-detail-title"
+  class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-sa-fg/40 backdrop-blur-sm">
+  <div class="w-full max-w-lg rounded-xl overflow-hidden bg-white border border-sa-border shadow-sa-overlay max-h-[90vh] flex flex-col">
+    <div class="flex items-center justify-between px-5 py-4 flex-shrink-0 border-b-2 border-sa-accent">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-envelope-open text-sa-accent"></i>
+        <span class="font-semibold text-sm text-sa-fg" id="log-detail-title">Detail Email</span>
+      </div>
+      <button onclick="document.getElementById('log-detail-modal').classList.replace('flex','hidden')"
+        class="bg-transparent border-none cursor-pointer text-sa-muted text-xl">&times;</button>
+    </div>
+    <div class="p-5 overflow-y-auto" id="log-detail-body">
+      <div class="flex items-center justify-center py-8"><i class="fas fa-spinner fa-spin text-sa-accent text-2xl"></i></div>
+    </div>
+    <div class="px-5 py-4 flex-shrink-0 border-t border-sa-border">
+      <button onclick="document.getElementById('log-detail-modal').classList.replace('flex','hidden')"
+        class="px-4 py-2 rounded-md text-sm font-medium transition-all border border-sa-border bg-white text-sa-muted-strong cursor-pointer hover:bg-sa-surface-hover">
+        Tutup
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
 
-  function mkRow(label, value) {
-    return '<div class="flex" style="border-bottom:1px solid var(--ps-border-light);padding:8px 0">' +
-      '<div style="width:120px;flex-shrink:0;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ps-text-muted)">' + label + '</div>' +
-      '<div style="font-size:.8125rem;color:var(--ps-text);flex:1;word-break:break-all">' + (escapeHtml(value) || '—') + '</div>' +
+{% block extra_scripts %}
+<script>
+function escapeHtml(unsafe) {
+  return (unsafe||'').toString()
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function mkRow(label, value) {
+  return '<div class="flex" style="border-bottom:1px solid #E5DFD3;padding:8px 0">' +
+    '<div style="width:120px;flex-shrink:0;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#A49C92">' + label + '</div>' +
+    '<div style="font-size:.8125rem;color:#2A2520;flex:1;word-break:break-all">' + (escapeHtml(value) || '—') + '</div>' +
+  '</div>';
+}
+
+async function viewLog(id) {
+  document.getElementById('log-detail-modal').classList.replace('hidden','flex');
+  document.getElementById('log-detail-body').innerHTML='<div class="flex items-center justify-center py-8"><i class="fas fa-spinner fa-spin text-sa-accent text-2xl"></i></div>';
+  var res = await fetch('/api/settings/email/log/' + id);
+  var json = await res.json();
+  var log = json.log;
+  document.getElementById('log-detail-body').innerHTML=
+    '<div>' +
+      mkRow('ID',         log.id) +
+      mkRow('Penerima',   log.recipient) +
+      mkRow('Pengirim',   log.sender) +
+      mkRow('Subjek',     log.subject) +
+      mkRow('Tipe',       log.email_type) +
+      mkRow('Status',     log.status) +
+      mkRow('Template',   log.template_name) +
+      mkRow('Retry',      log.retry_count) +
+      mkRow('Rate limit', log.rate_limit_hit?'Ya':'Tidak') +
+      mkRow('Error',      log.error_message) +
+      mkRow('Antrian',    log.queued_at) +
+      mkRow('Terkirim',   log.sent_at) +
     '</div>';
-  }
+}
 
-  async function viewLog(id) {
-    document.getElementById('log-detail-modal').classList.replace('hidden','flex');
-    document.getElementById('log-detail-body').innerHTML='<div class="flex items-center justify-center py-8"><i class="fas fa-spinner fa-spin" style="color:var(--ps-primary);font-size:1.5rem"></i></div>';
-    var res = await fetch('/api/settings/email/log/' + id);
-    var json = await res.json();
-    var log = json.log;
-    document.getElementById('log-detail-body').innerHTML=
-      '<div>' +
-        mkRow('ID',         log.id) +
-        mkRow('Penerima',   log.recipient) +
-        mkRow('Pengirim',   log.sender) +
-        mkRow('Subjek',     log.subject) +
-        mkRow('Tipe',       log.email_type) +
-        mkRow('Status',     log.status) +
-        mkRow('Template',   log.template_name) +
-        mkRow('Retry',      log.retry_count) +
-        mkRow('Rate limit', log.rate_limit_hit?'Ya':'Tidak') +
-        mkRow('Error',      log.error_message) +
-        mkRow('Antrian',    log.queued_at) +
-        mkRow('Terkirim',   log.sent_at) +
-      '</div>';
-  }
+async function retryLog(id, btn) {
+  btn.disabled=true;
+  var res = await fetchWithCSRF('/api/settings/email/log/' + id + '/retry', {method:'POST'});
+  var data = await res.json();
+  btn.disabled=false;
+  showToast(data.success?'success':'error', data.message);
+}
 
-  async function retryLog(id, btn) {
-    btn.disabled=true;
-    var res = await fetchWithCSRF('/api/settings/email/log/' + id + '/retry', {method:'POST'});
-    var data = await res.json();
-    btn.disabled=false;
-    showToast(data.success?'success':'error', data.message);
-  }
-
-  document.getElementById('log-detail-modal').addEventListener('click', function(e) {
-    if (e.target === document.getElementById('log-detail-modal'))
-      document.getElementById('log-detail-modal').classList.replace('flex','hidden');
-  });
-  </script>
-
-</body>
-</html>
+document.getElementById('log-detail-modal').addEventListener('click', function(e) {
+  if (e.target === document.getElementById('log-detail-modal'))
+    document.getElementById('log-detail-modal').classList.replace('flex','hidden');
+});
+</script>
+{% endblock %}

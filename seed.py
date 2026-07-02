@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Seed script — run on first startup to create superuser + permissions.
-Minimal seed: only creates the superuser account and RBAC foundation.
+Seed script — run on first startup to create users + permissions.
+Creates one user per role (superuser, admin, general) + RBAC foundation.
 
 Usage:
     python seed.py
@@ -40,6 +40,38 @@ def seed():
             print("  + Created superuser: suadmin / suladang")
         else:
             print("  ~ Superuser already exists")
+
+        # ── Admin user ───────────────────────────────────────────────────
+        if not User.query.filter_by(username="admin").first():
+            admin = User(
+                username="admin",
+                email="admin@example.com",
+                role=UserRole.ADMIN,
+                is_active=True,
+                first_name="Admin",
+                last_name="User",
+            )
+            admin.set_password("admin123")
+            db.session.add(admin)
+            print("  + Created admin: admin / admin123")
+        else:
+            print("  ~ Admin already exists")
+
+        # ── General user ─────────────────────────────────────────────────
+        if not User.query.filter_by(username="user").first():
+            u = User(
+                username="user",
+                email="user@example.com",
+                role=UserRole.GENERAL,
+                is_active=True,
+                first_name="Test",
+                last_name="User",
+            )
+            u.set_password("user123")
+            db.session.add(u)
+            print("  + Created user: user / user123")
+        else:
+            print("  ~ User already exists")
 
         # ── Brand Identity (minimal defaults) ────────────────────────────
         if not BrandIdentity.query.first():
