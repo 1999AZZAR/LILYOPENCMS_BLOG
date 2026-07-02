@@ -1,353 +1,307 @@
-# TODO — LILY OpenCMS Open Source Version
+# LilyOpenCMS — TODO
 
-> Enterprise reference: `/home/ubuntu/projects/lilyopencms`
-> Current open-source: `/home/ubuntu/projects/LILYOPENCMS_BLOG`
+## Progress Overview
+
+| Phase | Status |
+|---|---|
+| Phase 0: Multi-Design System Engine | ✅ Done |
+| Phase 1: Foundation (app factory, config, extensions, auth, Docker) | ✅ Done |
+| Phase 2: Fix Broken Public Elements | ✅ Done |
+| Phase 3: RBAC/ABAC Refinement | ✅ Done |
+| Phase 4: Auth Module Scaffolded | ✅ Done |
+| Phase 5: Enterprise Sidecars Ported | ✅ Done |
+| Phase 6: Celery Async Workers | ✅ Done |
+| Phase 7: Toggle Cleanup | ✅ Done |
+| Email Management System | ✅ Done |
+| Docker Setup | ✅ Done |
+| Phase 8: Core CMS Foundation | ✅ Done |
+| Phase 9: Personal Blog | Pending |
+| Phase 10: News Agency | Pending |
+| Phase 11: Company Profile | Pending |
+| Phase 12: E-commerce | Pending |
 
 ---
 
-## Implementation Order (Summary)
+## Target Use Cases
+
+| # | Use Case | Priority |
+|---|---|---|
+| 1 | Personal Blog | High |
+| 2 | News Agency | High |
+| 3 | Company Profile | Medium |
+| 4 | E-commerce | Medium |
+
+---
+
+## Phase 8: Core CMS Foundation ✅
+
+### 8.1 Static Pages System
+- [x] `Page` model (title, slug, content, template, is_published, seo_id)
+- [x] CRUD routes + admin UI
+- [x] Template selection per page (default, landing, full-width, sidebar)
+- [ ] Reusable blocks / components (hero, CTA, FAQ, testimonials)
+- [ ] Pages: About, Services, Terms, Privacy (seed defaults)
+
+### 8.2 Tag System
+- [x] `Tag` model (name, slug)
+- [x] `news_tags` junction table
+- [x] Tag CRUD in admin
+- [x] Tag pages on frontend (`/tag/{slug}`)
+- [ ] Tag cloud widget
+- [x] Auto-suggest from existing tags
+- [ ] Add tag picker to news create/edit forms
+
+### 8.3 Comment System
+- [x] `Comment` model (user_id, news_id, parent_id, content, status)
+- [x] Moderation queue (pending/approved/rejected/spam)
+- [x] Nested replies (1 level)
+- [ ] Spam detection (basic: link count, length)
+- [ ] Email notification on reply
+- [x] Admin moderation UI
+
+### 8.4 Author System
+- [ ] Extend `User` model (bio, avatar, social links)
+- [ ] Author profile pages (`/author/{username}`)
+- [ ] Author listing page
+- [ ] Author-specific RSS feed
+- [ ] "Written by" card on articles
+
+### 8.5 Content Enhancements
+- [x] Reading time estimate (auto-calc from content)
+- [ ] Related articles (same category or tags)
+- [ ] Table of contents (auto-generate from headings)
+- [ ] Social sharing buttons (Twitter, Facebook, WhatsApp, Telegram)
+- [ ] Open Graph / Twitter Card meta
+- [ ] RSS feed (per category, per author, global)
+
+### 8.6 Sitemap
+- [ ] XML sitemap generation (auto from models)
+- [ ] Sitemap index for large sites
+- [ ] Ping search engines on publish
+
+### 8.7 Search Improvements
+- [ ] Index all content in Cerebro/Elasticsearch
+- [ ] Full-text search with ranking
+- [ ] Search suggestions / autocomplete
+- [ ] Search results page
+
+---
+
+## Phase 9: Personal Blog
+
+> Minimal, writing-focused, beautiful reading experience.
+
+### 9.1 Blog Design Theme
+- [ ] `blog` design in `templates/designs/blog/`
+- [ ] Clean, readable typography (Inter/Source Serif)
+- [ ] Dark mode toggle
+- [ ] Minimal navigation (Home, Tags, About)
+
+### 9.2 Blog Features
+- [ ] Reading list (bookmark articles)
+- [ ] Newsletter subscription (leverage existing email system)
+- [ ] Post view counter (already have `read_count`)
+- [ ] "Recently read" section
+- [ ] Markdown editor for posts (already have SimpleMDE)
+
+### 9.3 Blog Admin
+- [ ] Dashboard with writing stats
+- [ ] Quick-publish workflow
+- [ ] Draft management
+
+---
+
+## Phase 10: News Agency
+
+> Multi-author, wire service, editorial workflow.
+
+### 10.1 Editorial Workflow
+- [ ] Article states: Draft → Review → Approved → Published → Archived
+- [ ] `ArticleStatus` enum on News model
+- [ ] Editor approval flow (Writer submits → Editor approves → Publish)
+- [ ] Revision history (diff view)
+- [ ] Embargo date field (publish at specific time, already have scheduled_at)
+
+### 10.2 Multi-Author
+- [ ] Byline system (multiple authors per article)
+- [ ] `ArticleAuthor` junction table
+- [ ] Author assignment (editor assigns to writer)
+- [ ] Author workload dashboard
+
+### 10.3 Wire Service
+- [ ] `PressRelease` model (headline, body, embargo_date, source)
+- [ ] Syndication feed (RSS/JSON Feed for partners)
+- [ ] Embed codes for partners
+- [ ] Usage analytics (who picked up what)
+
+### 10.4 Breaking News
+- [ ] Breaking news banner (JS widget)
+- [ ] Push notification infrastructure
+- [ ] Alert email to subscribers
+
+### 10.5 Source Management
+- [ ] `Source` model (name, url, reliability_score)
+- [ ] Link sources to articles
+- [ ] Source credibility tracking
+
+### 10.6 News Agency Design
+- [ ] `wire` design theme (dense, information-heavy)
+- [ ] Photo essay layout
+- [ ] Live blog / timeline format
+
+---
+
+## Phase 11: Company Profile
+
+> Professional pages, services, team, contact.
+
+### 11.1 Static Page Builder
+- [ ] Block-based editor (hero, text, image, gallery, CTA, FAQ)
+- [ ] `PageBlock` model (page_id, block_type, content, order)
+- [ ] Drag-and-drop admin UI
+- [ ] Template presets (landing, about, services, contact)
+
+### 11.2 Services / Products Catalog
+- [ ] `Service` model (name, description, icon, price_range, order)
+- [ ] Service listing page
+- [ ] Service detail pages
+
+### 11.3 Team Management
+- [ ] Extend existing `TeamMember` model
+- [ ] Team listing page
+- [ ] Individual profile pages
+- [ ] Social links per member
+
+### 11.4 Testimonials
+- [ ] `Testimonial` model (name, role, company, content, rating, avatar)
+- [ ] Testimonial carousel widget
+- [ ] Admin CRUD
+
+### 11.5 Contact Forms
+- [ ] `ContactForm` model (name, email, subject, message, status)
+- [ ] Form builder (simple: name, email, message, custom fields)
+- [ ] Admin inbox with status (new/read/replied)
+- [ ] Email notification on submission
+- [ ] Auto-reply to submitter
+
+### 11.6 Company Profile Design
+- [ ] `corporate` design theme (professional, trust-building)
+- [ ] Hero with CTA
+- [ ] Client logo carousel
+- [ ] Case studies layout
+
+---
+
+## Phase 12: E-commerce
+
+> Products, cart, checkout, payments.
+
+### 12.1 Product System
+- [ ] `Product` model (name, slug, description, price, compare_price, sku, stock, weight, is_active)
+- [ ] `ProductVariant` model (product_id, name, sku, price, stock, attributes JSON)
+- [ ] `ProductImage` model (product_id, image_url, order, is_primary)
+- [ ] `ProductCategory` model (name, slug, parent_id)
+- [ ] `ProductTag` junction table
+- [ ] Admin CRUD with variant management
+
+### 12.2 Shopping Cart
+- [ ] `Cart` model (user_id or session_id)
+- [ ] `CartItem` model (cart_id, product_id, variant_id, quantity)
+- [ ] Add/update/remove endpoints
+- [ ] Cart persistence (session → user on login)
+- [ ] Cart sidebar/widget
+
+### 12.3 Checkout
+- [ ] `Order` model (user_id, status, total, shipping_address, billing_address, notes)
+- [ ] `OrderItem` model (order_id, product_id, variant_id, quantity, price)
+- [ ] Checkout flow (address → shipping → payment → confirm)
+- [ ] Guest checkout option
+
+### 12.4 Payment Gateway
+- [ ] `Payment` model (order_id, method, status, transaction_id, amount)
+- [ ] Stripe integration (cards)
+- [ ] Midtrans integration (Indonesian: VA, GoPay, OVO, etc.)
+- [ ] Webhook handling for payment confirmation
+- [ ] Refund management
+
+### 12.5 Inventory
+- [ ] Stock tracking (decrement on order)
+- [ ] Low stock alerts
+- [ ] Stock history log
+- [ ] Bulk import/export (CSV)
+
+### 12.6 Shipping
+- [ ] `ShippingMethod` model (name, base_cost, per_kg_cost)
+- [ ] Shipping calculation (weight-based or flat rate)
+- [ ] Tracking number field
+- [ ] Shipping label generation (JNE, J&T, SiCepat APIs)
+
+### 12.7 Customer Accounts
+- [ ] Order history page
+- [ ] Order tracking
+- [ ] Wishlist
+- [ ] Product reviews & ratings
+
+### 12.8 Promotions
+- [ ] `Coupon` model (code, type, value, min_order, max_uses, expiry)
+- [ ] `Discount` model (product_id, percentage/fixed, date range)
+- [ ] Coupon application in checkout
+
+### 12.9 E-commerce Design
+- [ ] `shop` design theme (product-focused, conversion-optimized)
+- [ ] Product grid with filters
+- [ ] Product detail page
+- [ ] Cart page
+- [ ] Checkout page
+
+---
+
+## Shared Infrastructure (cross-cutting)
+
+### Notification System
+- [ ] `Notification` model (user_id, type, title, message, read, data)
+- [ ] In-app notification bell
+- [ ] Email notifications (extend existing)
+- [ ] Push notifications (web push)
+
+### API Layer
+- [ ] REST API for mobile/headless
+- [ ] API authentication (JWT tokens)
+- [ ] Rate limiting
+- [ ] API documentation (Swagger/OpenAPI)
+
+### Multi-Site (optional, future)
+- [ ] Tenant model (domain, settings)
+- [ ] Site isolation (database or schema)
+- [ ] Shared users across sites
+
+---
+
+## Execution Order
 
 ```
-Phase 0 — Multi-Design System Engine                          ✅ DONE
-Phase 1 — Foundation (App Factory + Docker + Shared Layer)    ✅ DONE
-Phase 2 — Fix Broken Public Elements                          ✅ DONE
-Phase 3 — RBAC / ABAC Refinement                              ✅ DONE
-Phase 4 — Module Extraction (Vertical Slice Migration)        ✅ DONE (auth module scaffolded)
-Phase 5 — Sidecars (Argus, Hermes, Cerebro)                   ✅ DONE
-Phase 6 — Celery Async Workers                                ✅ DONE
-Phase 7 — Toggle Cleanup + Premium Integration                ✅ DONE (toggles already correct)
+Phase 8 (Core CMS)         ← DONE
+  ├── 8.1 Static Pages     ✅
+  ├── 8.2 Tags             ✅
+  ├── 8.3 Comments         ✅
+  ├── 8.4 Authors          ⬜
+  ├── 8.5 Content          ⬜
+  ├── 8.6 Sitemap          ⬜
+  └── 8.7 Search           ⬜
+
+Phase 9 (Blog)             ← NEXT
+Phase 10 (News Agency)     ← can parallel with Phase 9
+Phase 11 (Company Profile) ← after Phase 8
+Phase 12 (E-commerce)      ← after Phase 8, longest phase
+
+Shared Infrastructure      ← sprinkle across phases as needed
 ```
 
 ---
 
-## PHASE 0 — Multi-Design System Engine ✅
-
-- [x] `DesignFileSystemLoader` resolves `templates/designs/{design}/` before fallback
-- [x] `before_request` sets `g.design` from `BrandIdentity.homepage_design`
-- [x] Public templates moved into `templates/designs/news/`
-- [x] Card dispatcher resolved per-design
-- [x] Admin UI relabelled "Homepage Design" → "Design System"
-
----
-
-## PHASE 1 — Foundation ✅
-
-### 1.1 App Factory
-
-- [x] `app/__init__.py` — `create_app()` factory with config, extensions, hooks, blueprints
-- [x] `app/config.py` — `DevelopmentConfig`, `ProductionConfig`, `TestingConfig`
-- [x] `app/extensions.py` — `db`, `migrate`, `csrf`, `login_manager`, `cors` instances
-- [x] `wsgi.py` — production entry point via `gunicorn wsgi:application`
-- [x] `main.py` preserved for backward compatibility (legacy dev server)
-
-### 1.2 Shared Layer
-
-- [x] `shared/auth/decorators.py` — Consolidated `@login_required`, `@permission_required`, `@owner_or_permission_required`
-- [x] `shared/auth/permission_manager.py` — Single `PermissionManager` class + all `can_*()` helpers
-- [x] `shared/responses.py` — `api_success()`, `api_error()`, `api_paginated()`
-- [x] `shared/schemas.py` — Marshmallow base schemas (`NewsCreateSchema`, `CategorySchema`, etc.)
-
-### 1.3 Docker
-
-- [x] `Dockerfile` — Multi-stage (builder + runtime), non-root user, health check
-- [x] `docker-compose.yml` — PostgreSQL 16 + Redis 7 + web service
-- [x] `.dockerignore` — Exclude dev artifacts from image
-- [x] `env.example` — Environment variable template
-
-### 1.4 Dependencies
-
-- [x] `marshmallow` added to `requirements.txt`
-- [x] `psycopg2-binary` uncommented for PostgreSQL support
-- [x] `.venv` created and verified working
-
----
-
-## PHASE 2 — Fix Broken Public Elements ✅
-
-- [x] **Social media links** — Added `footer-social.js` to news/editorial design base templates
-- [x] **Brand asset paths** — Already using `brand_info.logo_header/logo_footer/favicon` with fallbacks
-- [x] **Footer email + policy links** — Removed dead `#` links, added email to editorial footer
-- [x] **Homepage unnecessary queries** — Removed unused `latest_videos`/`latest_images` from `routes_public.py`
-- [x] **Categories display location** — Added `categories_with_counts` to `app/__init__.py` context processor
-
----
-
-## PHASE 3 — RBAC / ABAC Refinement ✅
-
-**Goal:** Migrate 100+ inline role checks to decorators. Seed default permissions.
-
-### Infrastructure (Done in Phase 1.2)
-
-- [x] `@permission_required(resource, action)` decorator
-- [x] `@owner_or_permission_required(resource, action, owner_field)` decorator
-- [x] Consolidated `PermissionManager` (single source of truth)
-- [x] Consolidated `login_required` (JWT + session)
-- [x] `admin_required` + `superuser_required` decorators in `shared/auth/decorators.py`
-- [x] Replaced local `login_required` in `routes/common_imports.py` (−160 lines)
-- [x] Replaced Flask-Login import in `routes/settings/common_imports.py`
-- [x] Replaced `@unified_auth_required` → `@login_required` in `routes_auth.py`
-- [x] Updated `routes/settings/root_seo.py` to use shared decorator
-
-### Seeding
-
-- [ ] Run `helper/init_permissions.py` — Seeds 35 permissions + 5 custom roles
-- [ ] Add `flask seed permissions` CLI command
-- [ ] Verify seed idempotency on re-runs
-
-### Route Migration
-
-- [ ] Replace `current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]` with `@permission_required()` in:
-  - `routes/settings/brand.py`, `seo.py`, `account.py`, `contact.py`, `content.py`, `media.py`, `policies.py`, `performance.py`, `dashboard.py`
-  - `routes/routes_images.py`, `routes_public.py`, `routes_users.py`, `routes_roles.py`, `routes_subscriptions.py`, `routes_infos.py`, `routes_analytics.py`, `routes_auth.py`, `routes_albums.py`
-- [ ] Add `@owner_or_permission_required` to content routes (writers edit own content, admins edit any)
-
-### Admin UI
-
-- [ ] `/settings/roles` — CRUD for custom roles + permission assignment
-- [ ] Permission summary on user management page
-- [ ] Template enforcement: replace `{% if current_user.role.value == 'su' %}` with `can_*()` helpers
-
----
-
-## PHASE 4 — Module Extraction (Vertical Slice Migration)
-
-**Goal:** Migrate the monolithic `routes/` + `models.py` into domain modules. Each module owns its models, routes, schemas, and services.
-
-### Target Structure
-
-```
-app/
-├── __init__.py              # App factory
-├── config.py                # Configuration classes
-├── extensions.py            # Shared extension instances
-├── modules/
-│   ├── __init__.py
-│   ├── auth/                # User, CustomRole, Permission, login/register/JWT
-│   │   ├── __init__.py
-│   │   ├── controller.py
-│   │   ├── schemas.py
-│   │   ├── service.py
-│   │   └── models.py
-│   ├── news/                # News, Category, ShareLog
-│   │   ├── __init__.py
-│   │   ├── controller.py
-│   │   ├── schemas.py
-│   │   ├── service.py
-│   │   └── models.py
-│   ├── albums/              # Album, AlbumChapter
-│   ├── media/               # Image, YouTubeVideo
-│   ├── users/               # Profile management (reuses auth User)
-│   ├── subscriptions/       # UserSubscription
-│   ├── seo/                 # RootSEO + injector
-│   ├── settings/            # BrandIdentity, NavigationLink, ContactDetail, TeamMember
-│   ├── policies/            # PrivacyPolicy, MediaGuideline, VisiMisi, Penyangkalan, PedomanHak
-│   └── analytics/           # EmailLog, performance stats
-├── shared/                  # Cross-cutting concerns
-│   ├── auth/                # Decorators, PermissionManager
-│   ├── schemas.py           # Base Marshmallow schemas
-│   ├── responses.py         # API response helpers
-│   └── utils/               # Email, image_utils, config_reader, etc.
-├── modules/sidecars/        # Go sidecar source + proto definitions
-│   ├── proto/               # argus.proto, hermes.proto
-│   ├── argus/               # Go source
-│   ├── hermes/              # Go source
-│   └── cerebro/             # Go source
-└── templates/               # Jinja2 (design system intact)
-```
-
-### Extraction Order
-
-| # | Module | Models to Extract | Route Files to Replace |
-|---|--------|-------------------|----------------------|
-| 1 | `auth` | User, CustomRole, Permission, UserActivity | `routes_auth.py`, `routes_users.py`, `routes_roles.py` |
-| 2 | `news` | News, Category, ShareLog | `routes_news.py`, `routes_chategories.py` |
-| 3 | `media` | Image, YouTubeVideo | `routes_images.py`, `routes_video.py` |
-| 4 | `albums` | Album, AlbumChapter | `routes_albums.py` |
-| 5 | `subscriptions` | UserSubscription | `routes_subscriptions.py` |
-| 6 | `seo` | RootSEO | `routes_seo.py`, `seo_enhanced_dashboard.py`, `seo_settings_api.py` |
-| 7 | `settings` | BrandIdentity, NavigationLink, ContactDetail, TeamMember | `routes/settings/*.py` |
-| 8 | `policies` | PrivacyPolicy, MediaGuideline, VisiMisi, Penyangkalan, PedomanHak | `routes_infos.py` |
-| 9 | `analytics` | EmailLog | `routes_analytics.py`, `routes_analytics.py` |
-
-### Per-Module Migration Steps
-
-1. Create `app/modules/{name}/models.py` — Move model classes from `models.py`
-2. Create `app/modules/{name}/schemas.py` — Marshmallow schemas for validation
-3. Create `app/modules/{name}/service.py` — Business logic extracted from route handlers
-4. Create `app/modules/{name}/controller.py` — Thin route handlers (parse → service → respond)
-5. Create `app/modules/{name}/__init__.py` — Blueprint registration
-6. Wire blueprint in `app/__init__.py`
-7. Verify all routes work, delete old route file
-8. Run tests
-
----
-
-## PHASE 5 — Sidecars (Go Microservices)
-
-**Goal:** Port the enterprise sidecar architecture to the open-source version for observability, image processing, and high-performance read paths.
-
-### 5.1 Infrastructure
-
-- [ ] Copy `sidecars/` directory from enterprise (`/home/ubuntu/projects/lilyopencms/sidecars/`)
-- [ ] Copy `sidecars/proto/` — `argus.proto`, `hermes.proto`
-- [ ] Copy Go source for `argus/`, `hermes/`, `cerebro/` (adapt module paths)
-- [ ] Update `go.mod` module path to `github.com/1999AZZAR/lilyopencms`
-- [ ] Add sidecar Dockerfiles (already exist in enterprise)
-- [ ] Add sidecar services to `docker-compose.yml`
-
-### 5.2 Python gRPC Client Layer
-
-- [ ] Create `app/shared/rpc/` — Python gRPC client package
-- [ ] Generate protobuf stubs: `argus_pb2.py`, `argus_pb2_grpc.py`, `hermes_pb2.py`, `hermes_pb2_grpc.py`
-- [ ] Create `app/shared/rpc/argus_client.py` — Singleton `ArgusClient` with circuit breaker
-- [ ] Create `app/shared/rpc/hermes_client.py` — Singleton `HermesClient` with PIL fallback
-- [ ] Create `app/shared/rpc/argus_logging.py` — `ArgusLogHandler` for Python logging
-
-### 5.3 Circuit Breaker
-
-- [ ] Port `celery_app/circuit_breaker.py` → `app/shared/circuit_breaker.py`
-- [ ] `CircuitBreaker`, `CircuitBreakerRegistry`, `@circuit_breaker` decorator
-- [ ] Pre-configured breakers: `argus_log`, `argus_analytics`, `argus_metrics`, `hermes_process`
-
-### 5.4 Argus (Observability Sidecar)
-
-| RPC Method | Purpose | Python Client |
-|------------|---------|---------------|
-| `Log` | Centralized log aggregation → Elasticsearch | `argus_client.log(level, message, service)` |
-| `TrackEvent` | Analytics events (page views, purchases) | `argus_client.track_event(event_type, user_id, props)` |
-| `SubmitMetrics` | System metrics (latency, throughput) | `argus_client.submit_metrics(name, value, tags)` |
-
-- [ ] Wire `setup_unified_logging()` in `create_app()` to add `ArgusLogHandler`
-- [ ] Instrument route handlers with `argus_client.track_event()` for page views
-- [ ] Add metrics submission for request latency, DB query time
-
-### 5.5 Hermes (Image Processing Sidecar)
-
-| Feature | Enterprise | Fallback |
-|---------|-----------|----------|
-| Format conversion | WebP, JPEG, PNG via libvips | PIL/Pillow |
-| Quality reduction loop | Auto-compress to 170-500KB | Manual |
-| Emergency dimension scaling | Scale down 10% iteratively | Manual resize |
-
-- [ ] Wire `hermes_client.process_image()` into image upload route
-- [ ] Automatic WebP conversion on upload
-- [ ] Thumbnail generation via Hermes
-- [ ] PIL fallback when Hermes is down
-
-### 5.6 Cerebro (Read-Path Gateway)
-
-| Feature | Description |
-|---------|-------------|
-| L1 Cache | In-memory (go-cache, 5min TTL) |
-| L2 Cache | Redis (10min TTL) |
-| Cache Invalidation | Redis Pub/Sub channel `cache_invalidation` |
-| Search | Elasticsearch multi_match with fuzziness |
-| News List | Direct PostgreSQL query with caching |
-| Health | `/healthz` (liveness), `/readyz` (readiness) |
-
-- [ ] Add Cerebro service to `docker-compose.yml`
-- [ ] Point public search endpoint to Cerebro `/api/public/search`
-- [ ] Configure cache invalidation from Flask on news/album CRUD
-- [ ] Add Elasticsearch to docker-compose (if not present)
-
-### 5.7 Docker Compose (Full Stack)
-
-```yaml
-services:
-  web:              # Flask app (gunicorn)
-  celery-worker:    # Async task processing
-  celery-beat:      # Periodic tasks
-  db:               # PostgreSQL 16
-  redis:            # Redis 7 (caching + Celery broker)
-  elasticsearch:    # Elasticsearch 8 (search + Argus storage)
-  argus-sidecar:    # Go gRPC — logging, analytics, metrics
-  hermes-sidecar:   # Go gRPC — image processing
-  cerebro-sidecar:  # Go HTTP — cached read path, search
-```
-
----
-
-## PHASE 6 — Celery Async Workers
-
-**Goal:** Move long-running tasks to Celery workers. Port the enterprise celery_app structure.
-
-### 6.1 Infrastructure
-
-- [ ] Add `celery` + `redis` to requirements.txt
-- [ ] Create `app/tasks/__init__.py` — Celery app factory
-- [ ] Create `app/tasks/celery_config.py` — Broker, backend, routing
-- [ ] Add `celery-worker` and `celery-beat` services to docker-compose
-
-### 6.2 Tasks to Port
-
-| Task | Source | Purpose |
-|------|--------|---------|
-| `scheduled_publish` | `celery_app/scheduled_publish.py` | Auto-publish scheduled content |
-| `popularity_updater` | `celery_app/popularity_updater.py` | Batch update read counts |
-| `backup_tasks` | `celery_app/backup_tasks.py` | Automated DB backups |
-| `elasticsearch_sync` | `celery_app/elasticsearch_sync.py` | Sync PG → ES indices |
-| `auto_accept_requests` | `celery_app/auto_accept_requests.py` | Auto-approve write access |
-| `database_optimization` | `celery_app/database_optimization.py` | VACUUM, ANALYZE, index rebuild |
-
-### 6.3 Monitoring
-
-- [ ] Port `celery_monitoring.py` — Worker health tracking
-- [ ] Port `celery_alerting.py` — Failure notifications
-- [ ] Port `flower_config.py` — Flower dashboard setup
-
----
-
-## PHASE 7 — Toggle Cleanup + Premium Integration
-
-### Feature Toggle Cleanup
-
-8 toggles exist in model/admin but have zero public UI:
-- `enable_comments`, `enable_ratings` — no comment/rating UI
-- `enable_ads`, `enable_campaigns` — no ad/campaign system
-- `enable_bookmarks`, `enable_reading_history`, `enable_community`, `enable_user_stats` — no UI
-
-- [ ] Decide: remove from model + admin, or implement stubs
-- [ ] Remove or implement categories display location
-
-### Premium Integration
-
-- [ ] Replace hardcoded pricing with `BrandIdentity` fields or `Plan` model
-- [ ] Wire subscribe buttons to `UserSubscription` flow
-- [ ] Make feature list admin-editable
-
-### Route Guards
-
-- [ ] `/news`, `/articles`, `/utama` — add `_feature_enabled('enable_news')` guard
-- [ ] `/hypes` — add guard or create `enable_hypes`
-- [ ] Album routes — add `_feature_enabled('enable_albums')` guard
-- [ ] Nav fallback respects feature toggles
-
----
-
-## DEPENDENCY VULNERABILITIES & UPGRADES
-
-**34 Dependabot alerts + 7 bump PRs open**
-
-### P0 — Framework (High/Critical CVEs)
-
-- [ ] **Werkzeug** `2.3.7 → ~3.1.6` — RCE via debugger, DoS, decompression bomb
-- [ ] **Flask** `2.3.3 → ~3.1.3` — Missing `Vary: Cookie` header
-- [ ] **Jinja2** `3.1.2 → latest` — Sandbox breakout, HTML attr injection
-- [ ] **Gunicorn** `21.2.0 → latest` — Request smuggling, decompression bomb
-
-### P1 — HTTP & Networking
-
-- [ ] **urllib3** `2.1.0 → ~2.7.0` — Header leak, redirect bypass, temp file
-- [ ] **requests** `2.31.0 → ~2.33.0` — .netrc leak, verify=False bypass
-- [ ] **idna** `3.6 → ~3.15` — DoS, unicode bypass
-
-### P2 — Security & Auth
-
-- [ ] **Flask-CORS** `4.0.0 → latest` — Private network header, regex bypass
-- [ ] **python-dotenv** `1.0.0 → ~1.2.2` — Symlink file overwrite
-
-### P3 — Repo Housekeeping
-
-- [ ] Enable GitHub Code Scanning + Secret Scanning
-- [ ] Migrate `python-memcached` → `redis` as primary cache
-- [ ] Evaluate `APScheduler` → `celery` for async task queue
+## Key Architectural Decisions
+
+1. **E-commerce**: Separate module or integrated? → Module within same app
+2. **Multi-site**: One DB or per-tenant? → One DB, site_id column
+3. **Page builder**: Code blocks or visual? → Code blocks first, visual later
+4. **Payment**: Which gateways first? → Stripe (global) + Midtrans (Indonesia)
