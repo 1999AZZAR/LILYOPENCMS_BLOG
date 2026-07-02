@@ -43,7 +43,7 @@ TODO.md
 # Temporary files
 tmp/
 logs/
-instance/*.db
+instance/
 *.db
 
 # OS files

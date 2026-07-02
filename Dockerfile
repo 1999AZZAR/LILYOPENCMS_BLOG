@@ -38,11 +38,11 @@ RUN groupadd -r lily && useradd -r -g lily -d /app -s /sbin/nologin lily
 
 WORKDIR /app
 
-# Copy application code
+# Copy application code and set up entrypoint BEFORE switching user
 COPY . .
-
-# Ensure log and instance directories exist
-RUN mkdir -p logs instance && chown -R lily:lily /app
+RUN chmod +x /app/docker-entrypoint.sh && \
+    mkdir -p /app/logs /app/instance && \
+    chown -R lily:lily /app
 
 USER lily
 
@@ -52,7 +52,7 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:5000/health || exit 1
 
-# Default: run via gunicorn with the app factory
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["gunicorn", "wsgi:application", \
      "--bind", "0.0.0.0:5000", \
      "--workers", "4", \
