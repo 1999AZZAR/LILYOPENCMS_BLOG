@@ -40,7 +40,7 @@
 - [x] CRUD routes + admin UI
 - [x] Template selection per page (default, landing, full-width, sidebar)
 - [ ] Reusable blocks / components (hero, CTA, FAQ, testimonials)
-- [ ] Pages: About, Services, Terms, Privacy (seed defaults)
+- [x] Pages: About, Services, Terms, Privacy (seed defaults)
 
 ### 8.2 Tag System
 - [x] `Tag` model (name, slug)
@@ -49,41 +49,45 @@
 - [x] Tag pages on frontend (`/tag/{slug}`)
 - [ ] Tag cloud widget
 - [x] Auto-suggest from existing tags
-- [ ] Add tag picker to news create/edit forms
+- [x] Tag picker in news create/edit forms (interactive UI with autosuggest)
 
 ### 8.3 Comment System
 - [x] `Comment` model (user_id, news_id, parent_id, content, status)
 - [x] Moderation queue (pending/approved/rejected/spam)
 - [x] Nested replies (1 level)
-- [ ] Spam detection (basic: link count, length)
+- [x] Spam detection (basic: link count, length)
 - [ ] Email notification on reply
 - [x] Admin moderation UI
+- [x] Public comment form on article pages (guest + auth, nested replies)
 
 ### 8.4 Author System
-- [ ] Extend `User` model (bio, avatar, social links)
-- [ ] Author profile pages (`/author/{username}`)
-- [ ] Author listing page
+- [x] Extend `User` model (bio, avatar, social links) — fields already existed
+- [x] Author profile pages (`/author/{username}`)
+- [x] Author listing page (`/authors`)
 - [ ] Author-specific RSS feed
-- [ ] "Written by" card on articles
+- [x] "Written by" card on articles with avatar, bio, social links
 
 ### 8.5 Content Enhancements
 - [x] Reading time estimate (auto-calc from content)
-- [ ] Related articles (same category or tags)
-- [ ] Table of contents (auto-generate from headings)
-- [ ] Social sharing buttons (Twitter, Facebook, WhatsApp, Telegram)
-- [ ] Open Graph / Twitter Card meta
-- [ ] RSS feed (per category, per author, global)
+- [x] Related articles (same category, popularity fallback)
+- [x] Table of contents (auto-generate from h2/h3 headings)
+- [x] Social sharing buttons (WhatsApp, Facebook, Twitter, clipboard)
+- [x] Open Graph / Twitter Card meta (full per-article OG)
+- [x] RSS feed (global at /rss.xml and /rss/)
 
 ### 8.6 Sitemap
-- [ ] XML sitemap generation (auto from models)
-- [ ] Sitemap index for large sites
+- [x] XML sitemap generation (auto from models)
+- [x] Sitemap index for large sites
 - [ ] Ping search engines on publish
 
 ### 8.7 Search Improvements
 - [ ] Index all content in Cerebro/Elasticsearch
 - [ ] Full-text search with ranking
 - [ ] Search suggestions / autocomplete
-- [ ] Search results page
+- [x] Dedicated search results page (`public/search.html`)
+
+### Bonus
+- [x] JSON-LD schema rendering in reader.html (NewsArticle + WebPage)
 
 ---
 
