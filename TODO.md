@@ -288,10 +288,10 @@ Phase 8 (Core CMS)         ← DONE
   ├── 8.1 Static Pages     ✅
   ├── 8.2 Tags             ✅
   ├── 8.3 Comments         ✅
-  ├── 8.4 Authors          ⬜
-  ├── 8.5 Content          ⬜
-  ├── 8.6 Sitemap          ⬜
-  └── 8.7 Search           ⬜
+  ├── 8.4 Authors          ✅
+  ├── 8.5 Content          ✅
+  ├── 8.6 Sitemap          ✅
+  └── 8.7 Search           ✅ (basic ILIKE + dedicated template)
 
 Phase 9 (Blog)             ← NEXT
 Phase 10 (News Agency)     ← can parallel with Phase 9

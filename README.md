@@ -1,6 +1,6 @@
 # LilyOpenCMS
 
-Flask-based CMS with multi-design system engine, advanced SEO management, granular role-based access, subscription gating, and full performance optimization.
+Flask-based CMS with vertical-slice architecture, multi-design system engine, advanced SEO, RBAC/ABAC, enterprise sidecars, and async workers.
 
 ```
 Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
@@ -9,202 +9,187 @@ Dual-licensed: GPL-3.0 for open-source / Commercial License for proprietary use.
 
 ## Features
 
-- **Content Engine** — News/articles with scheduling, archiving, revision history, bulk operations, read tracking, share analytics (WhatsApp, Facebook, Twitter, Instagram, BlueSky, clipboard)
-- **Album/Chapter System** — Group articles into albums (like novels) with chapter sequencing, completion tracking, hiatus status, independent SEO per album
-- **Multi-Design System** — 3 built-in designs (`news`, `editorial`, `professional`). Custom Jinja2 loader resolves `templates/designs/{design}/` with fallback chain. Adding a design = drop a directory
-- **Advanced SEO** — Per-article Open Graph, Twitter Cards, JSON-LD schema, canonical URLs, auto slug generation, SEO scoring (0–100), automated SEO injection, YAML quality rules, per-page Root SEO management, XML sitemaps, `robots.txt`
-- **Brand Identity** — Configurable brand name, tagline, logo, favicon, placeholder, HSL color palette (primary, secondary, accent, background, foreground), feature toggles for UI sections
-- **Auth & Roles** — SUPERUSER/ADMIN/GENERAL tiers + custom roles with granular permission matrix (resource + action), user activity audit trail, account suspension, registration approval
-- **Subscription** — Premium content gating, tier management, monthly/yearly plans, auto-renew, ad-free experience toggle
-- **Media** — Auto WebP conversion, thumbnails, YouTube embeds with metadata, gallery management, usage tracking, bulk upload
-- **Email System** — SMTP delivery, template rendering, delivery status tracking (queued/sent/delivered/failed/bounced), rate limiting, retry logic, 20+ email types (verification, suspension, content approval, etc.)
-- **Admin Dashboard** — Swiss-Archival warm palette, sidebar search, bulk operations, brand color presets, SEO dashboard, performance monitoring dashboard
-- **Tracking/Analytics** — Google AdSense (publisher ID), Google Tag Manager, Google Analytics (GA4), Facebook Pixel — all configurable via Brand Identity
-- **Performance** — Redis caching, query result caching, database query optimization, asset compression (gzip), lazy loading, SSR render time monitoring, connection pooling with WAL mode
+- **Content Engine** — News/articles with scheduling, archiving, read tracking, share analytics
+- **Static Pages** — Full CRUD with template selection (default, landing, full-width, sidebar), SEO fields, menu management
+- **Tag System** — Proper many-to-many via junction table, auto-suggest, tag cloud, interactive picker in news editor
+- **Comment System** — Nested replies (1 level), 4-state moderation (pending/approved/rejected/spam), spam detection, public form on articles
+- **Author Profiles** — Bio, avatar, social links, `/author/<username>` pages, "Written By" card on articles
+- **Album/Chapter System** — Group articles into albums with chapter sequencing, completion tracking
+- **Multi-Design System** — 3 built-in designs (`news`, `editorial`, `professional`). Custom Jinja2 loader resolves `templates/designs/{design}/` with fallback chain
+- **Advanced SEO** — Per-article OG/Twitter/JSON-LD, canonical URLs, auto slug, SEO scoring, XML sitemaps, `robots.txt`
+- **Brand Identity** — Configurable brand name, tagline, logos, favicon, HSL color palette, feature toggles
+- **Auth & Roles** — SUPERUSER/ADMIN/GENERAL + custom roles with granular permission matrix, user activity audit
+- **Subscription** — Premium content gating, tier management
+- **Media** — Image gallery, YouTube embeds, usage tracking
+- **Email System** — SMTP delivery, HTML templates, delivery tracking, rate limiting
+- **RSS Feed** — RSS 2.0 at `/rss.xml` with latest 50 articles
+- **Search** — Full-text ILIKE search with dedicated results page, category/tag filtering
+- **Admin Dashboard** — Swiss-Archival warm palette, SEO dashboard, performance monitor
+- **Async Workers** — Celery for scheduled publishing, popularity updates, backups, DB optimization
+- **Enterprise Sidecars** — Go gRPC services: Argus (logging/analytics → ES), Hermes (image processing via libvips), Cerebro (cached read + search gateway)
 
 ## Stack
 
 | Layer | Tech |
 |-------|------|
-| Backend | Python 3.8+, Flask 2.x, SQLAlchemy 2.x |
-| Frontend | Tailwind CSS 4.x, ES6+, SimpleMDE, Swiper.js |
-| Database | SQLite (dev with WAL), PostgreSQL/MySQL (prod) |
-| Cache | Redis + memcached |
-| Queue | APScheduler (periodic SEO tasks) |
-| Server | Gunicorn, Passenger, Docker |
+| Backend | Python 3.12+, Flask 3.x, SQLAlchemy 2.x, Celery |
+| Frontend | Tailwind CSS, SimpleMDE, Swiper.js |
+| Database | PostgreSQL 16 |
+| Cache | Redis 7 |
+| Queue | Celery + Redis (broker) |
+| Sidecars | Go 1.24 (gRPC: Argus, Hermes; HTTP: Cerebro) |
+| Server | Gunicorn, Docker Compose |
 
 ## Quick Start
 
 ```bash
 git clone https://github.com/1999AZZAR/LILYOPENCMS_BLOG.git
 cd LILYOPENCMS_BLOG
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
 cp .env.example .env
-python main.py
+docker compose up -d
 ```
 
-Open `http://127.0.0.1:5000`.
+Open `http://localhost:5000`. First startup auto-seeds:
 
-### Seed Data
-
-```bash
-cd helper
-python generate_user.py
-python add_categories.py
-python add_fake_news.py
-python add_fake_images.py
-python add_videos.py
-python init_footer_data.py
-```
-
-### Redis (Optional — required for caching)
-
-```bash
-# Ubuntu/Debian
-sudo apt install redis-server && sudo systemctl start redis-server
-
-# macOS
-brew install redis && brew services start redis
-```
-
-Or use: `./optimizations/setup_redis.sh`
+| Data | Amount |
+|------|--------|
+| Users | 3 (suadmin/suladang, admin/admin123, user/user123) |
+| News articles | 8 with rich HTML content |
+| Categories | 8 (Teknologi, Bisnis, Olahraga, etc.) |
+| Tags | 18 with M2M associations |
+| Comments | 3 with nested replies |
+| Static pages | 4 (About, Privacy, Terms, Services) |
+| Navigation links | 10 (navbar + footer) |
+| Social media | 5 platforms |
+| Team members | 5 across departments |
+| Contact details | 4 (email, phone, address, hours) |
 
 ## Project Structure
 
 ```
-├── main.py                  # App entry, extensions, error handlers, health check
-├── models.py                # All SQLAlchemy models (~1970 lines)
-├── jinja2_loader.py         # Custom design-aware Jinja2 FileSystemLoader
-├── routes/                  # Blueprints
-│   ├── routes_public.py     # Public-facing pages (home, news, albums, etc.)
-│   ├── routes_auth.py       # Login, register, logout
-│   ├── routes_news.py       # News CRUD
-│   ├── routes_albums.py     # Album/chapter CRUD
-│   ├── routes_images.py     # Image gallery CRUD
-│   ├── routes_video.py      # YouTube video management
-│   ├── routes_users.py      # User management
-│   ├── routes_roles.py      # Custom role & permission management
-│   ├── routes_analytics.py  # Share/click analytics
-│   ├── routes_seo.py        # SEO management endpoints
-│   ├── routes_infos.py      # Static pages (about, privacy, terms)
-│   ├── routes_socialmedia.py# Social media link CRUD
-│   ├── routes_subscriptions.py# Subscription management
-│   ├── routes_chategories.py# Category CRUD
-│   ├── seo_enhanced_dashboard.py # SEO performance dashboard
-│   ├── seo_settings_api.py  # SEO settings API
-│   ├── settings/            # Admin settings blueprints
-│   │   ├── dashboard.py     # Admin dashboard
-│   │   ├── brand.py         # Brand identity settings
-│   │   ├── seo.py           # SEO settings
-│   │   ├── root_seo.py      # Root page SEO
-│   │   ├── content.py       # Content settings
-│   │   ├── media.py         # Media settings
-│   │   ├── contact.py       # Contact details
-│   │   ├── policies.py      # Policies (privacy, terms, guidelines)
-│   │   ├── account.py       # Account settings
-│   │   ├── performance.py   # Performance monitor
-│   │   └── api.py           # Admin API endpoints
-│   └── utils/               # Shared utilities
+├── app/
+│   ├── __init__.py           # App factory, hooks, blueprints
+│   ├── config.py             # Dev/Prod/Test configs
+│   ├── extensions.py         # db, migrate, csrf, login_manager, cors
+│   ├── modules/auth/         # Auth vertical slice (blueprint, service, controller)
+│   ├── shared/
+│   │   ├── auth/             # Consolidated decorators + permission manager
+│   │   ├── circuit_breaker.py# Production-grade circuit breaker
+│   │   ├── rpc/              # Python gRPC clients (Argus, Hermes)
+│   │   ├── responses.py      # API response helpers
+│   │   └── schemas.py        # Marshmallow base schemas
+│   └── tasks/                # Celery tasks (publish, popularity, backup, optimization)
+├── models.py                 # All SQLAlchemy models
+├── routes/
+│   ├── __init__.py           # Blueprint + imports
+│   ├── routes_public.py      # Home, news detail, search, RSS, authors, sitemap
+│   ├── routes_auth.py        # Login, register, logout
+│   ├── routes_news.py        # News CRUD API
+│   ├── routes_pages.py       # Static pages CRUD
+│   ├── routes_tags.py        # Tag CRUD + public pages
+│   ├── routes_comments.py    # Comment API + moderation
+│   ├── routes_albums.py      # Album/chapter CRUD
+│   ├── routes_images.py      # Image gallery
+│   ├── routes_video.py       # YouTube videos
+│   ├── routes_users.py       # User management
+│   ├── routes_roles.py       # Custom roles & permissions
+│   ├── routes_analytics.py   # Share/click analytics
+│   ├── routes_seo.py         # SEO management
+│   ├── settings/             # Admin settings (dashboard, brand, content, etc.)
+│   └── utils/                # Shared utilities
 ├── templates/
-│   ├── base.html            # Public layout
-│   ├── admin_base.html      # Admin layout
-│   ├── public/              # Public page templates
-│   ├── settings/            # Admin settings templates
-│   ├── admin/               # Admin pages
-│   ├── emails/              # Email templates
-│   ├── designs/             # Multi-design system
-│   │   ├── news/            # Swiss-Archival news design (default)
-│   │   ├── editorial/       # Editorial design
-│   │   └── professional/    # Professional design
-│   └── components/          # Reusable components (cards, etc.)
+│   ├── base.html             # Public layout
+│   ├── admin_base.html       # Admin layout (sa-* design system)
+│   ├── public/               # Public templates
+│   ├── settings/             # Admin settings templates
+│   ├── admin/                # Admin pages
+│   ├── designs/              # Multi-design system
+│   │   ├── news/             # Swiss-Archival news design (default)
+│   │   ├── editorial/        # Editorial design
+│   │   └── professional/     # Professional design
+│   └── components/           # Reusable cards, pagination
 ├── static/
-│   ├── css/                 # Compiled Tailwind styles
-│   ├── js/                  # Client-side scripts
-│   ├── pic/                 # Logo, favicon, placeholders
-│   └── uploads/             # User uploads
-├── optimizations/           # Performance modules
-│   ├── cache_config.py      # Redis/memcached caching
-│   ├── database_optimization.py # Query optimization
-│   ├── frontend_optimization.py # Lazy loading, compression
-│   ├── asset_optimization.py    # Asset minification
-│   ├── ssr_optimization.py      # Server-side render monitoring
-│   └── performance_monitoring.py# Dashboards & metrics
-├── seo_injector/            # Automated SEO injection
-│   ├── auto_seo_injector.py  # Main injection engine
-│   ├── inject_news_seo.py / inject_album_seo.py / inject_chapter_seo.py / inject_root_seo.py
-│   ├── periodic_seo_tasks.py # APScheduler-based periodic SEO
-│   ├── management_dashboard.py# SEO management UI
-│   ├── smart_config.py       # Smart SEO configuration
-│   ├── unified_settings.py   # Unified SEO settings
-│   └── config/               # YAML rules (quality, keywords, templates)
-├── helpers/                  # Seed data scripts
-├── migrations/               # Alembic migration scripts
-├── scripts/                  # Utility/maintenance scripts
-└── main.py                   # WSGI entry point
+│   ├── css/ / js/ / pic/ / uploads/
+├── sidecars/
+│   ├── proto/                # gRPC proto definitions
+│   ├── argus/                # Go: logging/analytics → Elasticsearch
+│   ├── hermes/               # Go: image processing via libvips
+│   └── cerebro/              # Go: cached read + search gateway
+├── migrations/               # Alembic
+├── seed.py                   # Comprehensive demo data seeder
+├── docker-compose.yml        # web, db, redis, elasticsearch, sidecars, celery
+├── Dockerfile                # Multi-stage build
+└── docker-entrypoint.sh      # Auto-create tables, stamp alembic, seed, start gunicorn
 ```
 
 ## Design System
 
-LilyOpenCMS uses a custom Jinja2 `DesignFileSystemLoader` that resolves templates at runtime based on `BrandIdentity.homepage_design`. The resolution chain is:
+Uses a custom `DesignFileSystemLoader` that resolves templates at runtime:
 
-1. `templates/designs/{design}/{template}` — exact design match
-2. `templates/designs/news/{template}` — fallback to `news` design
-3. `templates/{template}` — default fallback
+1. `templates/designs/{design}/{template}` — exact match
+2. `templates/designs/news/{template}` — fallback
+3. `templates/{template}` — default
 
-Admin, settings, email, and error templates bypass the design system. To add a new design, create `templates/designs/{name}/` with only the templates you want to override.
+Admin/settings/email templates bypass the design system.
 
 ## API Endpoints
 
-All `/api/*` routes are CORS-enabled and CSRF-exempt. Key public endpoints:
-
+### Public
 | Endpoint | Description |
 |----------|-------------|
 | `GET /api/news` | Paginated news list |
-| `GET /api/news/<id>` | Single article |
+| `GET /api/tags` | All tags with counts |
+| `GET /api/tags/suggest?q=` | Tag autocomplete |
 | `GET /api/categories` | Category list |
-| `GET /api/albums` | Album list with chapters |
+| `GET /api/albums` | Album list |
+| `GET /api/albums/<id>/chapters` | Album chapters |
 | `GET /api/images` | Gallery images |
 | `GET /api/social-media` | Social media links |
-| `GET /api/search?q=` | Full-text search |
-| `GET /api/share/<news_id>/<platform>` | Share count tracking |
-| `GET /health` | Health check with DB status |
+| `GET /rss.xml` | RSS 2.0 feed |
+| `GET /sitemap.xml` | XML sitemap |
+| `GET /health` | Health check |
+
+### Comments
+| Endpoint | Description |
+|----------|-------------|
+| `POST /api/news/<id>/comments` | Post comment (guest or auth) |
+| `GET /api/news/<id>/comments` | Get approved comments |
+
+### Admin (requires auth)
+| Endpoint | Description |
+|----------|-------------|
+| `GET/POST /api/settings/tags` | List / create tags |
+| `GET/POST /api/news` | Create / list news |
+| `GET /api/settings/pages` | List static pages |
+| `POST /api/settings/comments/<id>/status` | Moderate comment |
 
 ## Environment Variables
 
-```
-SECRET_KEY           # Flask secret key (required, auto-generated if missing)
-DATABASE_URI         # SQLAlchemy DB URI (default: sqlite:///exposeur.db)
-FLASK_ENV            # development / production
-BASE_URL             # Canonical domain URL
-WEBSITE_NAME         # Website display name
-WEBSITE_DESCRIPTION  # Meta description
-WEBSITE_LANGUAGE     # Content language (default: id)
-ORGANIZATION_NAME    # Publisher name for schema.org
-ORGANIZATION_LOGO    # Publisher logo URL
-```
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SECRET_KEY` | auto | Flask secret key |
+| `DATABASE_URI` | `postgresql://lily:lily_secret@db:5432/lilycms` | PostgreSQL connection |
+| `REDIS_URL` | `redis://redis:6379/0` | Redis connection |
+| `FLASK_ENV` | `production` | Environment |
+| `APP_PORT` | `5000` | Exposed port |
 
 ## Deployment
 
 ```bash
-# Gunicorn
-gunicorn --bind 0.0.0.0:8000 main:app
+# Production
+docker compose up -d
 
-# Passenger (production WSGI)
-passenger start
+# With sidecars
+docker compose up -d --profile sidecars
 
-# Docker
-docker build -t lilyopencms .
-docker run -p 8000:8000 lilyopencms
+# Fresh start (wipe DB)
+docker compose down -v && docker compose up -d
+
+# Check logs
+docker compose logs -f web
 ```
-
-For production: set `FLASK_ENV=production`, configure `SECRET_KEY` and `DATABASE_URI` for PostgreSQL/MySQL, set up Redis, and use Gunicorn behind a reverse proxy.
 
 ## License
 
-Dual-licensed:
-- **Open-source**: GNU General Public License v3.0 — see [LICENSE](LICENSE)
-- **Commercial**: Separate Commercial License Agreement required
-
-Contact [azzar.mr.zs@gmail.com](mailto:azzar.mr.zs@gmail.com) for commercial licensing inquiries.
+Dual-licensed: GPL-3.0 (open-source) / Commercial License (proprietary).
+Contact [azzar.mr.zs@gmail.com](mailto:azzar.mr.zs@gmail.com) for commercial inquiries.
