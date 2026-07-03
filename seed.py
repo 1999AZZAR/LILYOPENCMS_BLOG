@@ -112,6 +112,20 @@ def seed():
                 ("permissions:delete","Delete permissions","permissions","delete"),
                 ("settings:read","Read settings","settings","read"), ("settings:update","Update settings","settings","update"),
                 ("analytics:read","Read analytics","analytics","read"), ("analytics:export","Export analytics","analytics","export"),
+                # Phase 8 gaps
+                ("comments:read","Read comments","comments","read"), ("comments:create","Post comments","comments","create"),
+                ("comments:update","Edit comments","comments","update"), ("comments:delete","Delete comments","comments","delete"),
+                ("comments:moderate","Moderate comments","comments","moderate"),
+                ("pages:read","Read pages","pages","read"), ("pages:create","Create pages","pages","create"),
+                ("pages:update","Edit pages","pages","update"), ("pages:delete","Delete pages","pages","delete"),
+                ("tags:read","Read tags","tags","read"), ("tags:create","Create tags","tags","create"),
+                ("tags:update","Edit tags","tags","update"), ("tags:delete","Delete tags","tags","delete"),
+                ("media:upload","Upload media","media","upload"), ("media:delete","Delete media","media","delete"),
+                ("albums:read","Read albums","albums","read"), ("albums:create","Create albums","albums","create"),
+                ("albums:update","Edit albums","albums","update"), ("albums:delete","Delete albums","albums","delete"),
+                ("albums:publish","Publish albums","albums","publish"),
+                ("videos:read","Read videos","videos","read"), ("videos:create","Create videos","videos","create"),
+                ("videos:update","Edit videos","videos","update"), ("videos:delete","Delete videos","videos","delete"),
             ]
             for n, d, r, a in perms:
                 db.session.add(Permission(name=n, description=d, resource=r, action=a))
