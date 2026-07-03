@@ -13,6 +13,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 {% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }} — {{ news.title | default('Artikel') | e }}{% endblock %}
 
 {% block extra_head %}
+{% if news.generate_schema_markup %}
+<script type="application/ld+json">
+{{ news.generate_schema_markup() | safe }}
+</script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -124,9 +129,101 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     </div>
 
   </article>
+
+  {# ── Written By Card ────────────────────────────────────────────── #}
+  {% if news.author and news.author.bio %}
+  <div class="mt-12 p-6 rounded-lg" style="border:1px solid hsl(var(--border));background-color:var(--m3-container)">
+    <div class="flex items-start gap-4">
+      <a href="{{ url_for('main.author_profile', username=news.author.username) }}" class="flex-shrink-0">
+        <div class="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-lg font-bold overflow-hidden" style="color:hsl(var(--muted-foreground))">
+          {% if news.author.profile_picture %}
+          <img src="{{ news.author.profile_picture }}" alt="{{ news.author.username }}" class="w-full h-full object-cover">
+          {% else %}
+          {{ news.author.username[0]|upper }}
+          {% endif %}
+        </div>
+      </a>
+      <div class="flex-1">
+        <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-1" style="color:hsl(var(--muted-foreground))">Ditulis oleh</p>
+        <a href="{{ url_for('main.author_profile', username=news.author.username) }}" class="font-bold text-base no-underline" style="color:hsl(var(--foreground))">
+          {{ news.author.first_name or news.author.username }} {{ news.author.last_name or '' }}
+        </a>
+        <p class="text-sm mt-1 leading-relaxed" style="color:hsl(var(--muted-foreground))">{{ news.author.bio }}</p>
+        {% if news.author.social_links %}
+        <div class="flex gap-3 mt-3">
+          {% for platform, url in news.author.social_links.items() %}
+          <a href="{{ url }}" target="_blank" rel="noopener" class="text-sm hover:opacity-70" style="color:hsl(var(--muted-foreground))">
+            <i class="fab fa-{{ platform }}"></i>
+          </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {# ── Comment Section ─────────────────────────────────────────────── #}
+  <section id="comments-section" class="mt-16" aria-label="Komentar">
+    <h2 class="text-lg font-black mb-6" style="letter-spacing:-0.03em">Komentar</h2>
+
+    {# Comment form #}
+    <div id="comment-form-container" class="p-5 mb-8" style="border:1px solid hsl(var(--border));border-radius:6px;background-color:var(--m3-container)">
+      {% if current_user.is_authenticated %}
+        <p class="text-xs font-semibold mb-3" style="color:hsl(var(--muted-foreground))">
+          Komentar sebagai <strong>{{ current_user.username }}</strong>
+        </p>
+      {% else %}
+        <p class="text-xs font-semibold mb-3" style="color:hsl(var(--muted-foreground))">
+          Komentar sebagai <strong>Tamu</strong>
+        </p>
+      {% endif %}
+
+      <div id="reply-indicator" class="hidden text-xs mb-3 p-2 rounded" style="background:hsl(var(--accent)/0.1);color:hsl(var(--muted-foreground))">
+        Membalas: <span id="reply-to-name"></span>
+        <button type="button" id="cancel-reply" class="ml-2 underline hover:no-underline">Batal</button>
+      </div>
+
+      <form id="comment-form" class="space-y-3">
+        {% if not current_user.is_authenticated %}
+        <div class="grid grid-cols-2 gap-3">
+          <input type="text" id="comment-name" placeholder="Nama" required
+            class="w-full px-3 py-2 text-sm rounded border" style="border-color:hsl(var(--border));background:white">
+          <input type="email" id="comment-email" placeholder="Email" required
+            class="w-full px-3 py-2 text-sm rounded border" style="border-color:hsl(var(--border));background:white">
+        </div>
+        {% endif %}
+        <textarea id="comment-content" rows="3" placeholder="Tulis komentar..." required maxlength="2000"
+          class="w-full px-3 py-2 text-sm rounded border resize-none" style="border-color:hsl(var(--border));background:white"></textarea>
+        <div class="flex items-center justify-between">
+          <span class="text-[10px]" style="color:hsl(var(--muted-foreground))">
+            <span id="comment-chars">0</span>/2000 · Maks 3 tautan
+          </span>
+          <button type="submit"
+            class="px-4 py-2 text-xs font-black uppercase tracking-wider text-white rounded transition-all hover:scale-[1.02]"
+            style="background:hsl(var(--primary))">
+            Kirim
+          </button>
+        </div>
+      </form>
+    </div>
+
+    {# Comments list #}
+    <div id="comments-list" class="space-y-4">
+      <div class="text-center py-8 text-sm" style="color:hsl(var(--muted-foreground))">
+        <i class="fas fa-spinner fa-spin mr-2"></i>Memuat komentar...
+      </div>
+    </div>
+  </section>
 </div>
 
 <aside class="lg:col-span-4 sticky-sidebar mt-12 lg:mt-0 space-y-8">
+  {# Table of Contents #}
+  <section id="toc-section" class="hidden p-5" aria-label="Daftar Isi" style="border:1px solid hsl(var(--border));border-radius:6px;background-color:var(--m3-container)">
+    <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-3" style="color:hsl(var(--muted-foreground))">Daftar Isi</p>
+    <nav id="toc-list" class="space-y-1 text-sm"></nav>
+  </section>
+
   <!-- Share section -->
   <section aria-label="Bagikan Artikel" class="p-5" style="border: 1px solid hsl(var(--border)); border-radius: 6px; background-color: var(--m3-container);">
     <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-4"
@@ -218,10 +315,12 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 <script>
   window.newsId    = {{ news.id    | default('null') | tojson }};
   window.newsTitle = {{ news.title | default('Artikel Ini') | tojson }};
+  window.currentUser = {% if current_user.is_authenticated %}{{ current_user.username | tojson }}{% else %}null{% endif %};
 </script>
 <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
 <script src="{{ url_for('static', filename='js/lazyload.js') }}"></script>
 <script src="{{ url_for('static', filename='js/featured-image-modal.js') }}"></script>
 <script src="{{ url_for('static', filename='js/share.js') }}"></script>
 <script src="{{ url_for('static', filename='js/reader.js') }}"></script>
+<script src="{{ url_for('static', filename='js/comments.js') }}"></script>
 {% endblock %}

@@ -13,6 +13,17 @@ from routes import main_blueprint
 from .common_imports import *
 from optimizations import cache_with_args, CACHE_TIMEOUTS
 from optimizations import optimize_news_query, monitor_ssr_render
+import re
+
+
+def safe_title(title):
+    """Generate URL-safe slug from title."""
+    filtered_title = re.sub(r'\s+', '_', title)
+    filtered_title = re.sub(r'[\W]', '', filtered_title)
+    max_length = 50
+    if len(filtered_title) > max_length:
+        filtered_title = filtered_title[:max_length]
+    return filtered_title.lower()
 from optimizations.cache_config import safe_cache_get, safe_cache_set
 from sqlalchemy import text
 import time
@@ -559,17 +570,7 @@ def news_detail_legacy(news_id):
         )
         abort(404)
     
-    # Define the safe_title function directly here (same as in your context processor)
-    def safe_title(title):
-        import re
-        filtered_title = re.sub(r'\s+', '_', title)
-        filtered_title = re.sub(r'[\W]', '', filtered_title)
-        max_length = 50
-        if len(filtered_title) > max_length:
-            filtered_title = filtered_title[:max_length]
-        return filtered_title
-    
-    # Generate the safe title for the URL
+    # Use module-level safe_title
     safe_title_result = safe_title(news_item.title)
     
     # Redirect to the new URL pattern
@@ -1004,7 +1005,7 @@ def rss_feed():
         <link>{site_url}/news/{n.id}/{safe_title(n.title)}</link>
         <guid>{site_url}/news/{n.id}/{safe_title(n.title)}</guid>
         <pubDate>{n.date.strftime("%a, %d %b %Y %H:%M:%S +0000") if n.date else ""}</pubDate>
-        <description><![CDATA[{n.excerpt or n.content[:300] if n.content else ""}]]></description>
+        <description><![CDATA[{n.meta_description or (n.content[:300] if n.content else "")}]]></description>
         <category>{n.category.name if n.category else ""}</category>
     </item>"""
         for n in news_list if n.is_visible

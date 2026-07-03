@@ -32,6 +32,7 @@ def seed():
                 role=UserRole.SUPERUSER,
                 is_active=True,
                 is_premium=True,
+                verified=True,
                 first_name="Super",
                 last_name="Admin",
             )
@@ -48,6 +49,7 @@ def seed():
                 email="admin@example.com",
                 role=UserRole.ADMIN,
                 is_active=True,
+                verified=True,
                 first_name="Admin",
                 last_name="User",
             )
@@ -64,6 +66,7 @@ def seed():
                 email="user@example.com",
                 role=UserRole.GENERAL,
                 is_active=True,
+                verified=True,
                 first_name="Test",
                 last_name="User",
             )
@@ -78,7 +81,7 @@ def seed():
             brand = BrandIdentity(
                 brand_name="LilyOpenCMS",
                 tagline="Modern content management for the digital age",
-                homepage_design="default",
+                homepage_design="news",
                 enable_news=True,
                 enable_videos=True,
                 enable_gallery=True,
