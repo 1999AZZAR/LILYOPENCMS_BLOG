@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from app import create_app
 from models import (
     db, User, UserRole, BrandIdentity,
-    Permission, CustomRole,
+    Permission, CustomRole, Page,
 )
 
 
@@ -143,6 +143,70 @@ def seed():
             print("  + Created custom roles: Editor, Writer")
         else:
             print("  ~ Custom roles already exists")
+
+        # ── Default Pages ────────────────────────────────────────────────
+        if Page.query.count() == 0:
+            admin = User.query.filter_by(username="admin").first()
+            default_pages = [
+                {
+                    "title": "Tentang Kami",
+                    "slug": "tentang-kami",
+                    "content": "<h2>Tentang LilyOpenCMS</h2><p>LilyOpenCMS adalah sistem manajemen konten modern yang dirancang untuk berbagai kebutuhan — dari blog pribadi hingga portal berita dan perusahaan.</p><p>Dibangun dengan Flask dan PostgreSQL, LilyOpenCMS menawarkan fleksibilitas, keamanan, dan performa tinggi.</p>",
+                    "excerpt": "Pelajari lebih lanjut tentang LilyOpenCMS",
+                    "template": "default",
+                    "is_published": True,
+                    "show_in_menu": True,
+                    "menu_order": 1,
+                    "meta_title": "Tentang Kami — LilyOpenCMS",
+                    "meta_description": "Pelajari lebih lanjut tentang LilyOpenCMS, sistem manajemen konten modern.",
+                    "author_id": admin.id if admin else None,
+                },
+                {
+                    "title": "Kebijakan Privasi",
+                    "slug": "kebijakan-privasi",
+                    "content": "<h2>Kebijakan Privasi</h2><p>Kami menghargai privasi Anda. Halaman ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda.</p><h3>Data yang Dikumpulkan</h3><p>Kami mengumpulkan data seperti nama, alamat email, dan konten yang Anda posting.</p><h3>Penggunaan Data</h3><p>Data digunakan untuk menyediakan dan meningkatkan layanan kami.</p>",
+                    "excerpt": "Kebijakan privasi LilyOpenCMS",
+                    "template": "default",
+                    "is_published": True,
+                    "show_in_menu": True,
+                    "menu_order": 2,
+                    "meta_title": "Kebijakan Privasi — LilyOpenCMS",
+                    "meta_description": "Kebijakan privasi LilyOpenCMS.",
+                    "author_id": admin.id if admin else None,
+                },
+                {
+                    "title": "Syarat & Ketentuan",
+                    "slug": "syarat-ketentuan",
+                    "content": "<h2>Syarat & Ketentuan</h2><p>Dengan menggunakan LilyOpenCMS, Anda menyetujui syarat dan ketentuan berikut.</p>",
+                    "excerpt": "Syarat dan ketentuan penggunaan LilyOpenCMS",
+                    "template": "default",
+                    "is_published": True,
+                    "show_in_menu": True,
+                    "menu_order": 3,
+                    "meta_title": "Syarat & Ketentuan — LilyOpenCMS",
+                    "meta_description": "Syarat dan ketentuan penggunaan LilyOpenCMS.",
+                    "author_id": admin.id if admin else None,
+                },
+                {
+                    "title": "Layanan",
+                    "slug": "layanan",
+                    "content": "<h2>Layanan Kami</h2><p>Kami menyediakan berbagai layanan manajemen konten untuk memenuhi kebutuhan Anda.</p><ul><li>Blog Pribadi</li><li>Portal Berita</li><li>Profil Perusahaan</li><li>Toko Online</li></ul>",
+                    "excerpt": "Layanan yang ditawarkan oleh LilyOpenCMS",
+                    "template": "default",
+                    "is_published": True,
+                    "show_in_menu": True,
+                    "menu_order": 4,
+                    "meta_title": "Layanan — LilyOpenCMS",
+                    "meta_description": "Layanan manajemen konten LilyOpenCMS.",
+                    "author_id": admin.id if admin else None,
+                },
+            ]
+            for page_data in default_pages:
+                page = Page(**page_data)
+                db.session.add(page)
+            print(f"  + Created {len(default_pages)} default pages")
+        else:
+            print("  ~ Default pages already exist")
 
         db.session.commit()
         print("\nSeed complete!")
