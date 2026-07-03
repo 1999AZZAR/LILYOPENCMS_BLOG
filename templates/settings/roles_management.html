@@ -1,0 +1,105 @@
+{% extends "admin_base.html" %}
+{% block title %}Roles & Permissions — Admin{% endblock %}
+{% block hero_title %}Roles &amp; Permissions{% endblock %}
+{% block hero_desc %}Manage roles, permissions, and user tiers{% endblock %}
+
+{% block content %}
+{# Users by Tier #}
+<div class="bg-white border border-sa-border rounded-lg overflow-hidden mb-8">
+  <div class="px-5 py-4 border-b border-sa-border">
+    <h3 class="text-sm font-semibold text-sa-fg"><i class="fas fa-users mr-2 text-sa-muted"></i>Users by Tier</h3>
+  </div>
+  <div class="divide-y divide-sa-border-light">
+    {% for user in users %}
+    <div class="flex items-center justify-between px-5 py-3">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white
+          {% if user.effective_tier == 0 %}bg-red-500
+          {% elif user.effective_tier == 1 %}bg-blue-500
+          {% elif user.effective_tier == 2 %}bg-green-500
+          {% else %}bg-gray-400{% endif %}">
+          {{ user.username[0]|upper }}
+        </div>
+        <div>
+          <div class="text-sm font-medium text-sa-fg">{{ user.username }}</div>
+          <div class="text-[10px] text-sa-muted">{{ user.email or '' }}</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase
+          {% if user.effective_tier == 0 %}bg-red-100 text-red-800
+          {% elif user.effective_tier == 1 %}bg-blue-100 text-blue-800
+          {% elif user.effective_tier == 2 %}bg-green-100 text-green-800
+          {% else %}bg-gray-100 text-gray-600{% endif %}">
+          Tier {{ user.effective_tier }}
+        </span>
+        <span class="text-xs text-sa-muted">{{ user.role.value }}</span>
+        {% if user.custom_role %}
+        <span class="text-xs text-sa-accent">{{ user.custom_role.name }}</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  {# Custom Roles #}
+  <div class="bg-white border border-sa-border rounded-lg overflow-hidden">
+    <div class="px-5 py-4 border-b border-sa-border">
+      <h3 class="text-sm font-semibold text-sa-fg"><i class="fas fa-user-tag mr-2 text-sa-muted"></i>Custom Roles</h3>
+    </div>
+    {% if roles %}
+    <div class="divide-y divide-sa-border-light">
+      {% for role in roles %}
+      <div class="px-5 py-3">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-sm font-medium text-sa-fg">{{ role.name }}</span>
+          <span class="text-[10px] text-sa-muted">{{ role.users|length }} user(s)</span>
+        </div>
+        <p class="text-xs text-sa-muted mb-2">{{ role.description }}</p>
+        <div class="flex flex-wrap gap-1">
+          {% for perm in role.permissions %}
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-medium bg-sa-accent/10 text-sa-accent">{{ perm.resource }}:{{ perm.action }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="px-5 py-8 text-center text-sm text-sa-muted">No custom roles defined.</div>
+    {% endif %}
+  </div>
+
+  {# Permission Matrix #}
+  <div class="bg-white border border-sa-border rounded-lg overflow-hidden">
+    <div class="px-5 py-4 border-b border-sa-border">
+      <h3 class="text-sm font-semibold text-sa-fg"><i class="fas fa-lock mr-2 text-sa-muted"></i>All Permissions</h3>
+    </div>
+    <div class="max-h-96 overflow-y-auto">
+      {% if permissions %}
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-sa-bg sticky top-0">
+            <th class="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wide text-sa-muted">Resource</th>
+            <th class="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wide text-sa-muted">Action</th>
+            <th class="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wide text-sa-muted">Name</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-sa-border-light">
+          {% for perm in permissions %}
+          <tr class="hover:bg-sa-surface-hover">
+            <td class="px-3 py-2 text-xs font-medium text-sa-fg">{{ perm.resource }}</td>
+            <td class="px-3 py-2 text-xs text-sa-muted">{{ perm.action }}</td>
+            <td class="px-3 py-2 text-xs font-mono text-sa-muted-strong">{{ perm.name }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="px-5 py-8 text-center text-sm text-sa-muted">No permissions defined.</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -11,8 +11,19 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 from routes import main_blueprint
 from .common_imports import *
-from models import Permission, CustomRole, UserActivity
+from models import Permission, CustomRole, UserActivity, User
 from datetime import datetime, timedelta, timezone
+
+
+@main_blueprint.route("/settings/roles")
+@login_required
+def settings_roles():
+    if current_user.effective_tier > 1:
+        abort(403)
+    roles = CustomRole.query.order_by(CustomRole.name).all()
+    permissions = Permission.query.order_by(Permission.resource, Permission.action).all()
+    users = User.query.order_by(User.username).all()
+    return render_template("settings/roles_management.html", roles=roles, permissions=permissions, users=users)
 
 
 @main_blueprint.route("/api/permissions", methods=["GET"])
