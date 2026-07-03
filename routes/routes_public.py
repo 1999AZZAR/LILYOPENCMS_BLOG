@@ -425,12 +425,11 @@ def search():
     # Render the template, passing the pagination object AND
     # the specific filters applied in *this* request for pagination links.
     return render_template(
-        "public/news.html",  # Or your specific search results template name
-        news=news_list,  # The pagination object
-        query=query,  # For pagination links
-        category=selected_category_name,  # For pagination links
-        tag=selected_tag_name,  # For pagination links
-        # No need to pass categories/tags list here anymore (handled by context processor)
+        "public/search.html",
+        news=news_list,
+        query=query,
+        category=selected_category_name,
+        tag=selected_tag_name,
     )
 
 # ----------------------
