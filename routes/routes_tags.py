@@ -99,6 +99,12 @@ def settings_tag_rename(tag_id):
 
 
 # ── API: Tag CRUD ─────────────────────────────────────────────────────
+@main_blueprint.route("/api/tags", methods=["GET"])
+def api_tags_public():
+    tags = Tag.query.order_by(Tag.name.asc()).all()
+    return jsonify({"tags": [t.to_dict() for t in tags]})
+
+
 @main_blueprint.route("/api/settings/tags", methods=["GET"])
 @login_required
 def api_tags_list():
@@ -106,6 +112,27 @@ def api_tags_list():
         return jsonify({"error": "Forbidden"}), 403
     tags = Tag.query.order_by(Tag.name.asc()).all()
     return jsonify({"tags": [t.to_dict() for t in tags]})
+
+
+@main_blueprint.route("/api/settings/tags", methods=["POST"])
+@login_required
+def api_tags_create():
+    if not current_user.has_permission("settings", "update"):
+        return jsonify({"error": "Forbidden"}), 403
+
+    data = request.get_json(silent=True) or {}
+    name = (data.get("name") or "").strip()
+    if not name:
+        return jsonify({"error": "Tag name is required"}), 400
+
+    slug = slugify(name)
+    if Tag.query.filter_by(slug=slug).first():
+        return jsonify({"error": "Tag already exists"}), 409
+
+    tag = Tag(name=name, slug=slug)
+    db.session.add(tag)
+    db.session.commit()
+    return jsonify(tag.to_dict()), 201
 
 
 @main_blueprint.route("/api/tags/suggest", methods=["GET"])

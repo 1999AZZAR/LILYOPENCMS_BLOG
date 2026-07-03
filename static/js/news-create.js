@@ -481,6 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('title', document.getElementById('news-title').value.trim());
             formData.append('content', addSimplemde.value().trim());
             formData.append('tagar', document.getElementById('news-tagar').value.trim());
+            formData.append('tag_ids', document.getElementById('news-tag-ids').value.trim());
             formData.append('date', document.getElementById('news-date').value);
             formData.append('category', document.getElementById('news-category').value);
             formData.append('is_news', document.getElementById('news-premium').checked); // Changed from premium to is_news

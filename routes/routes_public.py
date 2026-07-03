@@ -589,7 +589,7 @@ def get_categories():
     )
 
 
-@main_blueprint.route("/api/tags", methods=["GET"])
+@main_blueprint.route("/api/tags/legacy", methods=["GET"])
 def get_tags():
     """Fetch all unique tags from the news articles."""
     tags = db.session.query(News.tagar).distinct().all()

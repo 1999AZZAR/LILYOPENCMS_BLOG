@@ -330,6 +330,15 @@ def create_news_api():
 
             db.session.add(news)
             db.session.commit()
+
+            # Associate tags from tag_ids
+            tag_ids_str = data.get("tag_ids", "").strip()
+            if tag_ids_str:
+                tag_ids = [int(x) for x in tag_ids_str.split(",") if x.strip().isdigit()]
+                if tag_ids:
+                    tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+                    news.tags.extend(tags)
+                    db.session.commit()
             
             # Calculate SEO score after creation
             news.seo_score = news.calculate_seo_score()

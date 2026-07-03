@@ -637,6 +637,7 @@ class Tag(db.Model):
             "id": self.id,
             "name": self.name,
             "slug": self.slug,
+            "count": self.news.count(),
             "created_at": self.created_at.isoformat(),
         }
 

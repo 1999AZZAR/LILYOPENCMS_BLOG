@@ -54,10 +54,23 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
  <label class="block text-sa-muted font-medium mb-2" for="news-writer">Penulis</label>
  <input type="text" id="news-writer" class="w-full bg-white border border-sa-border text-sa-muted p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="misalnya, John Doe" aria-label="Nama penulis">
  </div>
- <div>
- <label class="block text-sa-muted font-medium mb-2" for="news-tagar">Tag (pisahkan dengan koma)</label>
- <input type="text" id="news-tagar" class="w-full bg-white border border-sa-border text-sa-muted p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" placeholder="misalnya, teknologi, olahraga, bisnis" aria-label="Tag berita">
- </div>
+  <div>
+  <label class="block text-sa-muted font-medium mb-2" for="news-tag-picker">Tag</label>
+  <div class="relative">
+  <div id="news-tag-picker" style="border:1px solid hsl(var(--border));border-radius:0.5rem;padding:0.375rem;background:white">
+    <div id="tag-list" class="flex flex-wrap gap-1.5 mb-1.5"></div>
+    <div class="flex gap-1">
+      <input type="text" id="tag-input" autocomplete="off"
+        class="flex-1 border-0 outline-none text-sm px-1 py-1 text-sa-fg" style="background:transparent"
+        placeholder="Cari atau tambah tag...">
+      <button type="button" id="tag-add-btn"
+        class="px-2 py-1 text-xs font-semibold rounded-md text-white border-0 cursor-pointer" style="background:hsl(var(--primary))">Tambah</button>
+    </div>
+  </div>
+  <div id="tag-suggestions" class="hidden absolute z-50 mt-1 w-full bg-white border rounded-md shadow-lg max-h-40 overflow-y-auto" style="border-color:hsl(var(--border))"></div>
+  <input type="hidden" id="news-tag-ids" value="">
+  <input type="hidden" id="news-tagar" value="">
+  </div>
  <div>
  <label class="block text-sa-muted font-medium mb-2" for="news-date">Tanggal</label>
  <input type="date" id="news-date" class="w-full bg-white border border-sa-border text-sa-muted p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-sa-accent" required aria-required="true">
@@ -185,6 +198,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 {# Load dependent scripts first #}
 <script src="{{ url_for('static', filename='js/toast.js') }}"></script> {# Assuming toast.js is available #}
 <script src="https://cdn.jsdelivr.net/npm/simplemde@1.11.2/dist/simplemde.min.js"></script>
+<script src="{{ url_for('static', filename='js/tag-picker.js') }}"></script>
 {# Load the main script for this page #}
 <script src="{{ url_for('static', filename='js/news-create.js') }}"></script>
 {% endblock %}
