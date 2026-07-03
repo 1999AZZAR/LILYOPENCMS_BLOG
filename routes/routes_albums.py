@@ -77,7 +77,7 @@ def get_albums_api():
             query = query.join(Album.author).filter(User.role == UserRole.GENERAL)
         # 'all' for SUPERUSER means no additional user filtering
 
-    elif current_user.role == UserRole.ADMIN:
+    elif current_user.effective_tier == 1:
         allowed_user_ids = [current_user.id]
         general_users = (
             User.query.filter_by(role=UserRole.GENERAL).with_entities(User.id).all()

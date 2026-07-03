@@ -86,7 +86,7 @@ def get_news_api():
     elif external_link_filter == 'no_link':
         query = query.filter(or_(News.external_source == None, News.external_source == ''))
 
-    # --- Apply user/ownership filter based on current user's role ---
+    # --- Apply user/ownership filter based on current user's tier ---
     if current_user.effective_tier == 0:
         if user_filter == "owned":
             query = query.filter(News.user_id == current_user.id)
@@ -94,9 +94,9 @@ def get_news_api():
             query = query.join(News.author).filter(User.role == UserRole.ADMIN)
         elif user_filter == "by_general":
             query = query.join(News.author).filter(User.role == UserRole.GENERAL)
-        # 'all' for SUPERUSER means no additional user filtering
+        # 'all' for Tier 0 means no additional user filtering
 
-    elif current_user.role == UserRole.ADMIN:
+    elif current_user.effective_tier == 1:
         allowed_user_ids = [current_user.id]
         general_users = (
             User.query.filter_by(role=UserRole.GENERAL).with_entities(User.id).all()
@@ -107,10 +107,10 @@ def get_news_api():
             query = query.filter(News.user_id == current_user.id)
         elif user_filter == "by_general":
             query = query.join(News.author).filter(User.role == UserRole.GENERAL)
-        else:  # 'all' for ADMIN defaults to owned + general users' news
+        else:  # 'all' for Tier 1 defaults to owned + general users' news
             query = query.filter(News.user_id.in_(allowed_user_ids))
 
-    else:  # UserRole.GENERAL
+    else:  # Tier 2+ — own content only
         query = query.filter(News.user_id == current_user.id)
 
     # --- Exclude archived news by default ---
