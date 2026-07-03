@@ -318,3 +318,79 @@ def get_user_permissions_summary(user=None) -> Dict[str, List[str]]:
     for perm in PermissionManager.get_user_permissions(u):
         summary.setdefault(perm["resource"], []).append(perm["action"])
     return summary
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# Generic resource ownership & query scoping
+# ═══════════════════════════════════════════════════════════════════════
+
+_OWNER_FIELDS = ("user_id", "author_id", "created_by")
+
+
+def is_resource_owner(resource, user=None) -> bool:
+    """Check if a user owns a given resource/model instance.
+    
+    Inspects common FK fields (user_id, author_id, created_by) on the
+    resource and matches against user.id. Returns False for anonymous users.
+    
+    Usage:
+        is_resource_owner(news_obj)          # checks current_user
+        is_resource_owner(comment_obj, user)  # checks specific user
+    """
+    u = _get_user(user)
+    if not u or not u.is_authenticated:
+        return False
+    for field in _OWNER_FIELDS:
+        owner_id = getattr(resource, field, None)
+        if owner_id is not None:
+            return owner_id == u.id
+    return False
+
+
+def scope_query(model, query, user=None):
+    """Scope a SQLAlchemy query to resources owned by the user (Tier 3).
+    
+    For Tier 0–2, returns query unmodified (no scope).
+    For Tier 3, filters by the best-match owner field.
+    
+    Usage:
+        query = scope_query(News, News.query)
+        query = scope_query(Comment, Comment.query.filter_by(news_id=nid))
+    """
+    u = _get_user(user)
+    if not u or not u.is_authenticated:
+        return query.filter("1=0")  # no results for anonymous
+
+    if u.effective_tier <= 1:
+        return query  # admin/su — everything
+
+    # Determine the best owner field for this model
+    owner_field = None
+    model_attrs = {c.name for c in model.__table__.columns}
+    for field in _OWNER_FIELDS:
+        if field in model_attrs:
+            owner_field = field
+            break
+
+    if owner_field is None:
+        return query  # no owner field found, return all
+
+    return query.filter(getattr(model, owner_field) == u.id)
+
+
+def assert_owner(resource, user=None) -> None:
+    """Abort with 403 if user does not own the resource and is not Tier 0/1.
+    
+    Usage:
+        assert_owner(news)
+        # or in a route:
+        assert_owner(comment)
+    """
+    from flask import abort
+    u = _get_user(user)
+    if not u or not u.is_authenticated:
+        abort(401)
+    if u.effective_tier <= 1:
+        return  # Tier 0/1 always pass
+    if not is_resource_owner(resource, u):
+        abort(403)

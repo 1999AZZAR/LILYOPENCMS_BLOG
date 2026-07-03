@@ -83,16 +83,22 @@ def minimum_tier(level: int):
     return decorator
 
 
-def owner_or_tier(owner_attr: str = "user_id", min_tier: int = 2):
+def owner_or_tier(owner_attr: str = None, min_tier: int = 2):
     """Decorator: allows if user meets tier OR is the resource owner.
     
-    For routes where users can access own resources regardless of tier,
-    as long as they meet the minimum tier.
+    When owner_attr is provided as a kwarg name in the route function,
+    it extracts the ID from kwargs and matches against current_user.id.
+    When None, uses is_resource_owner() on the first positional arg
+    that is a SQLAlchemy model instance.
     
     Usage:
-        @owner_or_tier("user_id", min_tier=2)
+        @owner_or_tier('news_id', min_tier=2)
         def edit_news(news_id):
-            # passes if user.tier <= 2 OR owns the resource
+            ...
+        
+        @owner_or_tier()
+        def delete_comment(comment):
+            ...
     """
     def decorator(f):
         @wraps(f)
@@ -104,10 +110,19 @@ def owner_or_tier(owner_attr: str = "user_id", min_tier: int = 2):
             if user.effective_tier <= min_tier:
                 return f(*args, **kwargs)
 
-            # Check ownership via route kwarg
-            resource_owner_id = kwargs.get(owner_attr)
-            if resource_owner_id is not None and hasattr(user, "id") and user.id == int(resource_owner_id):
-                return f(*args, **kwargs)
+            # Check via kwarg ID
+            if owner_attr:
+                resource_owner_id = kwargs.get(owner_attr)
+                if resource_owner_id is not None and user.id == int(resource_owner_id):
+                    return f(*args, **kwargs)
+            
+            # Check via model instance in args
+            from shared.auth.permission_manager import is_resource_owner
+            for arg in args:
+                if hasattr(arg, '__tablename__'):
+                    if is_resource_owner(arg, user):
+                        return f(*args, **kwargs)
+                    break
 
             return _auth_response("Forbidden", 403, "PERMISSION_DENIED")
         return decorated
