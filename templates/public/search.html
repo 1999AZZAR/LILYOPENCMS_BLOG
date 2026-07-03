@@ -1,116 +1,93 @@
-{% extends "designs/" + (g.design if g.design != 'default' else 'news') + "/base.html" %}
-{% block title %}Pencarian{% if query %}: {{ query }}{% endif %} — {{ brand_info.site_name }}{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Pencarian{% if query %}: {{ query }}{% endif %} — {{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}
+
+{% block extra_head %}
+<style>
+  .search-input:focus { outline: none; box-shadow: 0 0 0 3px hsl(var(--primary)/0.2); }
+  .search-chip { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; background: hsl(var(--primary)/0.1); color: hsl(var(--primary)); }
+  .search-chip a { color: inherit; text-decoration: none; margin-left: 0.25rem; opacity: 0.6; }
+  .search-chip a:hover { opacity: 1; color: #ef4444; }
+</style>
+{% endblock %}
 
 {% block content %}
-<main class="min-h-screen bg-white text-gray-900 pt-20">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    {# Search header #}
-    <div class="mb-8">
-      <h1 class="text-2xl font-bold mb-4">Pencarian</h1>
-      <form action="{{ url_for('main.search') }}" method="GET" class="flex gap-2">
-        <input type="text" name="q" value="{{ query }}" placeholder="Cari artikel..."
-          class="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
-        <button type="submit"
-          class="px-5 py-2.5 rounded-lg text-sm font-semibold text-white border-0 cursor-pointer bg-blue-600 hover:bg-blue-700 transition-colors">
-          <i class="fas fa-search mr-1"></i>Cari
-        </button>
-      </form>
+<section class="py-10 lg:py-14">
+
+  <!-- Search header -->
+  <div class="mb-12">
+    <div class="section-heading">
+      <p class="section-heading-label">Pencarian</p>
+      <h2>{% if query %}"{{ query }}"{% else %}Cari Artikel{% endif %}</h2>
     </div>
 
+    <form action="{{ url_for('main.search') }}" method="GET" class="flex gap-3 mt-8" role="search">
+      <input type="text" name="q" value="{{ query }}"
+        placeholder="Cari judul atau konten..."
+        class="search-input flex-1 px-4 py-3 text-sm rounded-lg"
+        style="border:1px solid hsl(var(--border));background:var(--m3-container);color:hsl(var(--foreground))">
+      <button type="submit"
+        class="m3-button-filled flex items-center gap-2 !py-3 !px-6 text-sm">
+        <i class="fas fa-search"></i>Cari
+      </button>
+    </form>
+
     {% if query %}
-    <p class="text-sm text-gray-500 mb-6">
-      Hasil pencarian untuk "<strong>{{ query }}</strong>"
-      {% if news.total %} — {{ news.total }} ditemukan{% endif %}
+    <p class="text-sm mt-4" style="color:hsl(var(--muted-foreground))">
+      {% if news.total %}{{ news.total }} hasil untuk{% endif %}
+      {% if category or tag %}filter
+        {% if category %}"{{ category }}"{% endif %}
+        {% if tag %}#{{ tag }}{% endif %}
+      {% else %}pencarian{% endif %}
     </p>
     {% endif %}
 
-    {# Active filters #}
+    {# Active filter chips #}
     {% if category or tag %}
-    <div class="flex flex-wrap gap-2 mb-6">
+    <div class="flex flex-wrap gap-2 mt-4">
       {% if category %}
-      <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-        Kategori: {{ category }}
-        <a href="{{ url_for('main.search', q=query, tag=tag) }}" class="ml-1 hover:text-red-500">&times;</a>
+      <span class="search-chip">
+        <i class="fas fa-folder-open text-[0.625rem]"></i>{{ category }}
+        <a href="{{ url_for('main.search', q=query, tag=tag) }}">&times;</a>
       </span>
       {% endif %}
       {% if tag %}
-      <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-        Tag: {{ tag }}
-        <a href="{{ url_for('main.search', q=query, category=category) }}" class="ml-1 hover:text-red-500">&times;</a>
+      <span class="search-chip">
+        <i class="fas fa-tag text-[0.625rem]"></i>{{ tag }}
+        <a href="{{ url_for('main.search', q=query, category=category) }}">&times;</a>
       </span>
       {% endif %}
     </div>
     {% endif %}
-
-    {# Results #}
-    {% if news.items %}
-    <div class="space-y-4">
-      {% for article in news.items %}
-      <article class="flex gap-4 p-4 rounded-lg border border-gray-200 hover:shadow-sm transition-shadow">
-        {% if article.image and article.image.url %}
-        <div class="w-28 h-24 flex-shrink-0 rounded overflow-hidden bg-gray-100">
-          <img src="{{ article.image.url }}" alt="{{ article.title }}" class="w-full h-full object-cover">
-        </div>
-        {% endif %}
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-2 mb-1">
-            {% if article.category %}
-            <span class="text-[10px] font-semibold uppercase tracking-wider text-blue-600">{{ article.category.name }}</span>
-            {% endif %}
-            {% if article.date %}
-            <span class="text-xs text-gray-400">{{ article.date.strftime('%d %b %Y') }}</span>
-            {% endif %}
-          </div>
-          <h2 class="font-semibold">
-            <a href="{{ url_for('main.news_detail', news_id=article.id, news_title=safe_title(article.title)) }}"
-              class="text-gray-900 hover:text-blue-600 no-underline">{{ article.title }}</a>
-          </h2>
-          <p class="text-sm text-gray-600 mt-1 line-clamp-2">{{ article.excerpt or article.content|striptags|truncate(200) }}</p>
-          {% if article.writer or article.author %}
-          <p class="text-xs text-gray-400 mt-2">
-            <i class="fas fa-user mr-1"></i>{{ article.writer or article.author.username }}
-          </p>
-          {% endif %}
-        </div>
-      </article>
-      {% endfor %}
-    </div>
-
-    {# Pagination #}
-    {% if news.pages > 1 %}
-    <div class="flex justify-center gap-2 mt-8">
-      {% if news.has_prev %}
-      <a href="{{ url_for('main.search', q=query, category=category, tag=tag, page=news.prev_num) }}"
-        class="px-3 py-1.5 rounded border border-gray-300 text-sm hover:bg-gray-100 no-underline">&laquo; Sebelumnya</a>
-      {% endif %}
-      {% for p in range(1, news.pages + 1) %}
-        {% if p == news.page %}
-        <span class="px-3 py-1.5 rounded text-sm font-semibold text-white bg-blue-600">{{ p }}</span>
-        {% elif p <= 3 or p > news.pages - 3 or (p >= news.page - 1 and p <= news.page + 1) %}
-        <a href="{{ url_for('main.search', q=query, category=category, tag=tag, page=p) }}"
-          class="px-3 py-1.5 rounded border border-gray-300 text-sm hover:bg-gray-100 no-underline">{{ p }}</a>
-        {% elif p == 4 or p == news.pages - 3 %}
-        <span class="px-3 py-1.5 text-sm text-gray-400">&hellip;</span>
-        {% endif %}
-      {% endfor %}
-      {% if news.has_next %}
-      <a href="{{ url_for('main.search', q=query, category=category, tag=tag, page=news.next_num) }}"
-        class="px-3 py-1.5 rounded border border-gray-300 text-sm hover:bg-gray-100 no-underline">Selanjutnya &raquo;</a>
-      {% endif %}
-    </div>
-    {% endif %}
-
-    {% elif query %}
-    <div class="text-center py-16">
-      <div class="text-5xl mb-4 text-gray-300"><i class="fas fa-search"></i></div>
-      <p class="text-gray-500 text-lg">Tidak ditemukan hasil untuk "<strong>{{ query }}</strong>"</p>
-      <p class="text-gray-400 text-sm mt-2">Coba gunakan kata kunci yang berbeda.</p>
-    </div>
-    {% else %}
-    <div class="text-center py-16">
-      <p class="text-gray-400">Masukkan kata kunci untuk mencari artikel.</p>
-    </div>
-    {% endif %}
   </div>
-</main>
+
+  {# Results grid — same card dispatcher as news listing #}
+  {% if news.items %}
+  {% set card_context = 'listing' %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
+    {% for item in news.items %}
+    {% include 'public/components/_card_dispatcher.html' %}
+    {% endfor %}
+  </div>
+
+  {% with pagination_obj=news, pagination_route='main.search' %}
+    {% include 'pagination.html' %}
+  {% endwith %}
+
+  {% elif query %}
+  <div class="py-24 text-center" style="border:1px solid hsl(var(--border));">
+    <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full" style="background:hsl(var(--primary)/0.08)">
+      <i class="fas fa-search text-xl" style="color:hsl(var(--muted-foreground))"></i>
+    </div>
+    <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-3" style="color:hsl(var(--muted-foreground));">Tidak Ditemukan</p>
+    <p class="text-xl font-black" style="color:hsl(var(--foreground));">Tidak ada hasil untuk "<strong>{{ query }}</strong>"</p>
+    <p class="text-sm mt-2" style="color:hsl(var(--muted-foreground));">Coba kata kunci yang berbeda atau kurangi filter.</p>
+  </div>
+  {% else %}
+  <div class="py-24 text-center">
+    <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-3" style="color:hsl(var(--muted-foreground));">Pencarian</p>
+    <p class="text-xl font-black" style="color:hsl(var(--foreground));">Masukkan kata kunci untuk mencari artikel.</p>
+  </div>
+  {% endif %}
+
+</section>
 {% endblock %}

@@ -1,51 +1,35 @@
-{% extends "designs/" + (g.design if g.design != 'default' else 'news') + "/base.html" %}
-{% block title %}Tag: {{ tag.name }} — {{ brand_info.site_name }}{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Tag: {{ tag.name }} — {{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}
 
 {% block content %}
-<main class="min-h-screen bg-white text-gray-900 pt-20">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="mb-8">
-      <div class="flex items-center gap-3 mb-2">
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
-          <i class="fas fa-tag mr-1"></i>{{ tag.name }}
-        </span>
-        <span class="text-sm text-gray-500">{{ articles.total }} artikel</span>
-      </div>
-    </div>
+<section class="py-10 lg:py-14">
 
-    {% if articles %}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {% for article in articles %}
-      <article class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-        {% if article.featured_image %}
-        <div class="aspect-video overflow-hidden">
-          <img src="{{ article.featured_image }}" alt="{{ article.title }}" class="w-full h-full object-cover">
-        </div>
-        {% endif %}
-        <div class="p-4">
-          <h2 class="text-lg font-semibold mb-2">
-            <a href="{{ article.url }}" class="text-gray-900 hover:text-blue-600 no-underline">{{ article.title }}</a>
-          </h2>
-          <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ article.excerpt or article.content|striptags|truncate(120) }}</p>
-          <div class="flex items-center gap-2 text-xs text-gray-500">
-            <i class="fas fa-calendar"></i>
-            <time datetime="{{ article.publish_date.isoformat() }}">{{ article.publish_date.strftime('%d %b %Y') }}</time>
-            {% if article.author %}
-            <span class="mx-1">·</span>
-            <i class="fas fa-user"></i>
-            {{ article.author.username }}
-            {% endif %}
-          </div>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
-    {% else %}
-    <div class="text-center py-16">
-      <div class="text-4xl mb-4">📄</div>
-      <p class="text-gray-500">Belum ada artikel dengan tag ini.</p>
-    </div>
-    {% endif %}
+  <div class="section-heading">
+    <p class="section-heading-label">Tag</p>
+    <h2>#{{ tag.name }}</h2>
   </div>
-</main>
+  <p class="text-base font-medium mb-16 -mt-6" style="color:hsl(var(--muted-foreground));">
+    {% if articles.total %}{{ articles.total }} artikel{% endif %}
+  </p>
+
+  {% if articles.items %}
+  {% set card_context = 'listing' %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
+    {% for item in articles.items %}
+    {% include 'public/components/_card_dispatcher.html' %}
+    {% endfor %}
+  </div>
+
+  {% with pagination_obj=articles, pagination_route='main.public_tag' %}
+    {% include 'pagination.html' %}
+  {% endwith %}
+
+  {% else %}
+  <div class="py-24 text-center" style="border:1px solid hsl(var(--border));">
+    <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-3" style="color:hsl(var(--muted-foreground));">Tag</p>
+    <p class="text-xl font-black" style="color:hsl(var(--foreground));">Belum ada artikel dengan tag ini.</p>
+  </div>
+  {% endif %}
+
+</section>
 {% endblock %}

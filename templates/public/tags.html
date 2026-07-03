@@ -1,28 +1,34 @@
-{% extends "designs/" + (g.design if g.design != 'default' else 'news') + "/base.html" %}
-{% block title %}Semua Tag — {{ brand_info.site_name }}{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Semua Tag — {{ brand_info.brand_name|default('LilyOpenCMS') }}{% endblock %}
 
 {% block content %}
-<main class="min-h-screen bg-white text-gray-900 pt-20">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <h1 class="text-3xl font-bold mb-8">Semua Tag</h1>
+<section class="py-10 lg:py-14">
 
-    {% if tags %}
-    <div class="flex flex-wrap gap-3">
-      {% for tag in tags %}
-      <a href="{{ url_for('main.public_tag', slug=tag.slug) }}"
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 text-gray-800 hover:bg-blue-100 hover:text-blue-800 transition-colors no-underline">
-        <i class="fas fa-tag text-xs"></i>
-        <span class="font-medium">{{ tag.name }}</span>
-        <span class="text-xs text-gray-500">({{ tag.news.count() }})</span>
-      </a>
-      {% endfor %}
-    </div>
-    {% else %}
-    <div class="text-center py-16">
-      <div class="text-4xl mb-4">🏷️</div>
-      <p class="text-gray-500">Belum ada tag.</p>
-    </div>
-    {% endif %}
+  <div class="section-heading">
+    <p class="section-heading-label">Jelajahi</p>
+    <h2>Semua Tag</h2>
   </div>
-</main>
+  <p class="text-base font-medium mb-16 -mt-6" style="color:hsl(var(--muted-foreground));">
+    {{ tags|length }} tag tersedia
+  </p>
+
+  {% if tags %}
+  <div class="flex flex-wrap gap-3">
+    {% for tag in tags %}
+    <a href="{{ url_for('main.public_tag', slug=tag.slug) }}"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold no-underline transition-all hover:scale-105"
+      style="background:hsl(var(--primary)/0.08);color:hsl(var(--primary));">
+      #{{ tag.name }}
+      <span class="text-[0.625rem] opacity-60">{{ tag.news.count() }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="py-24 text-center" style="border:1px solid hsl(var(--border));">
+    <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-3" style="color:hsl(var(--muted-foreground));">Tag</p>
+    <p class="text-xl font-black" style="color:hsl(var(--foreground));">Belum ada tag.</p>
+  </div>
+  {% endif %}
+
+</section>
 {% endblock %}
