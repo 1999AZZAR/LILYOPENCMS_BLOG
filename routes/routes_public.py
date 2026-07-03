@@ -991,6 +991,41 @@ def albums_management():
     return render_template("settings/albums_management.html")
 
 
+@main_blueprint.route("/rss.xml")
+@main_blueprint.route("/rss/")
+def rss_feed():
+    from datetime import timezone
+    news_list = News.query.filter(News.is_visible == True).order_by(News.date.desc()).limit(50).all()
+    site_url = request.host_url.rstrip("/")
+    site_name = getattr(g, "site_name", brand_info.site_name if "brand_info" in dir() else "LilyOpenCMS") if "brand_info" in dir() else "LilyOpenCMS"
+
+    items = "".join(
+        f"""    <item>
+        <title><![CDATA[{n.title}]]></title>
+        <link>{site_url}/news/{n.id}/{safe_title(n.title)}</link>
+        <guid>{site_url}/news/{n.id}/{safe_title(n.title)}</guid>
+        <pubDate>{n.date.strftime("%a, %d %b %Y %H:%M:%S +0000") if n.date else ""}</pubDate>
+        <description><![CDATA[{n.excerpt or n.content[:300] if n.content else ""}]]></description>
+        <category>{n.category.name if n.category else ""}</category>
+    </item>"""
+        for n in news_list if n.is_visible
+    )
+
+    rss = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>{site_name}</title>
+        <link>{site_url}</link>
+        <description>{site_name} - RSS Feed</description>
+        <language>id</language>
+        <lastBuildDate>{datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")}</lastBuildDate>
+        <atom:link href="{site_url}/rss.xml" rel="self" type="application/rss+xml"/>
+{items}
+    </channel>
+</rss>"""
+    return Response(rss, mimetype="application/rss+xml")
+
+
 @main_blueprint.route("/robots.txt")
 def robots_txt():
     """Serve dynamically generated robots.txt file based on request host and environment."""
