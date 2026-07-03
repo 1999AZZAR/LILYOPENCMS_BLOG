@@ -7,29 +7,23 @@
 {# Filter tabs #}
 <nav class="flex gap-1 mb-6 p-1 rounded-lg bg-white border border-sa-border" role="tablist">
   <a href="{{ url_for('main.settings_comments', status='pending') }}"
-    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if current_status == 'pending' else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if status_filter == 'pending' else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
     <i class="fas fa-clock"></i>Menunggu
-    {% if counts.pending > 0 %}
-      <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[0.625rem] font-bold {{ 'bg-white/20 text-white' if current_status == 'pending' else 'bg-sa-accent/10 text-sa-accent' }}">{{ counts.pending }}</span>
-    {% endif %}
   </a>
   <a href="{{ url_for('main.settings_comments', status='approved') }}"
-    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if current_status == 'approved' else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if status_filter == 'approved' else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
     <i class="fas fa-check"></i>Disetujui
-    {% if counts.approved > 0 %}
-      <span class="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 rounded-full text-[0.625rem] font-bold {{ 'bg-white/20 text-white' if current_status == 'approved' else 'bg-sa-accent/10 text-sa-accent' }}">{{ counts.approved }}</span>
-    {% endif %}
   </a>
   <a href="{{ url_for('main.settings_comments', status='rejected') }}"
-    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if current_status == 'rejected' else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if status_filter == 'rejected' else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
     <i class="fas fa-ban"></i>Ditolak
   </a>
   <a href="{{ url_for('main.settings_comments', status='spam') }}"
-    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if current_status == 'spam' else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if status_filter == 'spam' else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
     <i class="fas fa-shield-halved"></i>Spam
   </a>
   <a href="{{ url_for('main.settings_comments') }}"
-    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if not current_status else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
+    class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all no-underline {{ 'bg-sa-accent text-white shadow-sm' if not status_filter else 'text-sa-muted-strong hover:bg-sa-surface-hover' }}">
     Semua
   </a>
 </nav>
@@ -92,8 +86,7 @@
       <div class="flex-shrink-0">
         <div class="flex items-center gap-1">
           {% if comment.status.value != 'approved' %}
-          <form method="POST" action="{{ url_for('main.settings_comment_action', comment_id=comment.id) }}" class="inline">
-            <input type="hidden" name="action" value="approve">
+          <form method="POST" action="{{ url_for('main.settings_comment_approve', comment_id=comment.id) }}" class="inline">
             <button type="submit" title="Setujui"
               class="flex items-center justify-center w-7 h-7 rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-success-bg hover:border-sa-success hover:text-sa-success transition-all cursor-pointer">
               <i class="fas fa-check"></i>
@@ -101,8 +94,7 @@
           </form>
           {% endif %}
           {% if comment.status.value != 'rejected' %}
-          <form method="POST" action="{{ url_for('main.settings_comment_action', comment_id=comment.id) }}" class="inline">
-            <input type="hidden" name="action" value="reject">
+          <form method="POST" action="{{ url_for('main.settings_comment_reject', comment_id=comment.id) }}" class="inline">
             <button type="submit" title="Tolak"
               class="flex items-center justify-center w-7 h-7 rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-warning-bg hover:border-sa-warning hover:text-sa-warning transition-all cursor-pointer">
               <i class="fas fa-ban"></i>
@@ -110,17 +102,15 @@
           </form>
           {% endif %}
           {% if comment.status.value != 'spam' %}
-          <form method="POST" action="{{ url_for('main.settings_comment_action', comment_id=comment.id) }}" class="inline">
-            <input type="hidden" name="action" value="spam">
+          <form method="POST" action="{{ url_for('main.settings_comment_spam', comment_id=comment.id) }}" class="inline">
             <button type="submit" title="Spam"
               class="flex items-center justify-center w-7 h-7 rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-warning-bg hover:border-sa-warning hover:text-sa-warning transition-all cursor-pointer">
               <i class="fas fa-shield-halved"></i>
             </button>
           </form>
           {% endif %}
-          <form method="POST" action="{{ url_for('main.settings_comment_action', comment_id=comment.id) }}" class="inline"
+          <form method="POST" action="{{ url_for('main.settings_comment_delete', comment_id=comment.id) }}" class="inline"
             onsubmit="return confirm('Hapus komentar ini?')">
-            <input type="hidden" name="action" value="delete">
             <button type="submit" title="Hapus"
               class="flex items-center justify-center w-7 h-7 rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-critical-bg hover:border-sa-critical hover:text-sa-critical transition-all cursor-pointer">
               <i class="fas fa-trash"></i>
@@ -139,7 +129,7 @@
   </div>
   <div class="text-sm font-medium mb-1 text-sa-fg">Tidak ada komentar</div>
   <div class="text-xs text-sa-muted">
-    {% if current_status %}Tidak ada komentar dengan status ini.{% else %}Belum ada komentar masuk.{% endif %}
+    {% if status_filter %}Tidak ada komentar dengan status ini.{% else %}Belum ada komentar masuk.{% endif %}
   </div>
 </div>
 {% endif %}
