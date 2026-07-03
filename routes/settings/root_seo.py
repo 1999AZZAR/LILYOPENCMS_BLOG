@@ -25,7 +25,7 @@ root_seo_bp = Blueprint('root_seo', __name__)
 @login_required
 def root_seo_management():
     """Main page for root SEO management."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         flash('Anda tidak memiliki izin untuk mengakses halaman ini.', 'error')
         return redirect(url_for('main.settings_dashboard'))
     
@@ -55,7 +55,7 @@ def root_seo_management():
 @login_required
 def create_root_seo():
     """Create a new root SEO entry."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         flash('Anda tidak memiliki izin untuk membuat pengaturan SEO.', 'error')
         return redirect(url_for('root_seo.root_seo_management'))
     
@@ -138,14 +138,14 @@ def manage_root_seo(seo_id):
     root_seo = RootSEO.query.get_or_404(seo_id)
     
     if request.method == 'GET':
-        if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if current_user.effective_tier > 1:
             flash('Anda tidak memiliki izin untuk melihat pengaturan SEO.', 'error')
             return redirect(url_for('root_seo.root_seo_management'))
         
         return jsonify({'success': True, 'data': root_seo.to_dict()})
     
     elif request.method == 'PUT':
-        if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if current_user.effective_tier > 1:
             return jsonify({'success': False, 'message': 'Anda tidak memiliki izin untuk mengubah pengaturan SEO.'}), 403
         
         try:
@@ -223,7 +223,7 @@ def manage_root_seo(seo_id):
             return jsonify({'success': False, 'message': f'Error updating root SEO: {str(e)}'}), 500
     
     elif request.method == 'DELETE':
-        if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if current_user.effective_tier > 1:
             return jsonify({'success': False, 'message': 'Anda tidak memiliki izin untuk menghapus pengaturan SEO.'}), 403
         
         try:
@@ -251,7 +251,7 @@ def manage_root_seo(seo_id):
 @login_required
 def bulk_update_root_seo():
     """Bulk update root SEO entries."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         return jsonify({'success': False, 'message': 'Anda tidak memiliki izin untuk mengubah pengaturan SEO.'}), 403
     
     try:
@@ -298,7 +298,7 @@ def bulk_update_root_seo():
 @login_required
 def root_seo_analytics():
     """Get analytics data for root SEO."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         return jsonify({'success': False, 'message': 'Anda tidak memiliki izin untuk melihat analitik SEO.'}), 403
     
     try:
@@ -350,7 +350,7 @@ def root_seo_analytics():
 @login_required
 def export_root_seo():
     """Export root SEO data as JSON."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         flash('Anda tidak memiliki izin untuk mengekspor data SEO.', 'error')
         return redirect(url_for('root_seo.root_seo_management'))
     

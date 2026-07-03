@@ -23,7 +23,7 @@ from .common_imports import *
 @login_required
 def settings_privacy_policy():
     # Allow access to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
 
     policies = PrivacyPolicy.query.order_by(PrivacyPolicy.section_order).all()
@@ -65,7 +65,7 @@ def settings_privacy_policy():
 @login_required
 def settings_media_guidelines():
     # Allow access to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
 
     guidelines = MediaGuideline.query.order_by(MediaGuideline.section_order).all()
@@ -149,7 +149,7 @@ def settings_visi_misi():
 @login_required
 def settings_pedomanhak():
     # Allow access to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
 
     pedomanhak_sections = PedomanHak.query.order_by(PedomanHak.section_order).all()
@@ -193,7 +193,7 @@ def settings_pedomanhak():
 @login_required
 def settings_penyangkalan():
     # Allow access to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
 
     penyangkalan_sections = Penyangkalan.query.order_by(

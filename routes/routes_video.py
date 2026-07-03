@@ -114,7 +114,7 @@ def get_youtube_video(video_id):
 @main_blueprint.route("/api/youtube_videos", methods=["POST"])
 @login_required
 def add_youtube_video():
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     data = request.get_json()
@@ -188,7 +188,7 @@ def add_youtube_video():
 @main_blueprint.route("/api/youtube_videos/<int:video_id>", methods=["PUT"])
 @login_required
 def update_youtube_video(video_id):
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     video = YouTubeVideo.query.get_or_404(video_id)
@@ -226,7 +226,7 @@ def update_youtube_video(video_id):
 )
 @login_required
 def toggle_youtube_video_visibility(video_id):
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     video = YouTubeVideo.query.get_or_404(video_id)
@@ -245,7 +245,7 @@ def toggle_youtube_video_visibility(video_id):
 @main_blueprint.route("/api/youtube_videos/<int:video_id>", methods=["DELETE"])
 @login_required
 def delete_youtube_video(video_id):
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     video = YouTubeVideo.query.get_or_404(video_id)
@@ -266,7 +266,7 @@ def bulk_delete_youtube_videos():
     videos_to_delete = YouTubeVideo.query.filter(YouTubeVideo.id.in_(ids)).all()
     deleted_count = 0
     for video in videos_to_delete:
-        if video.user_id == current_user.id or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if video.user_id == current_user.id or current_user.effective_tier <= 1:
             db.session.delete(video)
             deleted_count += 1
     db.session.commit()
@@ -286,7 +286,7 @@ def bulk_update_youtube_videos_visibility():
     videos_to_update = YouTubeVideo.query.filter(YouTubeVideo.id.in_(ids)).all()
     updated_count = 0
     for video in videos_to_update:
-        if video.user_id == current_user.id or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if video.user_id == current_user.id or current_user.effective_tier <= 1:
             video.is_visible = is_visible
             updated_count += 1
     db.session.commit()

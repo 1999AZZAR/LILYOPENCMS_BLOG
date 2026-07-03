@@ -42,7 +42,7 @@ def create_social_media():
     POST: Add a new social media link (Requires Admin/Superuser).
     """
     # Permission Check
-    if not current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(
             403, "You do not have permission to add social media links."
         )  # Return JSON, not HTML
@@ -132,7 +132,7 @@ def update_delete_social_media_item(social_id):
         abort(404, f"Social media link with ID {social_id} not found.")
 
     # Permission check for both PUT and DELETE
-    if not current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(
             403, "You do not have permission to modify social media links."
         )  # Corrected typo and message

@@ -23,7 +23,7 @@ from .common_imports import *
 @login_required
 def settings_categories():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     return render_template("settings/categories_management.html")
 
@@ -31,7 +31,7 @@ def settings_categories():
 @main_blueprint.route("/settings/youtube")
 @login_required
 def settings_youtube():
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     videos = YouTubeVideo.query.all()

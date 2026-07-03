@@ -250,7 +250,7 @@ def reset_password():
 @login_required
 def get_pending_registrations():
     """Get all pending user registrations."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     # Get users that are not active (pending approval)
@@ -276,7 +276,7 @@ def get_pending_registrations():
 @login_required
 def approve_registration(user_id):
     """Approve a user registration."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     user = User.query.get_or_404(user_id)
@@ -315,7 +315,7 @@ def approve_registration(user_id):
 @login_required
 def reject_registration(user_id):
     """Reject a user registration."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     user = User.query.get_or_404(user_id)
@@ -341,7 +341,7 @@ def reject_registration(user_id):
 @login_required
 def bulk_approve_registrations():
     """Bulk approve user registrations."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     data = request.get_json()
@@ -391,7 +391,7 @@ def bulk_approve_registrations():
 @login_required
 def bulk_reject_registrations():
     """Bulk reject user registrations."""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     data = request.get_json()
@@ -456,7 +456,7 @@ def login():
 
         if user and user.check_password(password):
             # If maintenance is enabled, allow only SUPERUSER
-            if maintenance_enabled and user.role != UserRole.SUPERUSER:
+            if maintenance_enabled and user.effective_tier != 0:
                 flash(maintenance_message, "error")
                 return render_template("public/login.html", firebase_config=_get_firebase_config())
             if not user.is_active:
@@ -494,7 +494,7 @@ def login():
             custom_name = (user.custom_role.name.lower() if user.custom_role and user.custom_role.name else "")
             if custom_name in ['editor', 'subadmin', 'media-manager']:
                 return redirect(url_for("editor.dashboard"))
-            elif user.role in [UserRole.ADMIN, UserRole.SUPERUSER] or user.is_owner():
+            elif user.effective_tier <= 1:
                 return redirect(url_for("main.settings_dashboard"))
 
             return redirect(url_for("user_profile.user_profile", username=user.username))
@@ -849,7 +849,7 @@ def get_user_dashboard_url(user):
     custom_name = (user.custom_role.name.lower() if user.custom_role and user.custom_role.name else "")
     if custom_name == 'editor':
         return url_for("editor.dashboard")
-    elif custom_name in ['subadmin', 'media-manager'] or user.role in [UserRole.ADMIN, UserRole.SUPERUSER] or user.is_owner():
+    elif custom_name in ['subadmin', 'media-manager'] or user.effective_tier <= 1:
         return url_for("main.settings_dashboard")
     return url_for("user_profile.user_profile", username=user.username)
 

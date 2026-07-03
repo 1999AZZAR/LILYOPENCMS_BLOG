@@ -26,7 +26,7 @@ def safe_title(title):
 @main_blueprint.route("/settings/image")
 @login_required
 def settingsimage():
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     page = request.args.get('page', 1, type=int)
@@ -144,7 +144,7 @@ def upload_image():
 @main_blueprint.route("/api/images/<int:image_id>", methods=["PUT"])
 @login_required
 def update_image(image_id):
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     image = Image.query.get_or_404(image_id)
@@ -220,7 +220,7 @@ def toggle_image_visibility(image_id):
 @main_blueprint.route("/api/images/<int:image_id>", methods=["DELETE"])
 @login_required
 def delete_image(image_id):
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     image = Image.query.get_or_404(image_id)
@@ -253,7 +253,7 @@ def bulk_delete_images():
     images_to_delete = Image.query.filter(Image.id.in_(ids)).all()
     deleted_count = 0
     for image in images_to_delete:
-        if image.user_id == current_user.id or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if image.user_id == current_user.id or current_user.effective_tier <= 1:
             db.session.delete(image)
             deleted_count += 1
     db.session.commit()
@@ -272,7 +272,7 @@ def bulk_update_images_visibility():
     images_to_update = Image.query.filter(Image.id.in_(ids)).all()
     updated_count = 0
     for image in images_to_update:
-        if image.user_id == current_user.id or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if image.user_id == current_user.id or current_user.effective_tier <= 1:
             image.is_visible = is_visible
             updated_count += 1
     db.session.commit()

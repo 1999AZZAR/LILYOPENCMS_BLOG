@@ -28,7 +28,7 @@ def manage_categories():
         )
 
     # Only allow settingss and superusers to add categories
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         return jsonify({"error": "Forbidden"}), 403  # Return JSON, not HTML
 
     if request.method == "POST":
@@ -70,7 +70,7 @@ def manage_category(category_id):
     DELETE: Delete a category (only for settingss and superusers).
     """
     # Only allow settingss and superusers to modify categories
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
 
     category = Category.query.get_or_404(category_id)

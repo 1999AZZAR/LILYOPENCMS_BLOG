@@ -23,7 +23,7 @@ from .common_imports import *
 @login_required
 def settings_performance():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     # Get performance data from optimizations
@@ -131,7 +131,7 @@ def settings_performance():
 @login_required
 def settings_asset_optimization():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     # Get asset optimization data
@@ -154,7 +154,7 @@ def settings_asset_optimization():
 @login_required
 def settings_ssr_optimization():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     # Get SSR optimization data

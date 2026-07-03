@@ -87,7 +87,7 @@ def get_news_api():
         query = query.filter(or_(News.external_source == None, News.external_source == ''))
 
     # --- Apply user/ownership filter based on current user's role ---
-    if current_user.role == UserRole.SUPERUSER:
+    if current_user.effective_tier == 0:
         if user_filter == "owned":
             query = query.filter(News.user_id == current_user.id)
         elif user_filter == "by_admin":
@@ -396,7 +396,7 @@ def get_news_detail_api(news_id):
         # Optional: Check visibility based on role (e.g., author/admin can see hidden ones)
         if (
             not news.is_visible
-            and current_user.role == UserRole.GENERAL
+            and current_user.effective_tier >= 3
             and news.user_id != current_user.id
         ):
             abort(
@@ -435,7 +435,7 @@ def update_news_api(news_id):
     # Permission: Only author or Admin/Superuser can update
     if not (
         news.user_id == current_user.id
-        or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]
+        or current_user.effective_tier <= 1
     ):
         current_app.logger.warning(
             f"Forbidden PUT attempt on news ID {news_id} by user {current_user.username}"
@@ -606,7 +606,7 @@ def delete_news_api(news_id):
     # Permission: Only author or Admin/Superuser can delete
     if not (
         news.user_id == current_user.id
-        or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]
+        or current_user.effective_tier <= 1
     ):
         current_app.logger.warning(
             f"Forbidden DELETE attempt on news ID {news_id} by user {current_user.username}"
@@ -661,7 +661,7 @@ def toggle_news_visibility(news_id):
     # Permission: Only author or Admin/Superuser can toggle visibility
     if not (
         news.user_id == current_user.id
-        or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]
+        or current_user.effective_tier <= 1
     ):
         current_app.logger.warning(
             f"Forbidden PATCH visibility attempt on news ID {news_id} by user {current_user.username}"
@@ -817,7 +817,7 @@ def get_share_data(news_id):
 @main_blueprint.route("/api/settings/recent-news", methods=["GET"])
 @login_required
 def settings_recent_news():
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     recent_news = News.query.order_by(News.date.desc()).limit(5).all()
@@ -924,7 +924,7 @@ def bulk_delete_news():
     news_to_delete = News.query.filter(News.id.in_(ids)).all()
     deleted_count = 0
     for news in news_to_delete:
-        if news.user_id == current_user.id or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if news.user_id == current_user.id or current_user.effective_tier <= 1:
             db.session.delete(news)
             deleted_count += 1
     db.session.commit()
@@ -944,7 +944,7 @@ def bulk_update_news_visibility():
     news_to_update = News.query.filter(News.id.in_(ids)).all()
     updated_count = 0
     for news in news_to_update:
-        if news.user_id == current_user.id or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if news.user_id == current_user.id or current_user.effective_tier <= 1:
             news.is_visible = is_visible
             updated_count += 1
     db.session.commit()
@@ -964,7 +964,7 @@ def bulk_update_news_category():
     news_to_update = News.query.filter(News.id.in_(ids)).all()
     updated_count = 0
     for news in news_to_update:
-        if news.user_id == current_user.id or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if news.user_id == current_user.id or current_user.effective_tier <= 1:
             news.category_id = category_id
             updated_count += 1
     db.session.commit()
@@ -996,7 +996,7 @@ def duplicate_news_api(news_id):
 
     # Permission: Only allow duplicate if user can see the article
     current_app.logger.info(f"Checking permissions - news.is_visible: {news.is_visible}, user.role: {current_user.role}, news.user_id: {news.user_id}, current_user.id: {current_user.id}")
-    if not news.is_visible and current_user.role == UserRole.GENERAL and news.user_id != current_user.id:
+    if not news.is_visible and current_user.effective_tier >= 3 and news.user_id != current_user.id:
         current_app.logger.warning(f"Permission denied for user {current_user.username} to duplicate news {news_id}")
         abort(403, "You do not have permission to duplicate this news article.")
 
@@ -1081,7 +1081,7 @@ def archive_news_api(news_id):
         abort(404, f"News article with ID {news_id} not found.")
     if not (
         news.user_id == current_user.id
-        or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]
+        or current_user.effective_tier <= 1
     ):
         abort(403, "You do not have permission to archive this news article.")
     news.is_archived = True
@@ -1099,7 +1099,7 @@ def unarchive_news_api(news_id):
         abort(404, f"News article with ID {news_id} not found.")
     if not (
         news.user_id == current_user.id
-        or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]
+        or current_user.effective_tier <= 1
     ):
         abort(403, "You do not have permission to unarchive this news article.")
     news.is_archived = False
@@ -1116,7 +1116,7 @@ def bulk_archive_news():
     news_to_update = News.query.filter(News.id.in_(ids)).all()
     updated_count = 0
     for news in news_to_update:
-        if news.user_id == current_user.id or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if news.user_id == current_user.id or current_user.effective_tier <= 1:
             news.is_archived = True
             updated_count += 1
     db.session.commit()
@@ -1132,7 +1132,7 @@ def bulk_unarchive_news():
     news_to_update = News.query.filter(News.id.in_(ids)).all()
     updated_count = 0
     for news in news_to_update:
-        if news.user_id == current_user.id or current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+        if news.user_id == current_user.id or current_user.effective_tier <= 1:
             news.is_archived = False
             updated_count += 1
     db.session.commit()

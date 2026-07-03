@@ -68,7 +68,7 @@ def get_albums_api():
             query = query.filter(Album.is_premium == True)
 
     # --- Apply user/ownership filter based on current user's role ---
-    if current_user.role == UserRole.SUPERUSER:
+    if current_user.effective_tier == 0:
         if user_filter == "owned":
             query = query.filter(Album.user_id == current_user.id)
         elif user_filter == "by_admin":
@@ -285,7 +285,7 @@ def get_album_detail_api(album_id):
     album = Album.query.get_or_404(album_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     return jsonify(album.to_dict())
@@ -303,7 +303,7 @@ def update_album_api(album_id):
     album = Album.query.get_or_404(album_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     # Handle both form data and JSON data
@@ -442,7 +442,7 @@ def delete_album_api(album_id):
     album = Album.query.get_or_404(album_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     try:
@@ -473,7 +473,7 @@ def add_chapter_to_album_api(album_id):
     album = Album.query.get_or_404(album_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     # Handle both form data and JSON data
@@ -507,7 +507,7 @@ def add_chapter_to_album_api(album_id):
             return jsonify({"error": "News article not found"}), 404
         
         # Check if user has permission to use this news article
-        if current_user.role == UserRole.GENERAL and news.user_id != current_user.id:
+        if current_user.effective_tier >= 3 and news.user_id != current_user.id:
             return jsonify({"error": "Access denied to news article"}), 403
     except ValueError:
         return jsonify({"error": "Invalid news ID"}), 400
@@ -579,7 +579,7 @@ def update_chapter_api(album_id, chapter_id):
     chapter = AlbumChapter.query.get_or_404(chapter_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     # Verify chapter belongs to this album
@@ -649,7 +649,7 @@ def remove_chapter_from_album_api(album_id, chapter_id):
     chapter = AlbumChapter.query.get_or_404(chapter_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     # Verify chapter belongs to this album
@@ -688,7 +688,7 @@ def toggle_album_visibility(album_id):
     album = Album.query.get_or_404(album_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     try:
@@ -722,7 +722,7 @@ def archive_album_api(album_id):
     album = Album.query.get_or_404(album_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     try:
@@ -752,7 +752,7 @@ def toggle_album_type(album_id):
     album = Album.query.get_or_404(album_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     try:
@@ -786,7 +786,7 @@ def unarchive_album_api(album_id):
     album = Album.query.get_or_404(album_id)
 
     # Check permissions
-    if current_user.role == UserRole.GENERAL and album.user_id != current_user.id:
+    if current_user.effective_tier >= 3 and album.user_id != current_user.id:
         return jsonify({"error": "Access denied"}), 403
 
     try:

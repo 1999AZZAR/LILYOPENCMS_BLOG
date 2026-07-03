@@ -660,7 +660,7 @@ def update_global_twitter_settings():
 @login_required
 def update_global_structured_settings():
     """Update global Structured Data settings"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -946,7 +946,7 @@ def inject_seo_root_item(root_id):
 @login_required
 def apply_global_settings():
     """Apply global settings to all articles that don't have specific SEO fields"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -1025,7 +1025,7 @@ def apply_global_settings():
 @login_required
 def get_seo_categories():
     """Get categories for SEO management filter"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -1044,7 +1044,7 @@ def get_seo_categories():
 @login_required
 def get_seo_albums():
     """Get albums with SEO information for management"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -1195,7 +1195,7 @@ def get_seo_albums():
 @login_required
 def get_seo_album(album_id):
     """Get a specific album for SEO editing"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -1235,7 +1235,7 @@ def get_seo_album(album_id):
 @login_required
 def update_seo_album(album_id):
     """Update SEO fields for a specific album"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -1279,7 +1279,7 @@ def update_seo_album(album_id):
 @login_required
 def get_seo_chapters():
     """Get chapters with SEO information for management"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -1431,7 +1431,7 @@ def get_seo_chapters():
 @login_required
 def get_seo_chapter(chapter_id):
     """Get a specific chapter's associated News article for SEO editing"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -1478,7 +1478,7 @@ def get_seo_chapter(chapter_id):
 @login_required
 def update_seo_chapter(chapter_id):
     """Update SEO fields for a specific chapter's associated News article"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -1526,7 +1526,7 @@ def update_seo_chapter(chapter_id):
 @login_required
 def get_seo_root():
     """Get root pages with SEO information for management"""
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:

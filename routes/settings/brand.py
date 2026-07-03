@@ -25,7 +25,7 @@ from flask import jsonify
 @login_required
 def settings_social_media():
     """Admin page for managing social media links."""
-    if not current_user.role in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         current_app.logger.warning(
             f"Forbidden access attempt to /settings/social-media by user {current_user.username} (ID: {current_user.id})"
         )
@@ -38,7 +38,7 @@ def settings_social_media():
 @main_blueprint.route("/settings/brand-identity")
 @login_required
 def settings_brand_identity():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     from models import BrandIdentity
     brand_info = BrandIdentity.query.first()
@@ -52,7 +52,7 @@ def settings_brand_identity():
 @main_blueprint.route("/settings/brand/info")
 @login_required
 def settings_brand_info():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     from models import BrandIdentity
     brand_info = BrandIdentity.query.first()
@@ -66,7 +66,7 @@ def settings_brand_info():
 @main_blueprint.route("/settings/brand/design")
 @login_required
 def settings_brand_design():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     from models import BrandIdentity
     brand_info = BrandIdentity.query.first()
@@ -80,7 +80,7 @@ def settings_brand_design():
 @main_blueprint.route("/settings/brand/assets")
 @login_required
 def settings_brand_assets():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     from models import BrandIdentity
     brand_info = BrandIdentity.query.first()
@@ -94,7 +94,7 @@ def settings_brand_assets():
 @main_blueprint.route("/settings/brand/colors")
 @login_required
 def settings_brand_colors():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     from models import BrandIdentity
     brand_info = BrandIdentity.query.first()
@@ -108,7 +108,7 @@ def settings_brand_colors():
 @main_blueprint.route("/settings/tracking")
 @login_required
 def settings_brand_tracking():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     from models import BrandIdentity
     brand_info = BrandIdentity.query.first()
@@ -122,7 +122,7 @@ def settings_brand_tracking():
 @main_blueprint.route("/api/brand-identity", methods=["GET"])
 @login_required
 def get_brand_identity():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     from models import BrandIdentity
     brand = BrandIdentity.query.first()
@@ -157,7 +157,7 @@ def get_public_brand_info():
 @main_blueprint.route("/api/brand-identity", methods=["POST"])
 @login_required
 def update_brand_identity():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     from models import BrandIdentity
     from routes.routes_helper import save_brand_asset_file
@@ -197,7 +197,7 @@ def update_brand_identity():
 @main_blueprint.route("/api/brand-identity/text", methods=["POST"])
 @login_required
 def update_brand_identity_text():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
 
     from models import BrandIdentity
@@ -266,7 +266,7 @@ CSS_VAR_TO_DB = {
 @main_blueprint.route("/api/brand-colors", methods=["POST"])
 @login_required
 def update_brand_colors():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     data = request.get_json()
     variable = data.get("variable")
@@ -317,7 +317,7 @@ def update_brand_colors():
 @main_blueprint.route("/api/brand-colors", methods=["GET"])
 @login_required
 def get_brand_colors():
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     # Prefer BrandIdentity DB values over CSS file (inline style wins)
     from models import BrandIdentity

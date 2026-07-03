@@ -25,7 +25,7 @@ from optimizations import monitor_ssr_render
 @monitor_ssr_render("settings_dashboard")
 def settings_dashboard():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)  # Only admins and superusers can access this page
     return render_template("settings/settings_management.html")
 
@@ -35,6 +35,6 @@ def settings_dashboard():
 @monitor_ssr_render("settings_analytics")
 def settings_analytics():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     return render_template("settings/analytics_dashboard.html")

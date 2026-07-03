@@ -194,7 +194,7 @@ def delete_media_guideline(mid):
 @main_blueprint.route("/api/settings/stats", methods=["GET"])
 @login_required
 def settings_stats():
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     from datetime import datetime, timedelta, timezone

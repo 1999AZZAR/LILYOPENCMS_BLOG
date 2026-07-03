@@ -25,7 +25,7 @@ from flask import jsonify
 @login_required
 def api_compress_assets():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -43,7 +43,7 @@ def api_compress_assets():
 @login_required
 def api_clear_asset_cache():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -61,7 +61,7 @@ def api_clear_asset_cache():
 @login_required
 def api_regenerate_asset_hashes():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -80,7 +80,7 @@ def api_regenerate_asset_hashes():
 @login_required
 def api_clear_ssr_cache():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -98,7 +98,7 @@ def api_clear_ssr_cache():
 @login_required
 def api_optimize_ssr_cache():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -117,7 +117,7 @@ def api_optimize_ssr_cache():
 @login_required
 def api_clear_performance_cache():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -142,7 +142,7 @@ def api_clear_performance_cache():
 @login_required
 def api_get_performance_alerts():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -170,7 +170,7 @@ def api_get_performance_alerts():
 @login_required
 def api_get_performance_recommendations():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -198,7 +198,7 @@ def api_get_performance_recommendations():
 @login_required
 def api_cache_template():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:
@@ -227,7 +227,7 @@ def api_cache_template():
 @login_required
 def api_minify_assets():
     # Allow access only to ADMIN and SUPERUSER
-    if current_user.role not in [UserRole.ADMIN, UserRole.SUPERUSER]:
+    if current_user.effective_tier > 1:
         abort(403)
     
     try:

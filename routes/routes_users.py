@@ -230,7 +230,7 @@ def update_user(user_id):
 @main_blueprint.route("/api/settings/verified-users", methods=["GET"])
 @login_required
 def settings_verified_users():
-    if not current_user.is_owner() and current_user.role != UserRole.ADMIN:
+    if current_user.effective_tier > 1:
         abort(403)
 
     verified_users = User.query.filter_by(verified=True).all()
