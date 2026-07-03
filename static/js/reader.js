@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeLazyLoad(logger);
         initializeSharing(newsData, logger);
         initializeFeaturedImageModal(logger);
-        
+        initializeTOC(logger);
+
         // Wait for Slick to be available
         const waitForSlick = () => {
             if (typeof $ !== 'undefined' && typeof $.fn !== 'undefined' && typeof $.fn.slick !== 'undefined') {
@@ -48,10 +49,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(waitForSlick, 100);
             }
         };
-        
+
         // Start waiting for Slick
         waitForSlick();
     } catch (error) {
         console.error('[Reader] Error during initialization:', error);
     }
 });
+
+function initializeTOC(logger) {
+    const articleBody = document.getElementById('article-body');
+    const tocSection = document.getElementById('toc-section');
+    const tocList = document.getElementById('toc-list');
+    if (!articleBody || !tocSection || !tocList) return;
+
+    const headings = articleBody.querySelectorAll('h2, h3');
+    if (headings.length < 2) return;
+
+    headings.forEach(function(h, i) {
+        const id = 'toc-heading-' + i;
+        h.id = id;
+
+        const li = document.createElement('div');
+        li.style.cssText = 'padding:2px 0';
+
+        const a = document.createElement('a');
+        a.href = '#' + id;
+        a.textContent = h.textContent;
+        a.style.cssText = 'color:hsl(var(--muted-foreground));text-decoration:none;display:block;transition:color 0.2s';
+        a.className = 'hover:text-[hsl(var(--primary))]';
+
+        if (h.tagName === 'H3') {
+            a.style.paddingLeft = '1rem';
+            a.style.fontSize = '0.8125rem';
+        } else {
+            a.style.fontSize = '0.875rem';
+            a.style.fontWeight = '600';
+        }
+
+        a.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.getElementById(id);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                history.pushState(null, '', '#' + id);
+            }
+        });
+
+        li.appendChild(a);
+        tocList.appendChild(li);
+    });
+
+    tocSection.classList.remove('hidden');
+    logger.log('TOC initialized with ' + headings.length + ' items');
+}
