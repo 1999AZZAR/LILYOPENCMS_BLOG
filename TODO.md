@@ -91,6 +91,35 @@
 
 ---
 
+## RBAC/ABAC Hardening
+
+### Audit & Coverage
+- [ ] Audit all routes for missing `@login_required` or `@permission_required` decorators
+- [ ] Ensure every admin/settings route has explicit permission checks, not just role checks
+- [ ] Add `@owner_or_permission_required` to user-owned resources (news, albums, comments)
+- [ ] Verify API endpoints reject unauthenticated requests properly (403 vs 401)
+- [ ] Add rate limiting to auth endpoints (login, register, password reset)
+
+### Permission Matrix
+- [ ] Fill gaps: `comments:moderate`, `pages:manage`, `tags:manage`, `media:upload`, `media:delete`
+- [ ] Add `superuser` bypass for all permission checks (skip DB query)
+- [ ] Expose permission list in admin UI for role editing
+- [ ] Add permission check visualization (which user has what, why)
+
+### ABAC (Attribute-Based)
+- [ ] Implement resource ownership checks (`user_id` matches `current_user.id`)
+- [ ] Add `is_owner` helper that works across all models
+- [ ] Scope listing queries per-role (GENERAL sees own, ADMIN sees all)
+- [ ] Add department/group scoping for enterprise multi-team setups
+
+### Testing
+- [ ] Write integration tests for each role accessing every endpoint
+- [ ] Verify escalation paths are blocked (GENERAL can't access admin API)
+- [ ] Test permission inheritance (custom role + base role)
+- [ ] Test CSRF protection on all mutating endpoints
+
+---
+
 ## Phase 9: Personal Blog
 
 > Minimal, writing-focused, beautiful reading experience.
@@ -292,6 +321,8 @@ Phase 8 (Core CMS)         ← DONE
   ├── 8.5 Content          ✅
   ├── 8.6 Sitemap          ✅
   └── 8.7 Search           ✅ (basic ILIKE + dedicated template)
+
+RBAC/ABAC Hardening        ← NEXT (can run in parallel with Phase 9)
 
 Phase 9 (Blog)             ← NEXT
 Phase 10 (News Agency)     ← can parallel with Phase 9
