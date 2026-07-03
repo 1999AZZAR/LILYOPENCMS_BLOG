@@ -57,6 +57,9 @@ def _get_firebase_config():
 @main_blueprint.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+        from shared.auth.rate_limiter import check_rate_limit
+        if not check_rate_limit("register"):
+            return jsonify({"error": "Too many registration attempts. Try again later."}), 429
         username = request.form.get("username")
         password = request.form.get("password")
         email = request.form.get("email")
@@ -429,6 +432,10 @@ def login():
         return redirect(url_for("main.home"))
 
     if request.method == "POST":
+        from shared.auth.rate_limiter import check_rate_limit
+        if not check_rate_limit("login"):
+            return jsonify({"error": "Too many login attempts. Try again later."}), 429
+
         # Maintenance mode check (block general users when enabled)
         try:
             import os, json
