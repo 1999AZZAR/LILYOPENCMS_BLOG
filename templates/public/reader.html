@@ -13,6 +13,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 {% block title %}{{ brand_info.brand_name|default('LilyOpenCMS') }} — {{ news.title | default('Artikel') | e }}{% endblock %}
 
 {% block extra_head %}
+{% if news.generate_schema_markup %}
+<script type="application/ld+json">
+{{ news.generate_schema_markup() | safe }}
+</script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
