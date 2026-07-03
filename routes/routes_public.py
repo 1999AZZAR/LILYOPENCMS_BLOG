@@ -1026,6 +1026,20 @@ def rss_feed():
     return Response(rss, mimetype="application/rss+xml")
 
 
+@main_blueprint.route("/authors")
+def author_list():
+    authors = User.query.filter(User.role.in_([UserRole.ADMIN, UserRole.SUPERUSER])).order_by(User.username).all()
+    return render_template("public/authors.html", authors=authors)
+
+
+@main_blueprint.route("/author/<username>")
+def author_profile(username):
+    author = User.query.filter_by(username=username).first_or_404()
+    page = request.args.get("page", 1, type=int)
+    articles = News.query.filter_by(user_id=author.id, is_visible=True).order_by(News.date.desc()).paginate(page=page, per_page=12, error_out=False)
+    return render_template("public/author.html", author=author, articles=articles)
+
+
 @main_blueprint.route("/robots.txt")
 def robots_txt():
     """Serve dynamically generated robots.txt file based on request host and environment."""

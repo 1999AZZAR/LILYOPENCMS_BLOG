@@ -1,0 +1,32 @@
+{% extends "designs/" + (g.design if g.design != 'default' else 'news') + "/base.html" %}
+{% block title %}Penulis — {{ brand_info.site_name }}{% endblock %}
+
+{% block content %}
+<main class="min-h-screen bg-white text-gray-900 pt-20">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-3xl font-bold mb-8">Penulis</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {% for author in authors %}
+      <a href="{{ url_for('main.author_profile', username=author.username) }}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow no-underline text-gray-900">
+        <div class="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-xl font-bold text-gray-600 overflow-hidden flex-shrink-0">
+          {% if author.profile_picture %}
+          <img src="{{ author.profile_picture }}" alt="{{ author.username }}" class="w-full h-full object-cover">
+          {% else %}
+          {{ author.username[0]|upper }}
+          {% endif %}
+        </div>
+        <div>
+          <div class="font-semibold">{{ author.first_name or author.username }} {{ author.last_name or '' }}</div>
+          <div class="text-sm text-gray-500">@{{ author.username }}</div>
+          {% if author.bio %}
+          <div class="text-sm text-gray-600 mt-1 line-clamp-2">{{ author.bio }}</div>
+          {% endif %}
+        </div>
+      </a>
+      {% else %}
+      <div class="col-span-2 text-center py-8 text-gray-500">Belum ada penulis.</div>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+{% endblock %}

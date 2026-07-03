@@ -1,0 +1,73 @@
+{% extends "designs/" + (g.design if g.design != 'default' else 'news') + "/base.html" %}
+{% block title %}{{ author.first_name or author.username }} {{ author.last_name or '' }} — {{ brand_info.site_name }}{% endblock %}
+
+{% block content %}
+<main class="min-h-screen bg-white text-gray-900 pt-20">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    {# Profile header #}
+    <div class="flex items-start gap-6 mb-12 pb-8 border-b border-gray-200">
+      <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-gray-600 overflow-hidden flex-shrink-0">
+        {% if author.profile_picture %}
+        <img src="{{ author.profile_picture }}" alt="{{ author.username }}" class="w-full h-full object-cover">
+        {% else %}
+        {{ author.username[0]|upper }}
+        {% endif %}
+      </div>
+      <div class="flex-1">
+        <h1 class="text-2xl font-bold">{{ author.first_name or author.username }} {{ author.last_name or '' }}</h1>
+        <p class="text-sm text-gray-500">@{{ author.username }}</p>
+        {% if author.bio %}
+        <p class="mt-3 text-gray-700">{{ author.bio }}</p>
+        {% endif %}
+        {% if author.social_links %}
+        <div class="flex gap-3 mt-4">
+          {% for platform, url in author.social_links.items() %}
+          <a href="{{ url }}" target="_blank" rel="noopener" class="text-gray-500 hover:text-blue-600">
+            <i class="fab fa-{{ platform }} text-lg"></i>
+          </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Articles #}
+    <h2 class="text-lg font-bold mb-6">Artikel oleh {{ author.first_name or author.username }}</h2>
+    {% if articles.items %}
+    <div class="space-y-4">
+      {% for article in articles %}
+      <article class="flex gap-4 p-4 rounded-lg border border-gray-200">
+        {% if article.featured_image %}
+        <div class="w-24 h-20 flex-shrink-0 rounded overflow-hidden">
+          <img src="{{ article.featured_image }}" alt="" class="w-full h-full object-cover">
+        </div>
+        {% endif %}
+        <div class="flex-1 min-w-0">
+          <h3 class="font-semibold">
+            <a href="{{ url_for('main.news_detail', news_id=article.id, news_title=safe_title(article.title)) }}" class="text-gray-900 hover:text-blue-600 no-underline">{{ article.title }}</a>
+          </h3>
+          <p class="text-sm text-gray-600 mt-1 line-clamp-2">{{ article.excerpt or article.content|striptags|truncate(150) }}</p>
+          <p class="text-xs text-gray-500 mt-2">{{ article.date.strftime('%d %b %Y') }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    {# Pagination #}
+    {% if articles.pages > 1 %}
+    <div class="flex justify-center gap-2 mt-8">
+      {% if articles.has_prev %}
+      <a href="{{ url_for('main.author_profile', username=author.username, page=articles.prev_num) }}" class="px-3 py-1 rounded border border-gray-300 text-sm hover:bg-gray-100 no-underline">Sebelumnya</a>
+      {% endif %}
+      <span class="px-3 py-1 text-sm text-gray-500">Halaman {{ articles.page }} dari {{ articles.pages }}</span>
+      {% if articles.has_next %}
+      <a href="{{ url_for('main.author_profile', username=author.username, page=articles.next_num) }}" class="px-3 py-1 rounded border border-gray-300 text-sm hover:bg-gray-100 no-underline">Selanjutnya</a>
+      {% endif %}
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="text-center py-8 text-gray-500">Belum ada artikel dari penulis ini.</div>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

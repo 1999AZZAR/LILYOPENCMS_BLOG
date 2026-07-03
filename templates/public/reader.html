@@ -125,6 +125,39 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
   </article>
 
+  {# ── Written By Card ────────────────────────────────────────────── #}
+  {% if news.author and news.author.bio %}
+  <div class="mt-12 p-6 rounded-lg" style="border:1px solid hsl(var(--border));background-color:var(--m3-container)">
+    <div class="flex items-start gap-4">
+      <a href="{{ url_for('main.author_profile', username=news.author.username) }}" class="flex-shrink-0">
+        <div class="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center text-lg font-bold overflow-hidden" style="color:hsl(var(--muted-foreground))">
+          {% if news.author.profile_picture %}
+          <img src="{{ news.author.profile_picture }}" alt="{{ news.author.username }}" class="w-full h-full object-cover">
+          {% else %}
+          {{ news.author.username[0]|upper }}
+          {% endif %}
+        </div>
+      </a>
+      <div class="flex-1">
+        <p class="text-[10px] font-black uppercase tracking-[0.18em] mb-1" style="color:hsl(var(--muted-foreground))">Ditulis oleh</p>
+        <a href="{{ url_for('main.author_profile', username=news.author.username) }}" class="font-bold text-base no-underline" style="color:hsl(var(--foreground))">
+          {{ news.author.first_name or news.author.username }} {{ news.author.last_name or '' }}
+        </a>
+        <p class="text-sm mt-1 leading-relaxed" style="color:hsl(var(--muted-foreground))">{{ news.author.bio }}</p>
+        {% if news.author.social_links %}
+        <div class="flex gap-3 mt-3">
+          {% for platform, url in news.author.social_links.items() %}
+          <a href="{{ url }}" target="_blank" rel="noopener" class="text-sm hover:opacity-70" style="color:hsl(var(--muted-foreground))">
+            <i class="fab fa-{{ platform }}"></i>
+          </a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
   {# ── Comment Section ─────────────────────────────────────────────── #}
   <section id="comments-section" class="mt-16" aria-label="Komentar">
     <h2 class="text-lg font-black mb-6" style="letter-spacing:-0.03em">Komentar</h2>
