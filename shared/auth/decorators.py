@@ -58,6 +58,62 @@ def login_required(f):
     return decorated
 
 
+def minimum_tier(level: int):
+    """Decorator that requires minimum tier level.
+    
+    Tier 0 — SUPERUSER: absolute bypass
+    Tier 1 — ADMIN: full management
+    Tier 2 — custom_role: permission-scoped
+    Tier 3 — GENERAL: own resources only
+    
+    Usage:
+        @minimum_tier(1)  # admin or above
+        @minimum_tier(2)  # custom role or above
+    """
+    def decorator(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            user = getattr(g, "api_user", None) or (current_user if current_user.is_authenticated else None)
+            if not user:
+                return _auth_response("Authentication required", 401, "AUTH_REQUIRED")
+            if user.effective_tier > level:
+                return _auth_response("Insufficient privileges", 403, "AUTH_INSUFFICIENT_PRIVILEGES")
+            return f(*args, **kwargs)
+        return decorated
+    return decorator
+
+
+def owner_or_tier(owner_attr: str = "user_id", min_tier: int = 2):
+    """Decorator: allows if user meets tier OR is the resource owner.
+    
+    For routes where users can access own resources regardless of tier,
+    as long as they meet the minimum tier.
+    
+    Usage:
+        @owner_or_tier("user_id", min_tier=2)
+        def edit_news(news_id):
+            # passes if user.tier <= 2 OR owns the resource
+    """
+    def decorator(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            user = getattr(g, "api_user", None) or (current_user if current_user.is_authenticated else None)
+            if not user:
+                return _auth_response("Authentication required", 401, "AUTH_REQUIRED")
+
+            if user.effective_tier <= min_tier:
+                return f(*args, **kwargs)
+
+            # Check ownership via route kwarg
+            resource_owner_id = kwargs.get(owner_attr)
+            if resource_owner_id is not None and hasattr(user, "id") and user.id == int(resource_owner_id):
+                return f(*args, **kwargs)
+
+            return _auth_response("Forbidden", 403, "PERMISSION_DENIED")
+        return decorated
+    return decorator
+
+
 def permission_required(resource: str, action: str):
     """
     Decorator that checks if the current user has a specific permission.
@@ -86,12 +142,7 @@ def permission_required(resource: str, action: str):
 def owner_or_permission_required(resource: str, action: str, owner_field: str = "user_id"):
     """
     ABAC decorator: allows access if user is the resource owner OR has the permission.
-    Used for content routes where writers can edit their own content.
-
-    Usage:
-        @owner_or_permission_required("news", "update", "user_id")
-        def update_news(news_id):
-            ...
+    Tier-aware: Tier 0/1 bypass ownership check entirely.
     """
     def decorator(f):
         @wraps(f)
@@ -99,6 +150,10 @@ def owner_or_permission_required(resource: str, action: str, owner_field: str = 
             user = getattr(g, "api_user", None) or (current_user if current_user.is_authenticated else None)
             if not user:
                 return _auth_response("Authentication required", 401, "AUTH_REQUIRED")
+
+            # Tier 0/1 always pass
+            if user.effective_tier <= 1:
+                return f(*args, **kwargs)
 
             from shared.auth.permission_manager import PermissionManager
             if PermissionManager.has_permission(user, resource, action):
@@ -115,26 +170,26 @@ def owner_or_permission_required(resource: str, action: str, owner_field: str = 
 
 
 def admin_required(f):
-    """Decorator that requires admin privileges (admin tier or above)."""
+    """Decorator that requires Tier 1 or above."""
     @wraps(f)
     def decorated(*args, **kwargs):
         user = getattr(g, "api_user", None) or (current_user if current_user.is_authenticated else None)
         if not user:
             return _auth_response("Authentication required", 401, "AUTH_REQUIRED")
-        if not user.is_admin_tier():
+        if user.effective_tier > 1:
             return _auth_response("Admin privileges required", 403, "AUTH_INSUFFICIENT_PRIVILEGES")
         return f(*args, **kwargs)
     return decorated
 
 
 def superuser_required(f):
-    """Decorator that requires superuser/owner privileges."""
+    """Decorator that requires Tier 0."""
     @wraps(f)
     def decorated(*args, **kwargs):
         user = getattr(g, "api_user", None) or (current_user if current_user.is_authenticated else None)
         if not user:
             return _auth_response("Authentication required", 401, "AUTH_REQUIRED")
-        if not user.is_owner():
+        if user.effective_tier != 0:
             return _auth_response("Superuser privileges required", 403, "AUTH_INSUFFICIENT_PRIVILEGES")
         return f(*args, **kwargs)
     return decorated

@@ -93,30 +93,48 @@
 
 ## RBAC/ABAC Hardening
 
+### Tier System
+
+```
+Tier 0 — suadmin (SUPERUSER)      ← absolute bypass, no checks applied
+Tier 1 — admin (ADMIN)            ← full management access
+Tier 2 — editor, writer, custom   ← limited by assigned permissions
+Tier 3 — user (GENERAL)           ← basic read-only + own content
+```
+
+Rules:
+- Tier 0 skips ALL permission checks (no DB query needed)
+- Tier 1 inherits all permissions implicitly
+- Tier 2 depends on assigned custom role permissions
+- Tier 3 can only manage own resources (news, comments, profile)
+- Permission check = compare requester tier against resource minimum tier
+
 ### Audit & Coverage
-- [ ] Audit all routes for missing `@login_required` or `@permission_required` decorators
-- [ ] Ensure every admin/settings route has explicit permission checks, not just role checks
-- [ ] Add `@owner_or_permission_required` to user-owned resources (news, albums, comments)
-- [ ] Verify API endpoints reject unauthenticated requests properly (403 vs 401)
-- [ ] Add rate limiting to auth endpoints (login, register, password reset)
+- [ ] Add `tier` property to User model (computed from role + custom_role)
+- [ ] Create `@minimum_tier(n)` decorator (cleaner than role-specific checks)
+- [ ] Create `@owner_or_tier(owner_attr, min_tier)` decorator
+- [ ] Audit all routes for missing `@login_required` or `@permission_required`
+- [ ] Ensure every admin/settings route uses tier check, not ad-hoc role checks
+- [ ] Verify API endpoints reject properly (401 unauthenticated, 403 unauthorized)
+- [ ] Add rate limiting to auth endpoints (login, register)
 
 ### Permission Matrix
 - [ ] Fill gaps: `comments:moderate`, `pages:manage`, `tags:manage`, `media:upload`, `media:delete`
-- [ ] Add `superuser` bypass for all permission checks (skip DB query)
-- [ ] Expose permission list in admin UI for role editing
-- [ ] Add permission check visualization (which user has what, why)
+- [ ] SU bypass: if user.tier == 0 → allow immediately (skip permission DB query)
+- [ ] Expose permission matrix in admin UI for role editing
+- [ ] Add tier visualization (user detail shows effective tier + inherited perms)
 
-### ABAC (Attribute-Based)
-- [ ] Implement resource ownership checks (`user_id` matches `current_user.id`)
-- [ ] Add `is_owner` helper that works across all models
-- [ ] Scope listing queries per-role (GENERAL sees own, ADMIN sees all)
-- [ ] Add department/group scoping for enterprise multi-team setups
+### ABAC Scoping
+- [ ] `is_owner(model, user)` — generic helper across all models with `user_id`
+- [ ] Tier 3 listings: scope queries to `user_id == current_user.id`
+- [ ] Tier 1–2 listings: show all within their permission scope
+- [ ] Tier 0: everything
 
 ### Testing
-- [ ] Write integration tests for each role accessing every endpoint
-- [ ] Verify escalation paths are blocked (GENERAL can't access admin API)
+- [ ] Integration tests: every role × every endpoint matrix
+- [ ] Verify Tier 3 → Tier 1 endpoint escalation is blocked
 - [ ] Test permission inheritance (custom role + base role)
-- [ ] Test CSRF protection on all mutating endpoints
+- [ ] Test CSRF on all mutating endpoints
 
 ---
 

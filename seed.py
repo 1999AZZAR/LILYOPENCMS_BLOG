@@ -36,6 +36,7 @@ def seed():
                 username="suadmin",
                 email="admin@lilyopencms.local",
                 role=UserRole.SUPERUSER,
+                tier=0,
                 is_active=True, is_premium=True, verified=True,
                 first_name="Super", last_name="Admin",
                 bio="Founder and lead developer of LilyOpenCMS.",
@@ -50,7 +51,7 @@ def seed():
         if not User.query.filter_by(username="admin").first():
             admin = User(
                 username="admin", email="admin@example.com",
-                role=UserRole.ADMIN, is_active=True, verified=True,
+                role=UserRole.ADMIN, tier=1, is_active=True, verified=True,
                 first_name="Admin", last_name="User",
                 bio="Content manager and editor. Passionate about quality journalism.",
                 social_links={"twitter": "https://twitter.com/admin", "linkedin": "https://linkedin.com/in/admin"},
@@ -65,7 +66,7 @@ def seed():
         if not User.query.filter_by(username="user").first():
             u = User(
                 username="user", email="user@example.com",
-                role=UserRole.GENERAL, is_active=True, verified=True,
+                role=UserRole.GENERAL, tier=3, is_active=True, verified=True,
                 first_name="Test", last_name="User",
             )
             u.set_password("user123")

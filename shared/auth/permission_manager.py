@@ -67,15 +67,33 @@ class PermissionManager:
         if not user or not user.is_authenticated:
             return []
 
-        if user.is_owner():
+        # Tier 0 — ALL permissions
+        if user.effective_tier == 0:
             return [
                 {"resource": r, "action": a, "name": f"{r}_{a}", "description": f"{PermissionManager.RESOURCES[r]} - {PermissionManager.ACTIONS[a]}"}
                 for r in PermissionManager.RESOURCES
                 for a in PermissionManager.ACTIONS
             ]
 
-        permissions = []
+        # Tier 1 — ADMIN: all resources
+        if user.effective_tier == 1:
+            perms = []
+            for r in PermissionManager.RESOURCES:
+                for a in PermissionManager.ACTIONS:
+                    if r == "users" and a in ("delete", "suspend"):
+                        continue
+                    if r == "permissions" and a not in ("read",):
+                        continue
+                    perms.append({
+                        "resource": r,
+                        "action": a,
+                        "name": f"{r}_{a}",
+                        "description": f"{PermissionManager.RESOURCES[r]} - {PermissionManager.ACTIONS[a]}",
+                    })
+            return perms
 
+        # Tier 2 — custom_role assigned permissions
+        permissions = []
         if user.custom_role and user.custom_role.is_active:
             for p in user.custom_role.permissions:
                 permissions.append({
@@ -84,73 +102,83 @@ class PermissionManager:
                     "name": p.name,
                     "description": p.description,
                 })
-
-        if user.role and user.role.value == "admin":
-            admin_perms = [
-                "users_read", "users_create", "users_update", "users_suspend",
-                "news_read", "news_create", "news_update", "news_delete", "news_publish",
-                "images_read", "images_create", "images_update", "images_delete",
-                "videos_read", "videos_create", "videos_update", "videos_delete",
-                "categories_read", "categories_create", "categories_update", "categories_delete",
-                "settings_read", "settings_update",
-                "comments_read", "comments_update", "comments_delete",
-                "ratings_read", "ratings_update", "ratings_delete",
-                "legal_read", "legal_update",
-                "brand_read", "brand_update",
-                "seo_read", "seo_update",
-                "albums_read", "albums_create", "albums_update", "albums_delete",
-            ]
-            for name in admin_perms:
-                resource, action = name.split("_", 1)
-                permissions.append({
-                    "resource": resource,
-                    "action": action,
-                    "name": name,
-                    "description": f"{PermissionManager.RESOURCES.get(resource, resource)} - {PermissionManager.ACTIONS.get(action, action)}",
-                })
-
         return permissions
 
     @staticmethod
     def has_permission(user, resource: str, action: str) -> bool:
         if not user or not user.is_authenticated:
             return False
-        if user.is_owner():
+
+        tier = user.effective_tier
+
+        # Tier 0 — absolute bypass
+        if tier == 0:
             return True
-        if user.custom_role and user.custom_role.is_active:
-            for p in user.custom_role.permissions:
-                if p.resource == resource and p.action == action:
-                    return True
-        if user.role and user.role.value == "admin":
-            admin_resources = list(PermissionManager.RESOURCES.keys())
-            return resource in admin_resources
+
+        # Tier 1 — admin: all except restricted
+        if tier == 1:
+            if resource == "users" and action in ("delete", "suspend"):
+                return False
+            return True
+
+        # Tier 2 — custom role: check assigned permissions
+        if tier == 2:
+            if user.custom_role and user.custom_role.is_active:
+                for p in user.custom_role.permissions:
+                    if p.resource == resource and p.action == action:
+                        return True
+            return False
+
+        # Tier 3 — general: own content only
+        if tier == 3:
+            if resource == "news" and action in ("create", "read"):
+                return True
+            if resource == "images" and action in ("create", "read"):
+                return True
+            return False
+
         return False
 
     @staticmethod
     def has_any_permission(user, resource: str, actions: List[str]) -> bool:
         if not user or not user.is_authenticated:
             return False
-        if user.is_owner():
+        tier = user.effective_tier
+        if tier == 0:
             return True
-        if user.custom_role and user.custom_role.is_active:
-            for p in user.custom_role.permissions:
-                if p.resource == resource and p.action in actions:
-                    return True
-        if user.role and user.role.value == "admin":
-            return resource in PermissionManager.RESOURCES
+        if tier == 1:
+            if resource == "users" and set(actions).issubset({"delete", "suspend"}):
+                return False
+            return True
+        if tier == 2:
+            if user.custom_role and user.custom_role.is_active:
+                user_actions = {p.action for p in user.custom_role.permissions if p.resource == resource}
+                return any(a in user_actions for a in actions)
+            return False
+        if tier == 3:
+            allowed = {"news": {"read", "create"}, "images": {"read", "create"}}
+            return resource in allowed and bool(set(actions) & allowed[resource])
         return False
 
     @staticmethod
     def has_all_permissions(user, resource: str, actions: List[str]) -> bool:
         if not user or not user.is_authenticated:
             return False
-        if user.is_owner():
+        tier = user.effective_tier
+        if tier == 0:
             return True
-        if user.custom_role and user.custom_role.is_active:
-            user_actions = {p.action for p in user.custom_role.permissions if p.resource == resource}
-            return all(a in user_actions for a in actions)
-        if user.role and user.role.value == "admin":
-            return resource in PermissionManager.RESOURCES
+        if tier == 1:
+            if resource == "users" and set(actions).issubset({"delete", "suspend"}):
+                return False
+            return True
+        if tier == 2:
+            if user.custom_role and user.custom_role.is_active:
+                user_actions = {p.action for p in user.custom_role.permissions if p.resource == resource}
+                return all(a in user_actions for a in actions)
+            return False
+        if tier == 3:
+            allowed = {"news": {"read", "create"}, "images": {"read", "create"}}
+            return resource in allowed and set(actions).issubset(allowed[resource])
         return False
 
 
@@ -172,22 +200,22 @@ def has_all_permissions(user=None, resource: str = "", actions: Optional[List[st
 
 def is_superuser(user=None) -> bool:
     u = _get_user(user)
-    return u and u.is_authenticated and u.is_owner()
+    return u and u.is_authenticated and u.effective_tier == 0
 
 
 def is_admin(user=None) -> bool:
     u = _get_user(user)
-    return u and u.is_authenticated and u.role and u.role.value == "admin"
+    return u and u.is_authenticated and u.effective_tier == 1
 
 
 def is_admin_tier(user=None) -> bool:
     u = _get_user(user)
-    return u and u.is_authenticated and u.is_admin_tier()
+    return u and u.is_authenticated and u.effective_tier <= 1
 
 
 def has_custom_role(user=None, role_name: str = "") -> bool:
     u = _get_user(user)
-    if not u or not u.is_authenticated or not u.custom_role:
+    if not u or not u.is_authenticated or not u.custom_role or u.effective_tier != 2:
         return False
     if not role_name:
         return True
@@ -268,11 +296,14 @@ def get_user_role_display(user=None) -> str:
     u = _get_user(user)
     if not u or not u.is_authenticated:
         return "Guest"
-    if u.is_owner():
-        return "Superuser"
-    if u.custom_role:
-        return f"{u.custom_role.name} ({u.role.value.title()})"
-    return u.role.value.title() if u.role else "Unknown"
+    tier = u.effective_tier
+    if tier == 0:
+        return "Superuser (Tier 0)"
+    if tier == 1:
+        return "Admin (Tier 1)"
+    if tier == 2 and u.custom_role:
+        return f"{u.custom_role.name} (Tier 2)"
+    return "User (Tier 3)"
 
 
 def get_user_permissions_summary(user=None) -> Dict[str, List[str]]:

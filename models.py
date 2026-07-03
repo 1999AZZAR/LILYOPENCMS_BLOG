@@ -172,7 +172,24 @@ class User(db.Model, UserMixin):
     role = db.Column(db.Enum(UserRole), nullable=False, default=UserRole.GENERAL)
     is_active = db.Column(db.Boolean, default=True, nullable=False)  # type: ignore[assignment]
     is_premium = db.Column(db.Boolean, default=False, nullable=False)
-    tier = db.Column(db.Integer, default=0, nullable=False)
+    tier = db.Column(db.Integer, default=3, nullable=False)
+
+    @property
+    def effective_tier(self):
+        """Computed tier based on role + custom_role.
+        
+        Tier 0 — SUPERUSER: absolute bypass, no checks
+        Tier 1 — ADMIN: full management
+        Tier 2 — custom_role (editor, writer, etc.): permission-scoped
+        Tier 3 — GENERAL: own resources only
+        """
+        if self.role == UserRole.SUPERUSER:
+            return 0
+        if self.role == UserRole.ADMIN:
+            return 1
+        if self.custom_role and self.custom_role.is_active:
+            return 2
+        return 3
     verified = db.Column(db.Boolean, default=False, nullable=False)
     
     # New fields for enhanced user management
@@ -257,48 +274,52 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     def is_owner(self):
-        """Checks if the user is a superuser."""
-        return self.role == UserRole.SUPERUSER
-    
+        """Tier 0 — absolute superuser."""
+        return self.effective_tier == 0
+
     def is_admin_tier(self) -> bool:
-        """Return True if the user should access the admin dashboard."""
-        if self.role in [UserRole.SUPERUSER, UserRole.ADMIN]:
-            return True
-        if self.custom_role and self.custom_role.is_active:
-            return True
-        return False
+        """Tier ≤ 1 — admin or superuser."""
+        return self.effective_tier <= 1
 
     def is_writer(self) -> bool:
-        """Return True if the user has write access."""
-        return self.is_admin_tier()
-    
+        """Tier ≤ 2 — has content write access."""
+        return self.effective_tier <= 2
+
     def has_permission(self, resource, action):
-        """Check if user has permission for a specific resource and action."""
-        # Superusers have all permissions
-        if self.role == UserRole.SUPERUSER:
+        """Check if user has permission for a specific resource and action.
+        
+        Tier-based:
+        - Tier 0 (SUPERUSER): ALL permissions
+        - Tier 1 (ADMIN): ALL except restricted (users:delete, users:suspend)
+        - Tier 2 (custom_role): only what's assigned via custom_role.permissions
+        - Tier 3 (GENERAL): own content only
+        """
+        # Tier 0 bypass
+        if self.effective_tier == 0:
             return True
-        
-        # Check custom role permissions
-        if self.custom_role and self.custom_role.is_active:
-            for permission in self.custom_role.permissions:
-                if permission.resource == resource and permission.action == action:
-                    return True
-        
-        # Check built-in role permissions
-        if self.role == UserRole.ADMIN:
-            # Admins can do most things except superuser operations
-            if resource == "users" and action in ["delete", "suspend"]:
+
+        # Tier 1 — admin: full access except user deletion/suspension
+        if self.effective_tier == 1:
+            if resource == "users" and action in ("delete", "suspend"):
                 return False
             return True
-        
-        # General users have limited permissions
-        if self.role == UserRole.GENERAL:
-            if resource == "news" and action in ["create", "read"]:
+
+        # Tier 2 — custom_role: check assigned permissions
+        if self.effective_tier == 2:
+            if self.custom_role and self.custom_role.is_active:
+                for p in self.custom_role.permissions:
+                    if p.resource == resource and p.action == action:
+                        return True
+            return False
+
+        # Tier 3 — GENERAL: own content
+        if self.effective_tier == 3:
+            if resource == "news" and action in ("create", "read"):
                 return True
-            if resource == "images" and action in ["create", "read"]:
+            if resource == "images" and action in ("create", "read"):
                 return True
             return False
-        
+
         return False
     
     def is_suspended_now(self):
@@ -377,7 +398,7 @@ class User(db.Model, UserMixin):
             "role": self.role.value,
             "is_active": self.is_active,
             "is_premium": self.is_premium,
-            "tier": self.tier,
+            "tier": self.effective_tier,
             "verified": self.verified,
             "email": self.email,
             "first_name": self.first_name,
