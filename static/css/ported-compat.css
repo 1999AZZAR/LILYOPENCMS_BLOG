@@ -1,38 +1,86 @@
 /* Ported template compatibility — maps legacy classes to sa-* design tokens */
 
-/* Backgrounds */
-.bg-primary         { background-color: hsl(var(--sa-accent, var(--primary))) !important; }
-.bg-primary-subtle  { background-color: hsl(var(--sa-accent, var(--primary)) / 0.1) !important; }
-.bg-card            { background-color: hsl(var(--sa-bg, var(--background))) !important; }
-.bg-surface         { background-color: hsl(var(--sa-surface-hover, var(--muted))) !important; }
-.bg-danger          { background-color: hsl(var(--sa-critical, 0 72% 51%)) !important; }
-.bg-success         { background-color: hsl(var(--sa-success, 142 71% 45%)) !important; }
-.bg-warning         { background-color: hsl(var(--sa-warning, 35 92% 55%)) !important; }
-.bg-info            { background-color: hsl(var(--sa-accent, var(--primary))) !important; }
+/* ── Backgrounds ──────────────────────────────────────────── */
+.bg-primary,
+[class*="bg-primary"]        { background-color: hsl(var(--sa-accent)) !important; color: white !important; }
+[class*="bg-primary-subtle"] { background-color: hsl(var(--sa-accent) / 0.12) !important; }
 
-/* Text */
-.text-primary       { color: hsl(var(--sa-accent, var(--primary))) !important; }
-.text-card          { color: hsl(var(--sa-fg, var(--foreground))) !important; }
-.text-surface       { color: hsl(var(--sa-fg-secondary, var(--muted-foreground))) !important; }
-.text-danger        { color: hsl(var(--sa-critical, 0 72% 51%)) !important; }
-.text-success       { color: hsl(var(--sa-success, 142 71% 45%)) !important; }
-.text-warning       { color: hsl(var(--sa-warning, 35 92% 55%)) !important; }
-.text-muted         { color: hsl(var(--sa-muted, var(--muted-foreground))) !important; }
-.text-main          { color: hsl(var(--sa-fg, var(--foreground))) !important; }
+.bg-card              { background-color: hsl(var(--sa-bg)) !important; }
+.bg-surface           { background-color: hsl(var(--sa-surface-hover)) !important; }
 
-/* Borders */
-.border-primary     { border-color: hsl(var(--sa-accent, var(--primary))) !important; }
-.border-card        { border-color: hsl(var(--sa-border, var(--border))) !important; }
-.border-danger      { border-color: hsl(var(--sa-critical, 0 72% 51%)) !important; }
-.border-success     { border-color: hsl(var(--sa-success, 142 71% 45%)) !important; }
+[class*="bg-danger"],
+[class*="bg-red-"]    { background-color: hsl(var(--sa-critical) / 0.15) !important; }
 
-/* Utility */
-.badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
-.badge-success { background: hsl(var(--sa-success, 142 71% 45%) / 0.15); color: hsl(var(--sa-success, 142 71% 45%)); }
-.badge-danger  { background: hsl(var(--sa-critical, 0 72% 51%) / 0.15); color: hsl(var(--sa-critical, 0 72% 51%)); }
-.badge-warning { background: hsl(var(--sa-warning, 35 92% 55%) / 0.15); color: hsl(var(--sa-warning, 35 92% 55%)); }
-.badge-info    { background: hsl(var(--sa-accent, var(--primary)) / 0.15); color: hsl(var(--sa-accent, var(--primary))); }
+[class*="bg-success"],
+[class*="bg-green-"]  { background-color: hsl(var(--sa-success) / 0.15) !important; }
 
-/* Table */
-.table-header { background: hsl(var(--sa-bg, 33 30% 96%)); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: hsl(var(--sa-muted-strong, var(--muted-foreground))); }
-.table-row:hover { background: hsl(var(--sa-surface-hover, var(--accent)) / 0.3); }
+[class*="bg-warning"],
+[class*="bg-amber-"],
+[class*="bg-yellow-"] { background-color: hsl(var(--sa-warning) / 0.15) !important; }
+
+[class*="bg-purple-"] { background-color: hsl(var(--sa-accent) / 0.08) !important; }
+[class*="bg-blue-"]   { background-color: hsl(var(--sa-accent) / 0.12) !important; }
+.bg-black             { background-color: hsl(var(--sa-fg)) !important; }
+
+/* ── Text colors ──────────────────────────────────────────── */
+[class*="text-primary"] { color: hsl(var(--sa-accent)) !important; }
+.text-card            { color: hsl(var(--sa-fg)) !important; }
+.text-surface         { color: hsl(var(--sa-fg-secondary)) !important; }
+[class*="text-muted"] { color: hsl(var(--sa-muted)) !important; }
+[class*="text-main"]  { color: hsl(var(--sa-fg)) !important; }
+
+[class*="text-danger"],
+[class*="text-red-"]  { color: hsl(var(--sa-critical)) !important; }
+
+[class*="text-success"],
+[class*="text-green-"] { color: hsl(var(--sa-success)) !important; }
+
+[class*="text-warning"],
+[class*="text-amber-"],
+[class*="text-yellow-"],
+[class*="text-orange-"] { color: hsl(var(--sa-warning)) !important; }
+
+[class*="text-blue-"],
+[class*="text-purple-"] { color: hsl(var(--sa-accent)) !important; }
+
+/* ── Border colors ────────────────────────────────────────── */
+[class*="border-primary"] { border-color: hsl(var(--sa-accent)) !important; }
+[class*="border-card"]  { border-color: hsl(var(--sa-border)) !important; }
+[class*="border-danger"],
+[class*="border-red-"]  { border-color: hsl(var(--sa-critical) / 0.4) !important; }
+[class*="border-success"] { border-color: hsl(var(--sa-success) / 0.4) !important; }
+[class*="border-amber"],
+[class*="border-orange"],
+[class*="border-purple"],
+.border-default,
+.border-white           { border-color: hsl(var(--sa-border)) !important; }
+
+/* Catch-all for any other hardcoded colors not mapped above */
+[class*="bg-["],
+[class*="text-["],
+[class*="border-["]     { /* keep original — likely arbitrary values */ }
+
+/* ── Badges ───────────────────────────────────────────────── */
+span.badge,
+.status-badge         { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; border-radius: 999px; font-size: 0.6875rem; font-weight: 600; }
+
+/* ── Tables ───────────────────────────────────────────────── */
+.table-header         { background: hsl(var(--sa-bg)); font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: hsl(var(--sa-muted-strong)); }
+.table-row:hover      { background: hsl(var(--sa-surface-hover) / 0.5); }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn,
+.btn-sm               { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; transition: all 0.15s; cursor: pointer; border: none; }
+.btn-primary           { background: hsl(var(--sa-accent)); color: white; }
+.btn-danger            { background: hsl(var(--sa-critical)); color: white; }
+.btn-outline           { background: transparent; border: 1px solid hsl(var(--sa-border)); color: hsl(var(--sa-fg)); }
+
+/* ── Inputs ───────────────────────────────────────────────── */
+input[type="text"],
+input[type="search"],
+select,
+textarea              { border: 1px solid hsl(var(--sa-border)); border-radius: 0.375rem; padding: 0.375rem 0.75rem; font-size: 0.8125rem; color: hsl(var(--sa-fg)); background: hsl(var(--sa-bg)); outline: none; }
+input[type="text"]:focus,
+input[type="search"]:focus,
+select:focus,
+textarea:focus        { border-color: hsl(var(--sa-accent)); box-shadow: 0 0 0 2px hsl(var(--sa-accent) / 0.15); }
