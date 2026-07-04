@@ -15,17 +15,17 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 {% block hero_desc %}Tetapkan penulis di bawah editor (many-to-many){% endblock %}
 {% block content %}
 <main class="container mx-auto px-6 py-12" role="main">
-  <div class="bg-card border border-default p-6 rounded-lg mb-5" role="region" aria-labelledby="assignments-title">
+  <div class="bg-card border border-sa-border p-6 rounded-md mb-5" role="region" aria-labelledby="assignments-title">
     <h2 id="assignments-title" class="text-xl font-semibold mb-4 text-main">Kelola Relasi</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Editors Column -->
       <div>
         <label class="block text-sm font-medium text-main mb-2">Editor</label>
         <div class="flex gap-2 mb-2">
-          <input id="editor-search" type="text" placeholder="Cari editor..." class="flex-1 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
-          <button id="search-editors" class="bg-primary text-white hover:bg-primary-hover text-white px-3 rounded-lg">Cari</button>
+          <input id="editor-search" type="text" placeholder="Cari editor..." class="flex-1 bg-card border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+          <button id="search-editors" class="bg-primary text-white hover:bg-primary-hover text-white px-3 rounded-md">Cari</button>
         </div>
-        <div id="editors-list" class="max-h-96 overflow-auto border border-default rounded-lg divide-y">
+        <div id="editors-list" class="max-h-96 overflow-auto border border-sa-border rounded-md divide-y">
           <!-- Filled dynamically with buttons -->
         </div>
       </div>
@@ -33,14 +33,14 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
       <div>
         <label class="block text-sm font-medium text-main mb-2">Penulis</label>
         <div class="flex gap-2 mb-2">
-          <input id="writer-search" type="text" placeholder="Cari penulis..." class="flex-1 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
-          <button id="search-writers" class="bg-primary text-white hover:bg-primary-hover text-white px-3 rounded-lg">Cari</button>
+          <input id="writer-search" type="text" placeholder="Cari penulis..." class="flex-1 bg-card border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+          <button id="search-writers" class="bg-primary text-white hover:bg-primary-hover text-white px-3 rounded-md">Cari</button>
         </div>
-        <div id="writers-list" class="max-h-96 overflow-auto border border-default rounded-lg divide-y p-2">
+        <div id="writers-list" class="max-h-96 overflow-auto border border-sa-border rounded-md divide-y p-2">
           <!-- Filled dynamically with checkboxes; checked = assigned to selected editor -->
         </div>
         <div class="mt-3 flex gap-2">
-          <button id="assign-writers" class="bg-sa-success hover:bg-sa-success text-white px-4 py-2 rounded-lg">Simpan Penugasan</button>
+          <button id="assign-writers" class="bg-sa-success hover:bg-sa-success text-white px-4 py-2 rounded-md">Simpan Penugasan</button>
         </div>
       </div>
     </div>

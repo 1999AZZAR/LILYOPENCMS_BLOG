@@ -367,7 +367,7 @@ class UsersManagement {
         
         // Render admin users
         if (adminUsers.length === 0) {
-            adminContainer.innerHTML = '<div class="col-span-full text-sa-warning">Tidak ada pengguna admin</div>';
+            adminContainer.innerHTML = '<div class="col-span-full text-sm text-sa-muted text-center py-8">Tidak ada pengguna admin</div>';
         } else {
             adminUsers.forEach(user => {
                 const userCard = this.createUserCard(user);
@@ -377,7 +377,7 @@ class UsersManagement {
         
         // Render general users
         if (generalUsers.length === 0) {
-            generalContainer.innerHTML = '<div class="col-span-full text-sa-warning">Tidak ada pengguna umum</div>';
+            generalContainer.innerHTML = '<div class="col-span-full text-sm text-sa-muted text-center py-8">Tidak ada pengguna umum</div>';
         } else {
             generalUsers.forEach(user => {
                 const userCard = this.createUserCard(user);
@@ -392,7 +392,7 @@ class UsersManagement {
 
     createUserCard(user) {
     const card = document.createElement('div');
-        card.className = 'bg-white border border-sa-border rounded-lg p-4 hover:shadow-md transition-shadow';
+        card.className = 'bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6';
     card.setAttribute('role', 'listitem');
     card.setAttribute('aria-label', `User: ${user.username}`);
     
@@ -422,8 +422,8 @@ class UsersManagement {
         const displayName = fullName || user.username;
     
     card.innerHTML = `
-        <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
+        <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-3">
                 <input type="checkbox" name="user-select" value="${user.id}" class="rounded border-sa-border text-sa-accent focus:ring-sa-accent/30" onchange="usersManagement.updateSelectedCount()" title="Pilih untuk aksi massal">
                 <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden" style="background: #f8f9fa;">
                     <svg width="40" height="40" data-jdenticon-value="${user.username || user.id}"></svg>
@@ -432,7 +432,7 @@ class UsersManagement {
                         <h3 class="font-semibold text-sa-warning">${displayName}</h3>
                         <p class="text-sm text-sa-warning">${user.email || 'Tidak ada email'}</p>
                         ${user.bio ? `<p class="text-xs text-sa-muted mt-1">${user.bio.substring(0, 50)}${user.bio.length > 50 ? '...' : ''}</p>` : ''}
-                        <div class="flex items-center space-x-2 mt-2 flex-wrap gap-1">
+                        <div class="flex items-center gap-1 mt-2 flex-wrap">
                         <span class="px-2 py-1 text-xs rounded-full ${statusClass}">${statusText}</span>
                             ${roleBadge}
                             ${customRoleBadge}
@@ -441,12 +441,12 @@ class UsersManagement {
                         </div>
                 </div>
             </div>
-            <div class="flex space-x-2">
-                    <button onclick="usersManagement.openEditUserModal(${user.id})" class="p-2 bg-sa-warning-bg hover:bg-sa-warning-bg/50 text-sa-warning rounded-full focus:outline-none focus:ring-2 focus:ring-sa-warning/30 transition-colors" title="Edit User">
+            <div class="flex items-center gap-1">
+                    <button onclick="usersManagement.openEditUserModal(${user.id})" class="flex items-center justify-center w-8 h-8 rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-accent/10 hover:border-sa-accent hover:text-sa-accent transition-all" title="Edit User">
                     <i class="fas fa-edit"></i>
                 </button>
                     ${user.email ? `
-                    <button onclick="usersManagement.openSendEmailModal(${user.id})" class="p-2 bg-sa-accent/10 hover:bg-sa-accent/10 text-sa-accent rounded-full focus:outline-none focus:ring-2 focus:ring-sa-accent/30 transition-colors" title="Kirim Email">
+                    <button onclick="usersManagement.openSendEmailModal(${user.id})" class="flex items-center justify-center w-8 h-8 rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-accent/10 hover:border-sa-accent hover:text-sa-accent transition-all" title="Kirim Email">
                         <i class="fas fa-envelope"></i>
                     </button>
                     ` : `
@@ -455,7 +455,7 @@ class UsersManagement {
                     </button>
                     `}
                     ${this.shouldShowPasswordResetButtons() ? `
-                    <button onclick="usersManagement.openPasswordResetModal(${user.id})" class="p-2 bg-sa-accent/10 hover:bg-blue-200 text-sa-accent rounded-full focus:outline-none focus:ring-2 focus:ring-sa-accent/30 transition-colors" title="Reset Password">
+                    <button onclick="usersManagement.openPasswordResetModal(${user.id})" class="p-2 bg-sa-accent/10 hover:bg-blue-200 text-sa-accent rounded-md border border-sa-border bg-white text-sa-muted-strong text-xs hover:bg-sa-accent/10 transition-all" title="Reset Password">
                     <i class="fas fa-key"></i>
                 </button>
                     <button onclick="usersManagement.showDefaultPasswordModal(${user.id})" class="p-2 bg-sa-warning-bg hover:bg-sa-warning-bg/70 text-sa-warning rounded-full focus:outline-none focus:ring-2 focus:ring-orange-300 transition-colors" title="Change to Default Password">
@@ -485,19 +485,19 @@ renderPagination() {
         return;
     }
     
-    let paginationHTML = '<nav class="flex items-center space-x-2" aria-label="Navigasi halaman pengguna">';
+    let paginationHTML = '<nav class="flex items-center gap-2" aria-label="Navigasi halaman pengguna">';
     
     // Previous button
     if (has_prev) {
         paginationHTML += `
             <button onclick="usersManagement.loadUsers(${page - 1})" 
-                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-md outline-none transition-all focus:ring-2 focus:ring-sa-warning/30">
                 <i class="fas fa-chevron-left"></i>
             </button>
         `;
     } else {
         paginationHTML += `
-            <span class="px-3 py-2 bg-sa-bg text-gray-400 rounded-lg cursor-not-allowed">
+            <span class="px-3 py-2 bg-sa-bg text-gray-400 rounded-md cursor-not-allowed">
                 <i class="fas fa-chevron-left"></i>
             </span>
         `;
@@ -510,7 +510,7 @@ renderPagination() {
     if (startPage > 1) {
         paginationHTML += `
             <button onclick="usersManagement.loadUsers(1)" 
-                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-md outline-none transition-all focus:ring-2 focus:ring-sa-warning/30">
                 1
             </button>
         `;
@@ -522,14 +522,14 @@ renderPagination() {
     for (let i = startPage; i <= endPage; i++) {
         if (i === page) {
             paginationHTML += `
-                <span class="px-3 py-2 bg-amber-500 text-white rounded-lg font-semibold">
+                <span class="px-3 py-2 bg-amber-500 text-white rounded-md text-sm font-semibold">
                     ${i}
                 </span>
             `;
         } else {
             paginationHTML += `
                 <button onclick="usersManagement.loadUsers(${i})" 
-                        class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                        class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-md outline-none transition-all focus:ring-2 focus:ring-sa-warning/30">
                     ${i}
                 </button>
             `;
@@ -542,7 +542,7 @@ renderPagination() {
         }
         paginationHTML += `
             <button onclick="usersManagement.loadUsers(${pages})" 
-                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-md outline-none transition-all focus:ring-2 focus:ring-sa-warning/30">
                 ${pages}
             </button>
         `;
@@ -552,13 +552,13 @@ renderPagination() {
     if (has_next) {
         paginationHTML += `
             <button onclick="usersManagement.loadUsers(${page + 1})" 
-                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-md outline-none transition-all focus:ring-2 focus:ring-sa-warning/30">
                 <i class="fas fa-chevron-right"></i>
             </button>
         `;
     } else {
         paginationHTML += `
-            <span class="px-3 py-2 bg-sa-bg text-gray-400 rounded-lg cursor-not-allowed">
+            <span class="px-3 py-2 bg-sa-bg text-gray-400 rounded-md cursor-not-allowed">
                 <i class="fas fa-chevron-right"></i>
             </span>
         `;
@@ -1035,7 +1035,7 @@ async handleSendEmail(e) {
         const container = document.getElementById('permissions-list');
         if (container) {
             container.innerHTML = permissions.map(permission => `
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center gap-2">
                     <input type="checkbox" id="perm-${permission.id}" value="${permission.id}" class="rounded border-amber-300 text-sa-warning focus:ring-amber-300">
                     <label for="perm-${permission.id}" class="text-sm text-sa-warning">
                         ${permission.name} (${permission.resource}:${permission.action})
@@ -1048,7 +1048,7 @@ async handleSendEmail(e) {
         const editContainer = document.getElementById('edit-permissions-list');
         if (editContainer) {
             editContainer.innerHTML = permissions.map(permission => `
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center gap-2">
                     <input type="checkbox" id="edit-perm-${permission.id}" value="${permission.id}" class="rounded border-amber-300 text-sa-warning focus:ring-amber-300">
                     <label for="edit-perm-${permission.id}" class="text-sm text-sa-warning">
                         ${permission.name} (${permission.resource}:${permission.action})
@@ -1068,19 +1068,19 @@ async handleSendEmail(e) {
         }
         
         container.innerHTML = roles.map(role => `
-            <div class="bg-white border border-sa-border rounded-lg p-4">
-                <div class="flex items-center justify-between">
+            <div class="bg-white border border-sa-border rounded-sa-md p-4">
+                <div class="flex items-center justify-between gap-2">
                     <div>
                         <h4 class="font-semibold text-sa-warning">${role.name}</h4>
                         <p class="text-sm text-sa-warning">${role.description || 'Tidak ada deskripsi'}</p>
-                        <div class="flex items-center space-x-2 mt-2">
+                        <div class="flex items-center gap-2 mt-2">
                             <span class="px-2 py-1 text-xs rounded-full ${role.is_active ? 'bg-sa-success-bg text-sa-success' : 'bg-sa-critical-bg text-sa-critical'}">
                                 ${role.is_active ? 'Aktif' : 'Tidak Aktif'}
                             </span>
                             <span class="text-xs text-sa-warning">${role.permissions?.length || 0} izin</span>
                         </div>
                     </div>
-                    <div class="flex space-x-2">
+                    <div class="flex items-center gap-1">
                         <button onclick="usersManagement.editRole(${role.id})" class="p-2 bg-sa-warning-bg hover:bg-sa-warning-bg/50 text-sa-warning rounded-full">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -1103,12 +1103,12 @@ async handleSendEmail(e) {
         }
         
         container.innerHTML = permissions.map(permission => `
-            <div class="bg-white border border-sa-border rounded-lg p-4">
-                <div class="flex items-center justify-between">
+            <div class="bg-white border border-sa-border rounded-sa-md p-4">
+                <div class="flex items-center justify-between gap-2">
                     <div>
                         <h4 class="font-semibold text-sa-warning">${permission.name}</h4>
                         <p class="text-sm text-sa-warning">${permission.description || 'Tidak ada deskripsi'}</p>
-                        <div class="flex items-center space-x-2 mt-2">
+                        <div class="flex items-center gap-2 mt-2">
                             <span class="px-2 py-1 text-xs rounded-full bg-sa-accent/10 text-sa-accent">${permission.resource}</span>
                             <span class="px-2 py-1 text-xs rounded-full bg-sa-accent/10 text-sa-accent">${permission.action}</span>
                         </div>
@@ -1160,9 +1160,9 @@ async handleSendEmail(e) {
         }
         
         container.innerHTML = requests.map(request => `
-            <div class="bg-white border border-sa-critical/30 rounded-lg p-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
+            <div class="bg-white border border-sa-critical/30 rounded-sa-md p-4">
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden" style="background: #f8f9fa;">
                             <svg width="40" height="40" data-jdenticon-value="${request.username || request.user_id}"></svg>
                         </div>
@@ -1173,7 +1173,7 @@ async handleSendEmail(e) {
                             <p class="text-xs text-sa-critical">Permintaan: ${new Date(request.deletion_requested_at).toLocaleDateString('id-ID')}</p>
                         </div>
                     </div>
-                    <div class="flex space-x-2">
+                    <div class="flex items-center gap-1">
                         <button onclick="usersManagement.approveDeletion(${request.id})" class="px-3 py-1 bg-sa-critical-bg hover:bg-sa-critical-bg text-white rounded text-sm">
                             <i class="fas fa-check mr-1"></i>Setujui
                         </button>
@@ -1328,9 +1328,9 @@ async handleSendEmail(e) {
         }
         
         container.innerHTML = users.map(user => `
-            <div class="bg-white border border-sa-border rounded-lg p-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
+            <div class="bg-white border border-sa-border rounded-sa-md p-4">
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden" style="background: #f8f9fa;">
                             <svg width="40" height="40" data-jdenticon-value="${user.username || user.id}"></svg>
                         </div>
@@ -1340,7 +1340,7 @@ async handleSendEmail(e) {
                             <p class="text-xs text-sa-warning">Daftar: ${new Date(user.created_at).toLocaleDateString('id-ID')}</p>
                         </div>
                     </div>
-                    <div class="flex space-x-2">
+                    <div class="flex items-center gap-1">
                         <button onclick="usersManagement.approveUser(${user.id})" class="px-3 py-1 bg-sa-success-bg hover:bg-sa-success-bg text-white rounded text-sm">
                             <i class="fas fa-check mr-1"></i>Setujui
                         </button>
@@ -1415,9 +1415,9 @@ async handleSendEmail(e) {
             const metrics = entry.metrics;
             
             return `
-                <div class="bg-white border border-sa-border rounded-lg p-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
+                <div class="bg-white border border-sa-border rounded-sa-md p-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-3">
                             <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-yellow-400 rounded-full flex items-center justify-center">
                                 <span class="text-white font-semibold text-xs">${index + 1}</span>
                             </div>
@@ -2064,7 +2064,7 @@ async handleSendEmail(e) {
         
         return `
             <div class="space-y-4">
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center gap-4">
                     <div class="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden" style="background: #f8f9fa;">
                         <svg width="64" height="64" data-jdenticon-value="${user.username || user.id}"></svg>
                     </div>
@@ -2154,7 +2154,7 @@ async handleSendEmail(e) {
                               request.status === 'rejected' ? 'Ditolak' : 'Menunggu';
             
             return `
-            <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+            <div class="bg-white p-4 rounded-md border border-sa-border shadow-sm">
                 <div class="flex justify-between items-start mb-3">
                     <div>
                         <h4 class="font-semibold text-gray-800">${request.user.username}</h4>
@@ -2164,7 +2164,7 @@ async handleSendEmail(e) {
                             ${statusText}
                         </span>
                     </div>
-                    <div class="flex space-x-2">
+                    <div class="flex items-center gap-1">
                         ${isPending ? `
                         <button onclick="approveWriteAccessRequest(${request.id})" class="bg-sa-success-bg hover:bg-sa-success-bg text-white px-3 py-1 rounded text-sm">
                             <i class="fas fa-check mr-1"></i>Setujui

@@ -18,23 +18,23 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Navigation Tabs -->
 <div class="mb-6">
-  <nav class="flex space-x-1 bg-surface p-1 rounded-lg" role="tablist">
-    <button class="tab-button active bg-card text-main px-4 py-2 rounded-md font-medium" data-tab="users">
+  <nav class="flex gap-1 p-1 rounded-sa-md bg-white border border-sa-border" role="tablist">
+    <button class="tab-button active px-4 py-2 rounded-md text-sm font-medium transition-all bg-sa-accent text-white shadow-sm" data-tab="users">
       <i class="fas fa-users mr-2"></i>Semua Pengguna
     </button>
-    <button class="tab-button bg-surface text-muted hover:bg-surface-hover px-4 py-2 rounded-md font-medium" data-tab="roles">
+    <button class="tab-button px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover" data-tab="roles">
       <i class="fas fa-user-tag mr-2"></i>Peran & Izin
     </button>
-    <button class="tab-button bg-surface text-muted hover:bg-surface-hover px-4 py-2 rounded-md font-medium" data-tab="pending">
+    <button class="tab-button px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover" data-tab="pending">
       <i class="fas fa-clock mr-2"></i>Menunggu Persetujuan
     </button>
-    <button class="tab-button bg-surface text-muted hover:bg-surface-hover px-4 py-2 rounded-md font-medium" data-tab="deletion-requests">
+    <button class="tab-button px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover" data-tab="deletion-requests">
       <i class="fas fa-user-times mr-2"></i>Permintaan Penghapusan
     </button>
-    <button class="tab-button bg-surface text-muted hover:bg-surface-hover px-4 py-2 rounded-md font-medium" data-tab="performance">
+    <button class="tab-button px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover" data-tab="performance">
       <i class="fas fa-chart-line mr-2"></i>Performa Pengguna
     </button>
-    <button class="tab-button bg-surface text-muted hover:bg-surface-hover px-4 py-2 rounded-md font-medium" data-tab="write-access">
+    <button class="tab-button px-4 py-2 rounded-md text-sm font-medium transition-all text-sa-muted-strong hover:bg-sa-surface-hover" data-tab="write-access">
       <i class="fas fa-pen-alt mr-2"></i>Permintaan Akses Tulis
     </button>
   </nav>
@@ -42,24 +42,24 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Users Tab -->
 <div id="users-tab" class="tab-content active">
-  <main class="bg-surface border border-default p-6 rounded-lg mb-5" role="main">
+  <main class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 mb-5" role="main">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-main">Semua Pengguna</h2>
       <div class="flex space-x-2">
-        <button id="create-user-btn" onclick="openCreateUserModal()" class="bg-primary text-white hover:bg-[#5A67D8] text-white px-4 py-2 rounded-lg font-medium">
+        <button id="create-user-btn" onclick="openCreateUserModal()" class="bg-sa-accent text-white hover:bg-sa-accent-hover px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-user-plus mr-2"></i>Buat Pengguna Baru
         </button>
-        <button id="bulk-actions-btn" class="bg-surface hover:bg-surface-hover text-white px-4 py-2 rounded-lg font-medium hidden">
+        <button id="bulk-actions-btn" class="bg-white border border-sa-border text-sa-fg hover:bg-sa-surface-hover px-4 py-2 rounded-md text-sm font-semibold hidden">
           <i class="fas fa-tasks mr-2"></i>Aksi Massal
         </button>
-        <button id="export-users-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-lg font-medium">
+        <button id="export-users-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-download mr-2"></i>Ekspor
         </button>
       </div>
     </div>
 
     <!-- Bulk Actions Panel -->
-    <div id="bulk-actions-panel" class="bg-card border border-default rounded-lg p-4 mb-4 hidden">
+    <div id="bulk-actions-panel" class="bg-white border border-sa-border rounded-sa-md p-4 mb-4 hidden">
       <h3 class="text-lg font-semibold text-main mb-3">Aksi Massal</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <button id="bulk-activate" class="bg-success hover:bg-sa-success text-white px-3 py-2 rounded text-sm">
@@ -83,11 +83,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <div class="mb-6 flex flex-wrap gap-4" role="search" aria-label="Filter dan pencarian pengguna">
       <div class="flex-1">
         <label for="search" class="sr-only">Cari pengguna</label>
-        <input type="text" id="search" placeholder="Cari berdasarkan nama pengguna, email..." class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Cari berdasarkan nama pengguna">
+        <input type="text" id="search" placeholder="Cari berdasarkan nama pengguna, email..." class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Cari berdasarkan nama pengguna">
       </div>
       <div>
         <label for="role-filter" class="sr-only">Filter berdasarkan peran</label>
-        <select id="role-filter" class="w-48 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan peran pengguna">
+        <select id="role-filter" class="w-48 bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan peran pengguna">
           <option value="">Semua Peran</option>
           <option value="SUPERUSER">Superuser</option>
           <option value="ADMIN">Admin</option>
@@ -96,7 +96,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
       </div>
       <div>
         <label for="status-filter" class="sr-only">Filter berdasarkan status</label>
-        <select id="status-filter" class="w-48 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan status pengguna">
+        <select id="status-filter" class="w-48 bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan status pengguna">
           <option value="">Semua Status</option>
           <option value="active">Aktif</option>
           <option value="inactive">Tidak Aktif</option>
@@ -105,7 +105,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
       </div>
       <div>
         <label for="verification-filter" class="sr-only">Filter berdasarkan status verifikasi</label>
-        <select id="verification-filter" class="w-48 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan status verifikasi pengguna">
+        <select id="verification-filter" class="w-48 bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan status verifikasi pengguna">
           <option value="">Semua Status Verifikasi</option>
           <option value="verified">Terverifikasi</option>
           <option value="unverified">Belum Terverifikasi</option>
@@ -136,9 +136,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
       <section aria-labelledby="user-stats-title" class="mt-8">
         <h3 id="user-stats-title" class="text-xl font-bold text-main mb-4">Statistik Pengguna</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-card p-4 rounded-lg border border-default">
+          <div class="bg-white p-4 rounded-sa-md border border-sa-border">
             <div class="flex items-center">
-              <div class="p-2 bg-primary-subtle rounded-lg">
+              <div class="p-2 bg-primary-subtle rounded-sa-md">
                 <i class="fas fa-users text-primary"></i>
               </div>
               <div class="ml-3">
@@ -147,9 +147,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
               </div>
             </div>
           </div>
-          <div class="bg-card p-4 rounded-lg border border-default">
+          <div class="bg-white p-4 rounded-sa-md border border-sa-border">
             <div class="flex items-center">
-              <div class="p-2 bg-success/20 rounded-lg">
+              <div class="p-2 bg-success/20 rounded-sa-md">
                 <i class="fas fa-user-check text-success"></i>
               </div>
               <div class="ml-3">
@@ -158,9 +158,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
               </div>
             </div>
           </div>
-          <div class="bg-card p-4 rounded-lg border border-default">
+          <div class="bg-white p-4 rounded-sa-md border border-sa-border">
             <div class="flex items-center">
-              <div class="p-2 bg-warning/20 rounded-lg">
+              <div class="p-2 bg-warning/20 rounded-sa-md">
                 <i class="fas fa-crown text-warning"></i>
               </div>
               <div class="ml-3">
@@ -169,9 +169,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
               </div>
             </div>
           </div>
-          <div class="bg-card p-4 rounded-lg border border-default">
+          <div class="bg-white p-4 rounded-sa-md border border-sa-border">
             <div class="flex items-center">
-              <div class="p-2 bg-primary-subtle rounded-lg">
+              <div class="p-2 bg-primary-subtle rounded-sa-md">
                 <i class="fas fa-clock text-primary"></i>
               </div>
               <div class="ml-3">
@@ -188,14 +188,14 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Roles Tab -->
 <div id="roles-tab" class="tab-content hidden">
-  <main class="bg-surface border border-default p-6 rounded-lg mb-5" role="main">
+  <main class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 mb-5" role="main">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-main">Peran & Izin</h2>
       <div class="flex space-x-2">
-        <button id="export-roles-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-lg font-medium">
+        <button id="export-roles-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-download mr-2"></i>Ekspor
         </button>
-        <button id="create-role-btn" onclick="openCreateRoleModal()" class="bg-card hover:bg-[#1F2937] text-white px-4 py-2 rounded-lg font-medium">
+        <button id="create-role-btn" onclick="openCreateRoleModal()" class="bg-white hover:bg-[#1F2937] text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-plus mr-2"></i>Buat Peran Baru
         </button>
       </div>
@@ -223,9 +223,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <div class="mt-8">
       <h3 class="text-lg font-semibold text-main mb-4">Statistik Peran</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-primary-subtle rounded-lg">
+            <div class="p-2 bg-primary-subtle rounded-sa-md">
               <i class="fas fa-user-tag text-primary"></i>
             </div>
             <div class="ml-3">
@@ -234,9 +234,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-success/20 rounded-lg">
+            <div class="p-2 bg-success/20 rounded-sa-md">
               <i class="fas fa-check-circle text-success"></i>
             </div>
             <div class="ml-3">
@@ -245,9 +245,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-primary-subtle rounded-lg">
+            <div class="p-2 bg-primary-subtle rounded-sa-md">
               <i class="fas fa-shield-alt text-primary"></i>
             </div>
             <div class="ml-3">
@@ -263,14 +263,14 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Pending Approvals Tab -->
 <div id="pending-tab" class="tab-content hidden">
-  <main class="bg-surface border border-default p-6 rounded-lg mb-5" role="main">
+  <main class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 mb-5" role="main">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-main">Menunggu Persetujuan</h2>
       <div class="flex space-x-2">
-        <button id="bulk-approve-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-lg font-medium">
+        <button id="bulk-approve-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-check mr-2"></i>Setujui Semua
         </button>
-        <button id="bulk-reject-btn" class="bg-danger hover:bg-sa-critical text-white px-4 py-2 rounded-lg font-medium">
+        <button id="bulk-reject-btn" class="bg-danger hover:bg-sa-critical text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-times mr-2"></i>Tolak Semua
         </button>
       </div>
@@ -279,11 +279,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <div class="mb-6 flex flex-wrap gap-4" role="search" aria-label="Filter pengguna yang menunggu persetujuan">
       <div class="flex-1">
         <label for="pending-search" class="sr-only">Cari pengguna yang menunggu</label>
-        <input type="text" id="pending-search" placeholder="Cari berdasarkan nama pengguna, email..." class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Cari pengguna yang menunggu persetujuan">
+        <input type="text" id="pending-search" placeholder="Cari berdasarkan nama pengguna, email..." class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Cari pengguna yang menunggu persetujuan">
       </div>
       <div>
         <label for="pending-date-filter" class="sr-only">Filter berdasarkan tanggal</label>
-        <select id="pending-date-filter" class="w-48 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan tanggal pendaftaran">
+        <select id="pending-date-filter" class="w-48 bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan tanggal pendaftaran">
           <option value="">Semua Tanggal</option>
           <option value="today">Hari Ini</option>
           <option value="week">Minggu Ini</option>
@@ -300,9 +300,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <div class="mt-8">
       <h3 class="text-lg font-semibold text-main mb-4">Statistik Menunggu</h3>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-warning/20 rounded-lg">
+            <div class="p-2 bg-warning/20 rounded-sa-md">
               <i class="fas fa-clock text-warning"></i>
             </div>
             <div class="ml-3">
@@ -311,9 +311,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-success/20 rounded-lg">
+            <div class="p-2 bg-success/20 rounded-sa-md">
               <i class="fas fa-check text-success"></i>
             </div>
             <div class="ml-3">
@@ -322,9 +322,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-danger/20 rounded-lg">
+            <div class="p-2 bg-danger/20 rounded-sa-md">
               <i class="fas fa-times text-danger"></i>
             </div>
             <div class="ml-3">
@@ -333,9 +333,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-primary-subtle rounded-lg">
+            <div class="p-2 bg-primary-subtle rounded-sa-md">
               <i class="fas fa-hourglass-half text-primary"></i>
             </div>
             <div class="ml-3">
@@ -351,14 +351,14 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Deletion Requests Tab -->
 <div id="deletion-requests-tab" class="tab-content hidden">
-  <main class="bg-surface border border-default p-6 rounded-lg mb-5" role="main">
+  <main class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 mb-5" role="main">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-main">Permintaan Penghapusan Akun</h2>
       <div class="flex space-x-2">
-        <button id="bulk-approve-deletion-btn" class="bg-danger hover:bg-sa-critical text-white px-4 py-2 rounded-lg font-medium">
+        <button id="bulk-approve-deletion-btn" class="bg-danger hover:bg-sa-critical text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-check mr-2"></i>Setujui Semua
         </button>
-        <button id="bulk-reject-deletion-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-lg font-medium">
+        <button id="bulk-reject-deletion-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-times mr-2"></i>Tolak Semua
         </button>
       </div>
@@ -367,11 +367,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <div class="mb-6 flex flex-wrap gap-4" role="search" aria-label="Filter permintaan penghapusan">
       <div class="flex-1">
         <label for="deletion-search" class="sr-only">Cari permintaan penghapusan</label>
-        <input type="text" id="deletion-search" placeholder="Cari berdasarkan nama pengguna, email..." class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Cari permintaan penghapusan">
+        <input type="text" id="deletion-search" placeholder="Cari berdasarkan nama pengguna, email..." class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Cari permintaan penghapusan">
       </div>
       <div>
         <label for="deletion-date-filter" class="sr-only">Filter berdasarkan tanggal</label>
-        <select id="deletion-date-filter" class="w-48 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan tanggal permintaan">
+        <select id="deletion-date-filter" class="w-48 bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan tanggal permintaan">
           <option value="">Semua Tanggal</option>
           <option value="today">Hari Ini</option>
           <option value="week">Minggu Ini</option>
@@ -388,9 +388,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <div class="mt-8">
       <h3 class="text-lg font-semibold text-main mb-4">Statistik Permintaan Penghapusan</h3>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-danger/20 rounded-lg">
+            <div class="p-2 bg-danger/20 rounded-sa-md">
               <i class="fas fa-user-times text-danger"></i>
             </div>
             <div class="ml-3">
@@ -399,9 +399,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-success/20 rounded-lg">
+            <div class="p-2 bg-success/20 rounded-sa-md">
               <i class="fas fa-check text-success"></i>
             </div>
             <div class="ml-3">
@@ -410,9 +410,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-primary-subtle rounded-lg">
+            <div class="p-2 bg-primary-subtle rounded-sa-md">
               <i class="fas fa-times text-primary"></i>
             </div>
             <div class="ml-3">
@@ -421,9 +421,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-primary-subtle rounded-lg">
+            <div class="p-2 bg-primary-subtle rounded-sa-md">
               <i class="fas fa-hourglass-half text-primary"></i>
             </div>
             <div class="ml-3">
@@ -439,16 +439,16 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Performance Tab -->
 <div id="performance-tab" class="tab-content hidden">
-  <main class="bg-surface border border-default p-6 rounded-lg mb-5" role="main">
+  <main class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 mb-5" role="main">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-main">Performa Pengguna</h2>
       <div class="flex space-x-2">
-        <select id="performance-period" class="bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+        <select id="performance-period" class="bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
           <option value="7">7 Hari Terakhir</option>
           <option value="30" selected>30 Hari Terakhir</option>
           <option value="90">90 Hari Terakhir</option>
         </select>
-        <button id="export-performance-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-lg font-medium">
+        <button id="export-performance-btn" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-download mr-2"></i>Ekspor Laporan
         </button>
       </div>
@@ -456,19 +456,19 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
     <!-- Performance Summary -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <div class="bg-card p-4 rounded-lg border border-default">
+      <div class="bg-white p-4 rounded-sa-md border border-sa-border">
         <h3 class="text-sm font-medium text-muted">Total Pengguna Aktif</h3>
         <p id="active-users-count" class="text-2xl font-bold text-main">-</p>
       </div>
-      <div class="bg-card p-4 rounded-lg border border-default">
+      <div class="bg-white p-4 rounded-sa-md border border-sa-border">
         <h3 class="text-sm font-medium text-muted">Total Aktivitas</h3>
         <p id="total-activities" class="text-2xl font-bold text-main">-</p>
       </div>
-      <div class="bg-card p-4 rounded-lg border border-default">
+      <div class="bg-white p-4 rounded-sa-md border border-sa-border">
         <h3 class="text-sm font-medium text-muted">Konten Dibuat</h3>
         <p id="total-content" class="text-2xl font-bold text-main">-</p>
       </div>
-      <div class="bg-card p-4 rounded-lg border border-default">
+      <div class="bg-white p-4 rounded-sa-md border border-sa-border">
         <h3 class="text-sm font-medium text-muted">Skor Engagement</h3>
         <p id="avg-engagement" class="text-2xl font-bold text-main">-</p>
       </div>
@@ -486,13 +486,13 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <div class="mt-8">
       <h3 class="text-lg font-semibold text-main mb-4">Grafik Performa</h3>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <h4 class="text-md font-medium text-main mb-3">Aktivitas Pengguna</h4>
           <div id="user-activity-chart" class="h-64 flex items-center justify-center text-muted">
             Grafik aktivitas akan ditampilkan di sini
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <h4 class="text-md font-medium text-main mb-3">Distribusi Peran</h4>
           <div id="role-distribution-chart" class="h-64 flex items-center justify-center text-muted">
             Grafik distribusi peran akan ditampilkan di sini
@@ -504,7 +504,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <!-- Recent Activities -->
     <div class="mt-8">
       <h3 class="text-lg font-semibold text-main mb-4">Aktivitas Terbaru</h3>
-      <div id="recent-activities" class="bg-card rounded-lg border border-default">
+      <div id="recent-activities" class="bg-white rounded-sa-md border border-sa-border">
         <div class="p-4 text-muted">Memuat aktivitas terbaru...</div>
       </div>
     </div>
@@ -513,7 +513,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Enhanced Edit User Modal -->
 <div id="edit-user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="edit-user-title" aria-modal="true">
-    <div class="bg-surface border border-default p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <h2 id="edit-user-title" class="text-xl font-semibold mb-6 text-main">Edit Pengguna</h2>
         <form id="edit-user-form" class="space-y-4" role="form" aria-label="Form edit pengguna">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -523,32 +523,32 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="edit-username" class="block text-main font-medium mb-2">Nama Pengguna</label>
-                    <input type="text" id="edit-username" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true">
+                    <input type="text" id="edit-username" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true">
                 </div>
                 <div>
                     <label for="edit-email" class="block text-main font-medium mb-2">Email (Opsional)</label>
-                    <input type="email" id="edit-email" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" title="Masukkan alamat email yang valid atau biarkan kosong">
+                    <input type="email" id="edit-email" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" title="Masukkan alamat email yang valid atau biarkan kosong">
                 </div>
                 <div>
                     <label for="edit-first-name" class="block text-main font-medium mb-2">Nama Depan</label>
-                    <input type="text" id="edit-first-name" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                    <input type="text" id="edit-first-name" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                 </div>
                 <div>
                     <label for="edit-last-name" class="block text-main font-medium mb-2">Nama Belakang</label>
-                    <input type="text" id="edit-last-name" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                    <input type="text" id="edit-last-name" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                 </div>
             </div>
 
             <div>
                 <label for="edit-bio" class="block text-main font-medium mb-2">Bio</label>
-                <textarea id="edit-bio" rows="3" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]"></textarea>
+                <textarea id="edit-bio" rows="3" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]"></textarea>
             </div>
 
             <!-- Role and Status -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="edit-role" class="block text-main font-medium mb-2">Peran Sistem</label>
-                    <select id="edit-role" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Pilih peran pengguna">
+                    <select id="edit-role" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Pilih peran pengguna">
                         <option value="SUPERUSER">Superuser</option>
                         <option value="ADMIN">Admin</option>
                         <option value="GENERAL">Umum</option>
@@ -556,7 +556,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
                 </div>
                 <div>
                     <label for="edit-custom-role" class="block text-main font-medium mb-2">Peran Kustom</label>
-                    <select id="edit-custom-role" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                    <select id="edit-custom-role" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                         <option value="">Tidak ada peran kustom</option>
                     </select>
                 </div>
@@ -564,38 +564,38 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
             <!-- Preferences (Per User) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="flex items-center justify-between bg-card border border-default rounded-lg p-3">
+                <div class="flex items-center justify-between bg-white border border-sa-border rounded-sa-md p-3">
                     <div>
                         <label for="edit-pref-ads" class="block text-main font-medium">Tampilkan Iklan untuk Pengguna</label>
                         <p class="text-xs text-muted">Kontrol apakah pengguna melihat iklan</p>
                     </div>
-                    <input type="checkbox" id="edit-pref-ads" class="rounded border-default text-primary focus:ring-blue-300" aria-label="Preferensi iklan pengguna">
+                    <input type="checkbox" id="edit-pref-ads" class="rounded border-sa-border text-primary focus:ring-blue-300" aria-label="Preferensi iklan pengguna">
                 </div>
-                <div class="flex items-center justify-between bg-card border border-default rounded-lg p-3">
+                <div class="flex items-center justify-between bg-white border border-sa-border rounded-sa-md p-3">
                     <div>
                         <label for="edit-pref-campaigns" class="block text-main font-medium">Ikut Kampanye</label>
                         <p class="text-xs text-muted">Aktifkan partisipasi pengguna pada kampanye</p>
                     </div>
-                    <input type="checkbox" id="edit-pref-campaigns" class="rounded border-default text-primary focus:ring-blue-300" aria-label="Preferensi kampanye pengguna">
+                    <input type="checkbox" id="edit-pref-campaigns" class="rounded border-sa-border text-primary focus:ring-blue-300" aria-label="Preferensi kampanye pengguna">
                 </div>
             </div>
 
             <!-- Status Toggles -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="flex items-center">
-                    <input type="checkbox" id="edit-is-active" class="rounded border-default text-success focus:ring-sa-success/30" aria-label="Status aktif pengguna">
+                    <input type="checkbox" id="edit-is-active" class="rounded border-sa-border text-success focus:ring-sa-success/30" aria-label="Status aktif pengguna">
                     <label for="edit-is-active" class="ml-2 text-main">Aktif</label>
                 </div>
                 <div class="flex items-center">
-                    <input type="checkbox" id="edit-verified" class="rounded border-default text-primary focus:ring-purple-300" aria-label="Status verifikasi pengguna">
+                    <input type="checkbox" id="edit-verified" class="rounded border-sa-border text-primary focus:ring-purple-300" aria-label="Status verifikasi pengguna">
                     <label for="edit-verified" class="ml-2 text-main">Terverifikasi</label>
                 </div>
                 <div class="flex items-center">
-                    <input type="checkbox" id="edit-is-suspended" class="rounded border-default text-danger focus:ring-red-300" aria-label="Status suspend pengguna">
+                    <input type="checkbox" id="edit-is-suspended" class="rounded border-sa-border text-danger focus:ring-red-300" aria-label="Status suspend pengguna">
                     <label for="edit-is-suspended" class="ml-2 text-main">Tersuspend</label>
                 </div>
                 <div class="flex items-center">
-                    <input type="checkbox" id="edit-is-premium" class="rounded border-default text-warning focus:ring-yellow-300" aria-label="Status premium pengguna">
+                    <input type="checkbox" id="edit-is-premium" class="rounded border-sa-border text-warning focus:ring-yellow-300" aria-label="Status premium pengguna">
                     <label for="edit-is-premium" class="ml-2 text-main">Premium</label>
                 </div>
             </div>
@@ -605,18 +605,18 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="edit-suspension-reason" class="block text-main font-medium mb-2">Alasan Suspend</label>
-                        <input type="text" id="edit-suspension-reason" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                        <input type="text" id="edit-suspension-reason" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                     </div>
                     <div>
                         <label for="edit-suspension-until" class="block text-main font-medium mb-2">Suspend Sampai</label>
-                        <input type="datetime-local" id="edit-suspension-until" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                        <input type="datetime-local" id="edit-suspension-until" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                     </div>
                 </div>
             </div>
 
             <div class="flex space-x-4" role="group" aria-label="Tombol aksi">
-                <button type="button" onclick="closeEditUserModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal edit pengguna">Batal</button>
-                <button type="submit" class="w-full bg-primary text-white hover:bg-primary-hover text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300" aria-label="Simpan perubahan pengguna">Simpan</button>
+                <button type="button" onclick="closeEditUserModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal edit pengguna">Batal</button>
+                <button type="submit" class="w-full bg-primary text-white hover:bg-primary-hover text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300" aria-label="Simpan perubahan pengguna">Simpan</button>
             </div>
         </form>
     </div>
@@ -624,14 +624,14 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Write Access Requests Tab -->
 <div id="write-access-tab" class="tab-content hidden">
-  <main class="bg-surface border border-default p-6 rounded-lg mb-5" role="main">
+  <main class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 mb-5" role="main">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-xl font-semibold text-main">Permintaan Akses Tulis</h2>
       <div class="flex space-x-2">
-        <button id="bulk-approve-write-access-btn" onclick="bulkApproveWriteAccess()" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-lg font-medium">
+        <button id="bulk-approve-write-access-btn" onclick="bulkApproveWriteAccess()" class="bg-success hover:bg-sa-success text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-check mr-2"></i>Setujui Semua
         </button>
-        <button id="bulk-reject-write-access-btn" onclick="bulkRejectWriteAccess()" class="bg-danger hover:bg-sa-critical text-white px-4 py-2 rounded-lg font-medium">
+        <button id="bulk-reject-write-access-btn" onclick="bulkRejectWriteAccess()" class="bg-danger hover:bg-sa-critical text-white px-4 py-2 rounded-md text-sm font-semibold">
           <i class="fas fa-times mr-2"></i>Tolak Semua
         </button>
       </div>
@@ -640,11 +640,11 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <div class="mb-6 flex flex-wrap gap-4" role="search" aria-label="Filter permintaan akses tulis">
       <div class="flex-1">
         <label for="write-access-search" class="sr-only">Cari permintaan akses tulis</label>
-        <input type="text" id="write-access-search" placeholder="Cari berdasarkan nama pengguna, email..." class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Cari permintaan akses tulis">
+        <input type="text" id="write-access-search" placeholder="Cari berdasarkan nama pengguna, email..." class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Cari permintaan akses tulis">
       </div>
       <div>
         <label for="write-access-status-filter" class="sr-only">Filter berdasarkan status</label>
-        <select id="write-access-status-filter" class="w-48 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan status permintaan">
+        <select id="write-access-status-filter" class="w-48 bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan status permintaan">
           <option value="">Semua Status</option>
           <option value="pending">Menunggu</option>
           <option value="approved">Disetujui</option>
@@ -653,7 +653,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
       </div>
       <div>
         <label for="write-access-date-filter" class="sr-only">Filter berdasarkan tanggal</label>
-        <select id="write-access-date-filter" class="w-48 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan tanggal permintaan">
+        <select id="write-access-date-filter" class="w-48 bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" aria-label="Filter berdasarkan tanggal permintaan">
           <option value="">Semua Tanggal</option>
           <option value="today">Hari Ini</option>
           <option value="week">Minggu Ini</option>
@@ -670,9 +670,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
     <div class="mt-8">
       <h3 class="text-lg font-semibold text-main mb-4">Statistik Permintaan Akses Tulis</h3>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-warning/20 rounded-lg">
+            <div class="p-2 bg-warning/20 rounded-sa-md">
               <i class="fas fa-clock text-warning"></i>
             </div>
             <div class="ml-3">
@@ -681,9 +681,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-success/20 rounded-lg">
+            <div class="p-2 bg-success/20 rounded-sa-md">
               <i class="fas fa-check text-success"></i>
             </div>
             <div class="ml-3">
@@ -692,9 +692,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-danger/20 rounded-lg">
+            <div class="p-2 bg-danger/20 rounded-sa-md">
               <i class="fas fa-times text-danger"></i>
             </div>
             <div class="ml-3">
@@ -703,9 +703,9 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
           </div>
         </div>
-        <div class="bg-card p-4 rounded-lg border border-default">
+        <div class="bg-white p-4 rounded-sa-md border border-sa-border">
           <div class="flex items-center">
-            <div class="p-2 bg-primary-subtle rounded-lg">
+            <div class="p-2 bg-primary-subtle rounded-sa-md">
               <i class="fas fa-hourglass-half text-primary"></i>
             </div>
             <div class="ml-3">
@@ -721,18 +721,18 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Create Role Modal -->
 <div id="create-role-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="create-role-title" aria-modal="true">
-    <div class="bg-surface border border-default p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <h2 id="create-role-title" class="text-xl font-semibold mb-6 text-main">Buat Peran Baru</h2>
         <form id="create-role-form" class="space-y-4" role="form" aria-label="Form buat peran">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="role-name" class="block text-main font-medium mb-2">Nama Peran</label>
-                    <input type="text" id="role-name" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true">
+                    <input type="text" id="role-name" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true">
                 </div>
                 <div>
                     <label for="role-description" class="block text-main font-medium mb-2">Deskripsi</label>
-                    <input type="text" id="role-description" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                    <input type="text" id="role-description" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                 </div>
             </div>
 
@@ -744,8 +744,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
 
             <div class="flex space-x-4" role="group" aria-label="Tombol aksi">
-                <button type="button" onclick="closeCreateRoleModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal buat peran">Batal</button>
-                <button type="submit" class="w-full bg-primary text-white hover:bg-primary-hover text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300" aria-label="Buat peran">Buat Peran</button>
+                <button type="button" onclick="closeCreateRoleModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal buat peran">Batal</button>
+                <button type="submit" class="w-full bg-primary text-white hover:bg-primary-hover text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300" aria-label="Buat peran">Buat Peran</button>
             </div>
         </form>
     </div>
@@ -753,23 +753,23 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Edit Role Modal -->
 <div id="edit-role-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="edit-role-title" aria-modal="true">
-    <div class="bg-surface border border-default p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <h2 id="edit-role-title" class="text-xl font-semibold mb-6 text-main">Edit Peran</h2>
         <form id="edit-role-form" class="space-y-4" role="form" aria-label="Form edit peran">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="edit-role-name" class="block text-main font-medium mb-2">Nama Peran</label>
-                    <input type="text" id="edit-role-name" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true">
+                    <input type="text" id="edit-role-name" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true">
                 </div>
                 <div>
                     <label for="edit-role-description" class="block text-main font-medium mb-2">Deskripsi</label>
-                    <input type="text" id="edit-role-description" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                    <input type="text" id="edit-role-description" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                 </div>
             </div>
 
             <div class="flex items-center">
-                <input type="checkbox" id="edit-role-active" class="rounded border-default text-primary focus:ring-blue-300" checked>
+                <input type="checkbox" id="edit-role-active" class="rounded border-sa-border text-primary focus:ring-blue-300" checked>
                 <label for="edit-role-active" class="ml-2 text-main">Aktif</label>
             </div>
 
@@ -781,8 +781,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
 
             <div class="flex space-x-4" role="group" aria-label="Tombol aksi">
-                <button type="button" onclick="closeEditRoleModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal edit peran">Batal</button>
-                <button type="submit" class="w-full bg-primary text-white hover:bg-primary-hover text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300" aria-label="Simpan perubahan peran">Simpan</button>
+                <button type="button" onclick="closeEditRoleModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal edit peran">Batal</button>
+                <button type="submit" class="w-full bg-primary text-white hover:bg-primary-hover text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300" aria-label="Simpan perubahan peran">Simpan</button>
             </div>
         </form>
     </div>
@@ -790,37 +790,37 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Delete User Confirmation Modal -->
 <div id="delete-user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50" role="dialog" aria-labelledby="delete-user-title" aria-modal="true">
-    <div class="bg-surface p-6 rounded-lg w-full max-w-md border border-default">
+    <div class="bg-surface p-6 rounded-sa-md w-full max-w-md border border-sa-border">
         <h3 id="delete-user-title" class="text-xl font-semibold text-danger mb-4">Hapus Pengguna</h3>
         <p class="mb-4 text-main">Apakah Anda yakin ingin menghapus pengguna ini? Tindakan ini tidak dapat dibatalkan.</p>
-        <div class="bg-gradient-to-r from-red-100 to-pink-100 border border-[#FECACA] rounded-lg p-3 mb-4">
+        <div class="bg-gradient-to-r from-sa-critical-bg to-sa-critical/5 border border-sa-critical/30 rounded-sa-md p-3 mb-4">
             <p class="text-sm text-danger"><i class="fas fa-exclamation-triangle mr-1"></i> Tindakan ini tidak dapat dibatalkan!</p>
         </div>
         <div class="flex justify-end space-x-4" role="group" aria-label="Tombol konfirmasi hapus">
-            <button id="cancel-delete-user-btn" onclick="closeDeleteUserModal()" class="bg-surface hover:bg-[#D1D5DB] text-main px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal hapus pengguna">Batal</button>
-            <button id="confirm-delete-user-btn" onclick="confirmDeleteUser()" class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-300" aria-label="Konfirmasi hapus pengguna">Hapus</button>
+            <button id="cancel-delete-user-btn" onclick="closeDeleteUserModal()" class="bg-surface hover:bg-[#D1D5DB] text-main px-4 py-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal hapus pengguna">Batal</button>
+            <button id="confirm-delete-user-btn" onclick="confirmDeleteUser()" class="bg-gradient-to-r from-sa-critical to-sa-critical/80 hover:from-sa-critical/90 hover:to-sa-critical/70 text-white px-4 py-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-300" aria-label="Konfirmasi hapus pengguna">Hapus</button>
         </div>
     </div>
 </div>
 
 <!-- Delete Role Confirmation Modal -->
 <div id="delete-role-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50" role="dialog" aria-labelledby="delete-role-title" aria-modal="true">
-    <div class="bg-surface p-6 rounded-lg w-full max-w-md border border-default">
+    <div class="bg-surface p-6 rounded-sa-md w-full max-w-md border border-sa-border">
         <h3 id="delete-role-title" class="text-xl font-semibold text-danger mb-4">Hapus Peran</h3>
         <p class="mb-4 text-main">Apakah Anda yakin ingin menghapus peran ini? Tindakan ini tidak dapat dibatalkan.</p>
-        <div class="bg-gradient-to-r from-red-100 to-pink-100 border border-[#FECACA] rounded-lg p-3 mb-4">
+        <div class="bg-gradient-to-r from-sa-critical-bg to-sa-critical/5 border border-sa-critical/30 rounded-sa-md p-3 mb-4">
             <p class="text-sm text-danger"><i class="fas fa-exclamation-triangle mr-1"></i> Tindakan ini tidak dapat dibatalkan!</p>
         </div>
         <div class="flex justify-end space-x-4" role="group" aria-label="Tombol konfirmasi hapus">
-            <button id="cancel-delete-role-btn" onclick="closeDeleteRoleModal()" class="bg-surface hover:bg-[#D1D5DB] text-main px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal hapus peran">Batal</button>
-            <button id="confirm-delete-role-btn" onclick="confirmDeleteRole()" class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-300" aria-label="Konfirmasi hapus peran">Hapus</button>
+            <button id="cancel-delete-role-btn" onclick="closeDeleteRoleModal()" class="bg-surface hover:bg-[#D1D5DB] text-main px-4 py-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal hapus peran">Batal</button>
+            <button id="confirm-delete-role-btn" onclick="confirmDeleteRole()" class="bg-gradient-to-r from-sa-critical to-sa-critical/80 hover:from-sa-critical/90 hover:to-sa-critical/70 text-white px-4 py-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-300" aria-label="Konfirmasi hapus peran">Hapus</button>
         </div>
     </div>
 </div>
 
 <!-- Create User Modal -->
 <div id="create-user-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="create-user-title" aria-modal="true">
-    <div class="bg-surface border border-default p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <h2 id="create-user-title" class="text-xl font-semibold mb-6 text-main">Buat Pengguna Baru</h2>
         <form id="create-user-form" class="space-y-4" role="form" aria-label="Form buat pengguna">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -828,42 +828,42 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="new-username" class="block text-main font-medium mb-2">Nama Pengguna <span class="text-danger">*</span></label>
-                    <input type="text" id="new-username" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="3" maxlength="50">
+                    <input type="text" id="new-username" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="3" maxlength="50">
                     <div id="username-status" class="mt-1 text-sm hidden"></div>
                 </div>
                 <div>
                     <label for="new-email" class="block text-main font-medium mb-2">Email <span class="text-danger">*</span></label>
-                    <input type="email" id="new-email" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$">
+                    <input type="email" id="new-email" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$">
                     <div id="email-status" class="mt-1 text-sm hidden"></div>
                 </div>
                 <div>
                     <label for="new-password" class="block text-main font-medium mb-2">Password <span class="text-danger">*</span></label>
-                    <input type="password" id="new-password" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="6">
+                    <input type="password" id="new-password" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="6">
                 </div>
                 <div>
                     <label for="new-confirm-password" class="block text-main font-medium mb-2">Konfirmasi Password <span class="text-danger">*</span></label>
-                    <input type="password" id="new-confirm-password" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="6">
+                    <input type="password" id="new-confirm-password" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="6">
                 </div>
                 <div>
                     <label for="new-first-name" class="block text-main font-medium mb-2">Nama Depan</label>
-                    <input type="text" id="new-first-name" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                    <input type="text" id="new-first-name" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                 </div>
                 <div>
                     <label for="new-last-name" class="block text-main font-medium mb-2">Nama Belakang</label>
-                    <input type="text" id="new-last-name" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                    <input type="text" id="new-last-name" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                 </div>
             </div>
 
             <div>
                 <label for="new-bio" class="block text-main font-medium mb-2">Bio</label>
-                <textarea id="new-bio" rows="3" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]"></textarea>
+                <textarea id="new-bio" rows="3" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]"></textarea>
             </div>
 
             <!-- Role and Status -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="new-role" class="block text-main font-medium mb-2">Peran Sistem <span class="text-danger">*</span></label>
-                    <select id="new-role" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" aria-label="Pilih peran pengguna">
+                    <select id="new-role" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" aria-label="Pilih peran pengguna">
                         <option value="">Pilih Peran</option>
                         <option value="SUPERUSER">Superuser</option>
                         <option value="ADMIN">Admin</option>
@@ -872,7 +872,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
                 </div>
                 <div>
                     <label for="new-custom-role" class="block text-main font-medium mb-2">Peran Kustom</label>
-                    <select id="new-custom-role" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                    <select id="new-custom-role" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                         <option value="">Tidak ada peran kustom</option>
                     </select>
                 </div>
@@ -881,19 +881,19 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             <!-- Status Toggles -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="flex items-center">
-                    <input type="checkbox" id="new-is-active" class="rounded border-default text-success focus:ring-sa-success/30" checked aria-label="Status aktif pengguna">
+                    <input type="checkbox" id="new-is-active" class="rounded border-sa-border text-success focus:ring-sa-success/30" checked aria-label="Status aktif pengguna">
                     <label for="new-is-active" class="ml-2 text-main">Aktif</label>
                 </div>
                 <div class="flex items-center">
-                    <input type="checkbox" id="new-verified" class="rounded border-default text-primary focus:ring-purple-300" checked aria-label="Status verifikasi pengguna">
+                    <input type="checkbox" id="new-verified" class="rounded border-sa-border text-primary focus:ring-purple-300" checked aria-label="Status verifikasi pengguna">
                     <label for="new-verified" class="ml-2 text-main">Terverifikasi</label>
                 </div>
                 <div class="flex items-center">
-                    <input type="checkbox" id="new-is-premium" class="rounded border-default text-warning focus:ring-yellow-300" aria-label="Status premium pengguna">
+                    <input type="checkbox" id="new-is-premium" class="rounded border-sa-border text-warning focus:ring-yellow-300" aria-label="Status premium pengguna">
                     <label for="new-is-premium" class="ml-2 text-main">Premium</label>
                 </div>
                 <div class="flex items-center">
-                    <input type="checkbox" id="new-send-welcome-email" class="rounded border-default text-primary focus:ring-blue-300" checked aria-label="Kirim email selamat datang">
+                    <input type="checkbox" id="new-send-welcome-email" class="rounded border-sa-border text-primary focus:ring-blue-300" checked aria-label="Kirim email selamat datang">
                     <label for="new-send-welcome-email" class="ml-2 text-main">Kirim Email Selamat Datang</label>
                 </div>
             </div>
@@ -903,7 +903,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="new-premium-duration" class="block text-main font-medium mb-2">Durasi Premium</label>
-                        <select id="new-premium-duration" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+                        <select id="new-premium-duration" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
                             <option value="30">30 Hari</option>
                             <option value="90">90 Hari</option>
                             <option value="180">180 Hari</option>
@@ -915,15 +915,15 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
                         <label for="new-premium-features" class="block text-main font-medium mb-2">Fitur Premium</label>
                         <div class="space-y-2">
                             <div class="flex items-center">
-                                <input type="checkbox" id="new-premium-ads-free" class="rounded border-default text-warning focus:ring-yellow-300" checked>
+                                <input type="checkbox" id="new-premium-ads-free" class="rounded border-sa-border text-warning focus:ring-yellow-300" checked>
                                 <label for="new-premium-ads-free" class="ml-2 text-main text-sm">Bebas Iklan</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="new-premium-priority" class="rounded border-default text-warning focus:ring-yellow-300" checked>
+                                <input type="checkbox" id="new-premium-priority" class="rounded border-sa-border text-warning focus:ring-yellow-300" checked>
                                 <label for="new-premium-priority" class="ml-2 text-main text-sm">Prioritas Support</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="new-premium-advanced" class="rounded border-default text-warning focus:ring-yellow-300" checked>
+                                <input type="checkbox" id="new-premium-advanced" class="rounded border-sa-border text-warning focus:ring-yellow-300" checked>
                                 <label for="new-premium-advanced" class="ml-2 text-main text-sm">Fitur Lanjutan</label>
                             </div>
                         </div>
@@ -932,8 +932,8 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
 
             <div class="flex space-x-4" role="group" aria-label="Tombol aksi">
-                <button type="button" onclick="closeCreateUserModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal buat pengguna">Batal</button>
-                <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300" aria-label="Buat pengguna">Buat Pengguna</button>
+                <button type="button" onclick="closeCreateUserModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal buat pengguna">Batal</button>
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300" aria-label="Buat pengguna">Buat Pengguna</button>
             </div>
         </form>
     </div>
@@ -941,39 +941,39 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- User Details Modal -->
 <div id="user-details-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="user-details-title" aria-modal="true">
-    <div class="bg-surface border border-default p-6 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <h2 id="user-details-title" class="text-xl font-semibold mb-6 text-main">Detail Pengguna</h2>
         <div id="user-details-content" class="space-y-4">
             <!-- User details will be loaded here -->
         </div>
         <div class="flex justify-end mt-6">
-            <button onclick="closeUserDetailsModal()" class="bg-surface hover:bg-[#D1D5DB] text-main px-6 py-2 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Tutup detail pengguna">Tutup</button>
+            <button onclick="closeUserDetailsModal()" class="bg-surface hover:bg-[#D1D5DB] text-main px-6 py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Tutup detail pengguna">Tutup</button>
         </div>
     </div>
 </div>
 
 <!-- Password Reset Modal -->
 <div id="password-reset-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="password-reset-title" aria-modal="true">
-    <div class="bg-surface border border-default p-6 rounded-lg max-w-md w-full">
+    <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 max-w-md w-full">
         <h2 id="password-reset-title" class="text-xl font-semibold mb-6 text-main">Reset Password</h2>
         <form id="password-reset-form" class="space-y-4" role="form" aria-label="Form reset password">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="hidden" id="reset-user-id">
             <div>
                 <label for="new-password-reset" class="block text-main font-medium mb-2">Password Baru <span class="text-danger">*</span></label>
-                <input type="password" id="new-password-reset" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="6">
+                <input type="password" id="new-password-reset" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="6">
             </div>
             <div>
                 <label for="confirm-password-reset" class="block text-main font-medium mb-2">Konfirmasi Password <span class="text-danger">*</span></label>
-                <input type="password" id="confirm-password-reset" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="6">
+                <input type="password" id="confirm-password-reset" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" required aria-required="true" minlength="6">
             </div>
             <div class="flex items-center">
-                <input type="checkbox" id="send-email-reset" class="rounded border-default text-primary focus:ring-blue-300" checked>
+                <input type="checkbox" id="send-email-reset" class="rounded border-sa-border text-primary focus:ring-blue-300" checked>
                 <label for="send-email-reset" class="ml-2 text-main">Kirim email notifikasi ke pengguna</label>
             </div>
             <div class="flex space-x-4" role="group" aria-label="Tombol aksi">
-                <button type="button" onclick="closePasswordResetModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-2 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal reset password">Batal</button>
-                <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white py-2 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-orange-300 transition-all duration-300" aria-label="Reset password">Reset Password</button>
+                <button type="button" onclick="closePasswordResetModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal reset password">Batal</button>
+                <button type="submit" class="w-full bg-gradient-to-r from-sa-warning to-sa-critical hover:from-sa-warning hover:to-sa-critical hover:to-red-600 text-white py-2 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-orange-300 transition-all duration-300" aria-label="Reset password">Reset Password</button>
             </div>
         </form>
     </div>
@@ -981,7 +981,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Send Custom Email Modal -->
 <div id="send-email-modal" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center p-4 z-50 animate-fade-in" role="dialog" aria-labelledby="send-email-title" aria-modal="true">
-    <div class="bg-card bg-opacity-80 backdrop-blur-xl border border-white border-opacity-40 p-6 rounded-2xl max-w-lg w-full transform transition-all duration-300 scale-95 hover:scale-100">
+    <div class="bg-white bg-opacity-80 backdrop-blur-xl border border-white border-opacity-40 p-6 rounded-2xl max-w-lg w-full transform transition-all duration-300 scale-95 hover:scale-100">
         <h2 id="send-email-title" class="text-xl font-bold mb-6 text-sa-accent flex items-center gap-2">
             <i class="fas fa-paper-plane text-primary"></i> Kirim Email Kustom
         </h2>
@@ -990,19 +990,19 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             <input type="hidden" id="email-user-id">
             <div>
                 <label for="email-recipient" class="block text-muted font-semibold mb-2">Penerima</label>
-                <input type="text" id="email-recipient" class="w-full bg-sa-accent/5 bg-opacity-40 border border-sa-border text-primary p-3 rounded-lg cursor-not-allowed font-medium" readonly disabled>
+                <input type="text" id="email-recipient" class="w-full bg-sa-accent/5 bg-opacity-40 border border-sa-border text-primary p-3 rounded-sa-md cursor-not-allowed font-medium" readonly disabled>
             </div>
             <div>
                 <label for="email-subject" class="block text-muted font-semibold mb-2">Subjek <span class="text-sa-critical">*</span></label>
-                <input type="text" id="email-subject" class="w-full bg-card border border-default text-main p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-300 placeholder-[#9CA3AF]" required aria-required="true" placeholder="Masukkan subjek penawaran/informasi">
+                <input type="text" id="email-subject" class="w-full bg-white border border-sa-border text-main p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-300 placeholder-[#9CA3AF]" required aria-required="true" placeholder="Masukkan subjek penawaran/informasi">
             </div>
             <div>
                 <label for="email-message" class="block text-muted font-semibold mb-2">Pesan Email <span class="text-sa-critical">*</span></label>
-                <textarea id="email-message" rows="6" class="w-full bg-card border border-default text-main p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-300 placeholder-[#9CA3AF]" required aria-required="true" placeholder="Tulis pesan email khusus di sini..."></textarea>
+                <textarea id="email-message" rows="6" class="w-full bg-white border border-sa-border text-main p-3 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-300 placeholder-[#9CA3AF]" required aria-required="true" placeholder="Tulis pesan email khusus di sini..."></textarea>
             </div>
             <div class="flex space-x-4 pt-2" role="group" aria-label="Tombol aksi">
-                <button type="button" onclick="closeSendEmailModal()" class="w-full bg-surface hover:bg-surface-hover text-main py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 border border-default transition-all duration-300" aria-label="Batal kirim email">Batal</button>
-                <button type="submit" class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-purple-300 transition-all duration-300" aria-label="Kirim email">Kirim Email</button>
+                <button type="button" onclick="closeSendEmailModal()" class="w-full bg-surface hover:bg-surface-hover text-main py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 border border-sa-border transition-all duration-300" aria-label="Batal kirim email">Batal</button>
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-purple-300 transition-all duration-300" aria-label="Kirim email">Kirim Email</button>
             </div>
         </form>
     </div>
@@ -1010,33 +1010,33 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
 
 <!-- Default Password Reset Modal -->
 <div id="default-password-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="default-password-title" aria-modal="true">
-    <div class="bg-surface p-6 rounded-lg w-full max-w-md border border-default">
+    <div class="bg-surface p-6 rounded-sa-md w-full max-w-md border border-sa-border">
         <h3 id="default-password-title" class="text-xl font-semibold text-sa-warning mb-4">Reset ke Password Default</h3>
         <p class="mb-4 text-main">Apakah Anda yakin ingin mengubah password pengguna ini ke password default?</p>
-        <div class="bg-gradient-to-r from-sa-warning-bg to-sa-critical-bg border border-sa-border rounded-lg p-3 mb-4">
+        <div class="bg-gradient-to-r from-sa-warning-bg to-sa-critical-bg border border-sa-border rounded-sa-md p-3 mb-4">
             <p class="text-sm text-sa-warning"><i class="fas fa-exclamation-triangle mr-1"></i> Password akan diubah ke: <strong>password123</strong></p>
         </div>
         <div class="mb-4">
             <label for="confirm-username" class="block text-main font-medium mb-2">Konfirmasi dengan mengetik username pengguna:</label>
-            <input type="text" id="confirm-username" class="w-full bg-card border border-default text-main p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Ketik username untuk konfirmasi">
+            <input type="text" id="confirm-username" class="w-full bg-white border border-sa-border text-main p-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Ketik username untuk konfirmasi">
         </div>
         <div class="flex justify-end space-x-4" role="group" aria-label="Tombol konfirmasi reset password default">
-            <button id="cancel-default-password-btn" onclick="closeDefaultPasswordModal()" class="bg-surface hover:bg-[#D1D5DB] text-main px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal reset password default">Batal</button>
-            <button id="confirm-default-password-btn" onclick="confirmDefaultPasswordReset()" class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300 transition-all duration-300" aria-label="Konfirmasi reset password default">Reset ke Default</button>
+            <button id="cancel-default-password-btn" onclick="closeDefaultPasswordModal()" class="bg-surface hover:bg-[#D1D5DB] text-main px-4 py-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Batal reset password default">Batal</button>
+            <button id="confirm-default-password-btn" onclick="confirmDefaultPasswordReset()" class="bg-gradient-to-r from-sa-warning to-sa-critical hover:from-sa-warning hover:to-sa-critical hover:to-red-600 text-white px-4 py-2 rounded-sa-md focus:outline-none focus:ring-2 focus:ring-orange-300 transition-all duration-300" aria-label="Konfirmasi reset password default">Reset ke Default</button>
         </div>
     </div>
 </div>
 
 <!-- Write Access Review Modal -->
 <div id="write-access-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50" role="dialog" aria-labelledby="write-access-title" aria-modal="true">
-    <div class="bg-surface border border-default p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-white border border-sa-border rounded-sa-md shadow-sa-card p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <h2 id="write-access-title" class="text-xl font-semibold mb-6 text-main">Review Permintaan Akses Tulis</h2>
         <form id="write-access-form" class="space-y-4" role="form" aria-label="Form review permintaan akses tulis">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="hidden" id="review-request-id">
             
             <!-- User Information -->
-            <div class="bg-card p-4 rounded-lg border border-default">
+            <div class="bg-white p-4 rounded-sa-md border border-sa-border">
                 <h3 class="text-lg font-semibold text-main mb-3">Informasi Pengguna</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -1051,7 +1051,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
 
             <!-- Request Details -->
-            <div class="bg-card p-4 rounded-lg border border-default">
+            <div class="bg-white p-4 rounded-sa-md border border-sa-border">
                 <h3 class="text-lg font-semibold text-main mb-3">Detail Permintaan</h3>
                 <div class="space-y-4">
                     <div>
@@ -1074,18 +1074,18 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
 
             <!-- Admin Decision -->
-            <div class="bg-card p-4 rounded-lg border border-default">
+            <div class="bg-white p-4 rounded-sa-md border border-sa-border">
                 <h3 class="text-lg font-semibold text-main mb-3">Keputusan Admin</h3>
                 <div class="space-y-4">
                     <div>
                         <label for="admin-notes" class="block text-main font-medium mb-2">Catatan Admin</label>
-                        <textarea id="admin-notes" rows="3" class="w-full bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" placeholder="Berikan catatan atau feedback untuk pengguna..."></textarea>
+                        <textarea id="admin-notes" rows="3" class="w-full bg-white border border-sa-border text-main p-2 rounded focus:outline-none focus:border-[#667EEA]" placeholder="Berikan catatan atau feedback untuk pengguna..."></textarea>
                     </div>
                     <div class="flex space-x-4">
-                        <button type="button" onclick="reviewWriteAccessRequest('approved')" class="flex-1 bg-success hover:bg-sa-success text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sa-success/30 transition-all duration-300">
+                        <button type="button" onclick="reviewWriteAccessRequest('approved')" class="flex-1 bg-success hover:bg-sa-success text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-sa-success/30 transition-all duration-300">
                             <i class="fas fa-check mr-2"></i>Setujui
                         </button>
-                        <button type="button" onclick="reviewWriteAccessRequest('rejected')" class="flex-1 bg-danger hover:bg-sa-critical text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-300">
+                        <button type="button" onclick="reviewWriteAccessRequest('rejected')" class="flex-1 bg-danger hover:bg-sa-critical text-white py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-red-300 transition-all duration-300">
                             <i class="fas fa-times mr-2"></i>Tolak
                         </button>
                     </div>
@@ -1093,7 +1093,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
             </div>
 
             <div class="flex space-x-4" role="group" aria-label="Tombol aksi">
-                <button type="button" onclick="closeWriteAccessModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Tutup modal">Tutup</button>
+                <button type="button" onclick="closeWriteAccessModal()" class="w-full bg-surface hover:bg-[#D1D5DB] text-main py-3 rounded-sa-md font-semibold focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-300" aria-label="Tutup modal">Tutup</button>
             </div>
         </form>
     </div>
@@ -1346,13 +1346,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Remove active class from all buttons and contents
             tabButtons.forEach(btn => {
-                btn.classList.remove('active', 'bg-card', 'text-main');
+                btn.classList.remove('active', 'bg-white', 'text-main');
                 btn.classList.add('bg-surface-hover', 'text-muted');
             });
             tabContents.forEach(content => content.classList.add('hidden'));
             
             // Add active class to clicked button and show target content
-            this.classList.add('active', 'bg-card', 'text-main');
+            this.classList.add('active', 'bg-white', 'text-main');
             this.classList.remove('bg-surface-hover', 'text-muted');
             document.getElementById(targetTab + '-tab').classList.remove('hidden');
         });
@@ -1496,7 +1496,7 @@ function generateUserDetailsHTML(user) {
         </div>
         <div class="mt-6">
             <h4 class="text-lg font-semibold text-main mb-3">Aktivitas Terbaru</h4>
-            <div class="bg-surface p-4 rounded-lg">
+            <div class="bg-surface p-4 rounded-sa-md">
                 <p class="text-muted">Aktivitas pengguna akan ditampilkan di sini</p>
             </div>
         </div>
