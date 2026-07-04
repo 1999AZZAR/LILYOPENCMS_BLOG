@@ -40,7 +40,7 @@ Contact: azzar.mr.zs@gmail.com for inquiries.
           <!-- Filled dynamically with checkboxes; checked = assigned to selected editor -->
         </div>
         <div class="mt-3 flex gap-2">
-          <button id="assign-writers" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">Simpan Penugasan</button>
+          <button id="assign-writers" class="bg-sa-success hover:bg-sa-success text-white px-4 py-2 rounded-lg">Simpan Penugasan</button>
         </div>
       </div>
     </div>
@@ -58,7 +58,7 @@ async function fetchEditors(q='') {
   list.forEach(u => {
     const row = document.createElement('button');
     row.type = 'button';
-    row.className = `w-full text-left px-3 py-2 hover:bg-[#F9FAFB] ${selectedEditorId===u.id?'bg-blue-50':''}`;
+    row.className = `w-full text-left px-3 py-2 hover:bg-[#F9FAFB] ${selectedEditorId===u.id?'bg-sa-accent/5':''}`;
     row.textContent = `${u.username}${u.email ? ' ('+u.email+')' : ''}`;
     row.onclick = async () => { selectedEditorId = u.id; await loadAssigned(selectedEditorId); await renderEditors(list); };
     box.appendChild(row);
@@ -68,7 +68,7 @@ function renderEditors(list){
   const box = document.getElementById('editors-list');
   Array.from(box.children).forEach((child, idx)=>{
     const id = list[idx]?.id;
-    child.classList.toggle('bg-blue-50', id===selectedEditorId);
+    child.classList.toggle('bg-sa-accent/5', id===selectedEditorId);
   })
 }
 async function fetchWriters(q='') {

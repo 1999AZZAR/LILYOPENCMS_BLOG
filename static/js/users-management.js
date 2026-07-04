@@ -177,14 +177,14 @@ class UsersManagement {
                 
                 // Remove active class from all buttons and contents
                 tabButtons.forEach(btn => {
-                    btn.classList.remove('active', 'bg-white', 'text-amber-800');
-                    btn.classList.add('bg-amber-200', 'text-amber-700');
+                    btn.classList.remove('active', 'bg-white', 'text-sa-warning');
+                    btn.classList.add('bg-sa-warning-bg', 'text-sa-warning');
                 });
                 tabContents.forEach(content => content.classList.remove('active'));
                 
                 // Add active class to clicked button and corresponding content
-                button.classList.add('active', 'bg-white', 'text-amber-800');
-                button.classList.remove('bg-amber-200', 'text-amber-700');
+                button.classList.add('active', 'bg-white', 'text-sa-warning');
+                button.classList.remove('bg-sa-warning-bg', 'text-sa-warning');
                 document.getElementById(targetTab + '-tab').classList.add('active');
                 
                 // Load specific data for the tab if needed
@@ -367,7 +367,7 @@ class UsersManagement {
         
         // Render admin users
         if (adminUsers.length === 0) {
-            adminContainer.innerHTML = '<div class="col-span-full text-amber-600">Tidak ada pengguna admin</div>';
+            adminContainer.innerHTML = '<div class="col-span-full text-sa-warning">Tidak ada pengguna admin</div>';
         } else {
             adminUsers.forEach(user => {
                 const userCard = this.createUserCard(user);
@@ -377,7 +377,7 @@ class UsersManagement {
         
         // Render general users
         if (generalUsers.length === 0) {
-            generalContainer.innerHTML = '<div class="col-span-full text-amber-600">Tidak ada pengguna umum</div>';
+            generalContainer.innerHTML = '<div class="col-span-full text-sa-warning">Tidak ada pengguna umum</div>';
         } else {
             generalUsers.forEach(user => {
                 const userCard = this.createUserCard(user);
@@ -392,29 +392,29 @@ class UsersManagement {
 
     createUserCard(user) {
     const card = document.createElement('div');
-        card.className = 'bg-white border border-amber-200 rounded-lg p-4 hover:shadow-md transition-shadow';
+        card.className = 'bg-white border border-sa-border rounded-lg p-4 hover:shadow-md transition-shadow';
     card.setAttribute('role', 'listitem');
     card.setAttribute('aria-label', `User: ${user.username}`);
     
     
         // Status and role badges
-    const statusClass = user.is_suspended ? 'text-red-600 bg-red-100' : 'text-green-600 bg-green-100';
+    const statusClass = user.is_suspended ? 'text-sa-critical bg-sa-critical-bg' : 'text-sa-success bg-sa-success-bg';
     const statusText = user.is_suspended ? 'Tersuspend' : 'Aktif';
         
         // Enhanced role display
         let roleBadge = '';
         if (user.role === 'SUPERUSER') {
-            roleBadge = '<span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-600">Superuser</span>';
+            roleBadge = '<span class="px-2 py-1 text-xs rounded-full bg-sa-critical-bg text-sa-critical">Superuser</span>';
         } else if (user.role === 'ADMIN') {
-            roleBadge = '<span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-600">Admin</span>';
+            roleBadge = '<span class="px-2 py-1 text-xs rounded-full bg-sa-accent/10 text-sa-accent">Admin</span>';
         } else {
-            roleBadge = '<span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-600">Umum</span>';
+            roleBadge = '<span class="px-2 py-1 text-xs rounded-full bg-sa-bg text-sa-muted">Umum</span>';
         }
         
         // Custom role badge if exists
         let customRoleBadge = '';
         if (user.custom_role && user.custom_role.name) {
-            customRoleBadge = `<span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-600">${user.custom_role.name}</span>`;
+            customRoleBadge = `<span class="px-2 py-1 text-xs rounded-full bg-sa-accent/10 text-sa-accent">${user.custom_role.name}</span>`;
         }
         
         // Additional info
@@ -424,45 +424,45 @@ class UsersManagement {
     card.innerHTML = `
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <input type="checkbox" name="user-select" value="${user.id}" class="rounded border-gray-300 text-blue-600 focus:ring-blue-300" onchange="usersManagement.updateSelectedCount()" title="Pilih untuk aksi massal">
+                <input type="checkbox" name="user-select" value="${user.id}" class="rounded border-sa-border text-sa-accent focus:ring-sa-accent/30" onchange="usersManagement.updateSelectedCount()" title="Pilih untuk aksi massal">
                 <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden" style="background: #f8f9fa;">
                     <svg width="40" height="40" data-jdenticon-value="${user.username || user.id}"></svg>
                 </div>
                     <div class="flex-1">
-                        <h3 class="font-semibold text-amber-800">${displayName}</h3>
-                        <p class="text-sm text-amber-600">${user.email || 'Tidak ada email'}</p>
-                        ${user.bio ? `<p class="text-xs text-gray-500 mt-1">${user.bio.substring(0, 50)}${user.bio.length > 50 ? '...' : ''}</p>` : ''}
+                        <h3 class="font-semibold text-sa-warning">${displayName}</h3>
+                        <p class="text-sm text-sa-warning">${user.email || 'Tidak ada email'}</p>
+                        ${user.bio ? `<p class="text-xs text-sa-muted mt-1">${user.bio.substring(0, 50)}${user.bio.length > 50 ? '...' : ''}</p>` : ''}
                         <div class="flex items-center space-x-2 mt-2 flex-wrap gap-1">
                         <span class="px-2 py-1 text-xs rounded-full ${statusClass}">${statusText}</span>
                             ${roleBadge}
                             ${customRoleBadge}
-                            ${user.verified ? '<span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-600">✓ Terverifikasi</span>' : ''}
-                            ${user.is_premium ? '<span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-600">⭐ Premium</span>' : ''}
+                            ${user.verified ? '<span class="px-2 py-1 text-xs rounded-full bg-sa-success-bg text-sa-success">✓ Terverifikasi</span>' : ''}
+                            ${user.is_premium ? '<span class="px-2 py-1 text-xs rounded-full bg-sa-warning-bg text-sa-warning">⭐ Premium</span>' : ''}
                         </div>
                 </div>
             </div>
             <div class="flex space-x-2">
-                    <button onclick="usersManagement.openEditUserModal(${user.id})" class="p-2 bg-yellow-100 hover:bg-yellow-200 text-yellow-600 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-colors" title="Edit User">
+                    <button onclick="usersManagement.openEditUserModal(${user.id})" class="p-2 bg-sa-warning-bg hover:bg-sa-warning-bg/50 text-sa-warning rounded-full focus:outline-none focus:ring-2 focus:ring-sa-warning/30 transition-colors" title="Edit User">
                     <i class="fas fa-edit"></i>
                 </button>
                     ${user.email ? `
-                    <button onclick="usersManagement.openSendEmailModal(${user.id})" class="p-2 bg-purple-100 hover:bg-purple-200 text-purple-600 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-300 transition-colors" title="Kirim Email">
+                    <button onclick="usersManagement.openSendEmailModal(${user.id})" class="p-2 bg-sa-accent/10 hover:bg-sa-accent/10 text-sa-accent rounded-full focus:outline-none focus:ring-2 focus:ring-sa-accent/30 transition-colors" title="Kirim Email">
                         <i class="fas fa-envelope"></i>
                     </button>
                     ` : `
-                    <button class="p-2 bg-gray-100 text-gray-400 rounded-full cursor-not-allowed" title="Tidak ada email" disabled>
+                    <button class="p-2 bg-sa-bg text-gray-400 rounded-full cursor-not-allowed" title="Tidak ada email" disabled>
                         <i class="fas fa-envelope"></i>
                     </button>
                     `}
                     ${this.shouldShowPasswordResetButtons() ? `
-                    <button onclick="usersManagement.openPasswordResetModal(${user.id})" class="p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors" title="Reset Password">
+                    <button onclick="usersManagement.openPasswordResetModal(${user.id})" class="p-2 bg-sa-accent/10 hover:bg-blue-200 text-sa-accent rounded-full focus:outline-none focus:ring-2 focus:ring-sa-accent/30 transition-colors" title="Reset Password">
                     <i class="fas fa-key"></i>
                 </button>
-                    <button onclick="usersManagement.showDefaultPasswordModal(${user.id})" class="p-2 bg-orange-100 hover:bg-orange-200 text-orange-600 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-300 transition-colors" title="Change to Default Password">
+                    <button onclick="usersManagement.showDefaultPasswordModal(${user.id})" class="p-2 bg-sa-warning-bg hover:bg-sa-warning-bg/70 text-sa-warning rounded-full focus:outline-none focus:ring-2 focus:ring-orange-300 transition-colors" title="Change to Default Password">
                     <i class="fas fa-unlock-alt"></i>
                 </button>
                     ` : ''}
-                    <button onclick="usersManagement.showDeleteUserModal(${user.id})" class="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors" title="Delete User">
+                    <button onclick="usersManagement.showDeleteUserModal(${user.id})" class="p-2 bg-sa-critical-bg hover:bg-sa-critical-bg/70 text-sa-critical rounded-full focus:outline-none focus:ring-2 focus:ring-red-300 transition-colors" title="Delete User">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -491,13 +491,13 @@ renderPagination() {
     if (has_prev) {
         paginationHTML += `
             <button onclick="usersManagement.loadUsers(${page - 1})" 
-                    class="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
                 <i class="fas fa-chevron-left"></i>
             </button>
         `;
     } else {
         paginationHTML += `
-            <span class="px-3 py-2 bg-gray-100 text-gray-400 rounded-lg cursor-not-allowed">
+            <span class="px-3 py-2 bg-sa-bg text-gray-400 rounded-lg cursor-not-allowed">
                 <i class="fas fa-chevron-left"></i>
             </span>
         `;
@@ -510,12 +510,12 @@ renderPagination() {
     if (startPage > 1) {
         paginationHTML += `
             <button onclick="usersManagement.loadUsers(1)" 
-                    class="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
                 1
             </button>
         `;
         if (startPage > 2) {
-            paginationHTML += '<span class="px-2 text-amber-600">...</span>';
+            paginationHTML += '<span class="px-2 text-sa-warning">...</span>';
         }
     }
     
@@ -529,7 +529,7 @@ renderPagination() {
         } else {
             paginationHTML += `
                 <button onclick="usersManagement.loadUsers(${i})" 
-                        class="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                        class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
                     ${i}
                 </button>
             `;
@@ -538,11 +538,11 @@ renderPagination() {
     
     if (endPage < pages) {
         if (endPage < pages - 1) {
-            paginationHTML += '<span class="px-2 text-amber-600">...</span>';
+            paginationHTML += '<span class="px-2 text-sa-warning">...</span>';
         }
         paginationHTML += `
             <button onclick="usersManagement.loadUsers(${pages})" 
-                    class="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
                 ${pages}
             </button>
         `;
@@ -552,13 +552,13 @@ renderPagination() {
     if (has_next) {
         paginationHTML += `
             <button onclick="usersManagement.loadUsers(${page + 1})" 
-                    class="px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
+                    class="px-3 py-2 bg-sa-warning-bg hover:bg-sa-warning-bg text-sa-warning rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors">
                 <i class="fas fa-chevron-right"></i>
             </button>
         `;
     } else {
         paginationHTML += `
-            <span class="px-3 py-2 bg-gray-100 text-gray-400 rounded-lg cursor-not-allowed">
+            <span class="px-3 py-2 bg-sa-bg text-gray-400 rounded-lg cursor-not-allowed">
                 <i class="fas fa-chevron-right"></i>
             </span>
         `;
@@ -573,10 +573,10 @@ renderPagination() {
         const generalContainer = document.getElementById('general-users');
         
         if (adminContainer) {
-            adminContainer.innerHTML = `<div class="col-span-full text-red-600">Error: ${errorMessage}</div>`;
+            adminContainer.innerHTML = `<div class="col-span-full text-sa-critical">Error: ${errorMessage}</div>`;
         }
         if (generalContainer) {
-            generalContainer.innerHTML = `<div class="col-span-full text-red-600">Error: ${errorMessage}</div>`;
+            generalContainer.innerHTML = `<div class="col-span-full text-sa-critical">Error: ${errorMessage}</div>`;
         }
     }
 
@@ -1036,8 +1036,8 @@ async handleSendEmail(e) {
         if (container) {
             container.innerHTML = permissions.map(permission => `
                 <div class="flex items-center space-x-2">
-                    <input type="checkbox" id="perm-${permission.id}" value="${permission.id}" class="rounded border-amber-300 text-amber-500 focus:ring-amber-300">
-                    <label for="perm-${permission.id}" class="text-sm text-amber-700">
+                    <input type="checkbox" id="perm-${permission.id}" value="${permission.id}" class="rounded border-amber-300 text-sa-warning focus:ring-amber-300">
+                    <label for="perm-${permission.id}" class="text-sm text-sa-warning">
                         ${permission.name} (${permission.resource}:${permission.action})
                     </label>
                 </div>
@@ -1049,8 +1049,8 @@ async handleSendEmail(e) {
         if (editContainer) {
             editContainer.innerHTML = permissions.map(permission => `
                 <div class="flex items-center space-x-2">
-                    <input type="checkbox" id="edit-perm-${permission.id}" value="${permission.id}" class="rounded border-amber-300 text-amber-500 focus:ring-amber-300">
-                    <label for="edit-perm-${permission.id}" class="text-sm text-amber-700">
+                    <input type="checkbox" id="edit-perm-${permission.id}" value="${permission.id}" class="rounded border-amber-300 text-sa-warning focus:ring-amber-300">
+                    <label for="edit-perm-${permission.id}" class="text-sm text-sa-warning">
                         ${permission.name} (${permission.resource}:${permission.action})
                     </label>
                 </div>
@@ -1063,28 +1063,28 @@ async handleSendEmail(e) {
         if (!container) return;
         
         if (roles.length === 0) {
-            container.innerHTML = '<div class="text-amber-600">Tidak ada peran kustom</div>';
+            container.innerHTML = '<div class="text-sa-warning">Tidak ada peran kustom</div>';
             return;
         }
         
         container.innerHTML = roles.map(role => `
-            <div class="bg-white border border-amber-200 rounded-lg p-4">
+            <div class="bg-white border border-sa-border rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h4 class="font-semibold text-amber-800">${role.name}</h4>
-                        <p class="text-sm text-amber-600">${role.description || 'Tidak ada deskripsi'}</p>
+                        <h4 class="font-semibold text-sa-warning">${role.name}</h4>
+                        <p class="text-sm text-sa-warning">${role.description || 'Tidak ada deskripsi'}</p>
                         <div class="flex items-center space-x-2 mt-2">
-                            <span class="px-2 py-1 text-xs rounded-full ${role.is_active ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+                            <span class="px-2 py-1 text-xs rounded-full ${role.is_active ? 'bg-sa-success-bg text-sa-success' : 'bg-sa-critical-bg text-sa-critical'}">
                                 ${role.is_active ? 'Aktif' : 'Tidak Aktif'}
                             </span>
-                            <span class="text-xs text-amber-600">${role.permissions?.length || 0} izin</span>
+                            <span class="text-xs text-sa-warning">${role.permissions?.length || 0} izin</span>
                         </div>
                     </div>
                     <div class="flex space-x-2">
-                        <button onclick="usersManagement.editRole(${role.id})" class="p-2 bg-yellow-100 hover:bg-yellow-200 text-yellow-600 rounded-full">
+                        <button onclick="usersManagement.editRole(${role.id})" class="p-2 bg-sa-warning-bg hover:bg-sa-warning-bg/50 text-sa-warning rounded-full">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button onclick="usersManagement.deleteRole(${role.id})" class="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full">
+                        <button onclick="usersManagement.deleteRole(${role.id})" class="p-2 bg-sa-critical-bg hover:bg-sa-critical-bg/70 text-sa-critical rounded-full">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -1098,19 +1098,19 @@ async handleSendEmail(e) {
         if (!container) return;
         
         if (permissions.length === 0) {
-            container.innerHTML = '<div class="text-amber-600">Tidak ada izin</div>';
+            container.innerHTML = '<div class="text-sa-warning">Tidak ada izin</div>';
             return;
         }
         
         container.innerHTML = permissions.map(permission => `
-            <div class="bg-white border border-amber-200 rounded-lg p-4">
+            <div class="bg-white border border-sa-border rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h4 class="font-semibold text-amber-800">${permission.name}</h4>
-                        <p class="text-sm text-amber-600">${permission.description || 'Tidak ada deskripsi'}</p>
+                        <h4 class="font-semibold text-sa-warning">${permission.name}</h4>
+                        <p class="text-sm text-sa-warning">${permission.description || 'Tidak ada deskripsi'}</p>
                         <div class="flex items-center space-x-2 mt-2">
-                            <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-600">${permission.resource}</span>
-                            <span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-600">${permission.action}</span>
+                            <span class="px-2 py-1 text-xs rounded-full bg-sa-accent/10 text-sa-accent">${permission.resource}</span>
+                            <span class="px-2 py-1 text-xs rounded-full bg-sa-accent/10 text-sa-accent">${permission.action}</span>
                         </div>
                     </div>
                 </div>
@@ -1155,29 +1155,29 @@ async handleSendEmail(e) {
         if (!container) return;
         
         if (requests.length === 0) {
-            container.innerHTML = '<div class="text-gray-600">Tidak ada permintaan penghapusan akun yang menunggu</div>';
+            container.innerHTML = '<div class="text-sa-muted">Tidak ada permintaan penghapusan akun yang menunggu</div>';
             return;
         }
         
         container.innerHTML = requests.map(request => `
-            <div class="bg-white border border-red-200 rounded-lg p-4">
+            <div class="bg-white border border-sa-critical/30 rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden" style="background: #f8f9fa;">
                             <svg width="40" height="40" data-jdenticon-value="${request.username || request.user_id}"></svg>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-red-800">${request.username}</h4>
-                            <p class="text-sm text-red-600">${request.email || 'Tidak ada email'}</p>
-                            <p class="text-xs text-red-500">Daftar: ${new Date(request.created_at).toLocaleDateString('id-ID')}</p>
-                            <p class="text-xs text-red-500">Permintaan: ${new Date(request.deletion_requested_at).toLocaleDateString('id-ID')}</p>
+                            <h4 class="font-semibold text-sa-critical">${request.username}</h4>
+                            <p class="text-sm text-sa-critical">${request.email || 'Tidak ada email'}</p>
+                            <p class="text-xs text-sa-critical">Daftar: ${new Date(request.created_at).toLocaleDateString('id-ID')}</p>
+                            <p class="text-xs text-sa-critical">Permintaan: ${new Date(request.deletion_requested_at).toLocaleDateString('id-ID')}</p>
                         </div>
                     </div>
                     <div class="flex space-x-2">
-                        <button onclick="usersManagement.approveDeletion(${request.id})" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm">
+                        <button onclick="usersManagement.approveDeletion(${request.id})" class="px-3 py-1 bg-sa-critical-bg hover:bg-sa-critical-bg text-white rounded text-sm">
                             <i class="fas fa-check mr-1"></i>Setujui
                         </button>
-                        <button onclick="usersManagement.rejectDeletion(${request.id})" class="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-sm">
+                        <button onclick="usersManagement.rejectDeletion(${request.id})" class="px-3 py-1 bg-sa-success-bg hover:bg-sa-success-bg text-white rounded text-sm">
                             <i class="fas fa-times mr-1"></i>Tolak
                         </button>
                     </div>
@@ -1323,28 +1323,28 @@ async handleSendEmail(e) {
         if (!container) return;
         
         if (users.length === 0) {
-            container.innerHTML = '<div class="text-amber-600">Tidak ada pengguna yang menunggu persetujuan</div>';
+            container.innerHTML = '<div class="text-sa-warning">Tidak ada pengguna yang menunggu persetujuan</div>';
             return;
         }
         
         container.innerHTML = users.map(user => `
-            <div class="bg-white border border-amber-200 rounded-lg p-4">
+            <div class="bg-white border border-sa-border rounded-lg p-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden" style="background: #f8f9fa;">
                             <svg width="40" height="40" data-jdenticon-value="${user.username || user.id}"></svg>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-amber-800">${user.username}</h4>
-                            <p class="text-sm text-amber-600">${user.email || 'Tidak ada email'}</p>
-                            <p class="text-xs text-amber-500">Daftar: ${new Date(user.created_at).toLocaleDateString('id-ID')}</p>
+                            <h4 class="font-semibold text-sa-warning">${user.username}</h4>
+                            <p class="text-sm text-sa-warning">${user.email || 'Tidak ada email'}</p>
+                            <p class="text-xs text-sa-warning">Daftar: ${new Date(user.created_at).toLocaleDateString('id-ID')}</p>
                         </div>
                     </div>
                     <div class="flex space-x-2">
-                        <button onclick="usersManagement.approveUser(${user.id})" class="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-sm">
+                        <button onclick="usersManagement.approveUser(${user.id})" class="px-3 py-1 bg-sa-success-bg hover:bg-sa-success-bg text-white rounded text-sm">
                             <i class="fas fa-check mr-1"></i>Setujui
                         </button>
-                        <button onclick="usersManagement.rejectUser(${user.id})" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm">
+                        <button onclick="usersManagement.rejectUser(${user.id})" class="px-3 py-1 bg-sa-critical-bg hover:bg-sa-critical-bg text-white rounded text-sm">
                             <i class="fas fa-times mr-1"></i>Tolak
                         </button>
                     </div>
@@ -1406,7 +1406,7 @@ async handleSendEmail(e) {
         if (!container) return;
         
         if (!leaderboard.leaderboard || leaderboard.leaderboard.length === 0) {
-            container.innerHTML = '<div class="text-amber-600">Tidak ada data performa</div>';
+            container.innerHTML = '<div class="text-sa-warning">Tidak ada data performa</div>';
             return;
         }
         
@@ -1415,34 +1415,34 @@ async handleSendEmail(e) {
             const metrics = entry.metrics;
             
             return `
-                <div class="bg-white border border-amber-200 rounded-lg p-4">
+                <div class="bg-white border border-sa-border rounded-lg p-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="w-8 h-8 bg-gradient-to-r from-amber-400 to-yellow-400 rounded-full flex items-center justify-center">
                                 <span class="text-white font-semibold text-xs">${index + 1}</span>
                             </div>
                             <div>
-                                <h4 class="font-semibold text-amber-800">${user.username}</h4>
-                                <p class="text-sm text-amber-600">${user.role}</p>
+                                <h4 class="font-semibold text-sa-warning">${user.username}</h4>
+                                <p class="text-sm text-sa-warning">${user.role}</p>
                             </div>
                         </div>
                         <div class="text-right">
-                            <div class="text-lg font-bold text-amber-800">${metrics.engagement_score}</div>
-                            <div class="text-xs text-amber-600">Skor</div>
+                            <div class="text-lg font-bold text-sa-warning">${metrics.engagement_score}</div>
+                            <div class="text-xs text-sa-warning">Skor</div>
                         </div>
                     </div>
                     <div class="mt-3 grid grid-cols-3 gap-2 text-xs">
                         <div class="text-center">
-                            <div class="font-semibold text-blue-600">${metrics.news_count}</div>
-                            <div class="text-gray-500">Berita</div>
+                            <div class="font-semibold text-sa-accent">${metrics.news_count}</div>
+                            <div class="text-sa-muted">Berita</div>
                         </div>
                         <div class="text-center">
-                            <div class="font-semibold text-green-600">${metrics.images_count}</div>
-                            <div class="text-gray-500">Gambar</div>
+                            <div class="font-semibold text-sa-success">${metrics.images_count}</div>
+                            <div class="text-sa-muted">Gambar</div>
                         </div>
                         <div class="text-center">
-                            <div class="font-semibold text-purple-600">${metrics.videos_count}</div>
-                            <div class="text-gray-500">Video</div>
+                            <div class="font-semibold text-sa-accent">${metrics.videos_count}</div>
+                            <div class="text-sa-muted">Video</div>
                         </div>
                     </div>
                 </div>
@@ -1875,8 +1875,8 @@ async handleSendEmail(e) {
             // Reset username field styling
             const usernameField = document.getElementById('new-username');
             if (usernameField) {
-                usernameField.classList.remove('border-red-500');
-                usernameField.classList.add('border-gray-300');
+                usernameField.classList.remove('border-sa-critical');
+                usernameField.classList.add('border-sa-border');
             }
             // Clear email status
             const emailStatus = document.getElementById('email-status');
@@ -1886,8 +1886,8 @@ async handleSendEmail(e) {
             // Reset email field styling
             const emailField = document.getElementById('new-email');
             if (emailField) {
-                emailField.classList.remove('border-red-500');
-                emailField.classList.add('border-gray-300');
+                emailField.classList.remove('border-sa-critical');
+                emailField.classList.add('border-sa-border');
             }
         }
     }
@@ -2069,14 +2069,14 @@ async handleSendEmail(e) {
                         <svg width="64" height="64" data-jdenticon-value="${user.username || user.id}"></svg>
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold text-amber-800">${displayName}</h3>
-                        <p class="text-amber-600">@${user.username}</p>
+                        <h3 class="text-xl font-semibold text-sa-warning">${displayName}</h3>
+                        <p class="text-sa-warning">@${user.username}</p>
                     </div>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h4 class="font-semibold text-amber-700 mb-2">Informasi Dasar</h4>
+                        <h4 class="font-semibold text-sa-warning mb-2">Informasi Dasar</h4>
                         <div class="space-y-2 text-sm">
                             <p><span class="font-medium">Email:</span> ${user.email || 'Tidak ada email'}</p>
                             <p><span class="font-medium">Bio:</span> ${user.bio || 'Tidak ada bio'}</p>
@@ -2086,7 +2086,7 @@ async handleSendEmail(e) {
                     </div>
                     
                     <div>
-                        <h4 class="font-semibold text-amber-700 mb-2">Status</h4>
+                        <h4 class="font-semibold text-sa-warning mb-2">Status</h4>
                         <div class="space-y-2 text-sm">
                             <p><span class="font-medium">Aktif:</span> ${user.is_active ? 'Ya' : 'Tidak'}</p>
                             <p><span class="font-medium">Terverifikasi:</span> ${user.verified ? 'Ya' : 'Tidak'}</p>
@@ -2097,7 +2097,7 @@ async handleSendEmail(e) {
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-amber-700 mb-2">Aktivitas</h4>
+                    <h4 class="font-semibold text-sa-warning mb-2">Aktivitas</h4>
                     <div class="space-y-2 text-sm">
                         <p><span class="font-medium">Login Terakhir:</span> ${user.last_login ? new Date(user.last_login).toLocaleString() : 'Tidak ada'}</p>
                         <p><span class="font-medium">Jumlah Login:</span> ${user.login_count || 0}</p>
@@ -2142,7 +2142,7 @@ async handleSendEmail(e) {
         if (!container) return;
 
         if (!requests || requests.length === 0) {
-            container.innerHTML = '<div class="text-gray-600">Tidak ada permintaan akses tulis yang menunggu.</div>';
+            container.innerHTML = '<div class="text-sa-muted">Tidak ada permintaan akses tulis yang menunggu.</div>';
             return;
         }
 
@@ -2158,18 +2158,18 @@ async handleSendEmail(e) {
                 <div class="flex justify-between items-start mb-3">
                     <div>
                         <h4 class="font-semibold text-gray-800">${request.user.username}</h4>
-                        <p class="text-gray-600 text-sm">${request.user.email || 'Tidak ada email'}</p>
-                        <p class="text-gray-500 text-xs">Diminta pada: ${new Date(request.requested_at).toLocaleDateString('id-ID')}</p>
+                        <p class="text-sa-muted text-sm">${request.user.email || 'Tidak ada email'}</p>
+                        <p class="text-sa-muted text-xs">Diminta pada: ${new Date(request.requested_at).toLocaleDateString('id-ID')}</p>
                         <span class="px-2 py-1 text-xs rounded-full bg-${statusColor}-100 text-${statusColor}-600 mt-1">
                             ${statusText}
                         </span>
                     </div>
                     <div class="flex space-x-2">
                         ${isPending ? `
-                        <button onclick="approveWriteAccessRequest(${request.id})" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm">
+                        <button onclick="approveWriteAccessRequest(${request.id})" class="bg-sa-success-bg hover:bg-sa-success-bg text-white px-3 py-1 rounded text-sm">
                             <i class="fas fa-check mr-1"></i>Setujui
                         </button>
-                        <button onclick="rejectWriteAccessRequest(${request.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                        <button onclick="rejectWriteAccessRequest(${request.id})" class="bg-sa-critical-bg hover:bg-sa-critical-bg text-white px-3 py-1 rounded text-sm">
                             <i class="fas fa-times mr-1"></i>Tolak
                         </button>
                         ` : ''}
@@ -2178,7 +2178,7 @@ async handleSendEmail(e) {
                         </button>
                     </div>
                 </div>
-                <div class="text-sm text-gray-600">
+                <div class="text-sm text-sa-muted">
                     <p><strong>Alasan:</strong> ${request.request_reason || 'Tidak ada alasan'}</p>
                     <p><strong>Pengalaman:</strong> ${request.experience_description || 'Tidak ada pengalaman'}</p>
                     <p><strong>Portfolio:</strong> ${request.portfolio_links || 'Tidak ada portfolio'}</p>
