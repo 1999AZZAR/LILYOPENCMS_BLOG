@@ -32,6 +32,8 @@ from .seo_settings_api import *
 from .routes_pages import *
 from .routes_tags import *
 from .routes_comments import *
+from .routes_firebase_auth import *
+from .routes_external_auth import *
 
 __all__ = [
     "main_blueprint",
@@ -55,4 +57,6 @@ __all__ = [
     "routes_pages",
     "routes_tags",
     "routes_comments",
+    "routes_firebase_auth",
+    "routes_external_auth",
 ]

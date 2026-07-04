@@ -9,20 +9,24 @@ python -c "
 from app import create_app
 from alembic.config import Config
 from alembic import command
-from sqlalchemy import text
 
 app = create_app()
 with app.app_context():
-    from app.extensions import db
-    # Create tables if they don't exist (first run)
-    db.create_all()
-    # Stamp alembic head so future migrations work
+    # Run all pending migrations
     try:
         alembic_cfg = Config('migrations/alembic.ini')
-        command.stamp(alembic_cfg, 'head')
-        print('Alembic stamped to head.')
+        command.upgrade(alembic_cfg, 'head')
+        print('Alembic migrations applied to head.')
     except Exception as e:
-        print(f'Alembic stamp skipped: {e}')
+        print(f'Alembic upgrade failed: {e}')
+        # Fallback: create tables if migrations fail
+        from app.extensions import db
+        db.create_all()
+        print('Fallback: created tables via db.create_all().')
+        try:
+            command.stamp(alembic_cfg, 'head')
+        except Exception:
+            pass
 "
 
 # Seed database (idempotent — skips if data exists)

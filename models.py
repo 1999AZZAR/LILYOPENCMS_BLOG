@@ -191,7 +191,38 @@ class User(db.Model, UserMixin):
             return 2
         return 3
     verified = db.Column(db.Boolean, default=False, nullable=False)
+    email_verified_at = db.Column(db.DateTime, nullable=True)
+    last_verification_sent_at = db.Column(db.DateTime, nullable=True)
     
+    # Password reset
+    password_reset_token = db.Column(db.String(255), nullable=True, index=True)
+    password_reset_expires_at = db.Column(db.DateTime, nullable=True)
+    
+    # Firebase Authentication
+    firebase_uid = db.Column(db.String(128), unique=True, nullable=True, index=True)
+    auth_provider = db.Column(db.String(50), nullable=True)
+    provider_data = db.Column(db.JSON, nullable=True)
+
+    # Email notification preferences
+    email_notifications = db.Column(db.JSON, default=lambda: {
+        "content_published": True,
+        "scheduled_content_published": True,
+        "chapter_published": True,
+        "verification_emails": True,
+        "password_reset": True,
+        "admin_notifications": True,
+        "marketing_emails": False,
+    }, nullable=False)
+
+    # Deletion request fields
+    deletion_requested = db.Column(db.Boolean, default=False, nullable=False)
+    deletion_requested_at = db.Column(db.DateTime, nullable=True)
+    deletion_request_moderated = db.Column(db.Boolean, default=False, nullable=False, index=True)
+    deletion_request_approved = db.Column(db.Boolean, nullable=True)
+
+    # Write access
+    write_access = db.Column(db.Boolean, nullable=True)
+
     # New fields for enhanced user management
     email = db.Column(db.String(255), unique=True, nullable=True)
     first_name = db.Column(db.String(100), nullable=True)
@@ -368,11 +399,18 @@ class User(db.Model, UserMixin):
                 else self.premium_expires_at.replace(tzinfo=timezone.utc)
             )
             if expires < datetime.now(timezone.utc):
-                self.has_premium_access = False
-                self.premium_expires_at = None
                 return False
 
         return True
+    
+    def is_firebase_user(self):
+        return bool(self.firebase_uid) and self.auth_provider == "firebase"
+    
+    def has_password(self):
+        return bool(self.password_hash)
+    
+    def can_login_locally(self):
+        return self.has_password() and not self.is_firebase_user()
     
     def get_active_subscription(self):
         for subscription in self.subscriptions:  # type: ignore[union-attr]
@@ -2292,3 +2330,66 @@ def create_indexes():
     except SQLAlchemyError:
         db.session.rollback()
         raise
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# Stub models for features ported from enterprise
+# ═══════════════════════════════════════════════════════════════════════
+
+
+class UserProfile(db.Model):
+    __tablename__ = "user_profile"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, unique=True)
+    bio = db.Column(db.Text, nullable=True)
+    avatar_url = db.Column(db.String(500), nullable=True)
+    created_at = db.Column(db.DateTime, default=default_utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=default_utcnow, onupdate=default_utcnow, nullable=False)
+
+
+class UserLibrary(db.Model):
+    __tablename__ = "user_library"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    content_type = db.Column(db.String(50), nullable=False)
+    content_id = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=default_utcnow, nullable=False)
+
+
+class UserStats(db.Model):
+    __tablename__ = "user_stats"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, unique=True)
+    content_count = db.Column(db.Integer, default=0)
+    comment_count = db.Column(db.Integer, default=0)
+    read_count = db.Column(db.Integer, default=0)
+    updated_at = db.Column(db.DateTime, default=default_utcnow, onupdate=default_utcnow, nullable=False)
+
+
+class CommentLike(db.Model):
+    __tablename__ = "comment_like"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    comment_id = db.Column(db.Integer, db.ForeignKey("comment.id"), nullable=False)
+    created_at = db.Column(db.DateTime, default=default_utcnow, nullable=False)
+
+
+class CommentReport(db.Model):
+    __tablename__ = "comment_report"
+    id = db.Column(db.Integer, primary_key=True)
+    comment_id = db.Column(db.Integer, db.ForeignKey("comment.id"), nullable=False)
+    reporter_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    reason = db.Column(db.String(500), nullable=False)
+    status = db.Column(db.String(20), default="pending")
+    created_at = db.Column(db.DateTime, default=default_utcnow, nullable=False)
+
+
+class Rating(db.Model):
+    __tablename__ = "rating"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    content_type = db.Column(db.String(50), nullable=False)
+    content_id = db.Column(db.Integer, nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=default_utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=default_utcnow, onupdate=default_utcnow, nullable=False)

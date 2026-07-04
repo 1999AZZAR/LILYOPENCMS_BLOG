@@ -186,10 +186,10 @@ class UnifiedAuthManager:
                 # Still clear session and logout from Flask-Login
                 logout_user()
                 session.clear()
-                return {
-                    "success": True,
-                    "message": "Logout successful (anonymous user)"
-                }
+            return {
+                "success": True,
+                "message": "Logout successful (anonymous user)"
+            }
             
             # Record logout activity (simplified - no complex session invalidation)
             if self.jwt_manager:
@@ -206,7 +206,6 @@ class UnifiedAuthManager:
             session.clear()
             
             user_info = getattr(user, 'username', 'unknown') if user else 'unknown'
-            invalidated_count = 1
             logger.info(f"Unified logout successful for user {user_info}, invalidated {invalidated_count} sessions")
             
             return {
