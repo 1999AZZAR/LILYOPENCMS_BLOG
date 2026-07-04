@@ -36,6 +36,7 @@ def save_file(file, name=None):
     timestamp = datetime.now().strftime('%H%M%S%f')[:9] # Use microseconds for better uniqueness
     unique_filename = f"{timestamp}_{filename}"
     file_path = os.path.join("static/uploads", unique_filename)
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
     file.save(file_path)
     return unique_filename, file_path

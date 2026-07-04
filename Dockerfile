@@ -41,7 +41,7 @@ WORKDIR /app
 # Copy application code and set up entrypoint BEFORE switching user
 COPY . .
 RUN chmod +x /app/docker-entrypoint.sh && \
-    mkdir -p /app/logs /app/instance && \
+    mkdir -p /app/logs /app/instance /app/static/uploads && \
     chown -R lily:lily /app
 
 USER lily

@@ -23,11 +23,3 @@ from .common_imports import *
 @login_required
 def user_account():
     return render_template("settings/account_management.html")
-
-
-@main_blueprint.route("/settings/users")
-@login_required
-def settings_users():
-    if current_user.effective_tier != 0:
-        abort(403)
-    return render_template("settings/users_management.html")

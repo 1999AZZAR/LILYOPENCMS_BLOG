@@ -1,0 +1,131 @@
+<!--
+Copyright (c) 2026 Azzar Budiyanto / LilyOpenCMS.
+All rights reserved.
+
+This software is dual-licensed:
+1. For open-source use: Licensed under the GNU General Public License v3.0 (GPL-3.0).
+2. For commercial use: Subject to a separate Commercial License Agreement.
+
+Contact: azzar.mr.zs@gmail.com for inquiries.
+-->
+
+{% extends 'admin_base.html' %}
+{% block title %}Manajemen Editor ↔ Penulis - Admin{% endblock %}
+{% block hero_title %}Manajemen Editor ↔ Penulis{% endblock %}
+{% block hero_desc %}Tetapkan penulis di bawah editor (many-to-many){% endblock %}
+{% block content %}
+<main class="container mx-auto px-6 py-12" role="main">
+  <div class="bg-card border border-default p-6 rounded-lg mb-5" role="region" aria-labelledby="assignments-title">
+    <h2 id="assignments-title" class="text-xl font-semibold mb-4 text-main">Kelola Relasi</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Editors Column -->
+      <div>
+        <label class="block text-sm font-medium text-main mb-2">Editor</label>
+        <div class="flex gap-2 mb-2">
+          <input id="editor-search" type="text" placeholder="Cari editor..." class="flex-1 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+          <button id="search-editors" class="bg-primary text-white hover:bg-primary-hover text-white px-3 rounded-lg">Cari</button>
+        </div>
+        <div id="editors-list" class="max-h-96 overflow-auto border border-default rounded-lg divide-y">
+          <!-- Filled dynamically with buttons -->
+        </div>
+      </div>
+      <!-- Writers Column -->
+      <div>
+        <label class="block text-sm font-medium text-main mb-2">Penulis</label>
+        <div class="flex gap-2 mb-2">
+          <input id="writer-search" type="text" placeholder="Cari penulis..." class="flex-1 bg-card border border-default text-main p-2 rounded focus:outline-none focus:border-[#667EEA]">
+          <button id="search-writers" class="bg-primary text-white hover:bg-primary-hover text-white px-3 rounded-lg">Cari</button>
+        </div>
+        <div id="writers-list" class="max-h-96 overflow-auto border border-default rounded-lg divide-y p-2">
+          <!-- Filled dynamically with checkboxes; checked = assigned to selected editor -->
+        </div>
+        <div class="mt-3 flex gap-2">
+          <button id="assign-writers" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">Simpan Penugasan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+let selectedEditorId = null;
+async function fetchEditors(q='') {
+  const res = await fetchWithCSRF(`/api/editor-writer/editors?q=${encodeURIComponent(q)}`);
+  const list = await res.json();
+  const box = document.getElementById('editors-list');
+  box.innerHTML = '';
+  list.forEach(u => {
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = `w-full text-left px-3 py-2 hover:bg-[#F9FAFB] ${selectedEditorId===u.id?'bg-blue-50':''}`;
+    row.textContent = `${u.username}${u.email ? ' ('+u.email+')' : ''}`;
+    row.onclick = async () => { selectedEditorId = u.id; await loadAssigned(selectedEditorId); await renderEditors(list); };
+    box.appendChild(row);
+  });
+}
+function renderEditors(list){
+  const box = document.getElementById('editors-list');
+  Array.from(box.children).forEach((child, idx)=>{
+    const id = list[idx]?.id;
+    child.classList.toggle('bg-blue-50', id===selectedEditorId);
+  })
+}
+async function fetchWriters(q='') {
+  const res = await fetchWithCSRF(`/api/editor-writer/writers?q=${encodeURIComponent(q)}`);
+  const list = await res.json();
+  const box = document.getElementById('writers-list');
+  box.innerHTML = '';
+  // Mark assigned later when we load assigned list
+  list.forEach(u => {
+    const label = document.createElement('label');
+    label.className = 'flex items-center gap-2 px-2 py-1 rounded hover:bg-[#F9FAFB]';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.value = u.id;
+    const span = document.createElement('span');
+    span.textContent = `${u.username}${u.email ? ' ('+u.email+')' : ''}`;
+    label.appendChild(cb); label.appendChild(span);
+    box.appendChild(label);
+  });
+}
+async function loadAssigned(editorId) {
+  const res = await fetchWithCSRF(`/api/editor-writer/${editorId}/list`);
+  if (!res.ok) { return; }
+  const data = await res.json();
+  // Tick checkboxes for assigned writers
+  const assignedIds = new Set((data.writers||[]).map(w=>w.id));
+  document.querySelectorAll('#writers-list input[type="checkbox"]').forEach(cb=>{
+    cb.checked = assignedIds.has(parseInt(cb.value,10));
+  });
+}
+document.addEventListener('DOMContentLoaded', async () => {
+  await fetchEditors('');
+  await fetchWriters('');
+  // Auto-select first editor if available
+  const firstEditorBtn = document.querySelector('#editors-list > button');
+  if (firstEditorBtn) { firstEditorBtn.click(); }
+  document.getElementById('search-editors').addEventListener('click', async () => {
+    await fetchEditors(document.getElementById('editor-search').value);
+    const first = document.querySelector('#editors-list > button');
+    if (first) first.click();
+  });
+  document.getElementById('search-writers').addEventListener('click', async () => {
+    await fetchWriters(document.getElementById('writer-search').value);
+    if (selectedEditorId) await loadAssigned(selectedEditorId);
+  });
+  document.getElementById('assign-writers').addEventListener('click', async () => {
+    const editorId = selectedEditorId;
+    if (!editorId) { if (typeof showToast==='function') showToast('warning', 'Pilih editor terlebih dahulu'); return; }
+    const writer_ids = Array.from(document.querySelectorAll('#writers-list input[type="checkbox"]:checked')).map(cb=>parseInt(cb.value,10));
+    const res = await fetchWithCSRF(`/api/editor-writer/${editorId}/assign`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({writer_ids})});
+    if (res.ok) {
+      await loadAssigned(editorId);
+      if (typeof showToast==='function') showToast('success', 'Penugasan disimpan');
+    } else {
+      const err = await res.json().catch(()=>({error:'Gagal'}));
+      if (typeof showToast==='function') showToast('error', err.error || 'Gagal menyimpan');
+    }
+  });
+});
+</script>
+{% endblock %}
