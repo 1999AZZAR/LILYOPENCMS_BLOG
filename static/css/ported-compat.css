@@ -1,0 +1,38 @@
+/* Ported template compatibility — maps legacy classes to sa-* design tokens */
+
+/* Backgrounds */
+.bg-primary         { background-color: hsl(var(--sa-accent, var(--primary))) !important; }
+.bg-primary-subtle  { background-color: hsl(var(--sa-accent, var(--primary)) / 0.1) !important; }
+.bg-card            { background-color: hsl(var(--sa-bg, var(--background))) !important; }
+.bg-surface         { background-color: hsl(var(--sa-surface-hover, var(--muted))) !important; }
+.bg-danger          { background-color: hsl(var(--sa-critical, 0 72% 51%)) !important; }
+.bg-success         { background-color: hsl(var(--sa-success, 142 71% 45%)) !important; }
+.bg-warning         { background-color: hsl(var(--sa-warning, 35 92% 55%)) !important; }
+.bg-info            { background-color: hsl(var(--sa-accent, var(--primary))) !important; }
+
+/* Text */
+.text-primary       { color: hsl(var(--sa-accent, var(--primary))) !important; }
+.text-card          { color: hsl(var(--sa-fg, var(--foreground))) !important; }
+.text-surface       { color: hsl(var(--sa-fg-secondary, var(--muted-foreground))) !important; }
+.text-danger        { color: hsl(var(--sa-critical, 0 72% 51%)) !important; }
+.text-success       { color: hsl(var(--sa-success, 142 71% 45%)) !important; }
+.text-warning       { color: hsl(var(--sa-warning, 35 92% 55%)) !important; }
+.text-muted         { color: hsl(var(--sa-muted, var(--muted-foreground))) !important; }
+.text-main          { color: hsl(var(--sa-fg, var(--foreground))) !important; }
+
+/* Borders */
+.border-primary     { border-color: hsl(var(--sa-accent, var(--primary))) !important; }
+.border-card        { border-color: hsl(var(--sa-border, var(--border))) !important; }
+.border-danger      { border-color: hsl(var(--sa-critical, 0 72% 51%)) !important; }
+.border-success     { border-color: hsl(var(--sa-success, 142 71% 45%)) !important; }
+
+/* Utility */
+.badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+.badge-success { background: hsl(var(--sa-success, 142 71% 45%) / 0.15); color: hsl(var(--sa-success, 142 71% 45%)); }
+.badge-danger  { background: hsl(var(--sa-critical, 0 72% 51%) / 0.15); color: hsl(var(--sa-critical, 0 72% 51%)); }
+.badge-warning { background: hsl(var(--sa-warning, 35 92% 55%) / 0.15); color: hsl(var(--sa-warning, 35 92% 55%)); }
+.badge-info    { background: hsl(var(--sa-accent, var(--primary)) / 0.15); color: hsl(var(--sa-accent, var(--primary))); }
+
+/* Table */
+.table-header { background: hsl(var(--sa-bg, 33 30% 96%)); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: hsl(var(--sa-muted-strong, var(--muted-foreground))); }
+.table-row:hover { background: hsl(var(--sa-surface-hover, var(--accent)) / 0.3); }
