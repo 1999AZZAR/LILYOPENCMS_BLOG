@@ -51,7 +51,7 @@ six==1.16.0
 urllib3==2.1.0
 charset-normalizer==3.3.2
 idna==3.6
-certifi==2023.11.17
+certifi==2026.10.19
 markdown==3.8.2
 Flask-Mail==0.10.0
 PyJWT==2.13.0
